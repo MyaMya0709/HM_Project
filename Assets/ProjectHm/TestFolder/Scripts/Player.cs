@@ -4,39 +4,28 @@ using UnityEngine.InputSystem;
 public class Player : UnitBase
 {
     public Vector2 moveInput;
-    private PlayerInputAction inputAction;
 
-    private void Awake()
-    {
-        inputAction = new PlayerInputAction();
-    }
+    private PlayerInput playerInput;
 
-    private void OnEnable()
-    {
-        inputAction.Enable();
-        inputAction.Player.Move.performed += OnMovePerformed;
-        inputAction.Player.Move.canceled += OnMoveCanceled;
-    }
+    //private void Awake()
+    //{
+    //    playerInput = GetComponent<PlayerInput>();
+    //    playerInput.actions["Move"].performed += OnMove;
+    //}
 
-    private void OnDisable()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        inputAction.Player.Move.performed -= OnMovePerformed;
-        inputAction.Player.Move.canceled -= OnMoveCanceled;
-        inputAction.Disable();
+        moveInput = context.ReadValue<Vector2>();
+        Move(moveInput);
     }
-
-    private void OnMovePerformed(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>().normalized;
-    }
-
-    private void OnMoveCanceled(InputAction.CallbackContext context)
-    {
-        moveInput = Vector2.zero;
-    }
+    //public void OnMove(Vector2 direction)
+    //{
+    //    moveInput = direction;
+    //    Move(moveInput);
+    //}
 
     public void FixedUpdate()
     {
-        OnMove(moveInput);
+        
     }
 }

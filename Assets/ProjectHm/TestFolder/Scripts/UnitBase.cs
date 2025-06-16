@@ -19,7 +19,7 @@ public abstract class UnitBase : MonoBehaviour
         anim = GetComponent<Animator>();
         curHP = maxHP;
     }
-    public virtual void OnMove(Vector2 direction)
+    public virtual void Move(Vector2 direction)
     {
         Debug.Log("Move");
         //MovePosition은 FixedUpdate에서만 사용
@@ -32,7 +32,7 @@ public abstract class UnitBase : MonoBehaviour
         //    anim.SetBool("IsMoving", direction != Vector2.zero);
         //}
     }
-    public virtual void OnAttack(UnitBase target)
+    public virtual void Attack(UnitBase target)
     {
         //플레이어와 몬스터에서 재정의
         target?.TakeDamage(attackPower);
