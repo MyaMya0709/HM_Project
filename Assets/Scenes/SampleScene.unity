@@ -519,7 +519,7 @@ MonoBehaviour:
   maxHP: 0
   attackPower: 0
   attackSpeed: 0
-  moveSpeed: 1
+  moveSpeed: 0
   moveInput: {x: 0, y: 0}
 --- !u!114 &1993185029
 MonoBehaviour:

@@ -21,14 +21,16 @@ public abstract class UnitBase : MonoBehaviour
     }
     public virtual void OnMove(Vector2 direction)
     {
+        Debug.Log("Move");
         //MovePosition은 FixedUpdate에서만 사용
         rb.MovePosition(rb.position + direction.normalized * moveSpeed * Time.fixedDeltaTime);
-        if (anim)
-        {
-            anim.SetFloat("MoveX", direction.x);
-            anim.SetFloat("MoveY", direction.y);
-            anim.SetBool("IsMoving", direction != Vector2.zero);
-        }
+        //아래는 애니메이션 추가 시 활성
+        //if (anim)
+        //{
+        //    anim.SetFloat("MoveX", direction.x);
+        //    anim.SetFloat("MoveY", direction.y);
+        //    anim.SetBool("IsMoving", direction != Vector2.zero);
+        //}
     }
     public virtual void OnAttack(UnitBase target)
     {
