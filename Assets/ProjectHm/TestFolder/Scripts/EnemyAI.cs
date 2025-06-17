@@ -19,11 +19,25 @@ public class EnemyAI : UnitBase
         transform.Translate(dir * stats.moveSpeed * Time.deltaTime);
     }
 
-    //기지클래스 생성 시 활성화
-    //public void AttackBase(BaseCore baseCore)
-    //{
-    //    baseCore.TakeDamage(stats.attackPower);
-    //}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Base"))
+        {
+            BaseCore baseCore = collision.GetComponent<BaseCore>();
+            if (baseCore != null)
+            {
+                AttackBase(baseCore);
+            }
+        }
+    }
+
+    public void AttackBase(BaseCore baseCore)
+    {
+
+        baseCore.TakeDamage(stats.attackPower);
+        target = null;
+        Dead();
+    }
 
     protected override void Dead()
     {

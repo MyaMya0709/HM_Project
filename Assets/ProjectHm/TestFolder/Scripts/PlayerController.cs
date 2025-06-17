@@ -1,19 +1,27 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : UnitBase
 {
-    private Rigidbody2D rb;
-    private Vector2 moveInput;
-    public Vector3 MoveDirection { get; set; } = Vector3.zero;
+    [Header("Desh")]
+    public float dashPower = 100f;
+    public float dashDuration = 1f;
+    public float dashCooldown = 0.2f;
 
     [Header("Jump")]
     public float jumpForce = 8f;
     public LayerMask groundLayer;
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
+
+    private Rigidbody2D rb;
+    private Vector2 moveInput;
+    private bool isDashing;
+    private bool isAbleDash = true;
+    private Vector2 dashDirection;
+    public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
 
     protected override void Awake()
     {
@@ -24,32 +32,87 @@ public class PlayerController : UnitBase
     private void Update()
     {
         if (IsDead) return;
-
-        MoveDirection = moveInput;
-        transform.position += MoveDirection * stats.moveSpeed * Time.deltaTime;
-
-        //moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
-
-        //if (Input.GetButtonDown("Jump") && IsGrounded())
-        //{
-        //    rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        //}
-
-        //if (Input.GetMouseButtonDown(0)) // 좌클릭 공격
-        //{
-        //    Attack();
-        //}
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveInput.x * stats.moveSpeed, rb.linearVelocity.y);
+        if (IsDead) return;
+
+        if (isDashing)
+        {
+            rb.linearVelocity = dashDirection * dashPower;
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * stats.moveSpeed, rb.linearVelocity.y);
+        }
     }
 
-    private void Attack()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        animator?.SetTrigger("Attack");
-        // 무기공격 로직 연결 예정
+        Debug.Log("Move");
+        if (context.performed || context.canceled)
+        {
+            moveInput = context.ReadValue<Vector2>();
+
+            // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
+            if (Mathf.Abs(moveInput.x) > 0.01f)
+            {
+                lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
+            }
+        }
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        Debug.Log("Jump");
+        if (context.performed && IsGrounded())
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+    }
+
+    public void OnDesh(InputAction.CallbackContext context)
+    {
+        if (context.performed && !isDashing && isAbleDash)
+        {
+            Debug.Log("Desh");
+            Vector2 dashDir;
+
+            if (Mathf.Abs(moveInput.x) > 0.01f)
+                dashDir = new Vector2(moveInput.x, 0).normalized;
+            else
+                dashDir = lastLookDirection;
+
+            StartCoroutine(StartDash(dashDir));
+        }
+    }
+
+    public IEnumerator StartDash(Vector2 direction)
+    {
+        Debug.Log("DeshCoroutine");
+        isDashing = true; // isDashing 동안 사용자의 입력을 받지 않음
+        isAbleDash = false;
+        dashDirection = direction.normalized;
+
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+
+        // 애니메이션 트리거
+        //animator?.SetTrigger("Dash");
+
+        yield return new WaitForSeconds(dashDuration);
+
+        isDashing = false;
+        rb.gravityScale = originalGravity;
+        rb.linearVelocity = Vector2.zero;
+
+        // 대시 후 애니메이션 복구
+        //if (IsGrounded())
+        //    animator?.Play("Idle");
+
+        yield return new WaitForSeconds(dashCooldown);
+        isAbleDash = true;
     }
 
     private bool IsGrounded()
@@ -57,11 +120,10 @@ public class PlayerController : UnitBase
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    public void OnMove(InputAction.CallbackContext context)
+    private void Attack()
     {
-        if (context.performed || context.canceled)
-        {
-            moveInput = context.ReadValue<Vector2>();
-        }
+        animator?.SetTrigger("Attack");
+        // 무기공격 로직 연결 예정
+        
     }
 }

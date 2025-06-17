@@ -27,7 +27,7 @@ public abstract class UnitBase : MonoBehaviour
     protected virtual void Dead()
     {
         //사망 처리
-        animator?.SetTrigger("Dead");
+        //animator?.SetTrigger("Dead");
         //사망 애니메이션 재생 후 제거
         Destroy(gameObject, 1.5f);
     }
