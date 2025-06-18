@@ -1,6 +1,10 @@
+using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using static UnityEngine.UI.Image;
 
 public class WeaponController : MonoBehaviour
 {
@@ -20,6 +24,13 @@ public class WeaponController : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         enemyLayer = LayerMask.GetMask("Enemy");
+    }
+
+    private void Update()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange);
+        Vector3 end = hit ? hit.point : (attackPoint.position + (Vector3)playerController.lastLookDirection * attackRange);
+        Debug.DrawLine(attackPoint.position, end, hit ? Color.green : Color.red, 1f * Time.deltaTime, false);
     }
 
     public void OnAttack(InputAction.CallbackContext context)
@@ -42,9 +53,11 @@ public class WeaponController : MonoBehaviour
     {
         Debug.Log("SingleAttack");
         //공격 범위에서 보는 방향으로 가까운 적 감지
-        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection,attackRange, enemyLayer);
+        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange, enemyLayer);
+        Color col = hit.collider ? Color.green : Color.red;
+        Debug.DrawLine(attackPoint.position, hit ? (Vector2)hit.point : (Vector2)attackPoint.position + playerController.lastLookDirection * attackRange, col, 1f);
 
-        if(hit.collider != null)
+        if (hit.collider != null)
         {
             ToEnemyDamage(hit.collider);
             Debug.Log($"Attack enemies.");
@@ -87,12 +100,9 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+
+
     private void OnDrawGizmos()
     {
-        if (attackPoint != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-        }
     }
 }
