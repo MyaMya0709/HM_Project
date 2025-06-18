@@ -6,15 +6,16 @@ using UnityEngine.InputSystem;
 public class PlayerController : UnitBase
 {
     [Header("Desh")]
-    public float dashPower = 100f;
-    public float dashDuration = 1f;
-    public float dashCooldown = 0.2f;
+    public float dashPower = 10f;
+    public float dashDuration = 5f;
+    public float dashCooldown = 0.05f;
 
     [Header("Jump")]
-    public float jumpForce = 8f;
+    public float jumpForce = 80f;
     public LayerMask groundLayer;
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
+    public int jumpCount = 0;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
@@ -41,6 +42,7 @@ public class PlayerController : UnitBase
         if (isDashing)
         {
             rb.linearVelocity = dashDirection * dashPower;
+            //rb.AddForce(dashDirection * dashPower, ForceMode2D.Impulse);
         }
         else
         {
@@ -66,9 +68,17 @@ public class PlayerController : UnitBase
     public void OnJump(InputAction.CallbackContext context)
     {
         Debug.Log("Jump");
-        if (context.performed && IsGrounded())
+        if (context.performed)
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            if (IsGrounded() && jumpCount >= 2)
+            {
+                jumpCount = 0;
+            }
+            if (jumpCount <= 1)
+            {
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                jumpCount++;
+            }
         }
     }
 
@@ -79,6 +89,7 @@ public class PlayerController : UnitBase
             Debug.Log("Desh");
             Vector2 dashDir;
 
+            // 대쉬 방향 선택
             if (Mathf.Abs(moveInput.x) > 0.01f)
                 dashDir = new Vector2(moveInput.x, 0).normalized;
             else
@@ -95,8 +106,8 @@ public class PlayerController : UnitBase
         isAbleDash = false;
         dashDirection = direction.normalized;
 
-        float originalGravity = rb.gravityScale;
-        rb.gravityScale = 0f;
+        //float originalGravity = rb.gravityScale;
+        //rb.gravityScale = 0f;
 
         // 애니메이션 트리거
         //animator?.SetTrigger("Dash");
@@ -104,12 +115,13 @@ public class PlayerController : UnitBase
         yield return new WaitForSeconds(dashDuration);
 
         isDashing = false;
-        rb.gravityScale = originalGravity;
-        rb.linearVelocity = Vector2.zero;
 
         // 대시 후 애니메이션 복구
         //if (IsGrounded())
         //    animator?.Play("Idle");
+
+        //rb.gravityScale = originalGravity;
+        //rb.linearVelocity = Vector2.zero;
 
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
