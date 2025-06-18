@@ -29,9 +29,11 @@ public abstract class UnitBase : MonoBehaviour
         //사망 처리
         //animator?.SetTrigger("Dead");
         //사망 애니메이션 재생 후 제거
+        OnDeath?.Invoke();
         Destroy(gameObject, 1.5f);
     }
 
     public bool IsDead => currentHealth <= 0;
+    public event System.Action OnDeath;
 }
 

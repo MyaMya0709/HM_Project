@@ -1,8 +1,10 @@
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Data/Wave")]
 public class WaveData : ScriptableObject
 {
     public GameObject enemyPrefab;
-    public int enemyCount = 5;
+    public EnemyAI[] spawnEnemyList;
+    public int enemyCount = 9999;
     public float spawnInterval = 1f;
 }
