@@ -77,6 +77,8 @@ public class PlayerController : UnitBase
             }
             if (jumpCount <= 1)
             {
+                // 2단 점프 직전에 y속도를 0으로 초기화
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 jumpCount++;
             }
