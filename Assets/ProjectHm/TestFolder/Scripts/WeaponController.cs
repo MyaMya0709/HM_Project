@@ -9,34 +9,73 @@ public class WeaponController : MonoBehaviour
     public float attackRange = 1.2f;
     public Transform attackPoint;
     public LayerMask enemyLayer;
+    public bool mutipleAttack = false;
 
     [Header("Effects")]
     public GameObject hitEffect;
+
+    PlayerController playerController;
+
+    private void Start()
+    {
+        playerController = GetComponent<PlayerController>();
+        enemyLayer = LayerMask.GetMask("Enemy");
+    }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            Debug.Log("Attack");
-            // 공격 범위 내의 적 감지
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
-
-            // 또는 보는 방향
-            PlayerController playerController = GetComponent<PlayerController>();
-            Vector2 forward = playerController.lastLookDirection;
-
-            foreach (var enemyCollider in hitEnemies)
+            Debug.Log("OnAttack");
+            if (!mutipleAttack)
             {
-                OnTriggerEnter2D(enemyCollider);
+                SingleAttack();
             }
-
-            // 디버그용 로그
-            Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
+            else
+            {
+                MutipleAttack();
+            }
         }
-            
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void SingleAttack()
+    {
+        Debug.Log("SingleAttack");
+        //공격 범위에서 보는 방향으로 가까운 적 감지
+        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection,attackRange, enemyLayer);
+
+        if(hit.collider != null)
+        {
+            ToEnemyDamage(hit.collider);
+            Debug.Log($"Attack enemies.");
+        }
+    }
+
+    public void MutipleAttack()
+    {
+        Debug.Log("MutipleAttack");
+
+        // 공격 범위 내의 적 감지
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+
+        // 보는 방향
+        Vector2 forward = playerController.lastLookDirection;
+
+        foreach (var enemyCollider in hitEnemies)
+        {
+            Vector2 toTarget = (enemyCollider.transform.position - transform.position).normalized;
+            float dot = Vector2.Dot(forward, toTarget);
+
+            if (dot > 0) //0보다 크면 정면
+            {
+                ToEnemyDamage(enemyCollider);
+                // 디버그용 로그
+                Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
+            }
+        }
+    }
+
+    private void ToEnemyDamage(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {

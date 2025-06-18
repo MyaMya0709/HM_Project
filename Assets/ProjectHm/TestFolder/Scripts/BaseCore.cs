@@ -19,9 +19,11 @@ public class BaseCore : MonoBehaviour
         currentHealth -= amount;
         Debug.Log($"기지 피격! 현재 체력: {currentHealth}");
 
+        // 타격 효과가 있다면 실체화
         if (hitEffect != null)
             Instantiate(hitEffect, transform.position, Quaternion.identity);
 
+        //기지 파괴
         if (currentHealth <= 0)
             OnBaseDestroyed();
     }
