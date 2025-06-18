@@ -17,11 +17,11 @@ public class PlayerController : UnitBase
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
 
-    private Rigidbody2D rb;
-    private Vector2 moveInput;
-    private bool isDashing;
-    private bool isAbleDash = true;
-    private Vector2 dashDirection;
+    public Rigidbody2D rb;
+    public Vector2 moveInput;
+    public bool isDashing;
+    public bool isAbleDash = true;
+    public Vector2 dashDirection;
     public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
 
     protected override void Awake()
@@ -42,12 +42,13 @@ public class PlayerController : UnitBase
         if (isDashing)
         {
             rb.linearVelocity = dashDirection * dashPower;
-            //rb.AddForce(dashDirection * dashPower, ForceMode2D.Impulse);
         }
         else
         {
             rb.linearVelocity = new Vector2(moveInput.x * stats.moveSpeed, rb.linearVelocity.y);
         }
+
+        //rb.linearVelocity = new Vector2(moveInput.x * stats.moveSpeed, rb.linearVelocity.y);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -106,11 +107,13 @@ public class PlayerController : UnitBase
         isAbleDash = false;
         dashDirection = direction.normalized;
 
-        //float originalGravity = rb.gravityScale;
-        //rb.gravityScale = 0f;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
 
         // 애니메이션 트리거
         //animator?.SetTrigger("Dash");
+
+        //rb.AddForce(dashDirection * dashPower, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(dashDuration);
 
@@ -120,8 +123,8 @@ public class PlayerController : UnitBase
         //if (IsGrounded())
         //    animator?.Play("Idle");
 
-        //rb.gravityScale = originalGravity;
-        //rb.linearVelocity = Vector2.zero;
+        rb.gravityScale = originalGravity;
+        rb.linearVelocity = Vector2.zero;
 
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
