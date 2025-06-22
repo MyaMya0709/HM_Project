@@ -225,6 +225,13 @@ MonoBehaviour:
     m_Bits: 64
   groundCheck: {fileID: 1600765360527329676}
   groundCheckRadius: 0.2
+  jumpCount: 0
+  rb: {fileID: 0}
+  moveInput: {x: 0, y: 0}
+  isDashing: 0
+  isAbleDash: 1
+  dashDirection: {x: 0, y: 0}
+  lastLookDirection: {x: 1, y: 0}
 --- !u!114 &51286315265827176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +250,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  mutipleAttack: 0
   hitEffect: {fileID: 0}
 --- !u!114 &2157225018441802832
 MonoBehaviour:
@@ -322,7 +330,7 @@ MonoBehaviour:
       - m_Target: {fileID: 51286315265827176}
         m_TargetAssemblyTypeName: WeaponController, Assembly-CSharp
         m_MethodName: OnAttack
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

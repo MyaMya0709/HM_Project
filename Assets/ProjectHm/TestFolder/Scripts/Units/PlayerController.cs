@@ -21,6 +21,7 @@ public class PlayerController : UnitBase
     public Vector2 moveInput;
     public bool isDashing;
     public bool isAbleDash = true;
+    public bool isJumpDash = false;
     public Vector2 dashDirection;
     public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
 
@@ -38,6 +39,9 @@ public class PlayerController : UnitBase
     private void FixedUpdate()
     {
         if (IsDead) return;
+
+        if (isJumpDash)
+            return; // 슈퍼 점프 중에는 다른 물리 계산 안 함
 
         if (isDashing)
         {
@@ -68,7 +72,6 @@ public class PlayerController : UnitBase
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        Debug.Log("Jump");
         if (context.performed)
         {
             if (IsGrounded())
@@ -77,6 +80,7 @@ public class PlayerController : UnitBase
             }
             if (jumpCount <= 1)
             {
+                Debug.Log("Jump");
                 // 2단 점프 직전에 y속도를 0으로 초기화
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -97,7 +101,7 @@ public class PlayerController : UnitBase
                 StartCoroutine(SuperJump());
             }
             //빠른 하강
-            else if (!IsGrounded() && moveInput.y < 0.5f) //공중 + 아래 방향 입력
+            else if (!IsGrounded() && moveInput.y < -0.5f) //공중 + 아래 방향 입력
             {
                 Debug.Log("DownDesh");
                 StartCoroutine(FastFall());
@@ -150,32 +154,40 @@ public class PlayerController : UnitBase
 
     public IEnumerator SuperJump()
     {
+        Debug.Log("SuperJumpCoroutine");
         isDashing = true;
+        isJumpDash = true;
+
         var originalGravity = rb.gravityScale;
-        rb.gravityScale = 0f;
+        rb.gravityScale = 0.1f;
         rb.linearVelocity = Vector2.zero;
 
-        rb.AddForce(Vector2.up * jumpForce * 3.0f, ForceMode2D.Impulse);
+        yield return new WaitForFixedUpdate(); // Vector2.zero 후 AddForce적용 시 한 프레임 쉬어야 잘됨
+        rb.AddForce(Vector2.up * dashPower, ForceMode2D.Impulse);
         //animator.Play("Jump", -1, 0);
 
         yield return new WaitForSeconds(0.3f); // 제어 시간
         rb.gravityScale = originalGravity;
         isDashing = false;
+        isJumpDash = false;
     }
 
     public IEnumerator FastFall()
     {
-        isDashing = false;
+        Debug.Log("FastFallCoroutine");
+        isDashing = true;
+        isJumpDash = true;
         var originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
 
-        rb.AddForce(Vector2.down * jumpForce * 2.0f, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.down * dashPower, ForceMode2D.Impulse);
         //animator.Play("Fall", -1, 0);
 
         yield return new WaitForSeconds(0.3f); // 제어 시간
         rb.gravityScale = originalGravity;
         isDashing = false;
+        isJumpDash = false;
     }
 
     private bool IsGrounded()
