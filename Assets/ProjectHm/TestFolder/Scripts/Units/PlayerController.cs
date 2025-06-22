@@ -71,7 +71,7 @@ public class PlayerController : UnitBase
         Debug.Log("Jump");
         if (context.performed)
         {
-            if (IsGrounded() && jumpCount >= 2)
+            if (IsGrounded())
             {
                 jumpCount = 0;
             }
@@ -89,16 +89,32 @@ public class PlayerController : UnitBase
     {
         if (context.performed && !isDashing && isAbleDash)
         {
-            Debug.Log("Desh");
-            Vector2 dashDir;
-
-            // 대쉬 방향 선택
-            if (Mathf.Abs(moveInput.x) > 0.01f)
-                dashDir = new Vector2(moveInput.x, 0).normalized;
+            Debug.Log("IDesh");
+            // 슈퍼 점프
+            if (!IsGrounded() && moveInput.y > 0.5f) // 공중 + 위 방향 입력
+            {
+                Debug.Log("UpDesh");
+                StartCoroutine(SuperJump());
+            }
+            //빠른 하강
+            else if (!IsGrounded() && moveInput.y < 0.5f) //공중 + 아래 방향 입력
+            {
+                Debug.Log("DownDesh");
+                StartCoroutine(FastFall());
+            }
             else
-                dashDir = lastLookDirection;
+            {
+                Debug.Log("DefaultDesh");
+                Vector2 dashDir;
 
-            StartCoroutine(StartDash(dashDir));
+                // 대쉬 방향 선택
+                if (Mathf.Abs(moveInput.x) > 0.01f)
+                    dashDir = new Vector2(moveInput.x, 0).normalized;
+                else
+                    dashDir = lastLookDirection;
+
+                StartCoroutine(StartDash(dashDir));
+            }   
         }
     }
 
@@ -130,6 +146,36 @@ public class PlayerController : UnitBase
 
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
+    }
+
+    public IEnumerator SuperJump()
+    {
+        isDashing = true;
+        var originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.linearVelocity = Vector2.zero;
+
+        rb.AddForce(Vector2.up * jumpForce * 3.0f, ForceMode2D.Impulse);
+        //animator.Play("Jump", -1, 0);
+
+        yield return new WaitForSeconds(0.3f); // 제어 시간
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+    }
+
+    public IEnumerator FastFall()
+    {
+        isDashing = false;
+        var originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.linearVelocity = Vector2.zero;
+
+        rb.AddForce(Vector2.down * jumpForce * 2.0f, ForceMode2D.Impulse);
+        //animator.Play("Fall", -1, 0);
+
+        yield return new WaitForSeconds(0.3f); // 제어 시간
+        rb.gravityScale = originalGravity;
+        isDashing = false;
     }
 
     private bool IsGrounded()
