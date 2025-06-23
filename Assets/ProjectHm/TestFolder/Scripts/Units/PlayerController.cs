@@ -113,25 +113,43 @@ public class PlayerController : UnitBase
                 jumpCount = 0;
             }
 
-            //공중에서 더블 탭
-            if (!IsGrounded() && currentTime - lastTapTime < doubleTapThreshold)
-            {
-                Debug.Log("Double Tap Detected!");
-                StartCoroutine(SuperJump());
-                jumpCount++;
-                lastTapTime = -1f; // 리셋
-            }
-
-            // 일반 점프 로직
-            else if (jumpCount <= 1)
+            if (jumpCount <= 1)
             {
                 Debug.Log("Single Tap");
                 // 2단 점프 직전에 y속도를 0으로 초기화
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 jumpCount++;
-                lastTapTime = currentTime;
             }
+                
+            ////공중에서 더블 탭
+            //if (!IsGrounded() && currentTime - lastTapTime < doubleTapThreshold)
+            //{
+            //    Debug.Log("Double Tap Detected!");
+            //    StartCoroutine(SuperJump());
+            //    jumpCount++;
+            //    lastTapTime = -1f; // 리셋
+            //}
+
+            //// 일반 점프 로직
+            //else if (jumpCount <= 1)
+            //{
+            //    Debug.Log("Single Tap");
+            //    // 2단 점프 직전에 y속도를 0으로 초기화
+            //    rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+            //    rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            //    jumpCount++;
+            //    lastTapTime = currentTime;
+            //}
+        }
+    }
+
+    public void OnSuperJump(InputAction.CallbackContext context)
+    {
+        if (context.performed && context.interaction is MultiTapInteraction tap && tap.tapCount == 2)
+        {
+            Debug.Log("Double Tap Detected");
+            StartCoroutine(SuperJump());
         }
     }
 
