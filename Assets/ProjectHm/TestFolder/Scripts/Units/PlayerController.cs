@@ -203,7 +203,7 @@ public class PlayerController : UnitBase
         Debug.Log("OnAttack");
         if (context.performed)
         {
-            //animator?.SetTrigger("Attack");
+            animator?.SetTrigger("Attack");
             // 무기공격 로직 연결 예정
             currentWeapon.Attack();
         }
