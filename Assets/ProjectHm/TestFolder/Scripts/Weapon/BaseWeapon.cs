@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BaseWeapon : MonoBehaviour, IWeapon
 {
@@ -14,6 +15,8 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
     public PlayerController playerController;
     public SpriteRenderer sr;
+    public bool facingRight = true;
+
 
     private void Start()
     {
@@ -27,6 +30,15 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange);
         Vector3 end = hit ? hit.point : (attackPoint.position + (Vector3)playerController.lastLookDirection * attackRange);
         Debug.DrawLine(attackPoint.position, end, hit ? Color.green : Color.red, 1f * Time.deltaTime, false);
+
+        if (playerController.lastLookDirection.x < 0 && facingRight)
+        {
+            Flip();
+        }
+        else if (playerController.lastLookDirection.x > 0 && !facingRight)
+        {
+            Flip();
+        }
     }
 
     public void Attack()
@@ -39,6 +51,19 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         else
         {
             MutipleAttack();
+        }
+    }
+
+    public void DownAttack()
+    {
+        // 공격 범위 내의 적 감지
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+
+        foreach (var enemyCollider in hitEnemies)
+        {
+            ToEnemyDamage(enemyCollider);
+            // 디버그용 로그
+            Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
         }
     }
 
@@ -91,4 +116,13 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             }
         }
     }
+
+    void Flip()
+    {
+        Vector3 s = transform.localScale;
+        s.x *= -1;
+        transform.localScale = s;
+        facingRight = !facingRight;
+    }
+
 }
