@@ -41,6 +41,8 @@ public class EnemyAI : UnitBase
 
     protected override void Dead()
     {
+        //Collider2D collider2D = GetComponent<Collider2D>();
+        //collider2D.enabled = false;
         base.Dead();
         // 이펙트나 드랍 추가 가능
     }
