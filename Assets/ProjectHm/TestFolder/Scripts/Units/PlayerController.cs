@@ -25,10 +25,13 @@ public class PlayerController : UnitBase
     public Vector2 dashDirection;
     public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
 
+    public IWeapon currentWeapon;
+
     protected override void Awake()
     {
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
+        currentWeapon = GetComponentInChildren<IWeapon>();
     }
 
     private void Update()
@@ -195,10 +198,19 @@ public class PlayerController : UnitBase
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    private void Attack()
+    public void OnAttack(InputAction.CallbackContext context)
     {
-        animator?.SetTrigger("Attack");
-        // 무기공격 로직 연결 예정
-        
+        Debug.Log("OnAttack");
+        if (context.performed)
+        {
+            //animator?.SetTrigger("Attack");
+            // 무기공격 로직 연결 예정
+            currentWeapon.Attack();
+        }
+    }
+
+    public void EquipWeapon(IWeapon newWeapon)
+    {
+        currentWeapon = newWeapon;
     }
 }
