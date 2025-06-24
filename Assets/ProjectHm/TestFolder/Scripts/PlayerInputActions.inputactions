@@ -31,33 +31,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "DownAttack",
-                    "type": "Button",
-                    "id": "1c555dea-dc27-4be6-88a0-83eabd78a1c9",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SuperJump",
-                    "type": "Button",
-                    "id": "93a7b817-e27a-47fd-9523-441e154844eb",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Dash",
-                    "type": "Button",
-                    "id": "4c6a0405-e6bb-4d2e-a2cb-426bcaed7dbc",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -129,56 +102,12 @@
                 },
                 {
                     "name": "",
-                    "id": "b696ca2a-d216-48f5-947f-4adde2cf1b77",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "MultiTap(tapTime=0.1,tapDelay=0.1)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DownAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "52ddc482-b4b4-46a4-9ca2-7b064e7d521f",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d066693c-70eb-4049-a96e-1bb7bb763d5b",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "MultiTap(tapTime=0.1,tapDelay=0.1)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SuperJump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5e3c4488-e18f-46a0-b8d4-4ba61ed7d343",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "MultiTap(tapTime=0.1,tapDelay=0.1)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "268c0b41-0952-4750-9696-f4ab4ee2a79f",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "MultiTap(tapTime=0.2,tapDelay=0.1)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

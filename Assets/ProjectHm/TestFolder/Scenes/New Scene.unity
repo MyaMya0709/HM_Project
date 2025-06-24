@@ -775,7 +775,6 @@ GameObject:
   - component: {fileID: 2097469796}
   - component: {fileID: 2097469795}
   - component: {fileID: 2097469797}
-  - component: {fileID: 2097469798}
   m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
@@ -899,33 +898,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &2097469798
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2097469794}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1001 &6766501741709853824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -936,7 +908,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 766395784077421969, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
       propertyPath: dashPower
-      value: 30
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 766395784077421969, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: dashCooldown
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 766395784077421969, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: dashDuration
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 1346517936567723325, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
       propertyPath: m_Name
