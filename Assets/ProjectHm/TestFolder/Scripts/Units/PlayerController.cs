@@ -77,26 +77,7 @@ public class PlayerController : UnitBase
             {
                 lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
             }
-
-            ////더블 탭
-            //if (currentTime - lastTapTime < doubleTapThreshold)
-            //{
-            //    Debug.Log("Double Tap Detected!");
-            //    StartCoroutine(SuperJump());
-            //    lastTapTime = -1f; // 리셋
-            //}
-
-            //// 일반 움직임 로직
-            //else
-            //{
-            //    Debug.Log("Single Tap");
-            //    // 2단 점프 직전에 y속도를 0으로 초기화
-            //    rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-            //    rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            //    lastTapTime = currentTime;
-            //}
         }
-
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -113,7 +94,7 @@ public class PlayerController : UnitBase
                 jumpCount = 0;
             }
 
-            if (jumpCount <= 1)
+            if (jumpCount <= 0)
             {
                 Debug.Log("Single Tap");
                 // 2단 점프 직전에 y속도를 0으로 초기화

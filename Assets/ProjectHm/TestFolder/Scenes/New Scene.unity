@@ -902,6 +902,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 766395784077421969, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: jumpForce
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 766395784077421969, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: stats.jumpPower
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 766395784077421969, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: stats.moveSpeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1346517936567723325, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
       propertyPath: m_Name
       value: Player
@@ -985,6 +997,14 @@ PrefabInstance:
     - target: {fileID: 4198897976886587706, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8393082947183156615, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: m_Mass
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8393082947183156615, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: m_GravityScale
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

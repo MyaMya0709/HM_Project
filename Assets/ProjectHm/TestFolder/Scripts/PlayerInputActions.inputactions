@@ -144,7 +144,7 @@
                     "name": "",
                     "id": "d066693c-70eb-4049-a96e-1bb7bb763d5b",
                     "path": "<Keyboard>/upArrow",
-                    "interactions": "MultiTap",
+                    "interactions": "MultiTap(tapTime=0.1,tapDelay=0.1)",
                     "processors": "",
                     "groups": "",
                     "action": "SuperJump",
