@@ -137,10 +137,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 3
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 4
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -212,27 +212,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHealth: 10
-    moveSpeed: 2
+    moveSpeed: 4
     attackPower: 10
     attackSpeed: 10
-    jumpPower: 10
-  dashPower: 10
+    jumpPower: 20
+  rb: {fileID: 0}
+  moveInput: {x: 0, y: 0}
+  dashPower: 40
   dashDuration: 0.2
   dashCooldown: 0.2
-  jumpForce: 5
+  isDashing: 0
+  isAbleDash: 1
+  dashDirection: {x: 0, y: 0}
+  lastLookDirection: {x: 1, y: 0}
+  jumpForce: 50
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 1600765360527329676}
   groundCheckRadius: 0.2
   jumpCount: 0
-  rb: {fileID: 0}
-  moveInput: {x: 0, y: 0}
-  isDashing: 0
-  isAbleDash: 1
   isJumpDash: 0
-  dashDirection: {x: 0, y: 0}
-  lastLookDirection: {x: 1, y: 0}
 --- !u!114 &2157225018441802832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +294,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 766395784077421969}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnDesh
+        m_MethodName: OnDownAttack
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -322,6 +322,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 72bc556f-dcbc-4811-b460-2e5c2f95d8f9
     m_ActionName: 'Player/Attack[/Keyboard/x]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 766395784077421969}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnSuperJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 93a7b817-e27a-47fd-9523-441e154844eb
+    m_ActionName: 'Player/SuperJump[/Keyboard/upArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 766395784077421969}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4c6a0405-e6bb-4d2e-a2cb-426bcaed7dbc
+    m_ActionName: 'Player/Dash[/Keyboard/rightArrow,/Keyboard/leftArrow]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: PC
   m_DefaultActionMap: Player
