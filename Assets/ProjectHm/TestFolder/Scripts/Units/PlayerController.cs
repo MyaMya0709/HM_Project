@@ -217,15 +217,21 @@ public class PlayerController : UnitBase
         Debug.Log("OnAttack");
         if (context.performed)
         {
-            //if (!IsGrounded() && moveInput.y < -0.5f) // 공중 + 아래 방향키 입력
-            //{
-                
-            //    StartCoroutine(StartDownAttack());
-            //}
+            if (!IsGrounded()) // 공중에서 공격시
+            {
+                // 위쪽 반동 추가
+                rb.linearVelocity = Vector2.up * 4f;
 
-            animator?.SetTrigger("Attack");
-            // 무기공격 로직 연결 예정
-            currentWeapon.Attack();
+                animator?.SetTrigger("Attack");
+                // 무기공격 로직 연결 예정
+                currentWeapon.Attack();
+            }
+            else
+            {
+                animator?.SetTrigger("Attack");
+                // 무기공격 로직 연결 예정
+                currentWeapon.Attack();
+            }
         }
     }
 
