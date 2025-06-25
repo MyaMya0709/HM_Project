@@ -101,9 +101,9 @@ public class PlayerController : UnitBase
         Debug.Log("DeshCoroutine");
         isDashing = true; // isDashing 동안 사용자의 입력을 받지 않음
         isAbleDash = false;
-        dashDirection = direction.normalized;
-        Vector2 curPos = gameObject.transform.position;
-        Vector2 tarPos = new Vector2(curPos.x + dashDistance, curPos.y);
+        dashDirection = direction;
+        Vector2 curPos = rb.position;
+        Vector2 tarPos = curPos + dashDirection * dashDistance;
 
         rb.linearVelocity = Vector2.zero;
         float originalGravity = rb.gravityScale;
@@ -112,13 +112,15 @@ public class PlayerController : UnitBase
         // 애니메이션 트리거
         //animator?.SetTrigger("Dash");
 
-        rb.linearVelocity = dashDirection * dashPower; //등속운동 시작
-
-        // 대쉬 거리까지 등속 운동 유지
-        while (curPos != tarPos)
+        // 대쉬 거리까지 등속 운동
+        while (Vector2.Distance(rb.position, tarPos) > 0.01f)
         {
-            rb.linearVelocity = dashDirection * dashPower;
-            yield return null; // 매 프레임 유지
+            //rb.linearVelocity = dashDirection * dashPower;
+            //yield return null; // 매 프레임 유지
+
+            Vector2 next = Vector2.MoveTowards(rb.position, tarPos, dashPower * Time.fixedDeltaTime);
+            rb.MovePosition(next);
+            yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
         }
 
         isDashing = false;
@@ -149,34 +151,29 @@ public class PlayerController : UnitBase
             }
 
             //공중에서 더블 탭
-            if (!IsGrounded() && currentTime - lastTapTime < doubleTapThreshold)
+            if (!IsGrounded() && currentTime - lastTapTime < doubleTapThreshold && jumpCount == 1)
             {
                 Debug.Log("Double Tap Detected!");
-                StartCoroutine(SuperJump());
+                if (!isDashing && isAbleDash)
+                    StartCoroutine(SuperJump());
                 jumpCount++;
                 lastTapTime = -1f; // 리셋
             }
 
+            else if (!IsGrounded() && jumpCount == 1)
+            {
+                lastTapTime = currentTime;
+            }
+
             // 일반 점프 로직
-            else if (jumpCount <= 0)
+            else if (IsGrounded() && jumpCount == 0)
             {
                 Debug.Log("Single Tap");
                 // 2단 점프 직전에 y속도를 0으로 초기화
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 jumpCount++;
-                lastTapTime = currentTime;
             }
-        }
-    }
-
-    public void OnSuperJump(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log("Double Tap Detected");
-            if(!IsGrounded() && !isDashing && isAbleDash)
-            StartCoroutine(SuperJump());
         }
     }
 
@@ -186,15 +183,27 @@ public class PlayerController : UnitBase
         isDashing = true;
         isJumpDash = true;
 
-        var originalGravity = rb.gravityScale;
-        rb.gravityScale = 0.1f;
-        rb.linearVelocity = Vector2.zero;
+        Vector2 curPos = rb.position;
+        Vector2 tarPos = curPos + Vector2.up * dashDistance;
 
-        rb.linearVelocity = Vector2.up * dashPower; // 등속 운동 시작
-        rb.AddForce(Vector2.up * dashPower, ForceMode2D.Impulse);
+        var originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+
         //animator.Play("Jump", -1, 0);
 
-        yield return new WaitForSeconds(0.3f); // 제어 시간
+        rb.linearVelocity = Vector2.zero;
+        while (Vector2.Distance(rb.position, tarPos) > 0.01f)
+        {
+            //rb.linearVelocity = dashDirection * dashPower;
+            //yield return null; // 매 프레임 유지
+
+            Vector2 next = Vector2.MoveTowards(rb.position, tarPos, dashPower * Time.fixedDeltaTime);
+            rb.MovePosition(next);
+            yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
+        }
+
+        // 도착 시 상태 초기화
+        rb.linearVelocity = Vector2.zero;
         rb.gravityScale = originalGravity;
         isDashing = false;
         isJumpDash = false;
@@ -230,16 +239,20 @@ public class PlayerController : UnitBase
 
     public void OnDownAttack(InputAction.CallbackContext context)
     {
-        //더블탭 입력 확인
         if (context.performed)
         {
-            Debug.Log("Double Tap Detected");
+            float currentTime = Time.time;
 
-            //빠른 하강
-            if (!IsGrounded() && !isDashing && isAbleDash) //공중 + 대쉬 가능 여부
+            //더블 탭 체크
+            if (currentTime - lastTapTime < doubleTapThreshold && !IsGrounded())
             {
-                Debug.Log("StartCoroutine");
+                Debug.Log("Double Tap Detected");
                 StartCoroutine(StartDownAttack());
+                lastTapTime = -1f; // 리셋
+            }
+            else
+            {
+                lastTapTime = currentTime;
             }
         }
     }
@@ -247,11 +260,10 @@ public class PlayerController : UnitBase
     public IEnumerator StartDownAttack()
     {
         Debug.Log("DownAttackCoroutine");
-        isDashing = true;
-        isJumpDash = true;
 
         var originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
+        rb.linearVelocity = Vector2.zero;
         rb.linearVelocity = Vector2.down * dashPower; // 등속 운동 시작
 
         // 땅에 닿을 때까지 등속 운동 유지
@@ -266,8 +278,6 @@ public class PlayerController : UnitBase
         // 도착 시 상태 초기화
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = originalGravity;
-        isDashing = false;
-        isJumpDash = false;
     }
 
     public void EquipWeapon(IWeapon newWeapon)

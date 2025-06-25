@@ -218,9 +218,10 @@ MonoBehaviour:
     jumpPower: 20
   rb: {fileID: 0}
   moveInput: {x: 0, y: 0}
-  dashPower: 40
-  dashDuration: 0.2
+  isMove: 0
+  dashPower: 60
   dashCooldown: 0.2
+  dashDistance: 5
   isDashing: 0
   isAbleDash: 1
   dashDirection: {x: 0, y: 0}
@@ -294,22 +295,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 766395784077421969}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnDownAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 1c555dea-dc27-4be6-88a0-83eabd78a1c9
-    m_ActionName: 'Player/Desh[/Keyboard/a,/Keyboard/d]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 766395784077421969}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
@@ -326,7 +311,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 766395784077421969}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnSuperJump
+        m_MethodName: OnDownAttack
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -336,24 +321,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 93a7b817-e27a-47fd-9523-441e154844eb
-    m_ActionName: 'Player/SuperJump[/Keyboard/upArrow]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 766395784077421969}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnDash
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 4c6a0405-e6bb-4d2e-a2cb-426bcaed7dbc
-    m_ActionName: 'Player/Dash[/Keyboard/rightArrow,/Keyboard/leftArrow]'
+    m_ActionId: f00c149d-1d4f-4767-b13e-0fe794a4ea8a
+    m_ActionName: 'Player/DownAttack[/Keyboard/downArrow]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: PC
   m_DefaultActionMap: Player

@@ -17,7 +17,7 @@ public class BaseCore : MonoBehaviour
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
-        Debug.Log($"기지 피격! 현재 체력: {currentHealth}");
+        //Debug.Log($"기지 피격! 현재 체력: {currentHealth}");
 
         // 타격 효과가 있다면 실체화
         if (hitEffect != null)
