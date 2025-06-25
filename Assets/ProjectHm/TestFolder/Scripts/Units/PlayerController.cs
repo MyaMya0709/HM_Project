@@ -9,17 +9,21 @@ public class PlayerController : UnitBase
 {
     public Rigidbody2D rb;
     public Vector2 moveInput;
+    public IWeapon currentWeapon;
+
+    [Header("MovementCheck")]
     public bool isMove = false;
+    public bool isDashing = false;
+    public bool isAbleDash = true;
+    public bool isJumpDash = false;
 
     [Header("Desh")]
     public float dashPower = 10f;
     public float dashCooldown = 0.05f;
     public float dashDistance = 20f;
-    public bool isDashing;
-    public bool isAbleDash = true;
     public Vector2 dashDirection;
     public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
-    public LayerMask obstacle;
+    public LayerMask obstacle;                        // 장애물 레이어
 
     [Header("Jump")]
     public float jumpForce = 5f;
@@ -27,15 +31,15 @@ public class PlayerController : UnitBase
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
-    public bool isJumpDash = false;
+
+    [Header("Attack")]
+    public float rebound = 3f;
 
     [Header("DoubleTap")]
     public float lastJumpTapTime = -1f;           // 슈퍼 점프 첫번째 입력 시간
     public float lastDashTapTime = -1f;           // 대쉬 첫번째 입력 시간
     public float lastDownTapTime = -1f;           // 내려찍기 첫번째 입력 시간
     public float doubleTapThreshold = 0.2f;       // 더블탭으로 인식하는 시간
-
-    public IWeapon currentWeapon;
 
     protected override void Awake()
     {
@@ -226,7 +230,7 @@ public class PlayerController : UnitBase
             if (!IsGrounded()) // 공중에서 공격시
             {
                 // 위쪽 반동 추가
-                rb.linearVelocity = Vector2.up * 3f;
+                rb.linearVelocity = Vector2.up * rebound;
 
                 animator?.SetTrigger("Attack");
                 // 무기공격 로직 연결 예정
