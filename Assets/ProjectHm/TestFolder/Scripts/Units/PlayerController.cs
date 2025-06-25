@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
@@ -29,8 +30,10 @@ public class PlayerController : UnitBase
     public bool isJumpDash = false;
 
     [Header("DoubleTap")]
-    float lastTapTime = -1f;               // 첫번째 입력 시간
-    float doubleTapThreshold = 0.2f;       // 더블탭으로 인식하는 시간
+    public float lastJumpTapTime = -1f;           // 슈퍼 점프 첫번째 입력 시간
+    public float lastDashTapTime = -1f;           // 대쉬 첫번째 입력 시간
+    public float lastDownTapTime = -1f;           // 내려찍기 첫번째 입력 시간
+    public float doubleTapThreshold = 0.2f;       // 더블탭으로 인식하는 시간
 
     public IWeapon currentWeapon;
 
@@ -58,6 +61,7 @@ public class PlayerController : UnitBase
         {
             rb.linearVelocity = new Vector2(moveInput.x * stats.moveSpeed, rb.linearVelocity.y);
         }
+
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -68,11 +72,11 @@ public class PlayerController : UnitBase
             float currentTime = Time.time;
 
             //더블 탭 체크
-            if (currentTime - lastTapTime < doubleTapThreshold && !isDashing && isAbleDash)
+            if (currentTime - lastDashTapTime < doubleTapThreshold && !isDashing && isAbleDash)
             {
                 Debug.Log("DefaultDesh");
                 StartCoroutine(StartDash(lastLookDirection));
-                lastTapTime = -1f; // 리셋
+                lastDashTapTime = -1f; // 리셋
             }
 
             // 일반 이동 로직
@@ -86,8 +90,7 @@ public class PlayerController : UnitBase
                 lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
             }
 
-            lastTapTime = currentTime;
-
+            lastDashTapTime = currentTime;
         }
         if (context.canceled)
             isMove = false;
@@ -102,9 +105,9 @@ public class PlayerController : UnitBase
         Vector2 curPos = rb.position;
         Vector2 tarPos = curPos + dashDirection * dashDistance;
 
-        rb.linearVelocity = Vector2.zero;
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
+        rb.linearVelocity = Vector2.zero;
 
         // 애니메이션 트리거
         //animator?.SetTrigger("Dash");
@@ -129,7 +132,8 @@ public class PlayerController : UnitBase
         //if (IsGrounded())
         //    animator?.Play("Idle");
 
-        yield return new WaitForSeconds(0.05f);
+        if (!IsGrounded())
+            yield return new WaitForSeconds(0.05f);
 
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
@@ -142,37 +146,32 @@ public class PlayerController : UnitBase
 
     public void OnJump(InputAction.CallbackContext context)
     {
-
         if (context.started)
         {
-            Debug.Log("Jump");
-            float currentTime = Time.time;
-
-            // 점프 횟수 초기화
-            if (IsGrounded())
+            //공중
+            if (!IsGrounded())
             {
-                jumpCount = 0;
-            }
+                float currentTime = Time.time;
 
-            //공중에서 더블 탭
-            if (!IsGrounded() && currentTime - lastTapTime < doubleTapThreshold && jumpCount == 1)
-            {
-                Debug.Log("Double Tap Detected!");
-                StartCoroutine(SuperJump());
+                if (currentTime - lastJumpTapTime < doubleTapThreshold && jumpCount == 2)
+                {
+                    //더블 탭
+                    Debug.Log("Double Tap Detected!");
+                    StartCoroutine(SuperJump());
+                    lastJumpTapTime = -1f; // 리셋
+                }
+
                 jumpCount++;
-                lastTapTime = -1f; // 리셋
-            }
-
-            else if (!IsGrounded() && jumpCount == 1)
-            {
-                lastTapTime = currentTime;
+                lastJumpTapTime = currentTime;
             }
 
             // 일반 점프 로직
-            else if (IsGrounded() && jumpCount == 0)
+            if (IsGrounded())
             {
-                Debug.Log("Single Tap");
-                // 2단 점프 직전에 y속도를 0으로 초기화
+                Debug.Log("Jump");
+                // 점프 횟수 초기화
+                jumpCount = 0;
+                // 점프 직전에 y속도를 0으로 초기화
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 jumpCount++;
@@ -204,7 +203,8 @@ public class PlayerController : UnitBase
             yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
         }
 
-        yield return new WaitForSeconds(0.05f);
+        if(!IsGrounded())
+            yield return new WaitForSeconds(0.05f);
 
         // 도착 시 상태 초기화
         rb.linearVelocity = Vector2.zero;
@@ -248,15 +248,15 @@ public class PlayerController : UnitBase
             float currentTime = Time.time;
 
             //더블 탭 체크
-            if (currentTime - lastTapTime < doubleTapThreshold && !IsGrounded())
+            if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded())
             {
                 Debug.Log("Double Tap Detected");
                 StartCoroutine(StartDownAttack());
-                lastTapTime = -1f; // 리셋
+                lastDownTapTime = -1f; // 리셋
             }
             else
             {
-                lastTapTime = currentTime;
+                lastDownTapTime = currentTime;
             }
         }
     }
