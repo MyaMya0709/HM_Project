@@ -16,6 +16,7 @@ public class PlayerController : UnitBase
     public bool isDashing = false;
     public bool isAbleDash = true;
     public bool isJumpDash = false;
+    public bool isAbleAttack = true;
 
     [Header("Desh")]
     public float dashPower = 10f;
@@ -34,6 +35,9 @@ public class PlayerController : UnitBase
 
     [Header("Attack")]
     public float rebound = 3f;
+    public int attackCount = 0;
+    public float attackDelay = 0.5f;
+    public float lastAttackTime;
 
     [Header("DoubleTap")]
     public float lastJumpTapTime = -1f;           // 슈퍼 점프 첫번째 입력 시간
@@ -137,8 +141,12 @@ public class PlayerController : UnitBase
         //    animator?.Play("Idle");
 
         if (!IsGrounded())
+            {   
             yield return new WaitForSeconds(0.05f);
+            Debug.Log("eeee");
+            }
 
+        Debug.Log("ffff");
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
@@ -224,9 +232,11 @@ public class PlayerController : UnitBase
 
     public void OnAttack(InputAction.CallbackContext context)
     {
+
         Debug.Log("OnAttack");
         if (context.performed)
         {
+
             if (!IsGrounded()) // 공중에서 공격시
             {
                 // 위쪽 반동 추가
@@ -242,6 +252,44 @@ public class PlayerController : UnitBase
                 // 무기공격 로직 연결 예정
                 currentWeapon.Attack();
             }
+
+            //공중 공격
+            //if (!IsGrounded()) // 공중 체크
+            //{
+            //    if (isAbleAttack)
+            //    {
+            //        // 위쪽 반동 추가
+            //        rb.linearVelocity = Vector2.up * rebound;
+
+            //        // 공격 횟수
+            //        attackCount++;
+            //        Debug.Log($"Attack {attackCount}");
+
+            //        animator?.SetTrigger("Attack");
+            //        // 무기공격 로직 연결 예정
+            //        currentWeapon.Attack();
+            //    }
+                
+            //    if (attackCount >= 5)
+            //    {
+            //        lastAttackTime = Time.time;
+            //        isAbleAttack = false;
+            //    }
+
+            //    if (Time.time - lastAttackTime < attackDelay) { }
+            //}
+
+            //if (IsGrounded())
+            //{
+            //    // 일반 공격
+            //    attackCount = 0;
+            //    isAbleAttack = true;
+
+            //    animator?.SetTrigger("Attack");
+            //    // 무기공격 로직 연결 예정
+            //    currentWeapon.Attack();
+            //}
+            
         }
     }
 
