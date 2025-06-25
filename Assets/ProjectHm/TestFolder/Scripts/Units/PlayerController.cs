@@ -18,6 +18,7 @@ public class PlayerController : UnitBase
     public bool isAbleDash = true;
     public Vector2 dashDirection;
     public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
+    public LayerMask obstacle;
 
     [Header("Jump")]
     public float jumpForce = 5f;
@@ -75,25 +76,21 @@ public class PlayerController : UnitBase
             }
 
             // 일반 이동 로직
-            else
+            Debug.Log("Move");
+            isMove = true;
+            moveInput = context.ReadValue<Vector2>();
+
+            // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
+            if (Mathf.Abs(moveInput.x) > 0.01f)
             {
-                Debug.Log("Move");
-                isMove = true;
-                moveInput = context.ReadValue<Vector2>();
-
-                // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
-                if (Mathf.Abs(moveInput.x) > 0.01f)
-                {
-                    lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
-                }
-
-                lastTapTime = currentTime;
+                lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
             }
+
+            lastTapTime = currentTime;
+
         }
         if (context.canceled)
-        {
             isMove = false;
-        }
     }
 
     public IEnumerator StartDash(Vector2 direction)
@@ -115,10 +112,15 @@ public class PlayerController : UnitBase
         // 대쉬 거리까지 등속 운동
         while (Vector2.Distance(rb.position, tarPos) > 0.01f)
         {
-            //rb.linearVelocity = dashDirection * dashPower;
-            //yield return null; // 매 프레임 유지
-
             Vector2 next = Vector2.MoveTowards(rb.position, tarPos, dashPower * Time.fixedDeltaTime);
+
+            RaycastHit2D hit = Physics2D.Raycast(rb.position, dashDirection, dashPower * Time.fixedDeltaTime, obstacle);
+            if (hit)
+            {
+                Debug.Log("Obstacle hit, break");
+                break;
+            }
+
             rb.MovePosition(next);
             yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
         }
@@ -128,6 +130,8 @@ public class PlayerController : UnitBase
         // 대시 후 애니메이션 복구
         //if (IsGrounded())
         //    animator?.Play("Idle");
+
+        //yield return new WaitForSeconds(0.05f);
 
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
@@ -270,14 +274,8 @@ public class PlayerController : UnitBase
         {
             rb.linearVelocity = Vector2.down * dashPower;
             yield return null; // 매 프레임 유지
-            if (IsGrounded())
-            {
-                //땅 뚫는 버그 방지
-                rb.linearVelocity = Vector2.zero;
-                break;
-            }
         }
-
+        rb.linearVelocity = Vector2.zero;
         currentWeapon.DownAttack();
 
         // 도착 시 상태 초기화
