@@ -125,16 +125,16 @@ public class PlayerController : UnitBase
             yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
         }
 
-        isDashing = false;
-
         // 대시 후 애니메이션 복구
         //if (IsGrounded())
         //    animator?.Play("Idle");
 
-        //yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.05f);
 
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
+
+        isDashing = false;
 
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
@@ -158,8 +158,7 @@ public class PlayerController : UnitBase
             if (!IsGrounded() && currentTime - lastTapTime < doubleTapThreshold && jumpCount == 1)
             {
                 Debug.Log("Double Tap Detected!");
-                if (!isDashing && isAbleDash)
-                    StartCoroutine(SuperJump());
+                StartCoroutine(SuperJump());
                 jumpCount++;
                 lastTapTime = -1f; // 리셋
             }
@@ -184,7 +183,6 @@ public class PlayerController : UnitBase
     public IEnumerator SuperJump()
     {
         Debug.Log("SuperJumpCoroutine");
-        isDashing = true;
         isJumpDash = true;
 
         Vector2 curPos = rb.position;
@@ -206,10 +204,12 @@ public class PlayerController : UnitBase
             yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
         }
 
+        yield return new WaitForSeconds(0.05f);
+
         // 도착 시 상태 초기화
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = originalGravity;
-        isDashing = false;
+
         isJumpDash = false;
     }
 
