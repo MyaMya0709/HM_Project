@@ -264,19 +264,23 @@ public class PlayerController : UnitBase
         var originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
-        rb.linearVelocity = Vector2.down * dashPower; // 등속 운동 시작
 
-        // 땅에 닿을 때까지 등속 운동 유지
+        // 땅에 닿을 때까지 등속 운동
         while (!IsGrounded())
         {
             rb.linearVelocity = Vector2.down * dashPower;
             yield return null; // 매 프레임 유지
+            if (IsGrounded())
+            {
+                //땅 뚫는 버그 방지
+                rb.linearVelocity = Vector2.zero;
+                break;
+            }
         }
 
         currentWeapon.DownAttack();
 
         // 도착 시 상태 초기화
-        rb.linearVelocity = Vector2.zero;
         rb.gravityScale = originalGravity;
     }
 
