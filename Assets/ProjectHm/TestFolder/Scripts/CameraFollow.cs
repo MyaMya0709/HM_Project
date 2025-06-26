@@ -6,12 +6,13 @@ public class CameraFollow : MonoBehaviour
     public float smoothSpeed = 0.125f; // 부드러운 이동 속도
     public Vector3 offset; // 카메라와 목표 사이의 거리 offset
 
-    void FixedUpdate()
+    void Update()
     {
         if (target == null) return;
 
         Vector3 desiredPosition = target.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
+        //Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        //transform.position = smoothedPosition;
+        transform.position = desiredPosition;
     }
 }
