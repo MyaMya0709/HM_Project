@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,6 +10,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     public Transform attackPoint;
     public LayerMask enemyLayer;
     public bool mutipleAttack = false;
+    public float knockbackForce = 5f;
 
     [Header("Effects")]
     public GameObject hitEffect;
@@ -43,9 +45,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         if (!mutipleAttack)
         {
             SingleAttack();
-            RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange);
-            Vector3 end = hit ? hit.point : (attackPoint.position + (Vector3)playerController.lastLookDirection * attackRange);
-            Debug.DrawLine(attackPoint.position, end, hit ? Color.green : Color.red, 5f, false);
         }
         else
         {
@@ -70,16 +69,51 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     {
         Debug.Log("ChargingAttack");
 
+        // 좌우 방향 감지
+        Vector2 attackOffset = facingRight ? Vector2.right : Vector2.left;
+        // 사각형 공격 범위의 중심점
+        Vector2 center = (Vector2)attackPoint.position + attackOffset * (attackRange * 0.5f);
+        Vector2 size = new Vector2(attackRange, 1.0f);
+
         // 공격 범위 내의 적 감지
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(attackPoint.position, new Vector2 (attackRange, 1.0f), enemyLayer);
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(
+            center,
+            size,
+            0f,
+            enemyLayer);
 
         foreach (var enemyCollider in hitEnemies)
         {
             ToEnemyDamage(enemyCollider);
+
+            GameObject enemy = enemyCollider.gameObject;
+            // 차징 넉백
+            Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+            // 공격 방향 + 수직 방향 추가
+            Vector2 dir = new Vector2 ((rb.position - (Vector2)attackPoint.position).x, 1f).normalized;
+            rb.AddForce(dir * knockbackForce, ForceMode2D.Impulse);
         }
+
+        // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
+        DrawDebugBox(center, size, Color.red, 3f);
 
         // 디버그용 로그
         Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
+    }
+
+    private void DrawDebugBox(Vector2 center, Vector2 size, Color color, float duration)
+    {
+        Vector2 half = size * 0.5f;
+
+        Vector2 topLeft = center + new Vector2(-half.x, half.y);
+        Vector2 topRight = center + new Vector2(half.x, half.y);
+        Vector2 bottomLeft = center + new Vector2(-half.x, -half.y);
+        Vector2 bottomRight = center + new Vector2(half.x, -half.y);
+
+        Debug.DrawLine(topLeft, topRight, color, duration);
+        Debug.DrawLine(topRight, bottomRight, color, duration);
+        Debug.DrawLine(bottomRight, bottomLeft, color, duration);
+        Debug.DrawLine(bottomLeft, topLeft, color, duration);
     }
 
     public void SingleAttack()
@@ -93,6 +127,25 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             ToEnemyDamage(hit.collider);
             Debug.Log($"Attack enemies.");
         }
+
+        DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f);
+    }
+
+    private void DrawSingleLine(Vector2 attatckPoint, Vector2 LookDir, float duration)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(attatckPoint, LookDir, attackRange);
+
+        Color color;
+        if (hit.collider == null)
+        {
+            color = Color.red;
+        }
+        else
+        {
+            color = Color.green;
+        }
+
+        Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * attackRange, color, duration);
     }
 
     public void MutipleAttack()
