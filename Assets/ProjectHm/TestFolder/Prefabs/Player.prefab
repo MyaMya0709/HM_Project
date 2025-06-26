@@ -219,13 +219,18 @@ MonoBehaviour:
   rb: {fileID: 0}
   moveInput: {x: 0, y: 0}
   isMove: 0
+  isDashing: 0
+  isAbleDash: 1
+  isJumpDash: 0
+  isAbleAttack: 1
   dashPower: 60
   dashCooldown: 0.2
   dashDistance: 5
-  isDashing: 0
-  isAbleDash: 1
   dashDirection: {x: 0, y: 0}
   lastLookDirection: {x: 1, y: 0}
+  obstacle:
+    serializedVersion: 2
+    m_Bits: 1024
   jumpForce: 50
   groundLayer:
     serializedVersion: 2
@@ -233,7 +238,16 @@ MonoBehaviour:
   groundCheck: {fileID: 1600765360527329676}
   groundCheckRadius: 0.2
   jumpCount: 0
-  isJumpDash: 0
+  rebound: 4
+  attackCount: 0
+  attackDelay: 0.5
+  lastAttackTime: 0
+  lastJumpTapTime: -1
+  lastDashTapTime: -1
+  lastDownTapTime: -1
+  doubleTapThreshold: 0.2
+  basePos: {x: 0, y: 0}
+  targetPos: {x: 0, y: 0}
 --- !u!114 &2157225018441802832
 MonoBehaviour:
   m_ObjectHideFlags: 0

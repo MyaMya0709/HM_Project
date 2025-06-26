@@ -45,6 +45,9 @@ public class PlayerController : UnitBase
     public float lastDownTapTime = -1f;           // 내려찍기 첫번째 입력 시간
     public float doubleTapThreshold = 0.2f;       // 더블탭으로 인식하는 시간
 
+    public Vector2 basePos;
+    public Vector2 targetPos;
+
     protected override void Awake()
     {
         base.Awake();
@@ -86,6 +89,10 @@ public class PlayerController : UnitBase
                 StartCoroutine(StartDash(lastLookDirection));
                 lastDashTapTime = -1f; // 리셋
             }
+            else
+            {
+                lastDashTapTime = currentTime;
+            }
 
             // 일반 이동 로직
             Debug.Log("Move");
@@ -97,8 +104,6 @@ public class PlayerController : UnitBase
             {
                 lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
             }
-
-            lastDashTapTime = currentTime;
         }
         if (context.canceled)
             isMove = false;
@@ -110,20 +115,30 @@ public class PlayerController : UnitBase
         isDashing = true; // isDashing 동안 사용자의 입력을 받지 않음
         isAbleDash = false;
         dashDirection = direction;
-        Vector2 curPos = rb.position;
-        Vector2 tarPos = curPos + dashDirection * dashDistance;
+        basePos = rb.position;
+        basePos = new Vector2(
+            basePos.x,
+            Mathf.Clamp(basePos.y, 0, 100)
+            );
+
+        Vector2 trsdd = basePos + dashDirection * dashDistance;
+        targetPos = new Vector2(trsdd.x, basePos.y);
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
 
+        Vector2 ddPos = new Vector2(rb.position.x, basePos.y);
+
         // 애니메이션 트리거
         //animator?.SetTrigger("Dash");
 
         // 대쉬 거리까지 등속 운동
-        while (Vector2.Distance(rb.position, tarPos) > 0.01f)
+        while (Vector2.Distance(ddPos, targetPos) > 0.01f)
         {
-            Vector2 next = Vector2.MoveTowards(rb.position, tarPos, dashPower * Time.fixedDeltaTime);
+            Vector2 next = Vector2.MoveTowards(ddPos, targetPos, dashPower * Time.fixedDeltaTime);
+
+            ddPos = new Vector2(rb.position.x, basePos.y);
 
             RaycastHit2D hit = Physics2D.Raycast(rb.position, dashDirection, dashPower * Time.fixedDeltaTime, obstacle);
             if (hit)
@@ -141,12 +156,13 @@ public class PlayerController : UnitBase
         //    animator?.Play("Idle");
 
         if (!IsGrounded())
-            {   
+        {   
             yield return new WaitForSeconds(0.05f);
-            Debug.Log("eeee");
-            }
+            Debug.Log("체공");
+        }
 
-        Debug.Log("ffff");
+        Debug.Log("등속운동 중지");
+
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
@@ -172,9 +188,11 @@ public class PlayerController : UnitBase
                     StartCoroutine(SuperJump());
                     lastJumpTapTime = -1f; // 리셋
                 }
-
-                jumpCount++;
-                lastJumpTapTime = currentTime;
+                else
+                {
+                    jumpCount++;
+                    lastJumpTapTime = currentTime;
+                }
             }
 
             // 일반 점프 로직
