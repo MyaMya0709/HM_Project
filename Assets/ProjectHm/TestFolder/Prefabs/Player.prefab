@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHealth: 10
-    moveSpeed: 4
+    moveSpeed: 6
     attackPower: 10
     attackSpeed: 10
     jumpPower: 20
@@ -169,27 +169,29 @@ MonoBehaviour:
   isJumpDash: 0
   isAbleAttack: 1
   isCharging: 0
-  dashPower: 60
-  dashCooldown: 0.2
-  dashDistance: 5
+  dashPower: 80
+  dashCooldown: 0.15
+  dashDistance: 4
   dashDirection: {x: 0, y: 0}
   lastLookDirection: {x: 1, y: 0}
   obstacle:
     serializedVersion: 2
     m_Bits: 1024
   jumpForce: 50
+  jumpPower: 100
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 1600765360527329676}
+  jumpDistance: 7
   groundCheckRadius: 0.2
   jumpCount: 0
-  rebound: 4
+  rebound: 4.5
   attackCount: 0
-  attackDelay: 0.5
+  attackDelay: 0.6
   lastAttackTime: 0
   chargingStart: 0
-  chargingTime: 2
+  chargingTime: 0.5
   lastJumpTapTime: -1
   lastDashTapTime: -1
   lastDownTapTime: -1

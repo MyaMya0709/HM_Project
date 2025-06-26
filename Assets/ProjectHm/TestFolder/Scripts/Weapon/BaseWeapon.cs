@@ -126,25 +126,13 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         {
             ToEnemyDamage(hit.collider);
             Debug.Log($"Attack enemies.");
+            DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.green);
         }
-
-        DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f);
+        DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.red);
     }
 
-    private void DrawSingleLine(Vector2 attatckPoint, Vector2 LookDir, float duration)
+    private void DrawSingleLine(Vector2 attatckPoint, Vector2 LookDir, float duration, Color color)
     {
-        RaycastHit2D hit = Physics2D.Raycast(attatckPoint, LookDir, attackRange);
-
-        Color color;
-        if (hit.collider == null)
-        {
-            color = Color.red;
-        }
-        else
-        {
-            color = Color.green;
-        }
-
         Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * attackRange, color, duration);
     }
 

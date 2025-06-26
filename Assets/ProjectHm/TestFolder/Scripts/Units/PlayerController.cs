@@ -28,9 +28,11 @@ public class PlayerController : UnitBase
     public LayerMask obstacle;                        // 장애물 레이어
 
     [Header("Jump")]
-    public float jumpForce = 5f;
+    public float jumpForce = 5;
+    public float jumpPower = 10f;
     public LayerMask groundLayer;
     public Transform groundCheck;
+    public float jumpDistance = 20f;
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
 
@@ -220,7 +222,7 @@ public class PlayerController : UnitBase
         isJumpDash = true;
 
         Vector2 curPos = rb.position;
-        Vector2 tarPos = curPos + Vector2.up * dashDistance;
+        Vector2 tarPos = curPos + Vector2.up * jumpDistance;
 
         var originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
@@ -233,7 +235,7 @@ public class PlayerController : UnitBase
             //rb.linearVelocity = dashDirection * dashPower;
             //yield return null; // 매 프레임 유지
 
-            Vector2 next = Vector2.MoveTowards(rb.position, tarPos, dashPower * Time.fixedDeltaTime);
+            Vector2 next = Vector2.MoveTowards(rb.position, tarPos, jumpPower * Time.fixedDeltaTime);
             rb.MovePosition(next);
             yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
         }
