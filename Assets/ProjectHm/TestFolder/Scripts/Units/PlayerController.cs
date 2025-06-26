@@ -17,6 +17,7 @@ public class PlayerController : UnitBase
     public bool isAbleDash = true;
     public bool isJumpDash = false;
     public bool isAbleAttack = true;
+    public bool isCharging = false;
 
     [Header("Desh")]
     public float dashPower = 10f;
@@ -69,6 +70,8 @@ public class PlayerController : UnitBase
         if (isJumpDash) return; // 슈퍼 점프 중에는 다른 물리 계산 안 함
 
         if (isDashing) return;
+
+        if (isCharging) return;
 
         if (isMove)
         {
@@ -255,6 +258,7 @@ public class PlayerController : UnitBase
         if (context.started)
         {
             chargingStart = Time.time;
+            isCharging = true;
         }
 
         else if (context.performed)
@@ -265,6 +269,11 @@ public class PlayerController : UnitBase
         else if (context.canceled)
         {
             Debug.Log("OnAttack");
+
+            if (chargingStart + chargingTime >= Time.time)
+            {
+                isCharging = false;
+            }
 
             if (!IsGrounded()) // 공중 체크
             {
@@ -297,6 +306,7 @@ public class PlayerController : UnitBase
                     Debug.Log("ChargingAttack");
                     //animator?.SetTrigger("ChargingAttack");
                     currentWeapon.ChargingAttack();
+                    isCharging = false;
                 }
                 else
                 {
