@@ -43,7 +43,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
     public void Attack()
     {
-        Debug.Log("Attack");
+        Debug.Log("WeaponAttack");
         if (!mutipleAttack)
         {
             SingleAttack();
