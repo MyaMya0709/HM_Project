@@ -38,6 +38,8 @@ public class PlayerController : UnitBase
     public int attackCount = 0;                   // 공중 공격 횟수
     public float attackDelay = 0.5f;              // 공중공격 4회 이후 딜레이
     public float lastAttackTime;                  // 4번째 공중공격 시간
+    public float chargingStart;                   // 차징 시작 시간
+    public float chargingTime = 2f;               // 차징 시간
 
     [Header("DoubleTap")]
     public float lastJumpTapTime = -1f;           // 슈퍼 점프 첫번째 입력 시간
@@ -250,27 +252,19 @@ public class PlayerController : UnitBase
 
     public void OnAttack(InputAction.CallbackContext context)
     {
+        if (context.started)
+        {
+            chargingStart = Time.time;
+        }
 
+        else if (context.performed)
+        {
+            Debug.Log("Performed");
+        }
 
-        if (context.performed)
+        else if (context.canceled)
         {
             Debug.Log("OnAttack");
-
-            //if (!IsGrounded()) // 공중에서 공격시
-            //{
-            //    // 위쪽 반동 추가
-            //    rb.linearVelocity = Vector2.up * rebound;
-
-            //    animator?.SetTrigger("Attack");
-            //    // 무기공격 로직 연결 예정
-            //    currentWeapon.Attack();
-            //}
-            //else
-            //{
-            //    animator?.SetTrigger("Attack");
-            //    // 무기공격 로직 연결 예정
-            //    currentWeapon.Attack();
-            //}
 
             if (!IsGrounded()) // 공중 체크
             {
@@ -295,16 +289,24 @@ public class PlayerController : UnitBase
                     attackCount = 0;
                 }
             }
-
-            if (IsGrounded())
+            else if (IsGrounded())
             {
-                attackCount = 0;
-                // 일반 공격
-                animator?.SetTrigger("Attack");
-                // 무기공격 로직 연결 예정
-                currentWeapon.Attack();
+                if (chargingStart + chargingTime <= Time.time)
+                {
+                    Debug.Log($"{Time.time}");
+                    Debug.Log("ChargingAttack");
+                    //animator?.SetTrigger("ChargingAttack");
+                    currentWeapon.ChargingAttack();
+                }
+                else
+                {
+                    // 땅에 닿으면 횟수 초기화
+                    attackCount = 0;
+                    // 일반 공격
+                    animator?.SetTrigger("Attack");
+                    currentWeapon.Attack();
+                }
             }
-
         }
     }
 

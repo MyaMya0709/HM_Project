@@ -27,10 +27,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
     private void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange);
-        Vector3 end = hit ? hit.point : (attackPoint.position + (Vector3)playerController.lastLookDirection * attackRange);
-        Debug.DrawLine(attackPoint.position, end, hit ? Color.green : Color.red, 1f * Time.deltaTime, false);
-
         if (playerController.lastLookDirection.x < 0 && facingRight)
         {
             Flip();
@@ -43,10 +39,13 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
     public void Attack()
     {
-        Debug.Log("WeaponAttack");
+        Debug.Log("Attack");
         if (!mutipleAttack)
         {
             SingleAttack();
+            RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange);
+            Vector3 end = hit ? hit.point : (attackPoint.position + (Vector3)playerController.lastLookDirection * attackRange);
+            Debug.DrawLine(attackPoint.position, end, hit ? Color.green : Color.red, 5f, false);
         }
         else
         {
@@ -67,13 +66,27 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         }
     }
 
+    public void ChargingAttack()
+    {
+        Debug.Log("ChargingAttack");
+
+        // 공격 범위 내의 적 감지
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(attackPoint.position, new Vector2 (attackRange, 1.0f), enemyLayer);
+
+        foreach (var enemyCollider in hitEnemies)
+        {
+            ToEnemyDamage(enemyCollider);
+        }
+
+        // 디버그용 로그
+        Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
+    }
+
     public void SingleAttack()
     {
         Debug.Log("SingleAttack");
         //공격 범위에서 보는 방향으로 가까운 적 감지
         RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange, enemyLayer);
-        Color col = hit.collider ? Color.green : Color.red;
-        Debug.DrawLine(attackPoint.position, hit ? (Vector2)hit.point : (Vector2)attackPoint.position + playerController.lastLookDirection * attackRange, col, 1f);
 
         if (hit.collider != null)
         {
