@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class EnemyAI : UnitBase
@@ -39,8 +40,13 @@ public class EnemyAI : UnitBase
         Dead();
     }
 
-    protected override void Dead()
+    protected override void Dead([CallerMemberName] string callername = null)
     {
+        Debug.Log($"Dead Called From {callername}");
+        if (callername == "TakeDamage")
+        {
+            GetComponent<ItemLootList>().InstantiateItem(transform.position);
+        }
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
         base.Dead();

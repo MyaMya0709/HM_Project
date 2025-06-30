@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 2140259131867566554}
   - component: {fileID: 7972267889914882491}
   - component: {fileID: 619541072649880692}
+  - component: {fileID: 8020366493384832207}
   m_Layer: 7
   m_Name: Enemy_0
   m_TagString: Enemy
@@ -199,8 +200,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    maxHealth: 2e+10
+    maxHealth: 10
     moveSpeed: 2
     attackPower: 2
     attackSpeed: 2
     jumpPower: 2
+--- !u!114 &8020366493384832207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684842619354825708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe93ba944b12cf7438f5e915498baf5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  droppedItemPrepab: {fileID: 76134026972407004, guid: 0e5a4471c69129e46817985979c17542, type: 3}
+  ItemList:
+  - {fileID: 11400000, guid: 4a359c10584bf2049b11013a0cad0830, type: 2}
+  - {fileID: 11400000, guid: 1bad79343a41e7b458a13b693fd42029, type: 2}
+  - {fileID: 11400000, guid: 2aed542ace88ae04385082a93ec4fb16, type: 2}

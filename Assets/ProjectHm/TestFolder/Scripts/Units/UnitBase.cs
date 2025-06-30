@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,7 +25,7 @@ public abstract class UnitBase : MonoBehaviour
         }
 
     }
-    protected virtual void Dead()
+    protected virtual void Dead([CallerMemberName] string callername = null)
     {
         //»ç¸Á Ã³¸®
         //animator?.SetTrigger("Dead");

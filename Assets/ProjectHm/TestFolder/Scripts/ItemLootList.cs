@@ -36,9 +36,9 @@ public class ItemLootList : MonoBehaviour
             ItemGameObject.GetComponent<SpriteRenderer>().sprite = droppedItem.itemSprite;
 
 
-            float dropForce = 300f;
+            float dropForce = 30f;
             Vector2 dropDir = new Vector2(Random.Range(-1f, 1f),Random.Range(0f, 1f));
-
+            ItemGameObject.GetComponent<Rigidbody2D>().AddForce(dropDir * dropForce, ForceMode2D.Impulse);
         }
     }
 }
