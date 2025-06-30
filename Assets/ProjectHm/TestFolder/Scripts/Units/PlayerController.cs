@@ -123,29 +123,22 @@ public class PlayerController : UnitBase
         isAbleDash = false;
         dashDirection = direction;
         basePos = rb.position;
-        basePos = new Vector2(
-            basePos.x,
-            Mathf.Clamp(basePos.y, 0, 100)
-            );
-
-        Vector2 trsdd = basePos + dashDirection * dashDistance;
-        targetPos = new Vector2(trsdd.x, basePos.y);
+        targetPos = basePos + dashDirection * dashDistance;
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
 
-        Vector2 ddPos = new Vector2(rb.position.x, basePos.y);
 
         // 애니메이션 트리거
         //animator?.SetTrigger("Dash");
 
         // 대쉬 거리까지 등속 운동
-        while (Vector2.Distance(ddPos, targetPos) > 0.01f)
+        while (Vector2.Distance(rb.position, targetPos) > 0.01f)
         {
-            Vector2 next = Vector2.MoveTowards(ddPos, targetPos, dashPower * Time.fixedDeltaTime);
+            targetPos = new Vector2 (targetPos.x, rb.position.y);
 
-            ddPos = new Vector2(rb.position.x, basePos.y);
+            Vector2 next = Vector2.MoveTowards(rb.position, targetPos, dashPower * Time.fixedDeltaTime);
 
             RaycastHit2D hit = Physics2D.Raycast(rb.position, dashDirection, dashPower * Time.fixedDeltaTime, obstacle);
             if (hit)
