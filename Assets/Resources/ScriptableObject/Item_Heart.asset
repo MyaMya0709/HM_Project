@@ -15,10 +15,6 @@ MonoBehaviour:
   itemSprite: {fileID: 4606908045521496030, guid: 581f8c98839956b41b3467b49a3c63e7, type: 3}
   itemName: Heart
   itemDescription: Heart
-<<<<<<< HEAD
-  dropChance: 60
-=======
   itemAmount: 10
   dropChance: 30
   itemType: 1
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)

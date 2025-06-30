@@ -68,7 +68,7 @@ Transform:
   - {fileID: 1600765360527329676}
   - {fileID: 6009333283083062474}
   - {fileID: 5222002190331703957}
-  - {fileID: 6505661936890470202}
+  - {fileID: 7590934454650825540}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &8393082947183156615
@@ -180,20 +180,11 @@ MonoBehaviour:
   dashDistance: 4
   dashDirection: {x: 0, y: 0}
   lastLookDirection: {x: 1, y: 0}
-<<<<<<< HEAD
-  obstacle:
-    serializedVersion: 2
-    m_Bits: 1024
-=======
-<<<<<<< Updated upstream
-=======
   obstacle:
     serializedVersion: 2
     m_Bits: 1024
   basePos: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
->>>>>>> Stashed changes
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
   jumpForce: 50
   jumpPower: 100
   groundLayer:
@@ -203,12 +194,6 @@ MonoBehaviour:
   jumpDistance: 7
   groundCheckRadius: 0.2
   jumpCount: 0
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-  isJumpDash: 0
-=======
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
   rebound: 4.5
   attackCount: 0
   attackDelay: 0.6
@@ -219,17 +204,11 @@ MonoBehaviour:
   lastDashTapTime: -1
   lastDownTapTime: -1
   doubleTapThreshold: 0.2
-<<<<<<< HEAD
-  basePos: {x: 0, y: 0}
-  targetPos: {x: 0, y: 0}
-=======
-  lootingArea: {fileID: 6505661936890470202}
+  lootingArea: {fileID: 7590934454650825540}
   lootingItem:
     serializedVersion: 2
     m_Bits: 2048
   lootingRadius: 10
->>>>>>> Stashed changes
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
 --- !u!114 &2157225018441802832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,11 +444,7 @@ Transform:
   - {fileID: 2448541618254253249}
   m_Father: {fileID: 4198897976886587706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
---- !u!1 &7485238890195240614
+--- !u!1 &7462706881016983891
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -477,7 +452,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6505661936890470202}
+  - component: {fileID: 7590934454650825540}
   m_Layer: 8
   m_Name: LootingArea
   m_TagString: Untagged
@@ -485,22 +460,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6505661936890470202
+--- !u!4 &7590934454650825540
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7485238890195240614}
+  m_GameObject: {fileID: 7462706881016983891}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4198897976886587706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
 --- !u!1 &8560842869615202319
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,10 +562,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
 --- !u!1001 &3891802204392985533
 PrefabInstance:
   m_ObjectHideFlags: 0

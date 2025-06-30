@@ -42,22 +42,13 @@ public class EnemyAI : UnitBase
 
     protected override void Dead([CallerMemberName] string callername = null)
     {
-<<<<<<< HEAD
-        Debug.Log($"Dead Called From {callername}");
-        if (callername == "TakeDamage")
-        {
-            GetComponent<ItemLootList>().InstantiateItem(transform.position);
-        }
-=======
-<<<<<<< Updated upstream
-=======
+
         Debug.Log($"Dead Called From {callername}");
         if (callername == "TakeDamage")
         {
             GetComponent<ItemLootingList>().InstantiateItem(transform.position);
         }
->>>>>>> Stashed changes
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
+
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
         base.Dead();

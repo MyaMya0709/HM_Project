@@ -200,18 +200,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    maxHealth: 10
-    moveSpeed: 2
+    maxHealth: 30
+    moveSpeed: 1
     attackPower: 2
     attackSpeed: 2
     jumpPower: 2
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
   currentHealth: 0
   animator: {fileID: 0}
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
 --- !u!114 &8020366493384832207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,16 +216,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8684842619354825708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe93ba944b12cf7438f5e915498baf5e, type: 3}
+  m_Script: {fileID: 11500000, guid: 57f9fc67ec250944995f93b9a0c9a43d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   droppedItemPrepab: {fileID: 76134026972407004, guid: 0e5a4471c69129e46817985979c17542, type: 3}
   ItemList:
-  - {fileID: 11400000, guid: 4a359c10584bf2049b11013a0cad0830, type: 2}
-  - {fileID: 11400000, guid: 1bad79343a41e7b458a13b693fd42029, type: 2}
-<<<<<<< HEAD
-  - {fileID: 11400000, guid: 2aed542ace88ae04385082a93ec4fb16, type: 2}
-=======
+  - {fileID: 11400000, guid: 49bbf9e5aa825cf4ab40f5f3e75f58fe, type: 2}
   - {fileID: 11400000, guid: d06b7a5c2c5c52f479ebee2f0f3ca8de, type: 2}
->>>>>>> Stashed changes
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
+  - {fileID: 11400000, guid: 81bef95fc862aa84c9e251b2458093e8, type: 2}

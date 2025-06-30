@@ -57,20 +57,11 @@ public class PlayerController : UnitBase
     public float lastDownTapTime = -1f;           // 내려찍기 첫번째 입력 시간
     public float doubleTapThreshold = 0.2f;       // 더블탭으로 인식하는 시간
 
-<<<<<<< HEAD
-    public Vector2 basePos;
-    public Vector2 targetPos;
-
-=======
-<<<<<<< Updated upstream
-=======
     [Header("ItemLooting")]
     public Transform lootingArea;                 // 루팅 기준점
     public LayerMask lootingItem;                 // 루팅 가능한 아이템 레이어
     public float lootingRadius = 10f;             // 루팅 가능 거리
 
->>>>>>> Stashed changes
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
     protected override void Awake()
     {
         base.Awake();
@@ -397,7 +388,7 @@ public class PlayerController : UnitBase
             if (item == null) continue;
 
             // 감지된 아이템 끌어당기기
-            item.transform.position = Vector3.MoveTowards(item.transform.position, transform.position, 10f * Time.deltaTime);
+            item.transform.position = Vector3.MoveTowards(item.transform.position, transform.position, 15f * Time.deltaTime);
 
             // 아이템과 플레이어가 가까우면 아이템 습득 및 파괴
             float distance = Vector2.Distance(item.transform.position, transform.position);

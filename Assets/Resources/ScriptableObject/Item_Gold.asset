@@ -15,10 +15,6 @@ MonoBehaviour:
   itemSprite: {fileID: -3988769855312385993, guid: b4cc244e852f7c746b36949a98090936, type: 3}
   itemName: Gold
   itemDescription: Gold
-<<<<<<< HEAD
-  dropChance: 100
-=======
   itemAmount: 10
-  dropChance: 80
+  dropChance: 60
   itemType: 0
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)

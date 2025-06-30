@@ -89,8 +89,9 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             GameObject enemy = enemyCollider.gameObject;
             // 차징 넉백
             Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
-            // 공격 방향 + 수직 방향 추가
-            Vector2 dir = new Vector2 ((rb.position - (Vector2)attackPoint.position).x, 1f).normalized;
+
+            // 공중에 띄움
+            Vector2 dir = new Vector2(0, 1f);
             rb.AddForce(dir * knockbackForce, ForceMode2D.Impulse);
         }
 

@@ -7,15 +7,6 @@ public class ItemData : ScriptableObject
     public Sprite itemSprite;
     public string itemName;
     public string itemDescription;
-<<<<<<< HEAD
-    public int dropChance;
-
-    public ItemData(string name, string description, int chance)
-    {
-        itemName = name;
-        itemDescription = description;
-        dropChance = chance;
-=======
     public float itemAmount;
     public int dropChance;
     public ItemType itemType;
@@ -27,6 +18,5 @@ public class ItemData : ScriptableObject
         itemAmount = amount;
         dropChance = chance;
         itemType = type;
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
     }
 }

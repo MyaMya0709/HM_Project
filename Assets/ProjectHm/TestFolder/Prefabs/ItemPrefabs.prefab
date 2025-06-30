@@ -12,10 +12,7 @@ GameObject:
   - component: {fileID: 389729582608611528}
   - component: {fileID: 8639210775382417952}
   - component: {fileID: -8209133834188348501}
-<<<<<<< HEAD
-=======
-  - component: {fileID: 8692421885812461220}
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
+  - component: {fileID: 993162722950172906}
   m_Layer: 11
   m_Name: ItemPrefabs
   m_TagString: Untagged
@@ -156,9 +153,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.225
-<<<<<<< HEAD
-=======
---- !u!114 &8692421885812461220
+--- !u!114 &993162722950172906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,4 +167,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemType: 0
   amount: 0
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
