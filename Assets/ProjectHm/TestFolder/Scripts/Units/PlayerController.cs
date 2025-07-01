@@ -195,7 +195,10 @@ public class PlayerController : UnitBase
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
-        currentWeapon.DashAttack();
+        if (isDashAttack)
+        {
+            currentWeapon.DashAttack();
+        }
 
         isDashing = false;
 
