@@ -175,6 +175,7 @@ MonoBehaviour:
   isJumpDash: 0
   isAbleAttack: 1
   isCharging: 0
+  isDashAttack: 1
   dashPower: 80
   dashCooldown: 0.15
   dashDistance: 4
@@ -204,6 +205,8 @@ MonoBehaviour:
   lastDashTapTime: -1
   lastDownTapTime: -1
   doubleTapThreshold: 0.2
+  lastkey: {x: 0, y: 0}
+  tapCount: 0
   lootingArea: {fileID: 7590934454650825540}
   lootingItem:
     serializedVersion: 2
@@ -577,6 +580,18 @@ PrefabInstance:
     - target: {fileID: 78432035083985118, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+      propertyPath: AttackStunDur
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+      propertyPath: DashAtkStunDur
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+      propertyPath: DownAtkStunDur
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: knockbackForce
