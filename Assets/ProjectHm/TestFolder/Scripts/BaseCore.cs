@@ -9,6 +9,8 @@ public class BaseCore : MonoBehaviour
     [Header("Effects")]
     public GameObject hitEffect;
 
+    public event System.Action OnBaseDestroy;
+
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -32,6 +34,7 @@ public class BaseCore : MonoBehaviour
     {
         Debug.Log("기지 파괴됨! 게임 오버 처리");
         // TODO: GameManager에 게임오버 알림
+        OnBaseDestroy?.Invoke();
         Destroy(gameObject); // or 비활성화
     }
 }

@@ -105,7 +105,7 @@ public class EnemyAI : UnitBase
         Dead();
     }
 
-    // [CallerMemberName] string callername = null 이 함수를 호출한 함수의 이름
+    // [CallerMemberName] string callername에 함수를 호출한 함수의 이름이 들어감
     protected override void Dead([CallerMemberName] string callername = null)
     {
         // 호출 함수 이름이 "TakeDamage" 일 때, 아이템 드랍

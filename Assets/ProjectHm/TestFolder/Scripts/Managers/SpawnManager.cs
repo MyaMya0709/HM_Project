@@ -14,6 +14,8 @@ public class SpawnManager : Singleton<SpawnManager>
     private int aliveEnemies = 0;
     private bool isSpawning = false;
 
+    private Coroutine spawnCoroutine;
+
     public System.Action<int> OnWaveStarted;
     public System.Action OnAllWavesCleared;
 
@@ -32,7 +34,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         //LoadData();
         currentWaveIndex = 0;
-        StartCoroutine(RunWave(currentWaveIndex));
+        spawnCoroutine = StartCoroutine(RunWave(currentWaveIndex));
     }
 
     //public void LoadData()
@@ -72,6 +74,12 @@ public class SpawnManager : Singleton<SpawnManager>
         {
             SpawnEnemy(wave.enemyPrefab);
             yield return new WaitForSeconds(wave.spawnInterval);
+
+            // 기지 파괴시 StopCoroutine() 실행
+            if (GameManager.Instance.isGameOver == true)
+            {
+                StopCoroutine();
+            }
         }
 
         isSpawning = false;
@@ -94,6 +102,16 @@ public class SpawnManager : Singleton<SpawnManager>
         {
             currentWaveIndex++;
             StartCoroutine(RunWave(currentWaveIndex));
+        }
+    }
+
+    public void StopCoroutine()
+    {
+        Debug.Log("몬스터 스폰 중단");
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
         }
     }
 }
