@@ -9,12 +9,14 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     public float attackRange = 1.2f;
     public Transform attackPoint;
     public LayerMask enemyLayer;
-    public bool mutipleAttack = false;
-    public bool isKnockback = true;
     public float knockbackForce = 5f;
     public float AttackStunDur = 1f;
     public float DownAtkStunDur = 1f;
     public float DashAtkStunDur = 1f;
+
+    [Header("Weapon Effect Check")]
+    public bool mutipleAttack = false;
+    public bool isKnockback = true;
 
     [Header("Effects")]
     public GameObject hitEffect;
@@ -67,7 +69,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             {
                 Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
                 enemy.TakeDamage(damage);
-                StartCoroutine(enemy.TakeStun(DownAtkStunDur));
+                if (isKnockback)
+                {
+                    StartCoroutine(enemy.TakeStun(DownAtkStunDur));
+                }
             }
         }
     }
@@ -121,7 +126,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             if (hit.TryGetComponent<EnemyAI>(out EnemyAI enemy))
             {
                 enemy.TakeDamage(damage);
-                StartCoroutine(enemy.TakeStun(DashAtkStunDur));
+                if (isKnockback)
+                {
+                    StartCoroutine(enemy.TakeStun(DashAtkStunDur));
+                }
             }
         }
 
@@ -144,7 +152,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             {
                 Debug.Log($"Attack enemies.");
                 enemy.TakeDamage(damage);
-                StartCoroutine(enemy.TakeStun(AttackStunDur));
+                if (isKnockback)
+                {
+                    StartCoroutine(enemy.TakeStun(AttackStunDur));
+                }
             }
             DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.green);
         }
@@ -176,7 +187,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon
                     // 디버그용 로그
                     Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
                     enemy.TakeDamage(damage);
-                    StartCoroutine(enemy.TakeStun(AttackStunDur));
+                    if (isKnockback)
+                    {
+                        StartCoroutine(enemy.TakeStun(AttackStunDur));
+                    }
                 }
             }
         }
