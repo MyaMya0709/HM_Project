@@ -64,6 +64,7 @@ public class PlayerController : UnitBase
     public Transform lootingArea;                 // 루팅 기준점
     public LayerMask lootingItem;                 // 루팅 가능한 아이템 레이어
     public float lootingRadius = 10f;             // 루팅 가능 거리
+    public float lootingSpeed = 15f;              // 루팅 속도
 
     protected override void Awake()
     {
@@ -412,7 +413,7 @@ public class PlayerController : UnitBase
             if (item == null) continue;
 
             // 감지된 아이템 끌어당기기
-            item.transform.position = Vector3.MoveTowards(item.transform.position, transform.position, 15f * Time.deltaTime);
+            item.transform.position = Vector3.MoveTowards(item.transform.position, transform.position, lootingSpeed * Time.deltaTime);
 
             // 아이템과 플레이어가 가까우면 아이템 습득 및 파괴
             float distance = Vector2.Distance(item.transform.position, transform.position);
