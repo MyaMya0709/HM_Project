@@ -55,12 +55,17 @@ public class SpawnManager : Singleton<SpawnManager>
 
         if (waveIndex > waves.Count)
         {
-            //모든 웨이브 종료시 호출
+            //모든 웨이브 종료시 호출 - Invoke(이곳에 함수 입력 예정)
             OnAllWavesCleared?.Invoke();
             yield break;
         }
 
+        // 현재 웨이브에 해당하는 웨이브 데이터 호출
         WaveData wave = waves[waveIndex];
+
+        // 웨이브의 전체 적 수량 저장
+        aliveEnemies = wave.enemyCount;
+
         OnWaveStarted?.Invoke(waveIndex + 1);
 
         for (int i = 0; i < wave.enemyCount; i++)
@@ -76,7 +81,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-        aliveEnemies++;
+        //aliveEnemies++;
 
         //생성된 enemy가 죽으면 HandleEnemyDeath() 실행
         enemy.GetComponent<EnemyAI>().OnDeath += HandleEnemyDeath;
