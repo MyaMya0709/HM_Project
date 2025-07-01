@@ -192,9 +192,10 @@ public class PlayerController : UnitBase
         }
 
         Debug.Log("등속운동 중지");
-
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
+
+        currentWeapon.DashAttack();
 
         isDashing = false;
 

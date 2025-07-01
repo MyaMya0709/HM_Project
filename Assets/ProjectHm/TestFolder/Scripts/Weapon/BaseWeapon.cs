@@ -102,19 +102,30 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
     }
 
-    private void DrawDebugBox(Vector2 center, Vector2 size, Color color, float duration)
+    public void DashAttack()
     {
-        Vector2 half = size * 0.5f;
+        Vector2 startPos = playerController.basePos;
+        Vector2 endPos = playerController.rb.position;
+        Vector2 center = new Vector2 (((startPos + endPos) / 2f).x, attackPoint.position.y);
+        float dashDis = Vector2.Distance(startPos, endPos);
+        Vector2 boxsize = new Vector2(dashDis, 1f); // 넓이 = 대시거리
 
-        Vector2 topLeft = center + new Vector2(-half.x, half.y);
-        Vector2 topRight = center + new Vector2(half.x, half.y);
-        Vector2 bottomLeft = center + new Vector2(-half.x, -half.y);
-        Vector2 bottomRight = center + new Vector2(half.x, -half.y);
+        Collider2D[] hits = Physics2D.OverlapBoxAll(center, boxsize, 0f, enemyLayer);
 
-        Debug.DrawLine(topLeft, topRight, color, duration);
-        Debug.DrawLine(topRight, bottomRight, color, duration);
-        Debug.DrawLine(bottomRight, bottomLeft, color, duration);
-        Debug.DrawLine(bottomLeft, topLeft, color, duration);
+        foreach (Collider2D hit in hits)
+        {
+            // 접근 가능 여부 판단
+            if (hit.TryGetComponent<EnemyAI>(out var enemy))
+            {
+                enemy.TakeDamage(damage);
+            }
+        }
+
+        // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
+        DrawDebugBox(center, boxsize, Color.red, 3f);
+
+        // 디버그용 로그
+        Debug.Log($"Attack hit {hits.Length} enemies.");
     }
 
     public void SingleAttack()
@@ -130,11 +141,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.green);
         }
         DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.red);
-    }
-
-    private void DrawSingleLine(Vector2 attatckPoint, Vector2 LookDir, float duration, Color color)
-    {
-        Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * attackRange, color, duration);
     }
 
     public void MutipleAttack()
@@ -160,6 +166,27 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             }
         }
     }
+
+    private void DrawDebugBox(Vector2 center, Vector2 size, Color color, float duration)
+    {
+        Vector2 half = size * 0.5f;
+
+        Vector2 topLeft = center + new Vector2(-half.x, half.y);
+        Vector2 topRight = center + new Vector2(half.x, half.y);
+        Vector2 bottomLeft = center + new Vector2(-half.x, -half.y);
+        Vector2 bottomRight = center + new Vector2(half.x, -half.y);
+
+        Debug.DrawLine(topLeft, topRight, color, duration);
+        Debug.DrawLine(topRight, bottomRight, color, duration);
+        Debug.DrawLine(bottomRight, bottomLeft, color, duration);
+        Debug.DrawLine(bottomLeft, topLeft, color, duration);
+    }
+
+    private void DrawSingleLine(Vector2 attatckPoint, Vector2 LookDir, float duration, Color color)
+    {
+        Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * attackRange, color, duration);
+    }
+
     private void ToEnemyDamage(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
