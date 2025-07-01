@@ -23,6 +23,7 @@ public class PlayerController : UnitBase
     public bool isJumpDash = false;
     public bool isAbleAttack = true;
     public bool isCharging = false;
+    public bool isDashAttack = false;
 
     [Header("Desh")]
     public float dashPower = 10f;
@@ -56,6 +57,8 @@ public class PlayerController : UnitBase
     public float lastDashTapTime = -1f;           // 대쉬 첫번째 입력 시간
     public float lastDownTapTime = -1f;           // 내려찍기 첫번째 입력 시간
     public float doubleTapThreshold = 0.2f;       // 더블탭으로 인식하는 시간
+    public Vector2 lastkey = Vector2.zero;        // 방향 저장
+    public int tapCount = 0;                      // 더블탭 카운트
 
     [Header("ItemLooting")]
     public Transform lootingArea;                 // 루팅 기준점
@@ -97,24 +100,40 @@ public class PlayerController : UnitBase
 
         if (context.performed)
         {
-            float currentTime = Time.time;
+            moveInput = context.ReadValue<Vector2>(); // 입력키 저장
+            if (moveInput == null) return;            // 입력키 없을때 되돌아가기
 
-            //더블 탭 체크
-            if (currentTime - lastDashTapTime < doubleTapThreshold && !isDashing && isAbleDash)
+            Vector2 curDir = moveInput;               // 입력 방향 저장
+            float currentTime = Time.time;            // 누른 시간 저장
+
+            // 대쉬하는중, 가능여부, 더블 탭, 입력 방향 체크
+            if (curDir == lastkey && currentTime - lastDashTapTime < doubleTapThreshold && !isDashing && isAbleDash)
             {
-                Debug.Log("DefaultDesh");
-                StartCoroutine(StartDash(lastLookDirection));
-                lastDashTapTime = -1f; // 리셋
+                //조건 달성 두번째 입력시, 탭 카운트 2 달성
+                tapCount++;
             }
             else
             {
-                lastDashTapTime = currentTime;
+                // 첫번째 키 입력 시, 탭 카운트 1과 입력키 저장
+                // 조건 미달성 두번째 키 입력, 탭 카운트 유지 및 입력키 저장
+                tapCount = 1;
+                lastkey = curDir;
             }
 
-            // 일반 이동 로직
+            lastDashTapTime = currentTime;            // 마지막 키 입력시간 저장
+
+            // 더블 탭 성공 체크
+            if (tapCount == 2)
+            {
+                // 탭 카운트 초기화 및 대쉬 실행
+                Debug.Log("DefaultDesh");
+                tapCount = 0;
+                StartCoroutine(StartDash(lastLookDirection));
+            }
+
+            // 대쉬 이후 일반 이동
             Debug.Log("Move");
             isMove = true;
-            moveInput = context.ReadValue<Vector2>();
 
             // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
             if (Mathf.Abs(moveInput.x) > 0.01f)
@@ -122,6 +141,7 @@ public class PlayerController : UnitBase
                 lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
             }
         }
+        // 키 입력이 끝날 때, 이동 종료 
         if (context.canceled)
             isMove = false;
     }
