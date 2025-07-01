@@ -578,6 +578,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+      propertyPath: knockbackForce
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1727274341808414588, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
