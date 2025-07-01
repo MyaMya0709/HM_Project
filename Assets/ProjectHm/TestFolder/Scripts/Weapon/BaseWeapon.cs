@@ -63,10 +63,12 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
         foreach (var enemyCollider in hitEnemies)
         {
-            ToEnemyDamage(enemyCollider);
-            // 디버그용 로그
-            Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-            StartCoroutine(enemyCollider.GetComponent<EnemyAI>().TakeStun(DownAtkStunDur));
+            if (enemyCollider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+            {
+                Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
+                enemy.TakeDamage(damage);
+                StartCoroutine(enemy.TakeStun(DownAtkStunDur));
+            }
         }
     }
 
@@ -89,8 +91,11 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
         foreach (var enemyCollider in hitEnemies)
         {
-            ToEnemyDamage(enemyCollider);
-            StartCoroutine(enemyCollider.GetComponent<EnemyAI>().AirBorne(knockbackForce));
+            if (enemyCollider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+            {
+                enemy.TakeDamage(damage);
+                StartCoroutine(enemy.AirBorne(knockbackForce));
+            }
         }
 
         // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
@@ -113,7 +118,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         foreach (Collider2D hit in hits)
         {
             // 접근 가능 여부 판단
-            if (hit.TryGetComponent<EnemyAI>(out var enemy))
+            if (hit.TryGetComponent<EnemyAI>(out EnemyAI enemy))
             {
                 enemy.TakeDamage(damage);
                 StartCoroutine(enemy.TakeStun(DashAtkStunDur));
@@ -135,13 +140,18 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
         if (hit.collider != null)
         {
-            ToEnemyDamage(hit.collider);
-            Debug.Log($"Attack enemies.");
-            StartCoroutine(hit.collider.GetComponent<EnemyAI>().TakeStun(AttackStunDur));
-
+            if (hit.collider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+            {
+                Debug.Log($"Attack enemies.");
+                enemy.TakeDamage(damage);
+                StartCoroutine(enemy.TakeStun(AttackStunDur));
+            }
             DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.green);
         }
-        DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.red);
+        else
+        {
+            DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.red);
+        }
     }
 
     public void MutipleAttack()
@@ -161,11 +171,13 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
             if (dot > 0) //0보다 크면 정면
             {
-                ToEnemyDamage(enemyCollider);
-                // 디버그용 로그
-                Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                StartCoroutine(enemyCollider.GetComponent<EnemyAI>().TakeStun(AttackStunDur));
-
+                if (enemyCollider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+                {
+                    // 디버그용 로그
+                    Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
+                    enemy.TakeDamage(damage);
+                    StartCoroutine(enemy.TakeStun(AttackStunDur));
+                }
             }
         }
     }
@@ -190,18 +202,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * attackRange, color, duration);
     }
 
-    private void ToEnemyDamage(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy"))
-        {
-            EnemyAI unit = collision.GetComponent<EnemyAI>();
-            if (unit != null)
-            {
-                unit.TakeDamage(damage);
-            }
-        }
-    }
-
     void Flip()
     {
         Vector3 s = transform.localScale;
@@ -209,5 +209,4 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         transform.localScale = s;
         facingRight = !facingRight;
     }
-
 }

@@ -57,9 +57,7 @@ public class EnemyAI : UnitBase
     {
         isDamage = true;
         rb.linearVelocity = Vector2.zero;
-        rb.simulated = false;                       // 물리엔진 중지
         yield return new WaitForSeconds(stunDuration);
-        rb.simulated = true;                        // 물리엔진 재개
         isDamage = false;
     }
 
