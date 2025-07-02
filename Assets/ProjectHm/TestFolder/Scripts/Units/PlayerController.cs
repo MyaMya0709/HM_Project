@@ -50,7 +50,10 @@ public class PlayerController : UnitBase
     public float attackDelay = 0.5f;              // 공중공격 4회 이후 딜레이
     public float lastAttackTime;                  // 4번째 공중공격 시간
     public float chargingStart;                   // 차징 시작 시간
-    public float chargingTime = 2f;               // 차징 시간
+    public float chargeTimeLevel1 = 0.5f;         // 차징 1단계 시간
+    public float chargeTimeLevel2 = 1.0f;         // 차징 2단계시간
+    public float chargeTimeLevel3 = 1.5f;         // 차징 3단계시간
+    public int chargingLevel;                     // 차징 단계
 
     [Header("DoubleTap")]
     public float lastJumpTapTime = -1f;           // 슈퍼 점프 첫번째 입력 시간
@@ -293,6 +296,7 @@ public class PlayerController : UnitBase
 
         else if (context.performed)
         {
+            // TODO : 차징 애니메이션 추가
             Debug.Log("Performed");
         }
 
@@ -300,10 +304,15 @@ public class PlayerController : UnitBase
         {
             Debug.Log("OnAttack");
 
-            if (chargingStart + chargingTime >= Time.time)
-            {
-                isCharging = false;
-            }
+            float holdTime = Time.time - chargingStart;
+            isCharging = false;
+
+            // 차징 단계 확인
+            if (holdTime >= chargeTimeLevel3) chargingLevel = 3;
+            else if (holdTime >= chargeTimeLevel2) chargingLevel = 2;
+            else if (holdTime >= chargeTimeLevel1) chargingLevel = 1;
+            else chargingLevel = 0;
+            Debug.Log($"Hold: {holdTime:F2}s → Level {chargingLevel}");
 
             if (!IsGrounded()) // 공중 체크
             {
@@ -322,6 +331,7 @@ public class PlayerController : UnitBase
                 // 무기공격 로직 연결 예정
                 currentWeapon.Attack();
 
+                // 공중공격 4회 - 마지막 공격시간 체크 및 초기화
                 if (attackCount == 4)
                 {
                     lastAttackTime = Time.time;
@@ -330,16 +340,17 @@ public class PlayerController : UnitBase
             }
             else if (IsGrounded())
             {
-                if (chargingStart + chargingTime <= Time.time)
+                // 차징레벨에 따라 일반공격과 차징공격 분리
+                if (chargingLevel > 0)
                 {
-                    Debug.Log($"{Time.time}");
                     Debug.Log("ChargingAttack");
                     //animator?.SetTrigger("ChargingAttack");
-                    currentWeapon.ChargingAttack();
-                    isCharging = false;
+                    currentWeapon.ChargingAttack(chargingLevel);
+                    chargingLevel = 0;
                 }
                 else
                 {
+                    Debug.Log("Attack");
                     // 땅에 닿으면 횟수 초기화
                     attackCount = 0;
                     // 일반 공격

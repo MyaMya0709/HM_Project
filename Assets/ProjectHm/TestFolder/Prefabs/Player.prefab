@@ -200,7 +200,10 @@ MonoBehaviour:
   attackDelay: 0.6
   lastAttackTime: 0
   chargingStart: 0
-  chargingTime: 0.5
+  chargeTimeLevel1: 1
+  chargeTimeLevel2: 1.5
+  chargeTimeLevel3: 2
+  chargingLevel: 0
   lastJumpTapTime: -1
   lastDashTapTime: -1
   lastDownTapTime: -1

@@ -4,6 +4,6 @@ public interface IWeapon
 {
     public void Attack();
     public void DownAttack();
-    public void ChargingAttack();
+    public void ChargingAttack(int chargeLevel);
     public void DashAttack();
 }

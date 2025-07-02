@@ -1,6 +1,6 @@
 
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Timeline;
 
 public class BaseWeapon : MonoBehaviour, IWeapon
 {
@@ -30,7 +30,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     {
         playerController = GetComponentInParent< PlayerController>();
         enemyLayer = LayerMask.GetMask("Enemy");
-        sr = GetComponent<SpriteRenderer>();
+        sr = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Update()
@@ -77,37 +77,61 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         }
     }
 
-    public void ChargingAttack()
+    public void ChargingAttack(int chargeLevel)
     {
         Debug.Log("ChargingAttack");
 
-        // 좌우 방향 감지
-        Vector2 attackOffset = facingRight ? Vector2.right : Vector2.left;
-        // 사각형 공격 범위의 중심점
-        Vector2 center = (Vector2)attackPoint.position + attackOffset * (attackRange * 0.5f);
-        Vector2 size = new Vector2(attackRange, 1.0f);
+        Vector2 size = new Vector2(0.1f, 1f);                        // 날려보낼 박스 크기
+        Vector2 origin = attackPoint.position;                       // 출발점
+        Vector2 direction = playerController.lastLookDirection;      // 방향
 
         // 공격 범위 내의 적 감지
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(
-            center,
-            size,
-            0f,
-            enemyLayer);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, size, 0f, direction, attackRange * chargeLevel, enemyLayer);
 
-        foreach (var enemyCollider in hitEnemies)
+        // 데미지 부여
+        foreach (var hit in hits)
         {
-            if (enemyCollider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+            if (hit.collider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
             {
-                enemy.TakeDamage(damage);
-                StartCoroutine(enemy.AirBorne(knockbackForce));
+                enemy.TakeDamage(damage * chargeLevel);
+                StartCoroutine(enemy.AirBorne(knockbackForce * chargeLevel));
             }
         }
 
         // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
-        DrawDebugBox(center, size, Color.red, 3f);
+        //Debug.DrawRay(origin, direction * attackRange * chargeLevel, Color.red, 1f);
+        DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f * chargeLevel), new Vector2(attackRange * chargeLevel, 1.0f), Color.red, 3f);
 
         // 디버그용 로그
-        Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
+        Debug.Log($"Attack hit {hits.Length} enemies.");
+
+        //// 좌우 방향 감지
+        //Vector2 attackOffset = facingRight ? Vector2.right : Vector2.left;
+        //// 사각형 공격 범위의 중심점
+        //Vector2 center = (Vector2)attackPoint.position + attackOffset * (attackRange * 0.5f);
+        //Vector2 size = new Vector2(attackRange, 1.0f);
+
+        //// 공격 범위 내의 적 감지
+        //Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(
+        //    center,
+        //    size,
+        //    0f,
+        //    enemyLayer);
+
+        //foreach (var enemyCollider in hitEnemies)
+        //{
+        //    if (enemyCollider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+        //    {
+        //        enemy.TakeDamage(damage);
+        //        StartCoroutine(enemy.AirBorne(knockbackForce));
+        //    }
+        //}
+
+        //// ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
+        //DrawDebugBox(center, size, Color.red, 3f);
+
+        //// 디버그용 로그
+        //Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
     }
 
     public void DashAttack()
