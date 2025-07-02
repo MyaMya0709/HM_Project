@@ -23,9 +23,12 @@ public class LootableItem : MonoBehaviour, ILootable
             case ItemType.Heart:
                 player.currentHealth += amount;
                 break;
-            //case ItemType.Buff:
-            //    player.ApplyBuff(buffData);
-            //    break;
+            case ItemType.Buff:
+                //player.ApplyBuff(buffData);
+                break;
+            case ItemType.Skill:
+                //player.currentHealth += amount;
+                break;
         } 
     }
 }

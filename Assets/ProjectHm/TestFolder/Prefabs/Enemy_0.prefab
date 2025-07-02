@@ -239,13 +239,13 @@ MonoBehaviour:
     jumpPower: 2
   currentHealth: 0
   animator: {fileID: 0}
+  curTarget: {fileID: 0}
   isDamage: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 8598645025410786670}
   groundCheckRadius: 0.2
-  stunDuration: 1
 --- !u!114 &8020366493384832207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,3 +263,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 49bbf9e5aa825cf4ab40f5f3e75f58fe, type: 2}
   - {fileID: 11400000, guid: d06b7a5c2c5c52f479ebee2f0f3ca8de, type: 2}
   - {fileID: 11400000, guid: 81bef95fc862aa84c9e251b2458093e8, type: 2}
+  - {fileID: 11400000, guid: 98b9c44dcdcfde143a48020fc6137f71, type: 2}
+  - {fileID: 11400000, guid: 7e4eed5c00696ac4bbcf310bd774e254, type: 2}

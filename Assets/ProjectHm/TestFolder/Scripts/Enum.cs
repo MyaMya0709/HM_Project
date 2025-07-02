@@ -2,8 +2,9 @@ using UnityEngine;
 
 public enum ItemType
 {
+    Exp,
     Gold,
     Heart,
     Buff,
-    Exp
+    Skill
 }
