@@ -162,7 +162,6 @@ MonoBehaviour:
     attackPower: 10
     attackSpeed: 10
     jumpPower: 20
-  currentHealth: 0
   animator: {fileID: 0}
   curGold: 0
   curExp: 0
@@ -200,10 +199,8 @@ MonoBehaviour:
   attackDelay: 0.6
   lastAttackTime: 0
   chargingStart: 0
-  chargeTimeLevel1: 1
-  chargeTimeLevel2: 1.5
-  chargeTimeLevel3: 2
-  chargingLevel: 0
+  holdTime: 0
+  chargingTime: 0.5
   lastJumpTapTime: -1
   lastDashTapTime: -1
   lastDownTapTime: -1
@@ -594,6 +591,10 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+      propertyPath: airborneForce
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: DashAtkStunDur
       value: 0.25
       objectReference: {fileID: 0}
@@ -608,6 +609,10 @@ PrefabInstance:
     - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: effectDatas.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+      propertyPath: effectData.Airborne.valueA
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: effectDatas.Array.data[0].effectTarget

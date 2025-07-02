@@ -21,7 +21,7 @@ public class LootableItem : MonoBehaviour, ILootable
                 player.curExp += amount;
                 break;
             case ItemType.Heart:
-                player.currentHealth += amount;
+                //player.currentHealth += amount;
                 break;
             case ItemType.Buff:
                 //player.ApplyBuff(buffData);

@@ -17,6 +17,11 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     public float DownAtkStunDur = 1f;
     public float DashAtkStunDur = 1f;
 
+    public float chargeTimeLevel1 = 0.5f;         // 차징 1단계 시간
+    public float chargeTimeLevel2 = 1.0f;         // 차징 2단계 시간
+    public float chargeTimeLevel3 = 1.5f;         // 차징 3단계 시간
+    public int chargeLevel;                     // 차징 단계
+
     [Header("Weapon Effect Check")]
     public bool mutipleAttack = false;
     public bool isStun = true;
@@ -80,9 +85,24 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         }
     }
 
-    public void ChargingAttack(int chargeLevel)
+    public void ChargingLevel()
+    {
+        // 차징 단계 확인
+        if (playerController.holdTime >= chargeTimeLevel3) chargeLevel = 3;
+        else if (playerController.holdTime >= chargeTimeLevel2) chargeLevel = 2;
+        else if (playerController.holdTime >= chargeTimeLevel1) chargeLevel = 1;
+        else chargeLevel = 0;
+        Debug.Log($"Hold: {playerController.holdTime:F2}s → Level {chargeLevel}");
+    }
+
+    public void ChargingAttack()
     {
         Debug.Log("ChargingAttack");
+
+        ChargingLevel();
+        effectData.damage *= chargeLevel;
+        effectData.Airborne.onoff = true;
+        effectData.Airborne.valueA *= chargeLevel;
 
         Vector2 size = new Vector2(0.1f, 1f);                        // 날려보낼 박스 크기
         Vector2 origin = attackPoint.position;                       // 출발점
@@ -96,13 +116,17 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         {
             if (hit.collider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
             {
-                enemy.TakeDamage(damage * chargeLevel);
-                StartCoroutine(enemy.Airborne(airborneForce * chargeLevel));
+                enemy.TakeDamage(effectData,playerController);
             }
         }
 
         // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
         DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f * chargeLevel), new Vector2(attackRange * chargeLevel, 1.0f), Color.red, 3f);
+
+        effectData.damage /= chargeLevel;
+        effectData.Airborne.onoff = false;
+        effectData.Airborne.valueA /= chargeLevel;
+        chargeLevel = 0;
 
         // 디버그용 로그
         Debug.Log($"Attack hit {hits.Length} enemies.");
