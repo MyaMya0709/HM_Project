@@ -6,8 +6,12 @@ using UnityEngine.InputSystem.Interactions;
 using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : UnitBase
+public class PlayerController : MonoBehaviour
 {
+    [Header("Stats")]
+    public UnitStats stats;
+    public Animator animator;
+
     public int curGold = 0;
     public float curExp = 0;
     public float curBuff = 0f;
@@ -69,23 +73,20 @@ public class PlayerController : UnitBase
     public float lootingRadius = 10f;             // 루팅 가능 거리
     public float lootingSpeed = 15f;              // 루팅 속도
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         currentWeapon = GetComponentInChildren<IWeapon>();
     }
 
     private void Update()
     {
-        if (IsDead) return;
         IsLooting();
     }
 
     private void FixedUpdate()
     {
-        if (IsDead) return;
-
         if (isJumpDash) return; // 슈퍼 점프 중에는 다른 물리 계산 안 함
 
         if (isDashing) return;
