@@ -19,7 +19,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     public float chargeTimeLevel1 = 0.5f;         // Â÷Â¡ 1´Ü°è ½Ã°£
     public float chargeTimeLevel2 = 1.0f;         // Â÷Â¡ 2´Ü°è ½Ã°£
     public float chargeTimeLevel3 = 1.5f;         // Â÷Â¡ 3´Ü°è ½Ã°£
-    public int chargeLevel;                       // Â÷Â¡ ´Ü°è
+    public int chargeLevel = 0;                       // Â÷Â¡ ´Ü°è
 
     [Header("Weapon Effect Check")]
     public bool mutipleAttack = false;
@@ -89,8 +89,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         // Â÷Â¡ ´Ü°è È®ÀÎ
         if (playerController.holdTime >= chargeTimeLevel3) chargeLevel = 3;
         else if (playerController.holdTime >= chargeTimeLevel2) chargeLevel = 2;
-        else if (playerController.holdTime >= chargeTimeLevel1) chargeLevel = 1;
-        else chargeLevel = 0;
+        else chargeLevel = 1;
         Debug.Log($"Hold: {playerController.holdTime:F2}s ¡æ Level {chargeLevel}");
     }
 

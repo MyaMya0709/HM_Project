@@ -10,7 +10,7 @@ public class BaseEnemy : MonoBehaviour
     public float currentHealth;
 
     public Animator animator;
-    public Transform Target;
+    public Transform target;
     private Rigidbody2D rb;
     public bool isDamage = false;
     public LayerMask groundLayer;
@@ -26,13 +26,15 @@ public class BaseEnemy : MonoBehaviour
         currentHealth = enemyData.maxHealth;
         GameObject baseObj = GameObject.FindWithTag("Base");
         if (baseObj != null)
-            Target = baseObj.GetComponent<Transform>();
+            //target = baseObj.GetComponent<Transform>();
+            target = baseObj.transform.Find("BaseCore/AttackPoint");
+            //target = baseObj.GetComponentInChildren<SpriteRenderer>().GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        if (isDead || Target == null) return;
+        if (isDead || target == null) return;
     }
     private void FixedUpdate()
     {
@@ -40,7 +42,7 @@ public class BaseEnemy : MonoBehaviour
 
         //OnMove();
 
-        if (!isDead && Target != null && !isDamage)
+        if (!isDead && target != null && !isDamage)
         {
             OnMove();
         }
@@ -52,12 +54,12 @@ public class BaseEnemy : MonoBehaviour
         if (enemyData.MoveType == EnemyMoveType.Ground)
         {
             // 기지를 향해 이동
-            Vector2 dir = (Target.position - transform.position).normalized;
+            Vector2 dir = (target.position - transform.position).normalized;
             rb.linearVelocity = new Vector2(dir.x * enemyData.moveSpeed, rb.linearVelocity.y);
         }
         else
         {
-            Vector2 dir = (Target.position - transform.position).normalized;
+            Vector2 dir = (target.position - transform.position).normalized;
             rb.linearVelocity = new Vector2(dir.x * enemyData.moveSpeed, dir.y * enemyData.moveSpeed);
         }
 
@@ -117,8 +119,8 @@ public class BaseEnemy : MonoBehaviour
         Vector2 targetPos = basePos + knockbackDirection * knockbackDistance;
 
         // 타겟 초기화로 이동 중지
-        Transform saveTar = Target;
-        Target = null;
+        Transform saveTar = target;
+        target = null;
 
         //float originalGravity = rb.gravityScale;
         //rb.gravityScale = 0f;
@@ -146,7 +148,7 @@ public class BaseEnemy : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
 
         // 다시 이동
-        Target = saveTar;
+        target = saveTar;
     }
 
     public IEnumerator TakeStun(float stunDuration)
@@ -160,8 +162,8 @@ public class BaseEnemy : MonoBehaviour
     public IEnumerator Airborne(float airborneForce)
     {
         // 타겟 초기화로 이동 중지
-        Transform saveTar = Target;
-        Target = null;
+        Transform saveTar = target;
+        target = null;
 
         // 운동량 0
         rb.linearVelocity = Vector2.zero;
@@ -173,7 +175,7 @@ public class BaseEnemy : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(() => (IsGrounded()));
 
-        Target = saveTar;
+        target = saveTar;
     }
 
     public bool IsGrounded()
@@ -195,7 +197,7 @@ public class BaseEnemy : MonoBehaviour
     public void AttackBase(BaseCore baseCore)
     {
         baseCore.TakeDamage(enemyData.attackPower);
-        Target = null;
+        target = null;
         Dead();
     }
 
