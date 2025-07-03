@@ -3,15 +3,14 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class BaseEnemy : MonoBehaviour
 {
     [Header("Stats")]
-    public UnitStats stats;
-
+    public EnemyData enemyData;      // 적의 고정 데이터
     public float currentHealth;
-    public Animator animator;
 
-    public Transform curTarget;
+    public Animator animator;
+    public Transform Target;
     private Rigidbody2D rb;
     public bool isDamage = false;
     public LayerMask groundLayer;
@@ -24,16 +23,16 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        currentHealth = stats.maxHealth;
+        currentHealth = enemyData.maxHealth;
         GameObject baseObj = GameObject.FindWithTag("Base");
         if (baseObj != null)
-            curTarget = baseObj.GetComponent<Transform>();
+            Target = baseObj.GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        if (isDead || curTarget == null) return;
+        if (isDead || Target == null) return;
     }
     private void FixedUpdate()
     {
@@ -41,7 +40,7 @@ public class EnemyAI : MonoBehaviour
 
         //OnMove();
 
-        if (!isDead && curTarget != null && !isDamage)
+        if (!isDead && Target != null && !isDamage)
         {
             OnMove();
         }
@@ -50,27 +49,35 @@ public class EnemyAI : MonoBehaviour
     // 물리기반 이동이므로 FixedUpdate에서 사용해야함
     private void OnMove()
     {
-        // 기지를 향해 이동
-        Vector2 dir = (curTarget.position - transform.position).normalized;
-        rb.linearVelocity = new Vector2(dir.x * stats.moveSpeed, rb.linearVelocity.y);
+        if (enemyData.MoveType == EnemyMoveType.Ground)
+        {
+            // 기지를 향해 이동
+            Vector2 dir = (Target.position - transform.position).normalized;
+            rb.linearVelocity = new Vector2(dir.x * enemyData.moveSpeed, rb.linearVelocity.y);
+        }
+        else
+        {
+            Vector2 dir = (Target.position - transform.position).normalized;
+            rb.linearVelocity = new Vector2(dir.x * enemyData.moveSpeed, dir.y * enemyData.moveSpeed);
+        }
 
         //Vector2 dir = ((Vector2)target.position - rb.position).normalized;
-        //Vector2 targetPos = rb.position + dir * stats.moveSpeed * Time.fixedDeltaTime;
+        //Vector2 targetPos = rb.position + dir * monsterData.moveSpeed * Time.fixedDeltaTime;
         //rb.MovePosition(targetPos);
     }
 
-    public void TakeDamage(BaseEffectData effectData, PlayerController player)
+    public void TakeDamage(BaseWeapon WeaponData, Player player)
     {
-        currentHealth -= effectData.damage;
+        currentHealth -= WeaponData.damage;
         if (currentHealth <= 0)
         {
             Dead();
         }
 
-        ApplyEffect(effectData, player);
+        ApplyEffect(WeaponData.effectData, player);
     }
 
-    public void ApplyEffect(BaseEffectData effectData, PlayerController player)
+    public void ApplyEffect(WeaponEffectData effectData, Player player)
     {
         if (effectData.Knockback.onoff) StartCoroutine(Knockback(player.lastLookDirection, effectData.Knockback.valueA));                                        // valueA == Power, valueB, valueC
         if (effectData.Airborne.onoff) StartCoroutine(Airborne(effectData.Airborne.valueA));                                                                     // valueA == Power, valueB, valueC
@@ -81,9 +88,9 @@ public class EnemyAI : MonoBehaviour
 
     public IEnumerator Slow(float amount, float duration)
     {
-        stats.moveSpeed -= amount;
+        enemyData.moveSpeed -= amount;
         yield return new WaitForSeconds(duration);
-        stats.moveSpeed += amount;
+        enemyData.moveSpeed += amount;
     }
 
     public IEnumerator DotDamage(float damage, float duration, float delay)
@@ -110,8 +117,8 @@ public class EnemyAI : MonoBehaviour
         Vector2 targetPos = basePos + knockbackDirection * knockbackDistance;
 
         // 타겟 초기화로 이동 중지
-        Transform saveTar = curTarget;
-        curTarget = null;
+        Transform saveTar = Target;
+        Target = null;
 
         //float originalGravity = rb.gravityScale;
         //rb.gravityScale = 0f;
@@ -139,7 +146,7 @@ public class EnemyAI : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
 
         // 다시 이동
-        curTarget = saveTar;
+        Target = saveTar;
     }
 
     public IEnumerator TakeStun(float stunDuration)
@@ -153,8 +160,8 @@ public class EnemyAI : MonoBehaviour
     public IEnumerator Airborne(float airborneForce)
     {
         // 타겟 초기화로 이동 중지
-        Transform saveTar = curTarget;
-        curTarget = null;
+        Transform saveTar = Target;
+        Target = null;
 
         // 운동량 0
         rb.linearVelocity = Vector2.zero;
@@ -166,7 +173,7 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(() => (IsGrounded()));
 
-        curTarget = saveTar;
+        Target = saveTar;
     }
 
     public bool IsGrounded()
@@ -187,9 +194,8 @@ public class EnemyAI : MonoBehaviour
 
     public void AttackBase(BaseCore baseCore)
     {
-
-        baseCore.TakeDamage(stats.attackPower);
-        curTarget = null;
+        baseCore.TakeDamage(enemyData.attackPower);
+        Target = null;
         Dead();
     }
 

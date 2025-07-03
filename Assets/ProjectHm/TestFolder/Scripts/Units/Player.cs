@@ -6,10 +6,13 @@ using UnityEngine.InputSystem.Interactions;
 using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour
+public class Player : MonoBehaviour
 {
     [Header("Stats")]
-    public UnitStats stats;
+    public float maxHealth = 10f;
+    public float moveSpeed = 6f;
+    public float attackPower = 10f;
+    public float attackSpeed = 10f;
     public Animator animator;
 
     public int curGold = 0;
@@ -30,9 +33,9 @@ public class PlayerController : MonoBehaviour
     public bool isDashAttack = false;
 
     [Header("Desh")]
-    public float dashPower = 10f;
-    public float dashCooldown = 0.05f;
-    public float dashDistance = 20f;
+    public float dashPower = 80f;
+    public float dashCooldown = 0.15f;
+    public float dashDistance = 4f;
     public Vector2 dashDirection;
     public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
     public LayerMask obstacle;                        // 장애물 레이어
@@ -40,18 +43,18 @@ public class PlayerController : MonoBehaviour
     public Vector2 targetPos;
 
     [Header("Jump")]
-    public float jumpForce = 5;
-    public float jumpPower = 10f;
+    public float jumpForce = 50f;
+    public float superJumpForce = 100f;
     public LayerMask groundLayer;
     public Transform groundCheck;
-    public float jumpDistance = 20f;
+    public float jumpDistance = 7f;
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
 
     [Header("Attack")]
-    public float rebound = 3f;
+    public float rebound = 4.5f;
     public int attackCount = 0;                   // 공중 공격 횟수
-    public float attackDelay = 0.5f;              // 공중공격 4회 이후 딜레이
+    public float attackDelay = 0.6f;              // 공중공격 4회 이후 딜레이
     public float lastAttackTime;                  // 4번째 공중공격 시간
     public float chargingStart;                   // 차징 시작 시간
     public float holdTime;                        // 차징을 하고 있던 시간
@@ -69,7 +72,7 @@ public class PlayerController : MonoBehaviour
     public Transform lootingArea;                 // 루팅 기준점
     public LayerMask lootingItem;                 // 루팅 가능한 아이템 레이어
     public float lootingRadius = 10f;             // 루팅 가능 거리
-    public float lootingSpeed = 15f;              // 루팅 속도
+    public float lootingSpeed = 30f;              // 루팅 속도
 
     protected void Awake()
     {
@@ -93,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
         if (isMove)
         {
-            rb.linearVelocity = new Vector2(moveInput.x * stats.moveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
 
     }
@@ -265,7 +268,7 @@ public class PlayerController : MonoBehaviour
             //rb.linearVelocity = dashDirection * dashPower;
             //yield return null; // 매 프레임 유지
 
-            Vector2 next = Vector2.MoveTowards(rb.position, tarPos, jumpPower * Time.fixedDeltaTime);
+            Vector2 next = Vector2.MoveTowards(rb.position, tarPos, superJumpForce * Time.fixedDeltaTime);
             rb.MovePosition(next);
             yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
         }

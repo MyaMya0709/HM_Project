@@ -17,4 +17,4 @@ MonoBehaviour:
   itemDescription: Heart
   itemAmount: 10
   dropChance: 30
-  itemType: 1
+  itemType: 2

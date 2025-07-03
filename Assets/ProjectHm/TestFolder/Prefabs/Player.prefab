@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4198897976886587706}
   - component: {fileID: 8393082947183156615}
   - component: {fileID: 3138146781985745870}
-  - component: {fileID: 766395784077421969}
+  - component: {fileID: 6092559828127166950}
   - component: {fileID: 2157225018441802832}
   - component: {fileID: 23051672303801446}
   m_Layer: 8
@@ -144,7 +144,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &766395784077421969
+--- !u!114 &6092559828127166950
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,15 +153,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1346517936567723325}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ad5ac3d3e9e1bf4a84394385eeaa6d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b9e746f64097ef4b8e8e8d6d5974ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats:
-    maxHealth: 10
-    moveSpeed: 6
-    attackPower: 10
-    attackSpeed: 10
-    jumpPower: 20
+  maxHealth: 10
+  moveSpeed: 6
+  attackPower: 10
+  attackSpeed: 10
   animator: {fileID: 0}
   curGold: 0
   curExp: 0
@@ -174,7 +172,7 @@ MonoBehaviour:
   isJumpDash: 0
   isAbleAttack: 1
   isCharging: 0
-  isDashAttack: 1
+  isDashAttack: 0
   dashPower: 80
   dashCooldown: 0.15
   dashDistance: 4
@@ -186,7 +184,7 @@ MonoBehaviour:
   basePos: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
   jumpForce: 50
-  jumpPower: 100
+  superJumpForce: 100
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -240,8 +238,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 766395784077421969}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 6092559828127166950}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -256,8 +254,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 766395784077421969}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 6092559828127166950}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
@@ -272,8 +270,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Jump[/Keyboard/w]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 766395784077421969}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 6092559828127166950}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
@@ -288,8 +286,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Attack[/Keyboard/x]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 766395784077421969}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 6092559828127166950}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnDownAttack
         m_Mode: 0
         m_Arguments:

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface ILootable
 {
-    void OnLooted(PlayerController Player);
+    void OnLooted(Player Player);
 }
 
 public class LootableItem : MonoBehaviour, ILootable
@@ -10,7 +10,7 @@ public class LootableItem : MonoBehaviour, ILootable
     public ItemType ItemType;
     public float amount;
     //public BuffData buffData;
-    public void OnLooted(PlayerController player)
+    public void OnLooted(Player player)
     {
         switch (ItemType)
         {

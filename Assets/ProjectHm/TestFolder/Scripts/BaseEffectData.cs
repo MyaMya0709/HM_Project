@@ -10,18 +10,17 @@ using UnityEngine;
 //}
 
 [System.Serializable]
-public class BaseEffectData
+public class WeaponEffectData
 {
-    public int damage;
-    public EffectData Knockback;
-    public EffectData Airborne;
-    public EffectData Stun;
-    public EffectData Slow;
-    public EffectData DotDamage;
+    public BaseEffectData Knockback;
+    public BaseEffectData Airborne;
+    public BaseEffectData Stun;
+    public BaseEffectData Slow;
+    public BaseEffectData DotDamage;
 }
 
 [System.Serializable]
-public class EffectData
+public class BaseEffectData
 {
     public bool onoff;
     public float valueA;

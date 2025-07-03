@@ -8,3 +8,9 @@ public enum ItemType
     Buff,
     Skill
 }
+
+public enum EnemyMoveType
+{
+    Ground,
+    Sky
+}

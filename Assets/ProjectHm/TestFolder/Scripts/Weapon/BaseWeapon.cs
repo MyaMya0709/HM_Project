@@ -5,22 +5,21 @@ using UnityEngine.Timeline;
 
 public class BaseWeapon : MonoBehaviour, IWeapon
 {
-    public BaseEffectData effectData;
+    public WeaponEffectData effectData;
 
     [Header("Attack Settings")]
     public float damage = 10f;
     public float attackRange = 1.2f;
     public Transform attackPoint;
     public LayerMask enemyLayer;
-    public float airborneForce = 5f;
-    public float AttackStunDur = 1f;
-    public float DownAtkStunDur = 1f;
-    public float DashAtkStunDur = 1f;
+    public float AttackStunDur = 0.1f;
+    public float DownAtkStunDur = 0.25f;
+    public float DashAtkStunDur = 0.25f;
 
     public float chargeTimeLevel1 = 0.5f;         // 차징 1단계 시간
     public float chargeTimeLevel2 = 1.0f;         // 차징 2단계 시간
     public float chargeTimeLevel3 = 1.5f;         // 차징 3단계 시간
-    public int chargeLevel;                     // 차징 단계
+    public int chargeLevel;                       // 차징 단계
 
     [Header("Weapon Effect Check")]
     public bool mutipleAttack = false;
@@ -29,14 +28,14 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     [Header("Effects")]
     public GameObject hitEffect;
 
-    public PlayerController playerController;
+    public Player playerController;
     public SpriteRenderer sr;
     public bool facingRight = true;
 
 
     private void Start()
     {
-        playerController = GetComponentInParent< PlayerController>();
+        playerController = GetComponentInParent< Player>();
         enemyLayer = LayerMask.GetMask("Enemy");
         sr = GetComponentInChildren<SpriteRenderer>();
     }
@@ -73,10 +72,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
         foreach (var enemyCollider in hitEnemies)
         {
-            if (enemyCollider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+            if (enemyCollider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
                 Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                enemy.TakeDamage(effectData, playerController);
+                enemy.TakeDamage(this, playerController);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DownAtkStunDur));
@@ -100,7 +99,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Debug.Log("ChargingAttack");
 
         ChargingLevel();
-        effectData.damage *= chargeLevel;
+        damage *= chargeLevel;
         effectData.Airborne.onoff = true;
         effectData.Airborne.valueA *= chargeLevel;
 
@@ -114,16 +113,16 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         // 데미지 부여
         foreach (var hit in hits)
         {
-            if (hit.collider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+            if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(effectData,playerController);
+                enemy.TakeDamage(this, playerController);
             }
         }
 
         // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
         DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f * chargeLevel), new Vector2(attackRange * chargeLevel, 1.0f), Color.red, 3f);
 
-        effectData.damage /= chargeLevel;
+        damage /= chargeLevel;
         effectData.Airborne.onoff = false;
         effectData.Airborne.valueA /= chargeLevel;
         chargeLevel = 0;
@@ -145,9 +144,9 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         foreach (Collider2D hit in hits)
         {
             // 접근 가능 여부 판단
-            if (hit.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+            if (hit.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(effectData, playerController);
+                enemy.TakeDamage(this, playerController);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DashAtkStunDur));
@@ -170,10 +169,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
         if (hit.collider != null)
         {
-            if (hit.collider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+            if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
                 Debug.Log($"Attack enemies.");
-                enemy.TakeDamage(effectData, playerController);
+                enemy.TakeDamage(this, playerController);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(AttackStunDur));
@@ -186,6 +185,8 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.red);
         }
     }
+
+
 
     public void MutipleAttack()
     {
@@ -204,11 +205,11 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
             if (dot > 0) //0보다 크면 정면
             {
-                if (enemyCollider.TryGetComponent<EnemyAI>(out EnemyAI enemy))
+                if (enemyCollider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
                 {
                     // 디버그용 로그
                     Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                    enemy.TakeDamage(effectData, playerController);
+                    enemy.TakeDamage(this, playerController);
                     if (isStun)
                     {
                         StartCoroutine(enemy.TakeStun(AttackStunDur));

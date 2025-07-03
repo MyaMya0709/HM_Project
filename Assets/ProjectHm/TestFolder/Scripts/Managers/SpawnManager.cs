@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Overlays;
 using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-    public List<WaveData> waves = new();
-    public List<Transform> spawnPoints;
+    public List<WaveData> waves = new();             // WaveData의 리스트로 전체 웨이브 관리
+    public List<Transform> spawnGruondPoints;        // 지상 생성 포인트
+    public List<Transform> spawnSkyPoints;           // 공중 생성 포인트
 
-    //private int maxWave = 0;
+    private int maxWave;
     private int currentWaveIndex = 0;
     private int aliveEnemies = 0;
     private bool isSpawning = false;
@@ -33,6 +35,7 @@ public class SpawnManager : Singleton<SpawnManager>
         //}
 
         //LoadData();
+        maxWave = waves.Count;
         currentWaveIndex = 0;
         spawnCoroutine = StartCoroutine(RunWave(currentWaveIndex));
     }
@@ -55,7 +58,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         isSpawning = true;
 
-        if (waveIndex > waves.Count)
+        if (waveIndex > maxWave)
         {
             //모든 웨이브 종료시 호출 - Invoke(이곳에 함수 입력 예정)
             OnAllWavesCleared?.Invoke();
@@ -72,7 +75,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         for (int i = 0; i < wave.enemyCount; i++)
         {
-            SpawnEnemy(wave.enemyPrefab);
+            SpawnEnemy(wave.spawnEnemyList[Random.Range(0, wave.spawnEnemyList.Length)]);
             yield return new WaitForSeconds(wave.spawnInterval);
 
             // 기지 파괴시 StopCoroutine() 실행
@@ -85,14 +88,24 @@ public class SpawnManager : Singleton<SpawnManager>
         isSpawning = false;
     }
 
-    private void SpawnEnemy(GameObject enemyPrefab)
+    private void SpawnEnemy(EnemyData enemyData)
     {
-        var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
-        GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        Transform spawnPoint;
+        if (enemyData.MoveType == EnemyMoveType.Ground)
+        {
+            spawnPoint = spawnGruondPoints[Random.Range(0, spawnGruondPoints.Count)];
+        }
+        else
+        {
+            spawnPoint = spawnSkyPoints[Random.Range(0, spawnSkyPoints.Count)];
+        }
+
+        GameObject enemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
+        enemy.GetComponent<BaseEnemy>().enemyData = enemyData;
         //aliveEnemies++;
 
         //생성된 enemy가 죽으면 HandleEnemyDeath() 실행
-        enemy.GetComponent<EnemyAI>().OnDeath += HandleEnemyDeath;
+        enemy.GetComponent<BaseEnemy>().OnDeath += HandleEnemyDeath;
     }
 
     private void HandleEnemyDeath()

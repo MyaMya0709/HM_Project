@@ -10,13 +10,4 @@ public class ItemData : ScriptableObject
     public float itemAmount;
     public int dropChance;
     public ItemType itemType;
-
-    public ItemData(string name, string description, float amount, int chance, ItemType type)
-    {
-        itemName = name;
-        itemDescription = description;
-        itemAmount = amount;
-        dropChance = chance;
-        itemType = type;
-    }
 }

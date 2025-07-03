@@ -17,4 +17,4 @@ MonoBehaviour:
   itemDescription: Exp
   itemAmount: 10
   dropChance: 100
-  itemType: 3
+  itemType: 0
