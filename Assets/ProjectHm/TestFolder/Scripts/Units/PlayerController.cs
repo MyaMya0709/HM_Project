@@ -3,10 +3,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : UnitBase
 {
+    public int curGold = 0;
+    public float curExp = 0;
+    public float curBuff = 0f;
+
     public Rigidbody2D rb;
     public Vector2 moveInput;
     public IWeapon currentWeapon;
@@ -26,6 +31,8 @@ public class PlayerController : UnitBase
     public Vector2 dashDirection;
     public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
     public LayerMask obstacle;                        // 장애물 레이어
+    public Vector2 basePos;
+    public Vector2 targetPos;
 
     [Header("Jump")]
     public float jumpForce = 5;
@@ -50,9 +57,20 @@ public class PlayerController : UnitBase
     public float lastDownTapTime = -1f;           // 내려찍기 첫번째 입력 시간
     public float doubleTapThreshold = 0.2f;       // 더블탭으로 인식하는 시간
 
+<<<<<<< HEAD
     public Vector2 basePos;
     public Vector2 targetPos;
 
+=======
+<<<<<<< Updated upstream
+=======
+    [Header("ItemLooting")]
+    public Transform lootingArea;                 // 루팅 기준점
+    public LayerMask lootingItem;                 // 루팅 가능한 아이템 레이어
+    public float lootingRadius = 10f;             // 루팅 가능 거리
+
+>>>>>>> Stashed changes
+>>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
     protected override void Awake()
     {
         base.Awake();
@@ -63,6 +81,7 @@ public class PlayerController : UnitBase
     private void Update()
     {
         if (IsDead) return;
+        IsLooting();
     }
 
     private void FixedUpdate()
@@ -359,5 +378,38 @@ public class PlayerController : UnitBase
     public void EquipWeapon(IWeapon newWeapon)
     {
         currentWeapon = newWeapon;
+    }
+
+    public void IsLooting()
+    {
+        //아이템 감지
+        Collider2D[] items = Physics2D.OverlapCircleAll(lootingArea.position, lootingRadius, lootingItem);
+
+        StartCoroutine(OnLooting(items));
+    }
+
+    public IEnumerator OnLooting(Collider2D[] items)
+    {
+        yield return new WaitForSeconds(1f);
+
+        foreach (Collider2D item in items)
+        {
+            if (item == null) continue;
+
+            // 감지된 아이템 끌어당기기
+            item.transform.position = Vector3.MoveTowards(item.transform.position, transform.position, 10f * Time.deltaTime);
+
+            // 아이템과 플레이어가 가까우면 아이템 습득 및 파괴
+            float distance = Vector2.Distance(item.transform.position, transform.position);
+            if (distance < 0.3f)
+            {
+                LootableItem loot = item.GetComponent<LootableItem>();
+                if (loot != null)
+                {
+                    item.GetComponent<LootableItem>().OnLooted(this);
+                    Destroy(item.gameObject);
+                }
+            }
+        }
     }
 }

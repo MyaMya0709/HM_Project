@@ -15,4 +15,10 @@ MonoBehaviour:
   itemSprite: {fileID: 8291305821292071062, guid: 28a9a7ac12369314c9ffe73a31a7529e, type: 3}
   itemName: Buff
   itemDescription: Buff
+<<<<<<< HEAD
   dropChance: 20
+=======
+  itemAmount: 10
+  dropChance: 20
+  itemType: 2
+>>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)

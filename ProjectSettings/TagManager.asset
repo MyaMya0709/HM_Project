@@ -17,8 +17,8 @@ TagManager:
   - Enemy
   - Player
   - Base
-  - obstacleLayer
-  - 
+  - ObstacleLayer
+  - Item
   - 
   - 
   - 

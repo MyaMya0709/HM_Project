@@ -79,7 +79,7 @@ public class SpawnManager : Singleton<SpawnManager>
         aliveEnemies++;
 
         //생성된 enemy가 죽으면 HandleEnemyDeath() 실행
-        enemy.GetComponent<UnitBase>().OnDeath += HandleEnemyDeath;
+        enemy.GetComponent<EnemyAI>().OnDeath += HandleEnemyDeath;
     }
 
     private void HandleEnemyDeath()

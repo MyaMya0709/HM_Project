@@ -7,8 +7,8 @@ public abstract class UnitBase : MonoBehaviour
     [Header("Stats")]
     public UnitStats stats;
 
-    protected float currentHealth;
-    protected Animator animator;
+    public float currentHealth;
+    public Animator animator;
 
     protected virtual void Awake()
     {

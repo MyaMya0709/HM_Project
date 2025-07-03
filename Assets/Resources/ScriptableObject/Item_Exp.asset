@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c26882ebc4d6f314f848796a86e4ac91, type: 3}
-  m_Name: Item_Gold
+  m_Name: Item_Exp
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: -3988769855312385993, guid: b4cc244e852f7c746b36949a98090936, type: 3}
-  itemName: Gold
-  itemDescription: Gold
-<<<<<<< HEAD
-  dropChance: 100
-=======
+  itemSprite: {fileID: 8291305821292071062, guid: 28a9a7ac12369314c9ffe73a31a7529e, type: 3}
+  itemName: Buff
+  itemDescription: Buff
   itemAmount: 10
-  dropChance: 80
-  itemType: 0
->>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
+  dropChance: 100
+  itemType: 2

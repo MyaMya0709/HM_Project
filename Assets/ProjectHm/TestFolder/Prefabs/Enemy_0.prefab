@@ -205,6 +205,13 @@ MonoBehaviour:
     attackPower: 2
     attackSpeed: 2
     jumpPower: 2
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+  currentHealth: 0
+  animator: {fileID: 0}
+>>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)
 --- !u!114 &8020366493384832207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,4 +228,9 @@ MonoBehaviour:
   ItemList:
   - {fileID: 11400000, guid: 4a359c10584bf2049b11013a0cad0830, type: 2}
   - {fileID: 11400000, guid: 1bad79343a41e7b458a13b693fd42029, type: 2}
+<<<<<<< HEAD
   - {fileID: 11400000, guid: 2aed542ace88ae04385082a93ec4fb16, type: 2}
+=======
+  - {fileID: 11400000, guid: d06b7a5c2c5c52f479ebee2f0f3ca8de, type: 2}
+>>>>>>> Stashed changes
+>>>>>>> 4c7adf8 ([Wip] 오류 복구 임시 저장)

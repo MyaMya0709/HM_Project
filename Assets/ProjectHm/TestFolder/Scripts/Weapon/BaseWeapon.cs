@@ -163,7 +163,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     {
         if (collision.CompareTag("Enemy"))
         {
-            UnitBase unit = collision.GetComponent<UnitBase>();
+            EnemyAI unit = collision.GetComponent<EnemyAI>();
             if (unit != null)
             {
                 unit.TakeDamage(damage);
