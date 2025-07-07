@@ -198,7 +198,7 @@ MonoBehaviour:
   lastAttackTime: 0
   chargingStart: 0
   holdTime: 0
-  chargingTime: 0.5
+  chargingTime: 0.3
   lastJumpTapTime: -1
   lastDashTapTime: -1
   lastDownTapTime: -1
@@ -603,6 +603,14 @@ PrefabInstance:
     - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: knockbackForce
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+      propertyPath: chargeTimeLevel2
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+      propertyPath: chargeTimeLevel3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: effectDatas.Array.size

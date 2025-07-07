@@ -11,6 +11,8 @@ public class SpawnManager : Singleton<SpawnManager>
     public List<Transform> spawnGruondPoints;        // 지상 생성 포인트
     public List<Transform> spawnSkyPoints;           // 공중 생성 포인트
 
+    public Transform attackPoint;
+
     private int maxWave;
     private int currentWaveIndex = 0;
     private int aliveEnemies = 0;
@@ -102,6 +104,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         GameObject enemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
         enemy.GetComponent<BaseEnemy>().enemyData = enemyData;
+        enemy.GetComponent<BaseEnemy>().target = attackPoint;
         //aliveEnemies++;
 
         //생성된 enemy가 죽으면 HandleEnemyDeath() 실행

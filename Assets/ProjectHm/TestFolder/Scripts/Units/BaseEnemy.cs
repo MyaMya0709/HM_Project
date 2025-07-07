@@ -24,11 +24,7 @@ public class BaseEnemy : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         currentHealth = enemyData.maxHealth;
-        GameObject baseObj = GameObject.FindWithTag("Base");
-        if (baseObj != null)
-            //target = baseObj.GetComponent<Transform>();
-            target = baseObj.transform.Find("BaseCore/AttackPoint");
-            //target = baseObj.GetComponentInChildren<SpriteRenderer>().GetComponent<Transform>();
+        //target = GameManager.Instance.baseCore.AttackPoint;
         rb = GetComponent<Rigidbody2D>();
     }
 

@@ -6,6 +6,8 @@ public class BaseCore : MonoBehaviour
     public float maxHealth = 200f;
     public float currentHealth;
 
+    public Transform AttackPoint;
+
     [Header("Effects")]
     public GameObject hitEffect;
 

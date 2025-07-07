@@ -16,10 +16,11 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     public float DownAtkStunDur = 0.25f;
     public float DashAtkStunDur = 0.25f;
 
-    public float chargeTimeLevel1 = 0.5f;         // 차징 1단계 시간
-    public float chargeTimeLevel2 = 1.0f;         // 차징 2단계 시간
-    public float chargeTimeLevel3 = 1.5f;         // 차징 3단계 시간
+    public float chargeTimeLevel2 = 0.6f;         // 차징 2단계 시간
+    public float chargeTimeLevel3 = 1.0f;         // 차징 3단계 시간
     public int chargeLevel = 0;                       // 차징 단계
+
+    public bool isDashAttack = false;
 
     [Header("Weapon Effect Check")]
     public bool mutipleAttack = false;
@@ -132,6 +133,8 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
     public void DashAttack()
     {
+        if (!isDashAttack) return;
+
         Vector2 startPos = playerController.basePos;
         Vector2 endPos = playerController.rb.position;
         Vector2 center = new Vector2 (((startPos + endPos) / 2f).x, attackPoint.position.y);
@@ -163,25 +166,48 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     public void SingleAttack()
     {
         Debug.Log("SingleAttack");
-        //공격 범위에서 보는 방향으로 가까운 적 감지
-        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange, enemyLayer);
+        ////공격 범위에서 보는 방향으로 가까운 적 감지
+        //RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, playerController.lastLookDirection, attackRange, enemyLayer);
 
+        //if (hit.collider != null)
+        //{
+        //    if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
+        //    {
+        //        Debug.Log($"Attack enemies.");
+        //        enemy.TakeDamage(this, playerController);
+        //        if (isStun)
+        //        {
+        //            StartCoroutine(enemy.TakeStun(AttackStunDur));
+        //        }
+        //    }
+        //    DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.green);
+        //}
+        //else
+        //{
+        //    DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.red);
+        //}
+
+        Vector2 size = new Vector2(0.1f, 1f);                        // 날려보낼 박스 크기
+        Vector2 origin = attackPoint.position;                       // 출발점
+        Vector2 direction = playerController.lastLookDirection;      // 방향
+
+        // 공격 범위 내의 적 감지
+        RaycastHit2D hit = Physics2D.BoxCast(origin, size, 0f, direction, attackRange, enemyLayer);
+
+        // 데미지 부여
         if (hit.collider != null)
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                Debug.Log($"Attack enemies.");
                 enemy.TakeDamage(this, playerController);
-                if (isStun)
-                {
-                    StartCoroutine(enemy.TakeStun(AttackStunDur));
-                }
+                // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
+                DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f), new Vector2(attackRange, 1.0f), Color.green, 3f);
             }
-            DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.green);
         }
         else
         {
-            DrawSingleLine(attackPoint.position, playerController.lastLookDirection, 3f, Color.red);
+            // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
+            DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f), new Vector2(attackRange, 1.0f), Color.red, 3f);
         }
     }
 

@@ -30,7 +30,6 @@ public class Player : MonoBehaviour
     public bool isJumpDash = false;
     public bool isAbleAttack = true;
     public bool isCharging = false;
-    public bool isDashAttack = false;
 
     [Header("Desh")]
     public float dashPower = 80f;
@@ -58,7 +57,7 @@ public class Player : MonoBehaviour
     public float lastAttackTime;                  // 4번째 공중공격 시간
     public float chargingStart;                   // 차징 시작 시간
     public float holdTime;                        // 차징을 하고 있던 시간
-    public float chargingTime = 0.5f;             // 차징 시간
+    public float chargingTime = 0.3f;             // 차징 시간
 
     [Header("DoubleTap")]
     public float lastJumpTapTime = -1f;           // 슈퍼 점프 첫번째 입력 시간
@@ -201,10 +200,9 @@ public class Player : MonoBehaviour
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
-        if (isDashAttack)
-        {
-            currentWeapon.DashAttack();
-        }
+
+        currentWeapon.DashAttack();
+
 
         isDashing = false;
 
