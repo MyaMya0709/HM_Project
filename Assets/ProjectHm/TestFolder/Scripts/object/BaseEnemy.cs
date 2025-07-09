@@ -11,7 +11,12 @@ public class BaseEnemy : MonoBehaviour
 
     public Animator animator;
     public Transform target;
-    private Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private GameObject damagePopupPrefab;
+    [SerializeField] private Vector3 headOffset = new Vector3(0, 0.3f, 0);
+    [SerializeField] private Vector2 PopupPos;
+
     public bool isDamage = false;
     public LayerMask groundLayer;
     public Transform groundCheck;
@@ -26,6 +31,7 @@ public class BaseEnemy : MonoBehaviour
         currentHealth = enemyData.maxHealth;
         //target = GameManager.Instance.baseCore.AttackPoint;
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Update()
@@ -73,6 +79,21 @@ public class BaseEnemy : MonoBehaviour
         }
 
         ApplyEffect(WeaponData.effectData, player);
+
+        SpawnDamagePopup((int)WeaponData.damage);
+    }
+
+    public void SpawnDamagePopup(int damage)
+    {
+        Bounds b = sr.bounds;
+        Vector3 topCenter = new Vector3(b.center.x, b.max.y, b.center.z);
+        PopupPos = topCenter + headOffset;
+
+        var pop = Instantiate(damagePopupPrefab, transform);
+        pop.transform.localPosition = PopupPos;
+        pop.GetComponent<DamagePopup>().Setup(damage);
+
+        //SpawnsDamagePopups.Instance.DamageDone(damage, transform.position, false);
     }
 
     public void ApplyEffect(WeaponEffectData effectData, Player player)

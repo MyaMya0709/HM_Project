@@ -143,15 +143,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c616ac028e20a0498516c97b6686e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats:
-    maxHealth: 30
-    moveSpeed: 1
-    attackPower: 2
-    attackSpeed: 2
-    jumpPower: 2
+  enemyData: {fileID: 0}
   currentHealth: 0
   animator: {fileID: 0}
-  Target: {fileID: 0}
+  target: {fileID: 0}
+  damagePopupPrefab: {fileID: 5854912545000051756, guid: e8d641850e1d37345b0600a7938985f6, type: 3}
+  headOffset: {x: 0, y: 0.3, z: 0}
+  PopupPos: {x: 0, y: 0}
   isDamage: 0
   groundLayer:
     serializedVersion: 2

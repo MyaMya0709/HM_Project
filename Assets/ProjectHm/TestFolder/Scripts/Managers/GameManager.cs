@@ -4,6 +4,7 @@ public class GameManager : Singleton<GameManager>
 {
     public bool isGameOver = false;
     public BaseCore baseCore;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
