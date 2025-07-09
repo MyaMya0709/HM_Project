@@ -18,3 +18,4 @@ MonoBehaviour:
   maxHealth: 30
   moveSpeed: 1
   attackPower: 2
+  SpawnCost: 2
