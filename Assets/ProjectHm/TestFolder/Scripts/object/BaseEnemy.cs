@@ -87,10 +87,9 @@ public class BaseEnemy : MonoBehaviour
     {
         Bounds b = sr.bounds;
         Vector3 topCenter = new Vector3(b.center.x, b.max.y, b.center.z);
-        PopupPos = topCenter + headOffset;
+        Vector3 spawnPos = topCenter + headOffset;
 
-        var pop = Instantiate(damagePopupPrefab, transform);
-        pop.transform.localPosition = PopupPos;
+        var pop = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
         pop.GetComponent<DamagePopup>().Setup(damage);
 
         //SpawnsDamagePopups.Instance.DamageDone(damage, transform.position, false);
