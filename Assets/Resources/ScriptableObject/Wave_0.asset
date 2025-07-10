@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9364f5d16d26745439d1d5a1359b2331, type: 3}
   m_Name: Wave_0
   m_EditorClassIdentifier: 
-  enemyPrefabs:
-  - {fileID: 8684842619354825708, guid: af531c05051ee1d45bb376fbcbfb1812, type: 3}
-  - {fileID: 8684842619354825708, guid: 52f1de8ea11142b4ead3d3707251e706, type: 3}
   spawnEnemyList:
   - {fileID: 11400000, guid: 4eda53436f6d6f949b6360a0b129a4cd, type: 2}
   - {fileID: 11400000, guid: f5134004a17c99b42a27ed003e0280f9, type: 2}

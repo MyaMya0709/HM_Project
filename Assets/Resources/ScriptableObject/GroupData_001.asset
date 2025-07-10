@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fa5dd5c54b7d48419d618d1132f2d72, type: 3}
-  m_Name: Enemy_01
+  m_Script: {fileID: 11500000, guid: 9e242ce3cebf06d4c8d951d58abed98d, type: 3}
+  m_Name: GroupData_001
   m_EditorClassIdentifier: 
-  enemyName: Bat
-  MoveType: 1
-  enemyPrefab: {fileID: 8684842619354825708, guid: 52f1de8ea11142b4ead3d3707251e706, type: 3}
-  maxHealth: 30
-  moveSpeed: 1
-  attackPower: 2
-  SpawnCost: 2
+  spawnList: []
+  groupCost: 3

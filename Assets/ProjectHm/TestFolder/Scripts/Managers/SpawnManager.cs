@@ -7,13 +7,16 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-    public List<WaveData> waves = new();             // WaveData의 리스트로 전체 웨이브 관리
+    public List<WaveData2> waves2;
+    public List<SpawnData> spawnDataList;
+
     public List<Transform> spawnGruondPoints;        // 지상 생성 포인트
     public List<Transform> spawnSkyPoints;           // 공중 생성 포인트
 
     public Transform attackPoint;
 
     private int maxWave;
+    public float waveDelay = 10f;
     private int currentWaveIndex = 0;
     private int aliveEnemies = 0;
     private bool isSpawning = false;
@@ -37,7 +40,11 @@ public class SpawnManager : Singleton<SpawnManager>
         //}
 
         //LoadData();
-        maxWave = waves.Count;
+
+        waves2 = StageManager.Instance.waveList;
+
+
+        maxWave = waves2.Count;
         currentWaveIndex = 0;
         spawnCoroutine = StartCoroutine(RunWave(currentWaveIndex));
     }
@@ -60,6 +67,8 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         isSpawning = true;
 
+        yield return new WaitForSeconds(waveDelay);
+
         if (waveIndex > maxWave)
         {
             //모든 웨이브 종료시 호출 - Invoke(이곳에 함수 입력 예정)
@@ -68,17 +77,37 @@ public class SpawnManager : Singleton<SpawnManager>
         }
 
         // 현재 웨이브에 해당하는 웨이브 데이터 호출
-        WaveData wave = waves[waveIndex];
+        WaveData2 wave = new WaveData2()
+        {
+            groupList = new List<GroupData>()
+        };
+
+        wave = waves2[waveIndex];
 
         // 웨이브의 전체 적 수량 저장
-        aliveEnemies = wave.enemyCount;
+        for (int i = 0; i < wave.groupList.Count; i++)
+        {
+            Debug.Log(wave.groupList.Count);
+            aliveEnemies += wave.groupList[i].spawnList.Count;
+        }
 
         OnWaveStarted?.Invoke(waveIndex + 1);
 
-        for (int i = 0; i < wave.enemyCount; i++)
+        foreach (GroupData groupList in wave.groupList)
         {
-            SpawnEnemy(wave.spawnEnemyList[Random.Range(0, wave.spawnEnemyList.Length)]);
-            yield return new WaitForSeconds(wave.spawnInterval);
+            if (groupList != null)
+            {
+                for (int i = 0; i < groupList.spawnList.Count; i++)
+                {
+                    spawnDataList.Add(groupList.spawnList[i]);
+                }
+            }
+        }
+
+        for (int i = 0; i < spawnDataList.Count; i++)
+        {
+            SpawnEnemy(spawnDataList[i].enemyData);
+            yield return new WaitForSeconds(spawnDataList[i].spawnDelay);
 
             // 기지 파괴시 StopCoroutine() 실행
             if (GameManager.Instance.isGameOver == true)
@@ -111,6 +140,7 @@ public class SpawnManager : Singleton<SpawnManager>
         enemy.GetComponent<BaseEnemy>().OnDeath += HandleEnemyDeath;
     }
 
+    // 남아있는 적의 수 == 0 / 다음 웨이브 시작
     private void HandleEnemyDeath()
     {
         aliveEnemies--;
