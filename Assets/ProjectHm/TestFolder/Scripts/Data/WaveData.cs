@@ -1,9 +1,6 @@
-using UnityEngine;
+using System.Collections.Generic;
 
-[CreateAssetMenu(menuName = "Data/Wave")]
-public class WaveData : ScriptableObject
+public class WaveData
 {
-    public EnemyData[] spawnEnemyList;   // 적의 종류
-    public int enemyCount = 9999;
-    public float spawnInterval = 1f;
+    public List<GroupData> groupList;
 }

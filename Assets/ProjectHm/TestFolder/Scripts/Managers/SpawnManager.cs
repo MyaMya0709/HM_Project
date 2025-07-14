@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-    public List<WaveData2> waves2;
+    public List<WaveData> waves;
     public List<SpawnData> spawnDataList;
 
     public List<Transform> spawnGruondPoints;        // 지상 생성 포인트
@@ -28,46 +28,22 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public void StartWaves()
     {
-        ////Spawner들을 묶어놓은 오브젝트의 Tranform 탐색
-        //Transform parentsPoint = GameObject.Find("EnemySpawner").transform;
-        //if (parentsPoint != null)
-        //{
-        //    // 부모 아래의 자식 Transform들을 순회
-        //    foreach (Transform child in parentsPoint)
-        //    {
-        //        spawnPoints.Add(child);
-        //    }
-        //}
+        waves = StageManager.Instance.waveList;
 
-        //LoadData();
-
-        waves2 = StageManager.Instance.waveList;
-
-
-        maxWave = waves2.Count;
+        maxWave = waves.Count;
         currentWaveIndex = 0;
         spawnCoroutine = StartCoroutine(RunWave(currentWaveIndex));
     }
 
-    //public void LoadData()
-    //{
-    //    for (int i = 0; i <= maxWave; i++)
-    //    {
-    //        WaveData curWave = Resources.Load<WaveData>($"ScriptableObject/Wave_{currentWaveIndex}");
-    //        if (curWave == null)
-    //        {
-    //            Debug.LogWarning("Resources 폴더에 'WaveData.asset'이 없습니다.");
-    //            return;
-    //        }
-    //        waves.Add(curWave);
-    //    }
-    //}
-
+    // wave 시작
     private IEnumerator RunWave(int waveIndex)
     {
         isSpawning = true;
 
-        yield return new WaitForSeconds(waveDelay);
+        if (waveIndex == 0)
+            yield return new WaitForSeconds(1f);
+        else
+            yield return new WaitForSeconds(waveDelay);
 
         if (waveIndex > maxWave)
         {
@@ -77,30 +53,34 @@ public class SpawnManager : Singleton<SpawnManager>
         }
 
         // 현재 웨이브에 해당하는 웨이브 데이터 호출
-        WaveData2 wave = new WaveData2()
+        WaveData wave = new WaveData()
         {
             groupList = new List<GroupData>()
         };
-
-        wave = waves2[waveIndex];
+        wave = waves[waveIndex];
 
         // 웨이브의 전체 적 수량 저장
         for (int i = 0; i < wave.groupList.Count; i++)
         {
-            Debug.Log(wave.groupList.Count);
             aliveEnemies += wave.groupList[i].spawnList.Count;
         }
+        Debug.Log(aliveEnemies);
 
         OnWaveStarted?.Invoke(waveIndex + 1);
 
-        foreach (GroupData groupList in wave.groupList)
+        foreach (GroupData waveGroup in wave.groupList)
         {
-            if (groupList != null)
+            if (waveGroup != null)
             {
-                for (int i = 0; i < groupList.spawnList.Count; i++)
+                for (int i = 0; i < waveGroup.spawnList.Count; i++)
                 {
-                    spawnDataList.Add(groupList.spawnList[i]);
+                    spawnDataList.Add(waveGroup.spawnList[i]);
                 }
+                Debug.Log($"spawnDataList Add Data, listCount : {spawnDataList.Count}");
+            }
+            else
+            {
+                Debug.Log("waveGroup is null");
             }
         }
 
@@ -119,6 +99,7 @@ public class SpawnManager : Singleton<SpawnManager>
         isSpawning = false;
     }
 
+    // 적 실체화 및 적의 숫자 계산
     private void SpawnEnemy(EnemyData enemyData)
     {
         Transform spawnPoint;

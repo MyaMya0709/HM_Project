@@ -9,10 +9,12 @@ public class StageManager : Singleton<StageManager>
 {
     public StageData data;
 
+    // Stage별 GroupList
+    public List<StageGroupPool> stageGroupList;
     // 전체 GroupData의 배열
-    public GroupData[] stageGroupList;
+    public List<GroupData> GroupList;
 
-    public List<WaveData2> waveList = new();
+    public List<WaveData> waveList = new();
     public List<int> waveCostList;
 
 
@@ -20,29 +22,25 @@ public class StageManager : Singleton<StageManager>
     protected override void Awake()
     {
         base.Awake();
-
-        LoadGroupList();
-
         StageSet();
     }
 
     // StageData Setting
     public void StageSet()
     {
-        waveCostList.Clear();
+        // Stage의 GroupData 불러오기
+        GroupList = PoolManager.Instance.LoadGroupPool(data);
+        Debug.Log($"ScriptableObjectList : {GroupList.Count}");
 
+        // 분배한 코스트 재분배
+        waveCostList.Clear();
         WaveCostSet();
 
+        // 웨이브 세팅
         for (int i= 0; i < data.maxWave; i++)
         {
             waveList.Add(MakeWave(waveCostList[i]));
         }
-    }
-
-    // 전체 GroupData 불러오기
-    public void LoadGroupList()
-    {
-        stageGroupList = Resources.LoadAll<GroupData>($"ScriptableObject");
     }
 
     // stageSpawnCost를 maxWave의 수만큼 분배
@@ -82,16 +80,16 @@ public class StageManager : Singleton<StageManager>
     }
 
     // 저장된 waveCost를 바탕으로 WaveData 생성
-    public WaveData2 MakeWave(int maxCost)
+    public WaveData MakeWave(int maxCost)
     {
-        if (stageGroupList == null || stageGroupList.Length == 0)
+        if (GroupList == null || GroupList.Count == 0)
         {
             Debug.LogError("stageGroupList가 null이거나 비어있습니다.");
             return null;
         }
 
         Debug.Log($"MakeWave, {maxCost}");
-        WaveData2 makeWave = new WaveData2()
+        WaveData makeWave = new WaveData()
         {
             groupList = new List<GroupData>()
         };
@@ -99,9 +97,9 @@ public class StageManager : Singleton<StageManager>
         int groupCount = 0;
         
         // wave에 무작위 group 추가
-        while (curCost < maxCost && stageGroupList.Length > 0)
+        while (curCost < maxCost && GroupList.Count > 0)
         {
-            GroupData randomGroupData = stageGroupList[Random.Range(0, stageGroupList.Length)];
+            GroupData randomGroupData = GroupList[Random.Range(0, GroupList.Count - 1)];
             
             makeWave.groupList.Add(randomGroupData);
             curCost += randomGroupData.groupCost;
@@ -120,9 +118,9 @@ public class StageManager : Singleton<StageManager>
         // wave의 마지막에 들어갈 그룹 후보군 검색
         List<GroupData> list = new List<GroupData>();
         int remainCost = maxCost - curCost;
-        foreach (GroupData data in stageGroupList)
+        foreach (GroupData data in GroupList)
         {
-            if (remainCost-1 <= data.groupCost && data.groupCost <= remainCost + 1)
+            if (remainCost - 1 <= data.groupCost && data.groupCost <= remainCost + 1)
             {
                 list.Add(data);
             }
@@ -131,7 +129,7 @@ public class StageManager : Singleton<StageManager>
         // wave의 마지막에 들어갈 그룹 렌덤 추가
         if (list.Count > 0)
         {
-            makeWave.groupList.Add(list[Random.Range(0, list.Count)]);
+            makeWave.groupList.Add(list[Random.Range(0, list.Count - 1)]);
         }
         else
         {

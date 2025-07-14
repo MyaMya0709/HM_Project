@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e242ce3cebf06d4c8d951d58abed98d, type: 3}
-  m_Name: GroupData_001
+  m_Script: {fileID: 11500000, guid: 16bf273573b0df240a333b71e056b675, type: 3}
+  m_Name: TestStage
   m_EditorClassIdentifier: 
-  spawnList: []
-  groupCost: 3
+  maxWave: 4
+  waveDelay: 30
+  stageCost: 100
+  poolID: 00000000
