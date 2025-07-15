@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/ProjectHm/TestFolder/Scenes/MainMenu.unity
+    guid: 00e704fe5f2af5b41acae653b1541b00
+  - enabled: 1
+    path: Assets/ProjectHm/TestFolder/Scenes/InGame.unity
+    guid: 9bb5b7f9e09a5484993eb8847008ac54
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 0b7c0b3e15d72644fbba77ba5b567fb6, type: 3}
   m_UseUCBPForAssetBundles: 0

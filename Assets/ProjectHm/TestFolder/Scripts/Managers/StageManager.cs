@@ -15,19 +15,12 @@ public class StageManager : Singleton<StageManager>
     public List<GroupData> GroupList;
 
     public List<WaveData> waveList = new();
-    public List<int> waveCostList;
-
-
-
-    protected override void Awake()
-    {
-        base.Awake();
-        StageSet();
-    }
+    public List<int> waveCostList = new();
 
     // StageData Setting
     public void StageSet()
     {
+        data = Resources.Load<StageData>($"ScriptableObject/Stage/TestStage");
         // Stage의 GroupData 불러오기
         GroupList = PoolManager.Instance.LoadGroupPool(data);
         Debug.Log($"ScriptableObjectList : {GroupList.Count}");

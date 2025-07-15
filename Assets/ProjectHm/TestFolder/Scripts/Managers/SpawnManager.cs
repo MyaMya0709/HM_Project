@@ -8,7 +8,7 @@ using UnityEngine;
 public class SpawnManager : Singleton<SpawnManager>
 {
     public List<WaveData> waves;
-    public List<SpawnData> spawnDataList;            // 생성할 적의 데이터 리스트
+    public List<SpawnData> spawnDataList = new();    // 생성할 적의 데이터 리스트
 
     public List<Transform> spawnGruondPoints;        // 지상 생성 포인트
     public List<Transform> spawnSkyPoints;           // 공중 생성 포인트
@@ -29,6 +29,9 @@ public class SpawnManager : Singleton<SpawnManager>
     public void StartWaves()
     {
         waves = StageManager.Instance.waveList;
+
+        //spawnGruondPoints = 
+        //spawnSkyPoints = 
 
         maxWave = waves.Count;
         currentWaveIndex = 0;

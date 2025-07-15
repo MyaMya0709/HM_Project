@@ -6,11 +6,10 @@ using UnityEngine;
 public class PoolManager : Singleton<PoolManager>
 {
     public StageGroupPool[] allStageGroupPool;
-    protected override void Awake()
-    {
-        base.Awake();
-        allStageGroupPool = Resources.LoadAll<StageGroupPool>($"ScriptableObject/StageGroupPool");
 
+    public void LoadAllGroupPool()
+    {
+        allStageGroupPool = Resources.LoadAll<StageGroupPool>($"ScriptableObject/StageGroupPool");
         if (allStageGroupPool == null || allStageGroupPool.Length == 0)
             Debug.Log("전체 GroupPool 로드 오류");
     }
