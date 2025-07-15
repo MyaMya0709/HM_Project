@@ -6,7 +6,7 @@ public class UI : MonoBehaviour
 
     protected virtual void Awake()
     {
-        panel = transform.GetChild(0).gameObject;
+        panel = transform.gameObject;
     }
 
     public void SetCanvas(int order)

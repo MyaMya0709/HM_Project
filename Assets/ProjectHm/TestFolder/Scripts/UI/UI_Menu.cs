@@ -3,14 +3,18 @@ using UnityEngine.UI;
 
 public class UI_Menu : UI
 {
-    [SerializeField] private Button meunBotton;
+    [SerializeField] private Button settingBotton;
+    [SerializeField] private Button continueBotton;
+    [SerializeField] private Button exitBotton;
     [SerializeField] private RectTransform menuPanel;
 
     protected override void Awake()
     {
         base.Awake();
 
-        meunBotton.onClick.AddListener(() =>
+        menuPanel = GetComponent<RectTransform>();
+
+        settingBotton.onClick.AddListener(() =>
         {
             if (menuPanel.gameObject.activeSelf)
             {
@@ -23,16 +27,33 @@ public class UI_Menu : UI
                 menuPanel.gameObject.SetActive(true);
             }
         });
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        continueBotton.onClick.AddListener(() =>
+        {
+            if (menuPanel.gameObject.activeSelf)
+            {
+                Time.timeScale = 1f;
+                menuPanel.gameObject.SetActive(false);
+            }
+            else
+            {
+                Time.timeScale = 0f;
+                menuPanel.gameObject.SetActive(true);
+            }
+        });
+
+        exitBotton.onClick.AddListener(() =>
+        {
+            if (menuPanel.gameObject.activeSelf)
+            {
+                Time.timeScale = 1f;
+                menuPanel.gameObject.SetActive(false);
+            }
+            else
+            {
+                Time.timeScale = 0f;
+                menuPanel.gameObject.SetActive(true);
+            }
+        });
     }
 }
