@@ -11,7 +11,7 @@ public class PoolManager : Singleton<PoolManager>
         base.Awake();
         allStageGroupPool = Resources.LoadAll<StageGroupPool>($"ScriptableObject/StageGroupPool");
 
-        if (allStageGroupPool != null || allStageGroupPool.Length == 0)
+        if (allStageGroupPool == null || allStageGroupPool.Length == 0)
             Debug.Log("전체 GroupPool 로드 오류");
     }
 
@@ -22,7 +22,7 @@ public class PoolManager : Singleton<PoolManager>
 
         foreach (StageGroupPool pool in allStageGroupPool)
         {
-            if (pool != null) Debug.Log("AllStageGroupPool 순회 불가");
+            if (pool == null) Debug.Log("AllStageGroupPool 순회 불가");
 
             for (int i = 0; i < data.poolID.Length; i++)
             {

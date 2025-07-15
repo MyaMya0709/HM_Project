@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: Gold
   itemDescription: Gold
   itemAmount: 10
-  dropChance: 60
+  dropChance: 30
   itemType: 1
