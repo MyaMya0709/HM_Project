@@ -8,7 +8,7 @@ using UnityEngine;
 public class SpawnManager : Singleton<SpawnManager>
 {
     public List<WaveData> waves;
-    public List<SpawnData> spawnDataList;
+    public List<SpawnData> spawnDataList;            // 생성할 적의 데이터 리스트
 
     public List<Transform> spawnGruondPoints;        // 지상 생성 포인트
     public List<Transform> spawnSkyPoints;           // 공중 생성 포인트
@@ -38,6 +38,7 @@ public class SpawnManager : Singleton<SpawnManager>
     // wave 시작
     private IEnumerator RunWave(int waveIndex)
     {
+        Debug.Log($"Wave {waveIndex+1}");
         isSpawning = true;
 
         if (waveIndex == 0)
@@ -59,13 +60,7 @@ public class SpawnManager : Singleton<SpawnManager>
         };
         wave = waves[waveIndex];
 
-        // 웨이브의 전체 적 수량 저장
-        for (int i = 0; i < wave.groupList.Count; i++)
-        {
-            aliveEnemies += wave.groupList[i].spawnList.Count;
-        }
-        Debug.Log(aliveEnemies);
-
+        // 웨이브 시작시 호출 ex) 웨이브 시작 UI
         OnWaveStarted?.Invoke(waveIndex + 1);
 
         foreach (GroupData waveGroup in wave.groupList)
@@ -83,6 +78,10 @@ public class SpawnManager : Singleton<SpawnManager>
                 Debug.Log("waveGroup is null");
             }
         }
+
+        // 웨이브의 전체 적 수량 저장
+        aliveEnemies = spawnDataList.Count;
+        Debug.Log(aliveEnemies);
 
         for (int i = 0; i < spawnDataList.Count; i++)
         {
