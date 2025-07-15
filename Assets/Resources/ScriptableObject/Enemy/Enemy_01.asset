@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa5dd5c54b7d48419d618d1132f2d72, type: 3}
   m_Name: Enemy_01
   m_EditorClassIdentifier: 
-  enmeyID: 1
+  enemyID: 0
   enemyName: Bat
   MoveType: 1
   enemyPrefab: {fileID: 8684842619354825708, guid: 52f1de8ea11142b4ead3d3707251e706, type: 3}
   maxHealth: 30
   moveSpeed: 1
   attackPower: 2
+  dropItemList:
+  - {fileID: 11400000, guid: 49bbf9e5aa825cf4ab40f5f3e75f58fe, type: 2}
+  - {fileID: 11400000, guid: d06b7a5c2c5c52f479ebee2f0f3ca8de, type: 2}

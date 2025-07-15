@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ItemLootingList : MonoBehaviour
+public class ItemDropList : MonoBehaviour
 {
     public GameObject droppedItemPrepab;
     public List<ItemData> ItemList = new List<ItemData>();
@@ -12,6 +12,10 @@ public class ItemLootingList : MonoBehaviour
     {
         int randomNumber = Random.Range(1,101);             // 1-100, 아이템이 나올 확률
         List<ItemData> possibleItem = new List<ItemData>(); // 확률에 따라 나올 수 있는 아이템 리스트
+
+        // 적에게 나오는 아이템 테이블 로드하기
+        BaseEnemy enemy = GetComponent<BaseEnemy>();
+        ItemList = enemy.enemyData.dropItemList;
 
         // 나오는 아이템을 리스트에 추가
         foreach (ItemData item in ItemList)

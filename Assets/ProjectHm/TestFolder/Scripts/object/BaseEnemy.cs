@@ -224,7 +224,7 @@ public class BaseEnemy : MonoBehaviour
         Debug.Log($"Dead Called From {callername}");
         if (callername == "TakeDamage")
         {
-            GetComponent<ItemLootingList>().InstantiateItem(transform.position);
+            GetComponent<ItemDropList>().InstantiateItem(transform.position);
         }
 
         //사망 처리
@@ -239,4 +239,3 @@ public class BaseEnemy : MonoBehaviour
         // 이펙트나 드랍 추가 가능
     }
 }
-

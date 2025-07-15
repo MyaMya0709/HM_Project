@@ -1,11 +1,6 @@
 using UnityEngine;
 
-public interface ILootable
-{
-    void OnLooted(Player Player);
-}
-
-public class LootableItem : MonoBehaviour, ILootable
+public class LootableItem : MonoBehaviour
 {
     public ItemType ItemType;
     public float amount;

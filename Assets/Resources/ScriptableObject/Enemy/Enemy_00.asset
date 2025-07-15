@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa5dd5c54b7d48419d618d1132f2d72, type: 3}
   m_Name: Enemy_00
   m_EditorClassIdentifier: 
+  enemyID: 0
   enemyName: Slime
   MoveType: 0
   enemyPrefab: {fileID: 8684842619354825708, guid: af531c05051ee1d45bb376fbcbfb1812, type: 3}
   maxHealth: 30
   moveSpeed: 2
   attackPower: 2
-  SpawnCost: 1
+  dropItemList:
+  - {fileID: 11400000, guid: 49bbf9e5aa825cf4ab40f5f3e75f58fe, type: 2}
+  - {fileID: 11400000, guid: d06b7a5c2c5c52f479ebee2f0f3ca8de, type: 2}

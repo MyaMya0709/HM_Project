@@ -147,6 +147,8 @@ MonoBehaviour:
   currentHealth: 0
   animator: {fileID: 0}
   target: {fileID: 0}
+  rb: {fileID: 0}
+  sr: {fileID: 0}
   damagePopupPrefab: {fileID: 5854912545000051756, guid: e8d641850e1d37345b0600a7938985f6, type: 3}
   headOffset: {x: 0, y: 0.3, z: 0}
   PopupPos: {x: 0, y: 0}
@@ -165,16 +167,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8684842619354825708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57f9fc67ec250944995f93b9a0c9a43d, type: 3}
+  m_Script: {fileID: 11500000, guid: 756193638bffcf64f90a1efbb7c033ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   droppedItemPrepab: {fileID: 76134026972407004, guid: 0e5a4471c69129e46817985979c17542, type: 3}
-  ItemList:
-  - {fileID: 11400000, guid: 49bbf9e5aa825cf4ab40f5f3e75f58fe, type: 2}
-  - {fileID: 11400000, guid: d06b7a5c2c5c52f479ebee2f0f3ca8de, type: 2}
-  - {fileID: 11400000, guid: 81bef95fc862aa84c9e251b2458093e8, type: 2}
-  - {fileID: 11400000, guid: 98b9c44dcdcfde143a48020fc6137f71, type: 2}
-  - {fileID: 11400000, guid: 7e4eed5c00696ac4bbcf310bd774e254, type: 2}
+  ItemList: []
 --- !u!1 &9101133165995811410
 GameObject:
   m_ObjectHideFlags: 0
