@@ -172,7 +172,6 @@ MonoBehaviour:
   isJumpDash: 0
   isAbleAttack: 1
   isCharging: 0
-  isDashAttack: 0
   dashPower: 80
   dashCooldown: 0.15
   dashDistance: 4
@@ -211,6 +210,7 @@ MonoBehaviour:
     m_Bits: 2048
   lootingRadius: 10
   lootingSpeed: 30
+  ExpBar: {fileID: 0}
 --- !u!114 &2157225018441802832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,7 +582,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: isStun
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1565793449964205548, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
       propertyPath: AttackStunDur

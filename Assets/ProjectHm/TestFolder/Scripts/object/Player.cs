@@ -3,25 +3,30 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     [Header("Stats")]
-    public float maxHealth = 10f;
+    public PlayerData data;
+    public float curMaxHealth = 10f;
     public float moveSpeed = 6f;
     public float attackPower = 10f;
     public float attackSpeed = 10f;
-    public Animator animator;
-
+    
     public int curGold = 0;
+    public float maxExp;
     public float curExp = 0;
     public float curBuff = 0f;
+
+    public int playerLevel = 1;
 
     public Rigidbody2D rb;
     public Vector2 moveInput;
     public IWeapon currentWeapon;
+    public Animator animator;
 
     [Header("MovementCheck")]
     public bool isMove = false;
@@ -72,6 +77,9 @@ public class Player : MonoBehaviour
     public LayerMask lootingItem;                 // 루팅 가능한 아이템 레이어
     public float lootingRadius = 10f;             // 루팅 가능 거리
     public float lootingSpeed = 30f;              // 루팅 속도
+
+    [SerializeField] private Image expBar;
+
 
     protected void Awake()
     {
@@ -316,13 +324,13 @@ public class Player : MonoBehaviour
                 // 위쪽 반동 추가
                 rb.linearVelocity = Vector2.up * rebound;
 
-                // 공격 횟수
-                attackCount++;
-                Debug.Log($"Attack {attackCount}");
-
                 animator?.SetTrigger("Attack");
                 // 무기공격 로직 연결 예정
                 currentWeapon.Attack();
+
+                // 공격 횟수
+                attackCount++;
+                Debug.Log($"Attack {attackCount}");
 
                 // 공중공격 4회 - 마지막 공격시간 체크 및 초기화
                 if (attackCount == 4)
@@ -429,6 +437,28 @@ public class Player : MonoBehaviour
                     Destroy(item.gameObject);
                 }
             }
+        }
+    }
+
+    public void LevelUP()
+    {
+        playerLevel++;
+        curExp = 0f;
+        maxExp = data.maxExpDic[playerLevel];
+        
+        // TODO : 플레이어 스텟 계산
+
+        Time.timeScale = 0f;
+        UIManager.Instance.selecUI.gameObject.SetActive(true);
+    }
+
+    public void UpdateExpBar()
+    {
+        expBar.fillAmount = Mathf.Min(1, curExp / maxExp);
+
+        if (curExp >= maxExp)
+        {
+            LevelUP();
         }
     }
 }
