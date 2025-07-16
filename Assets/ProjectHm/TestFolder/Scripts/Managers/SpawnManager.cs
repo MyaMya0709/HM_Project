@@ -4,14 +4,15 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Overlays;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
     public List<WaveData> waves;
-    public List<SpawnData> spawnDataList = new();    // 생성할 적의 데이터 리스트
+    public List<SpawnData> spawnDataList = new();            // 생성할 적의 데이터 리스트
 
-    public List<Transform> spawnGruondPoints;        // 지상 생성 포인트
-    public List<Transform> spawnSkyPoints;           // 공중 생성 포인트
+    public List<Transform> spawnGruondPoints = new();        // 지상 생성 포인트
+    public List<Transform> spawnSkyPoints = new();           // 공중 생성 포인트
 
     public Transform attackPoint;
 
@@ -26,19 +27,74 @@ public class SpawnManager : Singleton<SpawnManager>
     public System.Action<int> OnWaveStarted;
     public System.Action OnAllWavesCleared;
 
+    //protected override void Awake()
+    //{
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //}
+
+    //void OnDestroy()
+    //{
+    //    SceneManager.sceneLoaded -= OnSceneLoaded;
+    //}
+
+    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    SpawnerSetting();
+    //}
+
+    // 웨이브 시작
     public void StartWaves()
     {
         waves = StageManager.Instance.waveList;
-
-        //spawnGruondPoints = 
-        //spawnSkyPoints = 
 
         maxWave = waves.Count;
         currentWaveIndex = 0;
         spawnCoroutine = StartCoroutine(RunWave(currentWaveIndex));
     }
 
-    // wave 시작
+    // Spawner,AttackPoint 찾기
+    //public void SpawnerSetting()
+    //{
+    //    Transform spawner = GameObject.Find("EnemySpawner")?.transform;
+    //    if (spawner == null)
+    //        Debug.LogError("EnemySpawner를 찾지 못했습니다!");
+    //    else
+    //        Debug.Log("Spawner 찾음: " + spawner.name);
+
+    //    foreach (Transform child in spawner)
+    //    {
+    //        if (child.name == "Ground")
+    //        {
+    //            foreach (Transform child2 in child)
+    //            {
+    //                spawnGruondPoints.Add(child2);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            foreach (Transform child2 in child)
+    //            {
+    //                spawnSkyPoints.Add(child2);
+    //            }
+    //        }
+    //    }
+
+    //    Transform baseCore = GameObject.FindWithTag("Base").transform;
+    //    foreach (Transform child in baseCore)
+    //    {
+    //        if (child.name == "AttackPoint")
+    //        {
+    //            attackPoint = child.transform;
+    //        }
+    //    }
+        
+    //    if (attackPoint == null)
+    //        Debug.LogError("AttackPoint를 찾지 못했습니다!");
+    //    else
+    //        Debug.Log("AttackPoint 찾음: " + attackPoint.name);
+    //}
+
+    // wave 생성 로직
     private IEnumerator RunWave(int waveIndex)
     {
         Debug.Log($"Wave {waveIndex+1}");
@@ -74,7 +130,7 @@ public class SpawnManager : Singleton<SpawnManager>
                 {
                     spawnDataList.Add(waveGroup.spawnList[i]);
                 }
-                Debug.Log($"spawnDataList Add Data, listCount : {spawnDataList.Count}");
+                //Debug.Log($"spawnDataList Add Data, listCount : {spawnDataList.Count}");
             }
             else
             {

@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class UI_Menu : UI
 {
-    [SerializeField] private Button settingBotton;
-    [SerializeField] private Button continueBotton;
-    [SerializeField] private Button exitBotton;
+    [SerializeField] private Button settingButton;
+    [SerializeField] private Button continueButton;
+    [SerializeField] private Button exitButton;
     [SerializeField] private RectTransform menuPanel;
 
     protected override void Awake()
@@ -14,7 +14,7 @@ public class UI_Menu : UI
 
         menuPanel = GetComponent<RectTransform>();
 
-        settingBotton.onClick.AddListener(() =>
+        settingButton.onClick.AddListener(() =>
         {
             if (menuPanel.gameObject.activeSelf)
             {
@@ -28,7 +28,7 @@ public class UI_Menu : UI
             }
         });
 
-        continueBotton.onClick.AddListener(() =>
+        continueButton.onClick.AddListener(() =>
         {
             if (menuPanel.gameObject.activeSelf)
             {
@@ -42,7 +42,7 @@ public class UI_Menu : UI
             }
         });
 
-        exitBotton.onClick.AddListener(() =>
+        exitButton.onClick.AddListener(() =>
         {
             if (menuPanel.gameObject.activeSelf)
             {

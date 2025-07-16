@@ -28,6 +28,8 @@ public class SceneLoader : Singleton<SceneLoader>
             yield return null;
         }
 
+        Debug.Log($"Loading: {op.progress * 100:F0}%");
+
         // 로드 완료 후 활성화
         op.allowSceneActivation = true;
     }

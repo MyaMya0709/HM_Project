@@ -14,7 +14,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 lock (lockObj)
                 {
                     //수동으로 인스턴스된 오브젝트 확인용
-                    instance = FindObjectOfType<T>();
+                    instance = FindFirstObjectByType<T>();
                     if(instance == null)
                     {
                         //이름으로 오브젝트 생성 및 컴포넌트 지정

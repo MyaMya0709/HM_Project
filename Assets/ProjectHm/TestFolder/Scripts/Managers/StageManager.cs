@@ -4,18 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : Singleton<StageManager>
 {
     public StageData data;
 
-    // Stage별 GroupList
-    public List<StageGroupPool> stageGroupList;
-    // 전체 GroupData의 배열
+    // Stage의 GroupData의 배열
     public List<GroupData> GroupList;
 
     public List<WaveData> waveList = new();
     public List<int> waveCostList = new();
+
+    private void Start()
+    {
+        // 현재씬 파악 후 로직 수행
+        string current = SceneManager.GetActiveScene().name;
+
+        if (current == "InGame")
+            GameManager.Instance.GameStart();
+    }
 
     // StageData Setting
     public void StageSet()
