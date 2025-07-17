@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,18 +10,28 @@ public class BaseEnemy : MonoBehaviour
     public EnemyData enemyData;      // 적의 고정 데이터
     public float currentHealth;
 
-    public Animator animator;
+    [Header("Movement Element")]
     public Transform target;
     [SerializeField] private Rigidbody2D rb;
+    public bool isDamage = false;
+
+    [Header("Damage Popup")]
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private GameObject damagePopupPrefab;
     [SerializeField] private Vector3 headOffset = new Vector3(0, 0.3f, 0);
     [SerializeField] private Vector2 PopupPos;
 
-    public bool isDamage = false;
+    [Header("Ground Check")]
     public LayerMask groundLayer;
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
+
+    [Header("ItemDrop Element")]
+    public GameObject droppedItemPrepab;
+    public List<ItemData> ItemList = new List<ItemData>();
+
+    public Animator animator;
+    
     public bool isDead => currentHealth <= 0;
 
     public event System.Action OnDeath;
@@ -95,6 +106,7 @@ public class BaseEnemy : MonoBehaviour
         //SpawnsDamagePopups.Instance.DamageDone(damage, transform.position, false);
     }
 
+    #region Effect
     public void ApplyEffect(WeaponEffectData effectData, Player player)
     {
         if (effectData.Knockback.onoff) StartCoroutine(Knockback(player.lastLookDirection, effectData.Knockback.valueA));                                        // valueA == Power, valueB, valueC
@@ -128,15 +140,13 @@ public class BaseEnemy : MonoBehaviour
 
     public IEnumerator Knockback(Vector2 direction, float knockbackDistance)
     {
+        isDamage = true;
+
         Debug.Log("knockback");
         float knockbackPower = 20f;
         Vector2 knockbackDirection = direction;
         Vector2 basePos = rb.position;
         Vector2 targetPos = basePos + knockbackDirection * knockbackDistance;
-
-        // 타겟 초기화로 이동 중지
-        Transform saveTar = target;
-        target = null;
 
         //float originalGravity = rb.gravityScale;
         //rb.gravityScale = 0f;
@@ -163,8 +173,7 @@ public class BaseEnemy : MonoBehaviour
         //rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
-        // 다시 이동
-        target = saveTar;
+        isDamage = false;
     }
 
     public IEnumerator TakeStun(float stunDuration)
@@ -177,9 +186,7 @@ public class BaseEnemy : MonoBehaviour
 
     public IEnumerator Airborne(float airborneForce)
     {
-        // 타겟 초기화로 이동 중지
-        Transform saveTar = target;
-        target = null;
+        isDamage = true;
 
         // 운동량 0
         rb.linearVelocity = Vector2.zero;
@@ -191,22 +198,62 @@ public class BaseEnemy : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(() => (IsGrounded()));
 
-        target = saveTar;
+        isDamage = false;
     }
 
     public bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
+    #endregion
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private List<ItemData> GetDroppedItem()
     {
-        if (!collision.CompareTag("Base")) return;
+        // 확률에 따라 나올 수 있는 아이템 리스트
+        List<ItemData> possibleItem = new List<ItemData>();
 
-        BaseCore baseCore = collision.GetComponent<BaseCore>();
-        if (baseCore != null)
+        // 나오는 아이템을 리스트에 추가
+        foreach (ItemData item in enemyData.dropItemList)
         {
-            AttackBase(baseCore);
+            // 확률 100이면 무조건 추가
+            if (item.dropChance == 100)
+            {
+                possibleItem.Add(item);
+                continue;
+            }
+
+            // 1-100, 아이템이 나올 확률
+            int randomNumber = Random.Range(1, 101);
+
+            if (randomNumber <= item.dropChance)
+            {
+                possibleItem.Add(item);
+            }
+        }
+
+        // 아이템이 나오는 경우 리스트 
+        if (possibleItem.Count > 0)
+        {
+            return possibleItem;
+        }
+
+        Debug.Log("No Item Dropped");
+        return null;
+    }
+
+    public void InstantiateItem(Vector2 spawnPosition)
+    {
+        List<ItemData> droppedItems = GetDroppedItem();
+
+        if (droppedItems != null)
+        {
+            // 각각 아이템의 실체화 과정
+            foreach (ItemData item in droppedItems)
+            {
+                // 실체화 및 아이템의 변수 데이터 이전
+                GameObject ItemGameObject = Instantiate(droppedItemPrepab, spawnPosition, Quaternion.identity);
+                ItemGameObject.GetComponent<LootableItem>().Init(item);
+            }
         }
     }
 
@@ -224,7 +271,7 @@ public class BaseEnemy : MonoBehaviour
         Debug.Log($"Dead Called From {callername}");
         if (callername == "TakeDamage")
         {
-            GetComponent<ItemDropList>().InstantiateItem(transform.position);
+            InstantiateItem(transform.position);
         }
 
         //사망 처리
@@ -237,5 +284,16 @@ public class BaseEnemy : MonoBehaviour
         OnDeath?.Invoke();
         Destroy(gameObject, 1.5f);
         // 이펙트나 드랍 추가 가능
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Base")) return;
+
+        BaseCore baseCore = collision.GetComponent<BaseCore>();
+        if (baseCore != null)
+        {
+            AttackBase(baseCore);
+        }
     }
 }

@@ -15,11 +15,9 @@ public class SelectionSlot : MonoBehaviour
         {
             if (selectionUI.activeSelf)
             {
-                Time.timeScale = 0f;
+                Time.timeScale = 1f;
                 selectionUI.SetActive(false);
             }
         });
     }
-
-
 }

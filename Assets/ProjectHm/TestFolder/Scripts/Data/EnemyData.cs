@@ -12,6 +12,11 @@ public class EnemyData : ScriptableObject
     public float maxHealth;
     public float moveSpeed;
     public float attackPower;
+    public float dropExpAmount;
+    public float dropGoldChance;
+    public float dropGoldAmount;
+    public float dropSkillChance;
+    public List<int> dropSkillIDList;
     public List<ItemData> dropItemList;
     // 필요 시 애니메이션 등도 추가
 }
