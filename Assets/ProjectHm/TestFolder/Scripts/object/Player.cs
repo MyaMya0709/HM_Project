@@ -10,18 +10,18 @@ using static UnityEngine.GraphicsBuffer;
 public class Player : MonoBehaviour
 {
     [Header("Stats")]
-    public PlayerData data;
-    public float curMaxHealth = 10f;
+    public PlayerClearData data;
+    public PlayerData playerData;
     public float moveSpeed = 6f;
     public float attackPower = 10f;
-    public float attackSpeed = 10f;
-    
+    public float attackSpeed;
+
     public int curGold = 0;
     public float maxExp;
     public float curExp = 0;
     public float curBuff = 0f;
 
-    public int playerLevel = 1;
+    public int playerLevel;
 
     public Rigidbody2D rb;
     public Vector2 moveInput;
@@ -86,6 +86,10 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         currentWeapon = GetComponentInChildren<IWeapon>();
+        playerLevel = 1;
+        maxExp = data.maxExpList[playerLevel];
+        curExp = 0;
+        UpdateExp();
     }
 
     private void Update()
@@ -444,19 +448,25 @@ public class Player : MonoBehaviour
     {
         playerLevel++;
         curExp = 0f;
-        maxExp = data.maxExpDic[playerLevel];
-        
+        maxExp = data.maxExpList[Mathf.Min(data.maxExpList.Count - 1, playerLevel)];
+
         // TODO : 플레이어 스텟 계산
+        moveSpeed = data.moveSpeedList[Mathf.Min(data.moveSpeedList.Count - 1, playerLevel)];
+        attackPower = data.attackPowerList[Mathf.Min(data.attackPowerList.Count - 1, playerLevel)];
 
         Time.timeScale = 0f;
         UIManager.Instance.selecUI.gameObject.SetActive(true);
+
+        UpdateExp();
     }
 
-    public void UpdateExpBar()
+    public void UpdateExp()
     {
+        //expBar 업데이트
         expBar.fillAmount = Mathf.Min(1, curExp / maxExp);
 
-        if (curExp >= maxExp)
+        //레벨업 가능 여부 판단
+        if (curExp >= maxExp && playerLevel < data.maxLevel)
         {
             LevelUP();
         }
