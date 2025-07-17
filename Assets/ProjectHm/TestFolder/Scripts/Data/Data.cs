@@ -1,21 +1,20 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-#region PlayerData
+#region
 [Serializable]
 public class PlayerData
 {
     public int playerLevel;
+
     // key:playerLevel / value:MaxExp
     public Dictionary<int, float> maxExpList;
     public float curExp;
 
     //Key:statName /Value:statLevel
     public Dictionary<string, int> statLevelDic;
-    public float moveSpeed;
-    public float attackPower;
-    public float attackSpeed;
 
     // key:statLevel / value:movaSpeed
     public Dictionary<int, float> moveSpeedDic;
@@ -52,7 +51,7 @@ public class PlayerData
         return result;
     }
 
-    public void Clear(PlayerData playerData)
+    public void Clear()
     {
         playerLevel = 1;
         curExp = 0;
@@ -63,5 +62,25 @@ public class PlayerData
             { "attackSpeed", 1 }
         };
     }
+    public PlayerData LoadData()
+    {
+        TextAsset jsonAsset = Resources.Load<TextAsset>("Data/PlayerData"); // 경로에서 확장자 제외
+        if (jsonAsset == null)
+            Debug.LogError("JSON 파일을 찾을 수 없습니다!");
+
+        PlayerData data = JsonConvert.DeserializeObject<PlayerData>(jsonAsset.text);
+        if (data == null)
+            Debug.Log("PlayerDataLoad 실패");
+
+        return data;
+    }
+}
+#endregion
+
+#region StatData
+[Serializable]
+public class StatData
+{
+    
 }
 #endregion

@@ -86,8 +86,8 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         currentWeapon = GetComponentInChildren<IWeapon>();
-        playerLevel = 1;
-        maxExp = data.maxExpList[playerLevel];
+        playerData = DataManager.Instance.playerData;
+        maxExp = playerData.maxExpList[playerData.playerLevel];
         curExp = 0;
         UpdateExp();
     }
