@@ -16,9 +16,9 @@ public class PlayerCondition : MonoBehaviour
     public float baseAttackPower;
     public float baseAttackSpeed;
 
-    public float selecMoveSpeed;
-    public float selecAttackPower;
-    public float selecAttackSpeed;
+    public int selecMoveSpeedLv;
+    public int selecAttackPowerLv;
+    public int selecAttackSpeedLv;
 
     public float totalMoveSpeed;
     public float totalAttackPower;
@@ -47,7 +47,7 @@ public class PlayerCondition : MonoBehaviour
         curExp = 0;
         UpdateExp();
 
-        StatSetting();
+        StartSetting();
     }
 
     public void LevelUP()
@@ -76,14 +76,58 @@ public class PlayerCondition : MonoBehaviour
         }
     }
 
-    public void StatSetting()
+    public void StartSetting()
     {
-        baseMoveSpeed = DataManager.Instance.statUpTableData.moveSpeedDic[playerData.moveSpeedLevel];
-        baseAttackPower = DataManager.Instance.statUpTableData.attackPowerDic[playerData.attackPowerLevel];
-        baseAttackSpeed = DataManager.Instance.statUpTableData.attackSpeedDic[playerData.attackSpeedLevel];
+        selecMoveSpeedLv = 0;
+        selecAttackPowerLv = 0;
+        selecAttackSpeedLv = 0;
+        StatSetting(StatType.moveSpeed);
+        StatSetting(StatType.attackPower);
+        StatSetting(StatType.attackSpeed);
 
-        totalMoveSpeed = baseMoveSpeed;
-        totalAttackPower = baseAttackPower;
-        totalAttackSpeed = baseAttackSpeed;
+        // 자동무기 리스트 초기화
+        // 자동무기 레벨 초기화
+    }
+
+    public void SelecStatLevelUP(StatType stat)
+    {
+        switch (stat)
+        {
+            case StatType.moveSpeed:
+                selecMoveSpeedLv++;
+                break;
+            case StatType.attackPower:
+                selecAttackPowerLv++;
+                break;
+            case StatType.attackSpeed:
+                selecAttackSpeedLv++;
+                break;
+            default:
+                Debug.Log("존재하지 않는 StatType");
+                break;
+        }
+        StatSetting(stat);
+    }
+
+    public void StatSetting(StatType stat)
+    {
+        switch (stat)
+        {
+            case StatType.moveSpeed:
+                totalMoveSpeed = baseMoveSpeed * DataManager.Instance.selecMoveSpeedDic[selecMoveSpeedLv];
+                break;
+
+            case StatType.attackPower:
+                totalAttackPower = baseAttackPower * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv];
+                break;
+
+            case StatType.attackSpeed:
+                totalAttackSpeed = baseAttackSpeed * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv];
+                break;
+
+            default:
+                Debug.Log("존재하지 않는 StatType");
+                break;
+        }
     }
 }

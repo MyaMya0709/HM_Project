@@ -1,9 +1,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
+using UnityEngine.UI;
 
-#region
+#region PlayerData
 [Serializable]
 public class PlayerData
 {
@@ -59,3 +61,14 @@ public class StatUpTableData
     }
 }
 #endregion
+
+//public class SlotData
+//{
+//    public SlotType type;
+//    public string name;
+//    public Image icon;
+//    public string description;
+//    public StatType stat;               // 스탯 업그레이드
+//    public IWeapon weapon;              // 자동무기 장착
+//    public WeaponUpData weaponUpData;   // 자동무기 업그레이드
+//} 

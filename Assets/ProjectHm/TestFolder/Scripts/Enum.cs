@@ -14,3 +14,17 @@ public enum EnemyMoveType
     Ground,
     Sky
 }
+
+public enum SlotType
+{
+    StatUP,
+    WeaponGet,
+    WeaponUP
+}
+
+public enum StatType
+{
+    moveSpeed,
+    attackPower,
+    attackSpeed
+}

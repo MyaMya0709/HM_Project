@@ -1,6 +1,6 @@
 {
-  "moveSpeedLevel": 1,
-  "attackPowerLevel": 1,
-  "attackSpeedLevel": 1
+  "moveSpeedLevel": 0,
+  "attackPowerLevel": 0,
+  "attackSpeedLevel": 0
 }
 
