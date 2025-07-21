@@ -28,7 +28,7 @@ public class LootableItem : MonoBehaviour
         rb.AddForce(dropDir * dropForce, ForceMode2D.Impulse);
     }
 
-    public void OnLooted(Player player)
+    public void OnLooted(PlayerCondition player)
     {
         switch (ItemType)
         {

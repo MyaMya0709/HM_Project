@@ -7,60 +7,15 @@ using UnityEngine;
 [Serializable]
 public class PlayerData
 {
-    public int playerLevel;
-
-    // key:playerLevel / value:MaxExp
-    public Dictionary<int, float> maxExpList;
-    public float curExp;
-
-    //Key:statName /Value:statLevel
-    public Dictionary<string, int> statLevelDic;
-
-    // key:statLevel / value:movaSpeed
-    public Dictionary<int, float> moveSpeedDic;
-    // key:statLevel / value:attackPower
-    public Dictionary<int, float> attackPowerDic;
-    // key:statLevel / value:attackSpeed
-    public Dictionary<int, float> attackSpeedDic;
-
-    public float GetValue(string statName)
-    {
-        if (!statLevelDic.TryGetValue(statName, out int statLevel))
-            throw new ArgumentException($"{statName}에 해당하는 레벨 값이 없음");
-
-        Dictionary<int, float> statDic = new();
-
-        switch (statName)
-        {
-            case "moveSpeed":
-                statDic = moveSpeedDic;
-                break;
-            case "attackPower":
-                statDic = attackPowerDic;
-                break;
-            case "attackSpeed":
-                statDic = attackSpeedDic;
-                break;
-            default:
-                throw new ArgumentException($"{statName}에 해당하는 딕셔너리가 없음");
-        }
-
-        if (!statDic.TryGetValue(statLevel, out float result))
-            throw new ArgumentException($"{statName}의 {statLevel}레벨에 해당하는 값이 없음");
-
-        return result;
-    }
+    public int moveSpeedLevel;
+    public int attackPowerLevel;
+    public int attackSpeedLevel;
 
     public void Clear()
     {
-        playerLevel = 1;
-        curExp = 0;
-        statLevelDic = new Dictionary<string, int>
-        {
-            { "moveSpeed", 1 },
-            { "attackPower", 1 },
-            { "attackSpeed", 1 }
-        };
+        moveSpeedLevel = 1;
+        attackPowerLevel = 1;
+        attackSpeedLevel = 1;
     }
     public PlayerData LoadData()
     {
@@ -77,10 +32,30 @@ public class PlayerData
 }
 #endregion
 
-#region StatData
+#region StatUpTableData
 [Serializable]
-public class StatData
+public class StatUpTableData
 {
-    
+    // key:playerLevel / value:MaxExp
+    public Dictionary<int, float> maxExpList;
+    // key:statLevel / value:movaSpeed
+    public Dictionary<int, float> moveSpeedDic;
+    // key:statLevel / value:attackPower
+    public Dictionary<int, float> attackPowerDic;
+    // key:statLevel / value:attackSpeed
+    public Dictionary<int, float> attackSpeedDic;
+
+    public StatUpTableData LoadData()
+    {
+        TextAsset jsonAsset = Resources.Load<TextAsset>("Data/StatUpTableData"); // 경로에서 확장자 제외
+        if (jsonAsset == null)
+            Debug.LogError("JSON 파일을 찾을 수 없습니다!");
+
+        StatUpTableData data = JsonConvert.DeserializeObject<StatUpTableData>(jsonAsset.text);
+        if (data == null)
+            Debug.Log("PlayerDataLoad 실패");
+
+        return data;
+    }
 }
 #endregion

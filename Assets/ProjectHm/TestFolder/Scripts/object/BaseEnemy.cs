@@ -81,7 +81,7 @@ public class BaseEnemy : MonoBehaviour
         //rb.MovePosition(targetPos);
     }
 
-    public void TakeDamage(BaseWeapon WeaponData, Player player)
+    public void TakeDamage(BaseWeapon WeaponData, PlayerController player)
     {
         currentHealth -= WeaponData.damage;
         if (currentHealth <= 0)
@@ -107,7 +107,7 @@ public class BaseEnemy : MonoBehaviour
     }
 
     #region Effect
-    public void ApplyEffect(WeaponEffectData effectData, Player player)
+    public void ApplyEffect(WeaponEffectData effectData, PlayerController player)
     {
         if (effectData.Knockback.onoff) StartCoroutine(Knockback(player.lastLookDirection, effectData.Knockback.valueA));                                        // valueA == Power, valueB, valueC
         if (effectData.Airborne.onoff) StartCoroutine(Airborne(effectData.Airborne.valueA));                                                                     // valueA == Power, valueB, valueC

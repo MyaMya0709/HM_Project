@@ -29,14 +29,14 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     [Header("Effects")]
     public GameObject hitEffect;
 
-    public Player playerController;
+    public PlayerController playerController;
     public SpriteRenderer sr;
     public bool facingRight = true;
 
 
     private void Start()
     {
-        playerController = GetComponentInParent< Player>();
+        playerController = GetComponentInParent<PlayerController>();
         enemyLayer = LayerMask.GetMask("Enemy");
         sr = GetComponentInChildren<SpriteRenderer>();
     }

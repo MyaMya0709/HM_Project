@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 8393082947183156615}
   - component: {fileID: 3138146781985745870}
   - component: {fileID: 6092559828127166950}
+  - component: {fileID: 5436040420309497436}
   - component: {fileID: 2157225018441802832}
   - component: {fileID: 23051672303801446}
   m_Layer: 8
@@ -156,14 +157,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9e746f64097ef4b8e8e8d6d5974ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: b6b6eaa5cd331cf4a8a839abc65d89c3, type: 2}
+  controller: {fileID: 0}
+  playerData:
+    moveSpeedLevel: 0
+    attackPowerLevel: 0
+    attackSpeedLevel: 0
   moveSpeed: 6
   attackPower: 10
+  attackSpeed: 0
   curGold: 0
   maxExp: 0
   curExp: 0
   curBuff: 0
+  maxLevel: 50
   playerLevel: 1
+  expBar: {fileID: 0}
+--- !u!114 &5436040420309497436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346517936567723325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4c4759ad39fea04c9cbdf41bafca02e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  condition: {fileID: 0}
   rb: {fileID: 0}
   moveInput: {x: 0, y: 0}
   animator: {fileID: 0}
@@ -211,7 +232,6 @@ MonoBehaviour:
     m_Bits: 2048
   lootingRadius: 10
   lootingSpeed: 30
-  expBar: {fileID: 0}
 --- !u!114 &2157225018441802832
 MonoBehaviour:
   m_ObjectHideFlags: 0

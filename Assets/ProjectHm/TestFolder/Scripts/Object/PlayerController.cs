@@ -1,28 +1,10 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
-using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    [Header("Stats")]
-    public PlayerClearData data;
-    public PlayerData playerData;
-    public float moveSpeed = 6f;
-    public float attackPower = 10f;
-    public float attackSpeed;
-
-    public int curGold = 0;
-    public float maxExp;
-    public float curExp = 0;
-    public float curBuff = 0f;
-
-    public int playerLevel;
-
+    public PlayerCondition condition;
     public Rigidbody2D rb;
     public Vector2 moveInput;
     public IWeapon currentWeapon;
@@ -41,8 +23,8 @@ public class Player : MonoBehaviour
     public float dashCooldown = 0.15f;
     public float dashDistance = 4f;
     public Vector2 dashDirection;
-    public Vector2 lastLookDirection = Vector2.right; // ê¸°ë³¸ì€ ì˜¤ë¥¸ìª½
-    public LayerMask obstacle;                        // ì¥ì• ë¬¼ ë ˆì´ì–´
+    public Vector2 lastLookDirection = Vector2.right; // ±âº»Àº ¿À¸¥ÂÊ
+    public LayerMask obstacle;                        // Àå¾Ö¹° ·¹ÀÌ¾î
     public Vector2 basePos;
     public Vector2 targetPos;
 
@@ -57,39 +39,33 @@ public class Player : MonoBehaviour
 
     [Header("Attack")]
     public float rebound = 4.5f;
-    public int attackCount = 0;                   // ê³µì¤‘ ê³µê²© íšŸìˆ˜
-    public float attackDelay = 0.6f;              // ê³µì¤‘ê³µê²© 4íšŒ ì´í›„ ë”œë ˆì´
-    public float lastAttackTime;                  // 4ë²ˆì§¸ ê³µì¤‘ê³µê²© ì‹œê°„
-    public float chargingStart;                   // ì°¨ì§• ì‹œì‘ ì‹œê°„
-    public float holdTime;                        // ì°¨ì§•ì„ í•˜ê³  ìˆë˜ ì‹œê°„
-    public float chargingTime = 0.3f;             // ì°¨ì§• ì‹œê°„
+    public int attackCount = 0;                   // °øÁß °ø°İ È½¼ö
+    public float attackDelay = 0.6f;              // °øÁß°ø°İ 4È¸ ÀÌÈÄ µô·¹ÀÌ
+    public float lastAttackTime;                  // 4¹øÂ° °øÁß°ø°İ ½Ã°£
+    public float chargingStart;                   // Â÷Â¡ ½ÃÀÛ ½Ã°£
+    public float holdTime;                        // Â÷Â¡À» ÇÏ°í ÀÖ´ø ½Ã°£
+    public float chargingTime = 0.3f;             // Â÷Â¡ ½Ã°£
 
     [Header("DoubleTap")]
-    public float lastJumpTapTime = -1f;           // ìŠˆí¼ ì í”„ ì²«ë²ˆì§¸ ì…ë ¥ ì‹œê°„
-    public float lastDashTapTime = -1f;           // ëŒ€ì‰¬ ì²«ë²ˆì§¸ ì…ë ¥ ì‹œê°„
-    public float lastDownTapTime = -1f;           // ë‚´ë ¤ì°ê¸° ì²«ë²ˆì§¸ ì…ë ¥ ì‹œê°„
-    public float doubleTapThreshold = 0.2f;       // ë”ë¸”íƒ­ìœ¼ë¡œ ì¸ì‹í•˜ëŠ” ì‹œê°„
-    public Vector2 lastkey = Vector2.zero;        // ë°©í–¥ ì €ì¥
-    public int tapCount = 0;                      // ë”ë¸”íƒ­ ì¹´ìš´íŠ¸
+    public float lastJumpTapTime = -1f;           // ½´ÆÛ Á¡ÇÁ Ã¹¹øÂ° ÀÔ·Â ½Ã°£
+    public float lastDashTapTime = -1f;           // ´ë½¬ Ã¹¹øÂ° ÀÔ·Â ½Ã°£
+    public float lastDownTapTime = -1f;           // ³»·ÁÂï±â Ã¹¹øÂ° ÀÔ·Â ½Ã°£
+    public float doubleTapThreshold = 0.2f;       // ´õºíÅÇÀ¸·Î ÀÎ½ÄÇÏ´Â ½Ã°£
+    public Vector2 lastkey = Vector2.zero;        // ¹æÇâ ÀúÀå
+    public int tapCount = 0;                      // ´õºíÅÇ Ä«¿îÆ®
 
     [Header("ItemLooting")]
-    public Transform lootingArea;                 // ë£¨íŒ… ê¸°ì¤€ì 
-    public LayerMask lootingItem;                 // ë£¨íŒ… ê°€ëŠ¥í•œ ì•„ì´í…œ ë ˆì´ì–´
-    public float lootingRadius = 10f;             // ë£¨íŒ… ê°€ëŠ¥ ê±°ë¦¬
-    public float lootingSpeed = 30f;              // ë£¨íŒ… ì†ë„
+    public Transform lootingArea;                 // ·çÆÃ ±âÁØÁ¡
+    public LayerMask lootingItem;                 // ·çÆÃ °¡´ÉÇÑ ¾ÆÀÌÅÛ ·¹ÀÌ¾î
+    public float lootingRadius = 10f;             // ·çÆÃ °¡´É °Å¸®
+    public float lootingSpeed = 30f;              // ·çÆÃ ¼Óµµ
 
-    [SerializeField] private Image expBar;
-
-
-    protected void Awake()
+    private void Awake()
     {
+        condition = GetComponent<PlayerCondition>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         currentWeapon = GetComponentInChildren<IWeapon>();
-        playerData = DataManager.Instance.playerData;
-        maxExp = playerData.maxExpList[playerData.playerLevel];
-        curExp = 0;
-        UpdateExp();
     }
 
     private void Update()
@@ -99,7 +75,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isJumpDash) return; // ìŠˆí¼ ì í”„ ì¤‘ì—ëŠ” ë‹¤ë¥¸ ë¬¼ë¦¬ ê³„ì‚° ì•ˆ í•¨
+        if (isJumpDash) return; // ½´ÆÛ Á¡ÇÁ Áß¿¡´Â ´Ù¸¥ ¹°¸® °è»ê ¾È ÇÔ
 
         if (isDashing) return;
 
@@ -107,9 +83,8 @@ public class Player : MonoBehaviour
 
         if (isMove)
         {
-            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(moveInput.x * condition.totalMoveSpeed, rb.linearVelocity.y);
         }
-
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -117,48 +92,48 @@ public class Player : MonoBehaviour
 
         if (context.performed)
         {
-            moveInput = context.ReadValue<Vector2>(); // ì…ë ¥í‚¤ ì €ì¥
-            if (moveInput == null) return;            // ì…ë ¥í‚¤ ì—†ì„ë•Œ ë˜ëŒì•„ê°€ê¸°
+            moveInput = context.ReadValue<Vector2>(); // ÀÔ·ÂÅ° ÀúÀå
+            if (moveInput == null) return;            // ÀÔ·ÂÅ° ¾øÀ»¶§ µÇµ¹¾Æ°¡±â
 
-            Vector2 curDir = moveInput;               // ì…ë ¥ ë°©í–¥ ì €ì¥
-            float currentTime = Time.time;            // ëˆ„ë¥¸ ì‹œê°„ ì €ì¥
+            Vector2 curDir = moveInput;               // ÀÔ·Â ¹æÇâ ÀúÀå
+            float currentTime = Time.time;            // ´©¸¥ ½Ã°£ ÀúÀå
 
-            // ëŒ€ì‰¬í•˜ëŠ”ì¤‘, ê°€ëŠ¥ì—¬ë¶€, ë”ë¸” íƒ­, ì…ë ¥ ë°©í–¥ ì²´í¬
+            // ´ë½¬ÇÏ´ÂÁß, °¡´É¿©ºÎ, ´õºí ÅÇ, ÀÔ·Â ¹æÇâ Ã¼Å©
             if (curDir == lastkey && currentTime - lastDashTapTime < doubleTapThreshold && !isDashing && isAbleDash)
             {
-                //ì¡°ê±´ ë‹¬ì„± ë‘ë²ˆì§¸ ì…ë ¥ì‹œ, íƒ­ ì¹´ìš´íŠ¸ 2 ë‹¬ì„±
+                //Á¶°Ç ´Ş¼º µÎ¹øÂ° ÀÔ·Â½Ã, ÅÇ Ä«¿îÆ® 2 ´Ş¼º
                 tapCount++;
             }
             else
             {
-                // ì²«ë²ˆì§¸ í‚¤ ì…ë ¥ ì‹œ, íƒ­ ì¹´ìš´íŠ¸ 1ê³¼ ì…ë ¥í‚¤ ì €ì¥
-                // ì¡°ê±´ ë¯¸ë‹¬ì„± ë‘ë²ˆì§¸ í‚¤ ì…ë ¥, íƒ­ ì¹´ìš´íŠ¸ ìœ ì§€ ë° ì…ë ¥í‚¤ ì €ì¥
+                // Ã¹¹øÂ° Å° ÀÔ·Â ½Ã, ÅÇ Ä«¿îÆ® 1°ú ÀÔ·ÂÅ° ÀúÀå
+                // Á¶°Ç ¹Ì´Ş¼º µÎ¹øÂ° Å° ÀÔ·Â, ÅÇ Ä«¿îÆ® À¯Áö ¹× ÀÔ·ÂÅ° ÀúÀå
                 tapCount = 1;
                 lastkey = curDir;
             }
 
-            lastDashTapTime = currentTime;            // ë§ˆì§€ë§‰ í‚¤ ì…ë ¥ì‹œê°„ ì €ì¥
+            lastDashTapTime = currentTime;            // ¸¶Áö¸· Å° ÀÔ·Â½Ã°£ ÀúÀå
 
-            // ë”ë¸” íƒ­ ì„±ê³µ ì²´í¬
+            // ´õºí ÅÇ ¼º°ø Ã¼Å©
             if (tapCount == 2)
             {
-                // íƒ­ ì¹´ìš´íŠ¸ ì´ˆê¸°í™” ë° ëŒ€ì‰¬ ì‹¤í–‰
+                // ÅÇ Ä«¿îÆ® ÃÊ±âÈ­ ¹× ´ë½¬ ½ÇÇà
                 Debug.Log("DefaultDesh");
                 tapCount = 0;
                 StartCoroutine(StartDash(lastLookDirection));
             }
 
-            // ëŒ€ì‰¬ ì´í›„ ì¼ë°˜ ì´ë™
+            // ´ë½¬ ÀÌÈÄ ÀÏ¹İ ÀÌµ¿
             Debug.Log("Move");
             isMove = true;
 
-            // ë°©í–¥ì´ ë°”ë€Œë©´ ë§ˆì§€ë§‰ì— ë°”ë¼ë³¸ ë°©í–¥ìœ¼ë¡œ ê°±ì‹ 
+            // ¹æÇâÀÌ ¹Ù²î¸é ¸¶Áö¸·¿¡ ¹Ù¶óº» ¹æÇâÀ¸·Î °»½Å
             if (Mathf.Abs(moveInput.x) > 0.01f)
             {
                 lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
             }
         }
-        // í‚¤ ì…ë ¥ì´ ëë‚  ë•Œ, ì´ë™ ì¢…ë£Œ 
+        // Å° ÀÔ·ÂÀÌ ³¡³¯ ¶§, ÀÌµ¿ Á¾·á 
         if (context.canceled)
             isMove = false;
     }
@@ -166,7 +141,7 @@ public class Player : MonoBehaviour
     public IEnumerator StartDash(Vector2 direction)
     {
         Debug.Log("DeshCoroutine");
-        isDashing = true; // isDashing ë™ì•ˆ ì‚¬ìš©ìì˜ ì…ë ¥ì„ ë°›ì§€ ì•ŠìŒ
+        isDashing = true; // isDashing µ¿¾È »ç¿ëÀÚÀÇ ÀÔ·ÂÀ» ¹ŞÁö ¾ÊÀ½
         isAbleDash = false;
         dashDirection = direction;
         basePos = rb.position;
@@ -177,13 +152,13 @@ public class Player : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
 
 
-        // ì• ë‹ˆë©”ì´ì…˜ íŠ¸ë¦¬ê±°
+        // ¾Ö´Ï¸ŞÀÌ¼Ç Æ®¸®°Å
         //animator?.SetTrigger("Dash");
 
-        // ëŒ€ì‰¬ ê±°ë¦¬ê¹Œì§€ ë“±ì† ìš´ë™
+        // ´ë½¬ °Å¸®±îÁö µî¼Ó ¿îµ¿
         while (Vector2.Distance(rb.position, targetPos) > 0.01f)
         {
-            targetPos = new Vector2 (targetPos.x, rb.position.y);
+            targetPos = new Vector2(targetPos.x, rb.position.y);
 
             Vector2 next = Vector2.MoveTowards(rb.position, targetPos, dashPower * Time.fixedDeltaTime);
 
@@ -195,20 +170,20 @@ public class Player : MonoBehaviour
             }
 
             rb.MovePosition(next);
-            yield return new WaitForFixedUpdate();  // ë¬¼ë¦¬ ì—…ë°ì´íŠ¸ ì£¼ê¸°ì— ë§ì¶”ê¸°
+            yield return new WaitForFixedUpdate();  // ¹°¸® ¾÷µ¥ÀÌÆ® ÁÖ±â¿¡ ¸ÂÃß±â
         }
 
-        // ëŒ€ì‹œ í›„ ì• ë‹ˆë©”ì´ì…˜ ë³µêµ¬
+        // ´ë½Ã ÈÄ ¾Ö´Ï¸ŞÀÌ¼Ç º¹±¸
         //if (IsGrounded())
         //    animator?.Play("Idle");
 
         if (!IsGrounded())
-        {   
+        {
             yield return new WaitForSeconds(0.05f);
-            Debug.Log("ì²´ê³µ");
+            Debug.Log("Ã¼°ø");
         }
 
-        Debug.Log("ë“±ì†ìš´ë™ ì¤‘ì§€");
+        Debug.Log("µî¼Ó¿îµ¿ ÁßÁö");
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
@@ -226,17 +201,17 @@ public class Player : MonoBehaviour
     {
         if (context.started)
         {
-            //ê³µì¤‘
+            //°øÁß
             if (!IsGrounded())
             {
                 float currentTime = Time.time;
 
                 if (currentTime - lastJumpTapTime < doubleTapThreshold && jumpCount == 2)
                 {
-                    //ë”ë¸” íƒ­
+                    //´õºí ÅÇ
                     Debug.Log("Double Tap Detected!");
                     StartCoroutine(SuperJump());
-                    lastJumpTapTime = -1f; // ë¦¬ì…‹
+                    lastJumpTapTime = -1f; // ¸®¼Â
                 }
                 else
                 {
@@ -245,13 +220,13 @@ public class Player : MonoBehaviour
                 }
             }
 
-            // ì¼ë°˜ ì í”„ ë¡œì§
+            // ÀÏ¹İ Á¡ÇÁ ·ÎÁ÷
             if (IsGrounded())
             {
                 Debug.Log("Jump");
-                // ì í”„ íšŸìˆ˜ ì´ˆê¸°í™”
+                // Á¡ÇÁ È½¼ö ÃÊ±âÈ­
                 jumpCount = 0;
-                // ì í”„ ì§ì „ì— yì†ë„ë¥¼ 0ìœ¼ë¡œ ì´ˆê¸°í™”
+                // Á¡ÇÁ Á÷Àü¿¡ y¼Óµµ¸¦ 0À¸·Î ÃÊ±âÈ­
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 jumpCount++;
@@ -276,17 +251,17 @@ public class Player : MonoBehaviour
         while (Vector2.Distance(rb.position, tarPos) > 0.01f)
         {
             //rb.linearVelocity = dashDirection * dashPower;
-            //yield return null; // ë§¤ í”„ë ˆì„ ìœ ì§€
+            //yield return null; // ¸Å ÇÁ·¹ÀÓ À¯Áö
 
             Vector2 next = Vector2.MoveTowards(rb.position, tarPos, superJumpForce * Time.fixedDeltaTime);
             rb.MovePosition(next);
-            yield return new WaitForFixedUpdate();  // ë¬¼ë¦¬ ì—…ë°ì´íŠ¸ ì£¼ê¸°ì— ë§ì¶”ê¸°
+            yield return new WaitForFixedUpdate();  // ¹°¸® ¾÷µ¥ÀÌÆ® ÁÖ±â¿¡ ¸ÂÃß±â
         }
 
-        if(!IsGrounded())
+        if (!IsGrounded())
             yield return new WaitForSeconds(0.05f);
 
-        // ë„ì°© ì‹œ ìƒíƒœ ì´ˆê¸°í™”
+        // µµÂø ½Ã »óÅÂ ÃÊ±âÈ­
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = originalGravity;
 
@@ -308,7 +283,7 @@ public class Player : MonoBehaviour
 
         else if (context.performed)
         {
-            // TODO : ì°¨ì§• ì• ë‹ˆë©”ì´ì…˜ ì¶”ê°€
+            // TODO : Â÷Â¡ ¾Ö´Ï¸ŞÀÌ¼Ç Ãß°¡
             Debug.Log("Performed");
         }
 
@@ -319,24 +294,24 @@ public class Player : MonoBehaviour
             holdTime = Time.time - chargingStart;
             isCharging = false;
 
-            if (!IsGrounded()) // ê³µì¤‘ ì²´í¬
+            if (!IsGrounded()) // °øÁß Ã¼Å©
             {
-                // ë”œë ˆì´ ì²´í¬
+                // µô·¹ÀÌ Ã¼Å©
                 if (lastAttackTime + attackDelay >= Time.time)
                     return;
 
-                // ìœ„ìª½ ë°˜ë™ ì¶”ê°€
+                // À§ÂÊ ¹İµ¿ Ãß°¡
                 rb.linearVelocity = Vector2.up * rebound;
 
                 animator?.SetTrigger("Attack");
-                // ë¬´ê¸°ê³µê²© ë¡œì§ ì—°ê²° ì˜ˆì •
+                // ¹«±â°ø°İ ·ÎÁ÷ ¿¬°á ¿¹Á¤
                 currentWeapon.Attack();
 
-                // ê³µê²© íšŸìˆ˜
+                // °ø°İ È½¼ö
                 attackCount++;
                 Debug.Log($"Attack {attackCount}");
 
-                // ê³µì¤‘ê³µê²© 4íšŒ - ë§ˆì§€ë§‰ ê³µê²©ì‹œê°„ ì²´í¬ ë° ì´ˆê¸°í™”
+                // °øÁß°ø°İ 4È¸ - ¸¶Áö¸· °ø°İ½Ã°£ Ã¼Å© ¹× ÃÊ±âÈ­
                 if (attackCount == 4)
                 {
                     lastAttackTime = Time.time;
@@ -345,7 +320,7 @@ public class Player : MonoBehaviour
             }
             else if (IsGrounded())
             {
-                // ì°¨ì§•ì‹œê°„ì— ë”°ë¼ ì¼ë°˜ê³µê²©ê³¼ ì°¨ì§•ê³µê²© ë¶„ë¦¬
+                // Â÷Â¡½Ã°£¿¡ µû¶ó ÀÏ¹İ°ø°İ°ú Â÷Â¡°ø°İ ºĞ¸®
                 if (holdTime > chargingTime)
                 {
                     Debug.Log("ChargingAttack");
@@ -355,9 +330,9 @@ public class Player : MonoBehaviour
                 else
                 {
                     Debug.Log("Attack");
-                    // ë•…ì— ë‹¿ìœ¼ë©´ íšŸìˆ˜ ì´ˆê¸°í™”
+                    // ¶¥¿¡ ´êÀ¸¸é È½¼ö ÃÊ±âÈ­
                     attackCount = 0;
-                    // ì¼ë°˜ ê³µê²©
+                    // ÀÏ¹İ °ø°İ
                     animator?.SetTrigger("Attack");
                     currentWeapon.Attack();
                 }
@@ -371,12 +346,12 @@ public class Player : MonoBehaviour
         {
             float currentTime = Time.time;
 
-            //ë”ë¸” íƒ­ ì²´í¬
+            //´õºí ÅÇ Ã¼Å©
             if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded())
             {
                 Debug.Log("Double Tap Detected");
                 StartCoroutine(StartDownAttack());
-                lastDownTapTime = -1f; // ë¦¬ì…‹
+                lastDownTapTime = -1f; // ¸®¼Â
             }
             else
             {
@@ -393,16 +368,16 @@ public class Player : MonoBehaviour
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
 
-        // ë•…ì— ë‹¿ì„ ë•Œê¹Œì§€ ë“±ì† ìš´ë™
+        // ¶¥¿¡ ´êÀ» ¶§±îÁö µî¼Ó ¿îµ¿
         while (!IsGrounded())
         {
             rb.linearVelocity = Vector2.down * dashPower;
-            yield return null; // ë§¤ í”„ë ˆì„ ìœ ì§€
+            yield return null; // ¸Å ÇÁ·¹ÀÓ À¯Áö
         }
         rb.linearVelocity = Vector2.zero;
         currentWeapon.DownAttack();
 
-        // ë„ì°© ì‹œ ìƒíƒœ ì´ˆê¸°í™”
+        // µµÂø ½Ã »óÅÂ ÃÊ±âÈ­
         rb.gravityScale = originalGravity;
     }
 
@@ -413,7 +388,7 @@ public class Player : MonoBehaviour
 
     public void IsLooting()
     {
-        //ì•„ì´í…œ ê°ì§€
+        //¾ÆÀÌÅÛ °¨Áö
         Collider2D[] items = Physics2D.OverlapCircleAll(lootingArea.position, lootingRadius, lootingItem);
 
         StartCoroutine(OnLooting(items));
@@ -427,48 +402,20 @@ public class Player : MonoBehaviour
         {
             if (item == null) continue;
 
-            // ê°ì§€ëœ ì•„ì´í…œ ëŒì–´ë‹¹ê¸°ê¸°
+            // °¨ÁöµÈ ¾ÆÀÌÅÛ ²ø¾î´ç±â±â
             item.transform.position = Vector3.MoveTowards(item.transform.position, transform.position, lootingSpeed * Time.deltaTime);
 
-            // ì•„ì´í…œê³¼ í”Œë ˆì´ì–´ê°€ ê°€ê¹Œìš°ë©´ ì•„ì´í…œ ìŠµë“ ë° íŒŒê´´
+            // ¾ÆÀÌÅÛ°ú ÇÃ·¹ÀÌ¾î°¡ °¡±î¿ì¸é ¾ÆÀÌÅÛ ½Àµæ ¹× ÆÄ±«
             float distance = Vector2.Distance(item.transform.position, transform.position);
             if (distance < 0.3f)
             {
                 LootableItem loot = item.GetComponent<LootableItem>();
                 if (loot != null)
                 {
-                    item.GetComponent<LootableItem>().OnLooted(this);
+                    item.GetComponent<LootableItem>().OnLooted(condition);
                     Destroy(item.gameObject);
                 }
             }
-        }
-    }
-
-    public void LevelUP()
-    {
-        playerLevel++;
-        curExp = 0f;
-        maxExp = data.maxExpList[Mathf.Min(data.maxExpList.Count - 1, playerLevel)];
-
-        // TODO : í”Œë ˆì´ì–´ ìŠ¤í…Ÿ ê³„ì‚°
-        moveSpeed = data.moveSpeedList[Mathf.Min(data.moveSpeedList.Count - 1, playerLevel)];
-        attackPower = data.attackPowerList[Mathf.Min(data.attackPowerList.Count - 1, playerLevel)];
-
-        Time.timeScale = 0f;
-        UIManager.Instance.selecUI.gameObject.SetActive(true);
-
-        UpdateExp();
-    }
-
-    public void UpdateExp()
-    {
-        //expBar ì—…ë°ì´íŠ¸
-        expBar.fillAmount = Mathf.Min(1, curExp / maxExp);
-
-        //ë ˆë²¨ì—… ê°€ëŠ¥ ì—¬ë¶€ íŒë‹¨
-        if (curExp >= maxExp && playerLevel < data.maxLevel)
-        {
-            LevelUP();
         }
     }
 }

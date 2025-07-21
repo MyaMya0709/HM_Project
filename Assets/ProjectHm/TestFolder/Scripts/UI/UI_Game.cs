@@ -22,15 +22,6 @@ public class UI_Game : UI
                 menuUI.gameObject.SetActive(true);
             }
         });
-
-        testSelecButton.onClick.AddListener(() =>
-        {
-            if (!selecUI.gameObject.activeSelf)
-            {
-                Time.timeScale = 0f;
-                selecUI.gameObject.SetActive(true);
-            }
-        });
     }
 
 }
