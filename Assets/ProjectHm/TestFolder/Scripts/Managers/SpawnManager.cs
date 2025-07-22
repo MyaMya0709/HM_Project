@@ -140,7 +140,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         // 웨이브의 전체 적 수량 저장
         aliveEnemies = spawnDataList.Count;
-        Debug.Log(aliveEnemies);
+        Debug.Log($"적의 수: {aliveEnemies}");
 
         for (int i = 0; i < spawnDataList.Count; i++)
         {

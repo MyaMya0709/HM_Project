@@ -55,12 +55,7 @@ public class SelectionSlot : MonoBehaviour
                 // TODO: 무기 추가 + 레벨업 통합하기
             case SlotType.WeaponGet:
                 //자동무기 추가
-                Debug.Log("자동무기 추가");
-                break;
-
-            case SlotType.WeaponUP:
-                //자동무기 업글
-                Debug.Log("자동무기 업글");
+                Debug.Log("자동무기 추가 or 렙업");
                 break;
         }
     }

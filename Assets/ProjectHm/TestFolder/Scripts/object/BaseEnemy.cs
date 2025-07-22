@@ -8,7 +8,7 @@ public class BaseEnemy : MonoBehaviour
 {
     [Header("Stats")]
     public EnemyData enemyData;      // 적의 고정 데이터
-    public float currentHealth;
+    public float curHp;
 
     [Header("Movement Element")]
     public Transform target;
@@ -26,20 +26,17 @@ public class BaseEnemy : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
 
-    [Header("ItemDrop Element")]
     public GameObject droppedItemPrepab;
-    public List<ItemData> ItemList = new List<ItemData>();
-
     public Animator animator;
     
-    public bool isDead => currentHealth <= 0;
+    public bool isDead => curHp <= 0;
 
     public event System.Action OnDeath;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        currentHealth = enemyData.maxHealth;
+        curHp = enemyData.maxHealth;
         //target = GameManager.Instance.baseCore.AttackPoint;
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
@@ -83,15 +80,15 @@ public class BaseEnemy : MonoBehaviour
 
     public void TakeDamage(BaseWeapon WeaponData, PlayerController player)
     {
-        currentHealth -= WeaponData.damage;
-        if (currentHealth <= 0)
+        curHp -= WeaponData.weaponDamage;
+        if (curHp <= 0)
         {
             Dead();
         }
 
         ApplyEffect(WeaponData.effectData, player);
 
-        SpawnDamagePopup((int)WeaponData.damage);
+        SpawnDamagePopup((int)WeaponData.weaponDamage);
     }
 
     public void SpawnDamagePopup(int damage)
@@ -128,8 +125,8 @@ public class BaseEnemy : MonoBehaviour
         float i = Time.time + duration;
         while (i >= Time.time)
         {
-            currentHealth -= damage * 0.2f;
-            if (currentHealth <= 0)
+            curHp -= damage * 0.2f;
+            if (curHp <= 0)
             {
                 Dead();
             }

@@ -8,7 +8,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     public WeaponEffectData effectData;
 
     [Header("Attack Settings")]
-    public float damage = 10f;
+    public float weaponDamage = 10f;
     public float attackRange = 1.2f;
     public Transform attackPoint;
     public LayerMask enemyLayer;
@@ -99,7 +99,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Debug.Log("ChargingAttack");
 
         ChargingLevel();
-        damage *= chargeLevel;
+        weaponDamage *= chargeLevel;
         effectData.Airborne.onoff = true;
         effectData.Airborne.valueA *= chargeLevel;
 
@@ -122,7 +122,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
         DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f * chargeLevel), new Vector2(attackRange * chargeLevel, 1.0f), Color.red, 3f);
 
-        damage /= chargeLevel;
+        weaponDamage /= chargeLevel;
         effectData.Airborne.onoff = false;
         effectData.Airborne.valueA /= chargeLevel;
         chargeLevel = 0;
@@ -200,6 +200,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
                 enemy.TakeDamage(this, playerController);
+                if (isStun)
+                {
+                    StartCoroutine(enemy.TakeStun(AttackStunDur));
+                }
                 // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
                 DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f), new Vector2(attackRange, 1.0f), Color.green, 3f);
             }
@@ -210,8 +214,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon
             DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f), new Vector2(attackRange, 1.0f), Color.red, 3f);
         }
     }
-
-
 
     public void MutipleAttack()
     {
