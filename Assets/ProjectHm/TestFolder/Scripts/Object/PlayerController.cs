@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -40,11 +41,12 @@ public class PlayerController : MonoBehaviour
     [Header("Attack")]
     public float rebound = 4.5f;
     public int attackCount = 0;                   // 공중 공격 횟수
-    public float attackDelay = 0.6f;              // 공중공격 4회 이후 딜레이
-    public float lastAttackTime;                  // 4번째 공중공격 시간
+    public float attackRest = 0.6f;               // 공중공격 4회 이후 딜레이
+    public float lastOnAirTime;                   // 4번째 공중공격 시간
     public float chargingStart;                   // 차징 시작 시간
     public float holdTime;                        // 차징을 하고 있던 시간
     public float chargingTime = 0.3f;             // 차징 시간
+    public float lastAttackTime;                  // 마지막 공격 시간
 
     [Header("DoubleTap")]
     public float lastJumpTapTime = -1f;           // 슈퍼 점프 첫번째 입력 시간
@@ -289,15 +291,17 @@ public class PlayerController : MonoBehaviour
 
         else if (context.canceled)
         {
-            Debug.Log("OnAttack");
+            if (!isAbleAttack) return;
 
+            Debug.Log("OnAttack");
             holdTime = Time.time - chargingStart;
             isCharging = false;
+
 
             if (!IsGrounded()) // 공중 체크
             {
                 // 딜레이 체크
-                if (lastAttackTime + attackDelay >= Time.time)
+                if (lastOnAirTime + attackRest >= Time.time)
                     return;
 
                 // 위쪽 반동 추가
@@ -314,7 +318,7 @@ public class PlayerController : MonoBehaviour
                 // 공중공격 4회 - 마지막 공격시간 체크 및 초기화
                 if (attackCount == 4)
                 {
-                    lastAttackTime = Time.time;
+                    lastOnAirTime = Time.time;
                     attackCount = 0;
                 }
             }
@@ -337,6 +341,8 @@ public class PlayerController : MonoBehaviour
                     currentWeapon.Attack();
                 }
             }
+
+            lastAttackTime = Time.time;
         }
     }
 

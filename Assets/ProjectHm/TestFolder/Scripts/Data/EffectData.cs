@@ -13,6 +13,7 @@ public class WeaponEffectData
 [Serializable]
 public class BaseEffectData
 {
+    public bool isSum;   //참이면 합연산/거짓이면 곱연산
     public bool onoff;
     public float valueA;
     public float valueB;

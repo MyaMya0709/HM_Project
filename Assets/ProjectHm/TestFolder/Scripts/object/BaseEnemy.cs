@@ -80,7 +80,7 @@ public class BaseEnemy : MonoBehaviour
 
     public void TakeDamage(BaseWeapon WeaponData, PlayerController player)
     {
-        curHp -= WeaponData.weaponDamage;
+        curHp -= WeaponData.TotalDamage;
         if (curHp <= 0)
         {
             Dead();
@@ -88,7 +88,7 @@ public class BaseEnemy : MonoBehaviour
 
         ApplyEffect(WeaponData.effectData, player);
 
-        SpawnDamagePopup((int)WeaponData.weaponDamage);
+        SpawnDamagePopup((int)WeaponData.TotalDamage);
     }
 
     public void SpawnDamagePopup(int damage)

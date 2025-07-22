@@ -193,10 +193,9 @@ public class SpawnManager : Singleton<SpawnManager>
     public void StopCoroutine()
     {
         Debug.Log("몬스터 스폰 중단");
-        if (spawnCoroutine != null)
-        {
-            StopCoroutine(spawnCoroutine);
-            spawnCoroutine = null;
-        }
+
+        StopCoroutine(spawnCoroutine);
+        spawnCoroutine = null;
+
     }
 }

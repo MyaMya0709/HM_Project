@@ -5,10 +5,15 @@ using UnityEngine.Timeline;
 
 public class BaseWeapon : MonoBehaviour, IWeapon
 {
-    public WeaponEffectData effectData;
+
+    public WeaponEffectData effectData = new WeaponEffectData()
+    {
+        // 요소 직접 추가
+    };
 
     [Header("Attack Settings")]
-    public float weaponDamage = 10f;
+    public float TotalDamage = 10f;
+    public float WeaponDamage;
     public float attackRange = 1.2f;
     public Transform attackPoint;
     public LayerMask enemyLayer;
@@ -99,7 +104,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Debug.Log("ChargingAttack");
 
         ChargingLevel();
-        weaponDamage *= chargeLevel;
+        TotalDamage *= chargeLevel;
         effectData.Airborne.onoff = true;
         effectData.Airborne.valueA *= chargeLevel;
 
@@ -122,7 +127,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
         DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f * chargeLevel), new Vector2(attackRange * chargeLevel, 1.0f), Color.red, 3f);
 
-        weaponDamage /= chargeLevel;
+        TotalDamage /= chargeLevel;
         effectData.Airborne.onoff = false;
         effectData.Airborne.valueA /= chargeLevel;
         chargeLevel = 0;
