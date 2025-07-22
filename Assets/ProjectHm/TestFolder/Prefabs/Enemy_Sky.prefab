@@ -156,7 +156,7 @@ MonoBehaviour:
     m_Bits: 64
   groundCheck: {fileID: 8598645025410786670}
   groundCheckRadius: 0.2
-  droppedItemPrepab: {fileID: 0}
+  droppedItemPrepab: {fileID: 76134026972407004, guid: 0e5a4471c69129e46817985979c17542, type: 3}
   ItemList: []
   animator: {fileID: 0}
 --- !u!1 &9101133165995811410

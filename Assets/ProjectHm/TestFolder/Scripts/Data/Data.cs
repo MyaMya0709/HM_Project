@@ -15,10 +15,11 @@ public class PlayerData
 
     public void Clear()
     {
-        moveSpeedLevel = 1;
-        attackPowerLevel = 1;
-        attackSpeedLevel = 1;
+        moveSpeedLevel = 0;
+        attackPowerLevel = 0;
+        attackSpeedLevel = 0;
     }
+
     public PlayerData LoadData()
     {
         TextAsset jsonAsset = Resources.Load<TextAsset>("Data/PlayerData"); // 경로에서 확장자 제외
@@ -61,14 +62,3 @@ public class StatUpTableData
     }
 }
 #endregion
-
-//public class SlotData
-//{
-//    public SlotType type;
-//    public string name;
-//    public Image icon;
-//    public string description;
-//    public StatType stat;               // 스탯 업그레이드
-//    public IWeapon weapon;              // 자동무기 장착
-//    public WeaponUpData weaponUpData;   // 자동무기 업그레이드
-//} 

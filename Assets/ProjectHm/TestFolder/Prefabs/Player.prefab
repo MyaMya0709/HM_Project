@@ -162,9 +162,15 @@ MonoBehaviour:
     moveSpeedLevel: 0
     attackPowerLevel: 0
     attackSpeedLevel: 0
-  moveSpeed: 6
-  attackPower: 10
-  attackSpeed: 0
+  baseMoveSpeed: 0
+  baseAttackPower: 0
+  baseAttackSpeed: 0
+  selecMoveSpeedLv: 0
+  selecAttackPowerLv: 0
+  selecAttackSpeedLv: 0
+  totalMoveSpeed: 0
+  totalAttackPower: 0
+  totalAttackSpeed: 0
   curGold: 0
   maxExp: 0
   curExp: 0
@@ -259,8 +265,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6092559828127166950}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 5436040420309497436}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -275,8 +281,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6092559828127166950}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 5436040420309497436}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
@@ -291,8 +297,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Jump[/Keyboard/w]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6092559828127166950}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 5436040420309497436}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
@@ -307,8 +313,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Attack[/Keyboard/x]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6092559828127166950}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 5436040420309497436}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnDownAttack
         m_Mode: 0
         m_Arguments:

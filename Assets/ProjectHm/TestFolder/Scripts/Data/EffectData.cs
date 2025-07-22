@@ -1,15 +1,6 @@
-using UnityEngine;
+using System;
 
-//[System.Serializable]
-//public class EffectData
-//{
-//    public EffectType effectType;
-//    public EffectTarget effectTarget;
-//    public float effectAmount;
-//    public float effectDuration;
-//}
-
-[System.Serializable]
+[Serializable]
 public class WeaponEffectData
 {
     public BaseEffectData Knockback;
@@ -19,7 +10,7 @@ public class WeaponEffectData
     public BaseEffectData DotDamage;
 }
 
-[System.Serializable]
+[Serializable]
 public class BaseEffectData
 {
     public bool onoff;

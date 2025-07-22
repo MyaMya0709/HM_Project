@@ -47,7 +47,7 @@ public class PlayerCondition : MonoBehaviour
         curExp = 0;
         UpdateExp();
 
-        StartSetting();
+        StartStatSetting();
     }
 
     public void LevelUP()
@@ -72,15 +72,24 @@ public class PlayerCondition : MonoBehaviour
         //레벨업 가능 여부 판단
         if (curExp >= maxExp && playerLevel < maxLevel)
         {
+            //초과된 경험치는 다음 레벨로 이전 - 로직 추가
             LevelUP();
         }
     }
 
-    public void StartSetting()
+    public void StartStatSetting()
     {
+        // 영구 스탯 불러오기
+        baseMoveSpeed = DataManager.Instance.statUpTableData.moveSpeedDic[playerData.moveSpeedLevel];
+        baseAttackPower = DataManager.Instance.statUpTableData.attackPowerDic[playerData.attackPowerLevel];
+        baseAttackSpeed = DataManager.Instance.statUpTableData.attackSpeedDic[playerData.attackSpeedLevel];
+
+        // 선택지 스탯 레벨 초기화
         selecMoveSpeedLv = 0;
         selecAttackPowerLv = 0;
         selecAttackSpeedLv = 0;
+
+        // 초기화된 종합 스탯 계산
         StatSetting(StatType.moveSpeed);
         StatSetting(StatType.attackPower);
         StatSetting(StatType.attackSpeed);
