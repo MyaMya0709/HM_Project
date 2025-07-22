@@ -330,8 +330,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de760a909c48444d90b1553449a39a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData: {fileID: 0}
   selecButton: {fileID: 1546236414139079464}
-  SelectionUI: {fileID: 0}
+  selectionUI: {fileID: 0}
+  player: {fileID: 0}
+  slotType: 0
+  slotName: {fileID: 7057326537049766357}
+  slotIcon: {fileID: 844168995948444070}
+  slotDescription: {fileID: 1415156083819212469}
 --- !u!1 &5813122332503389417
 GameObject:
   m_ObjectHideFlags: 0

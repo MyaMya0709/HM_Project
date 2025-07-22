@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class UI_Selection : UI
@@ -8,6 +10,7 @@ public class UI_Selection : UI
 
     private void Start()
     {
+        Debug.Log("SelecUI 실행");
         SetSlot();
     }
 
@@ -30,9 +33,16 @@ public class UI_Selection : UI
         // 슬롯 생성 및 정보 세팅
         for (int i = 0; i < maxSlotCount; i++)
         {
-            GameObject GO = Instantiate(slotPrefab, slots);
-            // GO의 SelectionSlot컴퍼넌트에 접근해서 정보 셋팅하기
+            slotPrefab.GetComponent<SelectionSlot>().SlotInit(slotPrefab, slots, SlotDataSet(),this);
         }
         Debug.Log("SelecSlot 리셋");
+    }
+
+    public SlotData SlotDataSet()
+    {
+        int selscData = Random.Range(0, DataManager.Instance.allSlotDatas.Count);
+        SlotData data = DataManager.Instance.allSlotDatas[selscData];
+
+        return data;
     }
 }

@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -10,7 +11,7 @@ public class DataManager : Singleton<DataManager>
     public StatUpTableData statUpTableData;
     #endregion
 
-    #region SelecStat
+    #region SelecStatTable
     public Dictionary<int, float> selecMoveSpeedDic
     = new Dictionary<int, float>()
     {
@@ -50,6 +51,10 @@ public class DataManager : Singleton<DataManager>
 
     #region SelecWPUp
     #endregion
+    
+    #region SlotData
+    public List<SlotData> allSlotDatas = new List<SlotData>();
+    #endregion
 
 
 
@@ -58,6 +63,11 @@ public class DataManager : Singleton<DataManager>
         base.Awake();
         playerData = playerData.LoadData();
         statUpTableData = statUpTableData.LoadData();
+
+        foreach (SlotData data in Resources.LoadAll("ScriptableObject/Slots"))
+        {
+            allSlotDatas.Add(data);
+        }
     }
     private void Start()
     {
