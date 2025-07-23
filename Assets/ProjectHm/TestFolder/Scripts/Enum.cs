@@ -18,8 +18,8 @@ public enum EnemyMoveType
 public enum SlotType
 {
     StatUP,
-    WeaponGet,
-    WeaponUP
+    ManualWeapon,
+    AutoWeapon
 }
 
 public enum StatType

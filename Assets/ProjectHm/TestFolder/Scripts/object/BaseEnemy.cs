@@ -78,9 +78,9 @@ public class BaseEnemy : MonoBehaviour
         //rb.MovePosition(targetPos);
     }
 
-    public void TakeDamage(BaseWeapon WeaponData, PlayerController player)
+    public void TakeDamage(ManualWeapon_000 WeaponData, PlayerController player)
     {
-        curHp -= WeaponData.TotalDamage;
+        curHp -= WeaponData.totalDamage;
         if (curHp <= 0)
         {
             Dead();
@@ -88,7 +88,7 @@ public class BaseEnemy : MonoBehaviour
 
         ApplyEffect(WeaponData.effectData, player);
 
-        SpawnDamagePopup((int)WeaponData.TotalDamage);
+        SpawnDamagePopup((int)WeaponData.totalDamage);
     }
 
     public void SpawnDamagePopup(int damage)

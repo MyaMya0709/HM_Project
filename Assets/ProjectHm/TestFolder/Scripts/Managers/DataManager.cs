@@ -46,12 +46,14 @@ public class DataManager : Singleton<DataManager>
     };
     #endregion
 
-    #region SelecWeapon
+    #region WeaponData
+    public Dictionary<int, IManualWeapon> IManualWeaponDic = new();
+    public Dictionary<int, AutoWeaponData> IAutoWeaponDic = new();
     #endregion
 
     #region SelecWPUp
     #endregion
-    
+
     #region SlotData
     public List<SlotData> allSlotDatas = new List<SlotData>();
     #endregion
@@ -68,6 +70,13 @@ public class DataManager : Singleton<DataManager>
         {
             allSlotDatas.Add(data);
         }
+        Debug.Log($"모든 슬롯 데이터 : {allSlotDatas.Count}");
+
+        foreach (AutoWeaponData data in Resources.LoadAll("ScriptableObject/Weapon", typeof(AutoWeaponData)))
+        {
+            IAutoWeaponDic.Add(data.weaponID, data);
+        }
+        Debug.Log($"자동 무기 데이터 : {IAutoWeaponDic.Count}");
     }
     private void Start()
     {

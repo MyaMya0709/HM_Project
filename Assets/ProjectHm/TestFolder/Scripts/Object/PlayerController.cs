@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public PlayerCondition condition;
     public Rigidbody2D rb;
     public Vector2 moveInput;
-    public IWeapon currentWeapon;
+    public IManualWeapon currentWeapon;
     public Animator animator;
 
     [Header("MovementCheck")]
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
         condition = GetComponent<PlayerCondition>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        currentWeapon = GetComponentInChildren<IWeapon>();
+        currentWeapon = GetComponentInChildren<IManualWeapon>();
     }
 
     private void Update()
@@ -387,7 +387,7 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = originalGravity;
     }
 
-    public void EquipWeapon(IWeapon newWeapon)
+    public void EquipWeapon(IManualWeapon newWeapon)
     {
         currentWeapon = newWeapon;
     }

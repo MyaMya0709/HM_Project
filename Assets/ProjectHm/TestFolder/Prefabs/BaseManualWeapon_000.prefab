@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3110785223152321718}
   - component: {fileID: 1565793449964205548}
   m_Layer: 0
-  m_Name: BaseWeapon_00
+  m_Name: BaseManualWeapon_000
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,14 +101,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6185bcff486ea9a4bb12b1c895fa825c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  attackRange: 1.2
-  attackPoint: {fileID: 78432035083985118}
+  data: {fileID: 11400000, guid: 4e06adcaf33ebcf42aabd6c708ec70ee, type: 2}
+  baseWeaponLevel: 0
+  selecWeaponLevel: 0
+  baseDamage: 0
+  selecDamage: 0
+  totalWeaponDamage: 0
+  totalDamage: 0
+  baseRange: 0
+  selecRange: 0
+  totalRange: 0
+  playerController: {fileID: 0}
+  playerCondition: {fileID: 0}
+  sr: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  weaponID: 0
+  effectData:
+    Knockback:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+    Airborne:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+    Stun:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+    Slow:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+    DotDamage:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+  attackPoint: {fileID: 78432035083985118}
+  AttackStunDur: 0.1
+  DownAtkStunDur: 0.25
+  DashAtkStunDur: 0.25
+  chargeTimeLevel2: 0.6
+  chargeTimeLevel3: 1
+  chargeLevel: 0
+  isDashAttack: 0
   mutipleAttack: 0
+  isStun: 1
   hitEffect: {fileID: 0}
+  facingRight: 1
 --- !u!1 &4519292427527885072
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -33,6 +34,7 @@ public class PlayerCondition : MonoBehaviour
     public int playerLevel;
 
     [SerializeField] private Image expBar;
+    public List<IAutoWeapon> autoWeapons;
 
     protected void Awake()
     {
@@ -90,9 +92,9 @@ public class PlayerCondition : MonoBehaviour
         selecAttackSpeedLv = 0;
 
         // 초기화된 종합 스탯 계산
-        StatSetting(StatType.moveSpeed);
-        StatSetting(StatType.attackPower);
-        StatSetting(StatType.attackSpeed);
+        totalMoveSpeed = baseMoveSpeed * DataManager.Instance.selecMoveSpeedDic[selecMoveSpeedLv];
+        totalAttackPower = baseAttackPower * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv];
+        totalAttackSpeed = baseAttackSpeed * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv];
 
         // 자동무기 리스트 초기화
         // 자동무기 레벨 초기화
@@ -138,5 +140,10 @@ public class PlayerCondition : MonoBehaviour
                 Debug.Log("존재하지 않는 StatType");
                 break;
         }
+    }
+
+    public void SelecAutoWeapon()
+    {
+
     }
 }

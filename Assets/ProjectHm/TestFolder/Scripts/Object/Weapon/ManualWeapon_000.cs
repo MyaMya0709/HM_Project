@@ -1,29 +1,25 @@
-
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Timeline;
 
-public class BaseWeapon : MonoBehaviour, IWeapon
+public class ManualWeapon_000 : IManualWeapon
 {
+    public int weaponID = 000;
 
     public WeaponEffectData effectData = new WeaponEffectData()
     {
         // 요소 직접 추가
     };
 
-    [Header("Attack Settings")]
-    public float TotalDamage = 10f;
-    public float WeaponDamage;
-    public float attackRange = 1.2f;
     public Transform attackPoint;
-    public LayerMask enemyLayer;
+
+
     public float AttackStunDur = 0.1f;
     public float DownAtkStunDur = 0.25f;
     public float DashAtkStunDur = 0.25f;
 
     public float chargeTimeLevel2 = 0.6f;         // 차징 2단계 시간
     public float chargeTimeLevel3 = 1.0f;         // 차징 3단계 시간
-    public int chargeLevel = 0;                       // 차징 단계
+    public int chargeLevel = 0;                   // 차징 단계
 
     public bool isDashAttack = false;
 
@@ -33,17 +29,11 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
     [Header("Effects")]
     public GameObject hitEffect;
-
-    public PlayerController playerController;
-    public SpriteRenderer sr;
     public bool facingRight = true;
 
-
-    private void Start()
+    protected override void Start()
     {
-        playerController = GetComponentInParent<PlayerController>();
-        enemyLayer = LayerMask.GetMask("Enemy");
-        sr = GetComponentInChildren<SpriteRenderer>();
+        base.Start();
     }
 
     private void Update()
@@ -58,7 +48,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         }
     }
 
-    public void Attack()
+    public override void Attack()
     {
         Debug.Log("Attack");
         if (!mutipleAttack)
@@ -71,10 +61,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         }
     }
 
-    public void DownAttack()
+    public override void DownAttack()
     {
         // 공격 범위 내의 적 감지
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, totalRange, enemyLayer);
 
         foreach (var enemyCollider in hitEnemies)
         {
@@ -99,12 +89,12 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Debug.Log($"Hold: {playerController.holdTime:F2}s → Level {chargeLevel}");
     }
 
-    public void ChargingAttack()
+    public override void ChargingAttack()
     {
         Debug.Log("ChargingAttack");
 
         ChargingLevel();
-        TotalDamage *= chargeLevel;
+        totalDamage *= chargeLevel;
         effectData.Airborne.onoff = true;
         effectData.Airborne.valueA *= chargeLevel;
 
@@ -113,7 +103,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Vector2 direction = playerController.lastLookDirection;      // 방향
 
         // 공격 범위 내의 적 감지
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, size, 0f, direction, attackRange * chargeLevel, enemyLayer);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(origin, size, 0f, direction, totalRange * chargeLevel, enemyLayer);
 
         // 데미지 부여
         foreach (var hit in hits)
@@ -125,9 +115,9 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         }
 
         // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
-        DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f * chargeLevel), new Vector2(attackRange * chargeLevel, 1.0f), Color.red, 3f);
+        DrawDebugBox((Vector2)attackPoint.position + direction * (totalRange * 0.5f * chargeLevel), new Vector2(totalRange * chargeLevel, 1.0f), Color.red, 3f);
 
-        TotalDamage /= chargeLevel;
+        totalDamage /= chargeLevel;
         effectData.Airborne.onoff = false;
         effectData.Airborne.valueA /= chargeLevel;
         chargeLevel = 0;
@@ -136,13 +126,13 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Debug.Log($"Attack hit {hits.Length} enemies.");
     }
 
-    public void DashAttack()
+    public override void DashAttack()
     {
         if (!isDashAttack) return;
 
         Vector2 startPos = playerController.basePos;
         Vector2 endPos = playerController.rb.position;
-        Vector2 center = new Vector2 (((startPos + endPos) / 2f).x, attackPoint.position.y);
+        Vector2 center = new Vector2(((startPos + endPos) / 2f).x, attackPoint.position.y);
         float dashDis = Vector2.Distance(startPos, endPos);
         Vector2 boxsize = new Vector2(dashDis, 1f); // 넓이 = 대시거리
 
@@ -197,7 +187,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Vector2 direction = playerController.lastLookDirection;      // 방향
 
         // 공격 범위 내의 적 감지
-        RaycastHit2D hit = Physics2D.BoxCast(origin, size, 0f, direction, attackRange, enemyLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(origin, size, 0f, direction, totalRange, enemyLayer);
 
         // 데미지 부여
         if (hit.collider != null)
@@ -210,13 +200,13 @@ public class BaseWeapon : MonoBehaviour, IWeapon
                     StartCoroutine(enemy.TakeStun(AttackStunDur));
                 }
                 // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
-                DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f), new Vector2(attackRange, 1.0f), Color.green, 3f);
+                DrawDebugBox((Vector2)attackPoint.position + direction * (totalRange * 0.5f), new Vector2(totalRange, 1.0f), Color.green, 3f);
             }
         }
         else
         {
             // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
-            DrawDebugBox((Vector2)attackPoint.position + direction * (attackRange * 0.5f), new Vector2(attackRange, 1.0f), Color.red, 3f);
+            DrawDebugBox((Vector2)attackPoint.position + direction * (totalRange * 0.5f), new Vector2(totalRange, 1.0f), Color.red, 3f);
         }
     }
 
@@ -225,7 +215,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
         Debug.Log("MutipleAttack");
 
         // 공격 범위 내의 적 감지
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, totalRange, enemyLayer);
 
         // 보는 방향
         Vector2 forward = playerController.lastLookDirection;
@@ -268,14 +258,15 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
     private void DrawSingleLine(Vector2 attatckPoint, Vector2 LookDir, float duration, Color color)
     {
-        Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * attackRange, color, duration);
+        Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * totalRange, color, duration);
     }
 
-    void Flip()
+    private void Flip()
     {
         Vector3 s = transform.localScale;
         s.x *= -1;
         transform.localScale = s;
         facingRight = !facingRight;
     }
+
 }

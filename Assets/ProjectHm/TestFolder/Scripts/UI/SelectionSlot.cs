@@ -49,13 +49,20 @@ public class SelectionSlot : MonoBehaviour
         switch (slotType)
         {
             case SlotType.StatUP:
+                Debug.Log("스탯 업");
                 player.SelecStatLevelUP(slotData.statType);
                 break;
 
-                // TODO: 무기 추가 + 레벨업 통합하기
-            case SlotType.WeaponGet:
-                //자동무기 추가
+            // TODO: 무기 추가 + 레벨업 통합하기
+            case SlotType.ManualWeapon:
+                //자동무기 추가 및 렙업 or 수동무기 임시 렙업
+                Debug.Log("수동무기 추가 or 렙업");
+                break;
+
+            case SlotType.AutoWeapon:
+                //자동무기 추가 및 렙업 or 수동무기 임시 렙업
                 Debug.Log("자동무기 추가 or 렙업");
+
                 break;
         }
     }

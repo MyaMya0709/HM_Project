@@ -10,6 +10,6 @@ public class SlotData : ScriptableObject
     public Sprite icon;
     [TextArea] public string description;
     public StatType statType;               // 스탯 업그레이드
-    //public IWeapon weapon;              // 자동무기 장착
-}
+    public int weaponID;               // 자동무기 장착 및 업그레이드 or 수동무기 휘발성 업그레이드
 
+}
