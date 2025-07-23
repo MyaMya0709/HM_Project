@@ -41,6 +41,7 @@ public abstract class IAutoWeapon : MonoBehaviour
 
     public void SelecLevelUp()
     {
+        Debug.Log("자동무기 선택지 렙업");
         selecWeaponLevel++;
         selecDamage = data.selecDamageList[selecWeaponLevel];
         selecRange = data.selecRangeList[selecWeaponLevel];

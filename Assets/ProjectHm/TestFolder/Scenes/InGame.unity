@@ -8766,7 +8766,20 @@ MonoBehaviour:
     moveSpeedLevel: 0
     attackPowerLevel: 0
     attackSpeedLevel: 0
-  allSlotDatas: []
+  manualPrefabList:
+  - {fileID: 3691733087425890900, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+  manualDataList:
+  - {fileID: 11400000, guid: 4e06adcaf33ebcf42aabd6c708ec70ee, type: 2}
+  autoPrefabList:
+  - {fileID: 7815197726315998923, guid: 92ac6024902ed4b4891af625e4e6b3f4, type: 3}
+  autoDataList:
+  - {fileID: 11400000, guid: 5462b7257b874cd438de8ceea038a54a, type: 2}
+  allSlotDatas:
+  - {fileID: 11400000, guid: ae7500526482f574a9c057c88ab6c81e, type: 2}
+  - {fileID: 11400000, guid: 4aa51eca32bec0e4c97ac1d43e8a9b25, type: 2}
+  - {fileID: 11400000, guid: 5ad3d3b45e2202d4fbf5b19112da88ed, type: 2}
+  - {fileID: 11400000, guid: bfaca91b93e9a904186f64a92755d8c8, type: 2}
+  - {fileID: 11400000, guid: 678c6db33856d3048a29ffd062ff6a4e, type: 2}
 --- !u!4 &1892881863
 Transform:
   m_ObjectHideFlags: 0
@@ -9604,5 +9617,5 @@ SceneRoots:
   - {fileID: 1497130809}
   - {fileID: 232088224}
   - {fileID: 1064147266}
-  - {fileID: 1892881863}
   - {fileID: 1931647175}
+  - {fileID: 1892881863}

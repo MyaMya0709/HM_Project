@@ -10,7 +10,7 @@ public class UI_Selection : UI
     public List<SlotData> slotDatas = new();
     public GameObject player;
 
-    private void Start()
+    private void OnEnable()
     {
         Debug.Log("SelecUI ½ÇÇà");
         player = GameObject.FindWithTag("Player");

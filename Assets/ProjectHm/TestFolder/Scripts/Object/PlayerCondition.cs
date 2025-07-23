@@ -153,8 +153,9 @@ public class PlayerCondition : MonoBehaviour
         {
             if (WP.data.weaponID == weaponID)
             {
-                WP.selecWeaponLevel++;
+                Debug.Log("중복무기있음");
                 isOverlap = true;
+                WP.SelecLevelUp();
                 break;
             }
         }
@@ -162,13 +163,14 @@ public class PlayerCondition : MonoBehaviour
         if (!isOverlap)
         {
             // 프리펩 가져오기
-            Object autoWeapon = DataManager.Instance.autoPrefabDic[weaponID];
+            GameObject autoWeapon = DataManager.Instance.autoPrefabList[weaponID - 100];
             // 데이터 가져오기
-            autoWeapon.GetComponent<IAutoWeapon>().data = DataManager.Instance.autoDataDic[weaponID];
-            // 플레이어 무기 리스트에 추가
-            autoWeapons.Add(autoWeapon.GetComponent<IAutoWeapon>());
+            autoWeapon.GetComponent<IAutoWeapon>().data = DataManager.Instance.autoDataList[weaponID - 100];
             // 무기 실체화
-            Instantiate(autoWeapon, gameObject.transform.Find("AutoWeapons"));
+            Transform weaponPos = gameObject.transform.Find("AutoWeapons");
+            GameObject clone = Instantiate(autoWeapon, weaponPos);
+            // 플레이어 무기 리스트에 추가
+            autoWeapons.Add(clone.GetComponent<IAutoWeapon>());
         }
 
     }
