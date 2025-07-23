@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -50,6 +51,7 @@ public class PlayerCondition : MonoBehaviour
         UpdateExp();
 
         StartStatSetting();
+        autoWeapons = new List<IAutoWeapon>();
     }
 
     public void LevelUP()
@@ -142,8 +144,32 @@ public class PlayerCondition : MonoBehaviour
         }
     }
 
-    public void SelecAutoWeapon()
+    public void AutoWeaponSet(int weaponID)
     {
+        bool isOverlap = false;
+
+        // 무기 중복 확인
+        foreach (IAutoWeapon WP in autoWeapons)
+        {
+            if (WP.data.weaponID == weaponID)
+            {
+                WP.selecWeaponLevel++;
+                isOverlap = true;
+                break;
+            }
+        }
+
+        if (!isOverlap)
+        {
+            // 프리펩 가져오기
+            Object autoWeapon = DataManager.Instance.autoPrefabDic[weaponID];
+            // 데이터 가져오기
+            autoWeapon.GetComponent<IAutoWeapon>().data = DataManager.Instance.autoDataDic[weaponID];
+            // 플레이어 무기 리스트에 추가
+            autoWeapons.Add(autoWeapon.GetComponent<IAutoWeapon>());
+            // 무기 실체화
+            Instantiate(autoWeapon, gameObject.transform.Find("AutoWeapons"));
+        }
 
     }
 }

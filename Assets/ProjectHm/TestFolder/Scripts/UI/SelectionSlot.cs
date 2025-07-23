@@ -8,7 +8,8 @@ public class SelectionSlot : MonoBehaviour
 
     [SerializeField] private Button selecButton;
     [SerializeField] private GameObject selectionUI;
-    [SerializeField] private PlayerCondition player;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerCondition playerCondition;
 
     public SlotType slotType;
     public TMP_Text slotName;
@@ -30,10 +31,11 @@ public class SelectionSlot : MonoBehaviour
         });
     }
 
-    public void SlotInit(GameObject GO, Transform initPos, SlotData data, UI_Selection selecUI)
+    public void SlotInit(GameObject GO, Transform initPos, SlotData data, UI_Selection selecUI, GameObject player)
     {
         selectionUI = selecUI.gameObject;
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerCondition>();
+        playerController = player.GetComponent<PlayerController>();
+        playerCondition = player.GetComponent<PlayerCondition>();
 
         slotData = data;
         slotType = data.type;
@@ -50,19 +52,18 @@ public class SelectionSlot : MonoBehaviour
         {
             case SlotType.StatUP:
                 Debug.Log("스탯 업");
-                player.SelecStatLevelUP(slotData.statType);
+                playerCondition.SelecStatLevelUP(slotData.statType);
                 break;
 
             // TODO: 무기 추가 + 레벨업 통합하기
             case SlotType.ManualWeapon:
-                //자동무기 추가 및 렙업 or 수동무기 임시 렙업
                 Debug.Log("수동무기 추가 or 렙업");
+                playerController.currentWeapon.SelecLevelUp();
                 break;
 
             case SlotType.AutoWeapon:
-                //자동무기 추가 및 렙업 or 수동무기 임시 렙업
                 Debug.Log("자동무기 추가 or 렙업");
-
+                playerCondition.AutoWeaponSet(slotData.weaponID);
                 break;
         }
     }

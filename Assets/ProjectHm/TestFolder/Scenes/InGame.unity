@@ -2983,6 +2983,8 @@ MonoBehaviour:
   slots: {fileID: 406465168}
   slotPrefab: {fileID: 3775628174184113078, guid: aed600858a24a4d408eb5a28a8a7189a, type: 3}
   maxSlotCount: 3
+  slotDatas: []
+  player: {fileID: 0}
 --- !u!1 &536287854
 GameObject:
   m_ObjectHideFlags: 0
@@ -4732,6 +4734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a0efe3c9bb321744aad85d10cd2d19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   isGameOver: 0
 --- !u!4 &831479896 stripped
 Transform:

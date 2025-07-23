@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1551693698281663999}
   - component: {fileID: 4845037098541506056}
   m_Layer: 0
-  m_Name: BaseAutoWeapon_100
+  m_Name: AWP_100
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa700e023470d44e84cd5d91d87e3b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 5462b7257b874cd438de8ceea038a54a, type: 2}
+  data: {fileID: 0}
   baseWeaponLevel: 0
   selecWeaponLevel: 0
   baseDamage: 0
