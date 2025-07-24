@@ -1,5 +1,8 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -44,6 +47,7 @@ public class DataManager : Singleton<DataManager>
     #endregion
 
     #region WeaponData
+    [SerializeField] public Dictionary<int, WeaponData> weaponDataDic = new();
     // weaponID로 Prefab,Data 찾기
     public List<GameObject> manualPrefabList = new();
     public List<ManualWeaponData> manualDataList = new();
@@ -51,9 +55,6 @@ public class DataManager : Singleton<DataManager>
     // weaponID - 100으로 Prefab,Data 찾기
     public List<GameObject> autoPrefabList = new();
     public List<AutoWeaponData> autoDataList = new();
-    #endregion
-
-    #region SelecWPUp
     #endregion
 
     #region SlotData
@@ -65,10 +66,16 @@ public class DataManager : Singleton<DataManager>
         base.Awake();
         playerData = playerData.LoadData();
         statUpTableData = statUpTableData.LoadData();
+        WeaponDataLoad();
     }
 
-    private void Start()
+    public void WeaponDataLoad(string fileName = default)
     {
+        TextAsset textAsset = Resources.Load<TextAsset>(string.IsNullOrEmpty(fileName) ? $"Data/{typeof(WeaponData)}" : $"Data/{fileName}");
+        if (textAsset == null)
+            Debug.LogError("JSON 파일을 찾을 수 없습니다!");
 
+        weaponDataDic = JsonConvert.DeserializeObject<WeaponDataContainer>(textAsset.text).data;
+        Debug.Log($"데이터 로드 성공 : {weaponDataDic.Count}");
     }
 }

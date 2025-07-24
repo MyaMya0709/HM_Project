@@ -19,7 +19,8 @@ public enum SlotType
 {
     StatUP,
     ManualWeapon,
-    AutoWeapon
+    AutoWeapon,
+    Special
 }
 
 public enum StatType

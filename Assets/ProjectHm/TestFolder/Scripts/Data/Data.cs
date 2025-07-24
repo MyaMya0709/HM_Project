@@ -1,9 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
-using UnityEngine.UI;
 
 #region PlayerData
 [Serializable]
@@ -63,31 +61,17 @@ public class StatUpTableData
 }
 #endregion
 
-#region PlayerData
+#region WeaponData
 [Serializable]
 public class WeaponData
 {
     public int weaponID;
     public int baseLevel;
-    public int selecLevel;
+}
 
-    public void Clear()
-    {
-        baseLevel = 0;
-        selecLevel = 0;
-    }
-
-    public WeaponData LoadData()
-    {
-        TextAsset jsonAsset = Resources.Load<TextAsset>("Data/WeaponData"); // 경로에서 확장자 제외
-        if (jsonAsset == null)
-            Debug.LogError("JSON 파일을 찾을 수 없습니다!");
-
-        WeaponData data = JsonConvert.DeserializeObject<WeaponData>(jsonAsset.text);
-        if (data == null)
-            Debug.Log("WeaponDataLoad 실패");
-
-        return data;
-    }
+[Serializable]
+public class WeaponDataContainer
+{
+    public Dictionary<int, WeaponData> data = new();
 }
 #endregion
