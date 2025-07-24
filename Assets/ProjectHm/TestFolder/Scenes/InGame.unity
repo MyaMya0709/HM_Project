@@ -1682,8 +1682,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4a839b0acad84d498b7ecfc5bda149d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataObj: {fileID: 6769377905562320235, guid: c246d670a123c944eba3febee29189f5, type: 3}
+  curStageID: 0
   data: {fileID: 11400000, guid: ee2e3066cdc1178439719c918a638e53, type: 2}
-  GroupList: []
+  groupList: []
   waveCostList: 
 --- !u!4 &232088224
 Transform:
@@ -8720,10 +8722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b7539dd8c9b734eb406b2da08eab17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData:
-    moveSpeedLevel: 0
-    attackPowerLevel: 0
-    attackSpeedLevel: 0
   manualPrefabList:
   - {fileID: 3691733087425890900, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
   manualDataList:
@@ -9520,7 +9518,7 @@ SceneRoots:
   - {fileID: 1233172580}
   - {fileID: 431574206}
   - {fileID: 295300626}
+  - {fileID: 1699375442}
   - {fileID: 1497130809}
   - {fileID: 232088224}
-  - {fileID: 1699375442}
   - {fileID: 1892881863}

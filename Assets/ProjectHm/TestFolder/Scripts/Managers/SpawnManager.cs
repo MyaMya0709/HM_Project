@@ -6,8 +6,10 @@ using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SpawnManager : Singleton<SpawnManager>
+public class SpawnManager : MonoBehaviour
 {
+    public static SpawnManager Instance;
+
     public List<WaveData> waves;
     public List<SpawnData> spawnDataList = new();            // 생성할 적의 데이터 리스트
 
@@ -27,10 +29,11 @@ public class SpawnManager : Singleton<SpawnManager>
     public System.Action<int> OnWaveStarted;
     public System.Action OnAllWavesCleared;
 
-    //protected override void Awake()
-    //{
-    //    SceneManager.sceneLoaded += OnSceneLoaded;
-    //}
+    private void Awake()
+    {
+        Instance = this;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
     //void OnDestroy()
     //{

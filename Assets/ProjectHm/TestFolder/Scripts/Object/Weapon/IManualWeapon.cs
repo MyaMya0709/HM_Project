@@ -22,6 +22,9 @@ public abstract class IManualWeapon : MonoBehaviour
     public SpriteRenderer sr;
     public LayerMask enemyLayer;
 
+    private void OnEnable() => PlayerCondition.OnPlayerStatUp += GetTotalStat;
+    private void OnDisable() => PlayerCondition.OnPlayerStatUp -= GetTotalStat;
+
     protected virtual void Start()
     {
         playerController = GetComponentInParent<PlayerController>();

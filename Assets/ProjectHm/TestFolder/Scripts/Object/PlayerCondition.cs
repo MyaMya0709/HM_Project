@@ -39,18 +39,21 @@ public class PlayerCondition : MonoBehaviour
     public List<IAutoWeapon> autoWeapons;
 
     public static event Action OnPlayerLevelUp;
+    public static event Action OnPlayerStatUp;
 
     protected void Awake()
     {
-        expBar = FindAnyObjectByType<InGameUI>().expBar;
-        controller = GetComponent<PlayerController>();
+
     }
 
     private void Start()
     {
-        playerData = DataManager.Instance.playerData;
+        expBar = FindAnyObjectByType<InGameUI>().expBar;
+        controller = GetComponent<PlayerController>();
+
+        playerData = GameManager.Instance.playerData;
         playerLevel = 0;
-        maxExp = DataManager.Instance.statUpTableData.maxExpList[playerLevel];
+        maxExp = DataManager.Instance.maxExpList[playerLevel];
         curExp = 0;
         UpdateExp();
 
@@ -62,7 +65,7 @@ public class PlayerCondition : MonoBehaviour
     {
         playerLevel++;
         curExp = 0f;
-        maxExp = DataManager.Instance.statUpTableData.maxExpList[playerLevel];
+        maxExp = DataManager.Instance.maxExpList[playerLevel];
 
         // TODO : 플레이어 스텟 계산
 
@@ -89,9 +92,9 @@ public class PlayerCondition : MonoBehaviour
     public void StartStatSetting()
     {
         // 영구 스탯 불러오기
-        baseMoveSpeed = DataManager.Instance.statUpTableData.moveSpeedDic[playerData.moveSpeedLevel];
-        baseAttackPower = DataManager.Instance.statUpTableData.attackPowerDic[playerData.attackPowerLevel];
-        baseAttackSpeed = DataManager.Instance.statUpTableData.attackSpeedDic[playerData.attackSpeedLevel];
+        baseMoveSpeed = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel];
+        baseAttackPower = DataManager.Instance.attackPowerDic[playerData.attackPowerLevel];
+        baseAttackSpeed = DataManager.Instance.attackSpeedDic[playerData.attackSpeedLevel];
 
         // 선택지 스탯 레벨 초기화
         selecMoveSpeedLv = 0;
@@ -105,6 +108,8 @@ public class PlayerCondition : MonoBehaviour
 
         // 자동무기 리스트 초기화
         // 자동무기 레벨 초기화
+
+        controller.currentWeapon.SetStat();
     }
 
     public void SelecStatLevelUP(StatType stat)
@@ -125,6 +130,7 @@ public class PlayerCondition : MonoBehaviour
                 break;
         }
         StatSetting(stat);
+        OnPlayerStatUp?.Invoke();
     }
 
     public void StatSetting(StatType stat)

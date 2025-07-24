@@ -6,32 +6,40 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StageManager : Singleton<StageManager>
+public class StageManager : MonoBehaviour
 {
+    public static StageManager Instance;
+    public StageDataObj dataObj;
+    public int curStageID;
     public StageData data;
 
     // Stage의 GroupData의 배열
-    public List<GroupData> GroupList;
+    public List<GroupData> groupList = new();
 
     public List<WaveData> waveList = new();
     public List<int> waveCostList = new();
 
+    private void Awake()
+    {
+        Instance = this;
+        curStageID = GameManager.Instance.selecStageID;
+    }
+
     private void Start()
     {
         // 현재씬 파악 후 로직 수행
-        string current = SceneManager.GetActiveScene().name;
+        //string current = SceneManager.GetActiveScene().name;
 
-        if (current == "InGame")
-            GameManager.Instance.GameStart();
+        //if (current == "InGame")
+        GameManager.Instance.GameStart();
     }
 
     // StageData Setting
     public void StageSet()
     {
-        data = Resources.Load<StageData>($"ScriptableObject/Stage/TestStage");
+        data = dataObj.stageDatas[curStageID];
         // Stage의 GroupData 불러오기
-        GroupList = PoolManager.Instance.LoadGroupPool(data);
-        Debug.Log($"ScriptableObjectList : {GroupList.Count}");
+        FindGroupPool();
 
         // 분배한 코스트 재분배
         waveCostList.Clear();
@@ -40,8 +48,30 @@ public class StageManager : Singleton<StageManager>
         // 웨이브 세팅
         for (int i= 0; i < data.maxWave; i++)
         {
-            waveList.Add(MakeWave(waveCostList[i]));
+            waveList.Add(MakeWaveData(waveCostList[i]));
         }
+    }
+
+    // Stage에 사용할 GroupPool을 검색
+    public void FindGroupPool()
+    {
+        foreach (StageGroupPool pool in dataObj.allStageGroupPool)
+        {
+            if (pool == null) Debug.Log("AllStageGroupPool 순회 불가");
+
+            for (int i = 0; i < data.poolID.Length; i++)
+            {
+                if (pool.ID == data.poolID[i])
+                {
+                    groupList.AddRange(pool.groupPool);
+                }
+                else
+                {
+                    Debug.Log("StageGroupPool 추가 불가");
+                }
+            }
+        }
+        Debug.Log($"ScriptableObjectList : {groupList.Count}");
     }
 
     // stageSpawnCost를 maxWave의 수만큼 분배
@@ -81,15 +111,15 @@ public class StageManager : Singleton<StageManager>
     }
 
     // 저장된 waveCost를 바탕으로 WaveData 생성
-    public WaveData MakeWave(int maxCost)
+    public WaveData MakeWaveData(int maxCost)
     {
-        if (GroupList == null || GroupList.Count == 0)
+        if (groupList == null || groupList.Count == 0)
         {
             Debug.LogError("stageGroupList가 null이거나 비어있습니다.");
             return null;
         }
 
-        Debug.Log($"MakeWave, {maxCost}");
+        Debug.Log($"MakeWaveData, {maxCost}");
         WaveData makeWave = new WaveData()
         {
             groupList = new List<GroupData>()
@@ -98,9 +128,9 @@ public class StageManager : Singleton<StageManager>
         int groupCount = 0;
         
         // wave에 무작위 group 추가
-        while (curCost < maxCost && GroupList.Count > 0)
+        while (curCost < maxCost && groupList.Count > 0)
         {
-            GroupData randomGroupData = GroupList[Random.Range(0, GroupList.Count - 1)];
+            GroupData randomGroupData = groupList[Random.Range(0, groupList.Count - 1)];
             
             makeWave.groupList.Add(randomGroupData);
             curCost += randomGroupData.groupCost;
@@ -119,7 +149,7 @@ public class StageManager : Singleton<StageManager>
         // wave의 마지막에 들어갈 그룹 후보군 검색
         List<GroupData> list = new List<GroupData>();
         int remainCost = maxCost - curCost;
-        foreach (GroupData data in GroupList)
+        foreach (GroupData data in groupList)
         {
             if (remainCost - 1 <= data.groupCost && data.groupCost <= remainCost + 1)
             {
