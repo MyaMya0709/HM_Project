@@ -104,7 +104,7 @@ public class BaseEnemy : MonoBehaviour
     }
 
     #region Effect
-    public void ApplyEffect(WeaponEffectData effectData, PlayerController player)
+    public void ApplyEffect(EffectTypeData effectData, PlayerController player)
     {
         if (effectData.Knockback.onoff) StartCoroutine(Knockback(player.lastLookDirection, effectData.Knockback.valueA));                                        // valueA == Power, valueB, valueC
         if (effectData.Airborne.onoff) StartCoroutine(Airborne(effectData.Airborne.valueA));                                                                     // valueA == Power, valueB, valueC

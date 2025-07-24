@@ -14,8 +14,7 @@ public class ManualWeaponData : ScriptableObject
     public List<float> selecDamageList;
     public List<float> selecRangeList;
 
-    public WeaponEffectData attackEffect;
-    public WeaponEffectData downEffect;
-    public WeaponEffectData chargeEffect;
-    public WeaponEffectData dashEffect;
+    // 레벨로 효과 찾기
+    public List<WeaponEffectData> baseWeaponEffectList;
+    public List<WeaponEffectData> selecWeaponEffectList;
 }

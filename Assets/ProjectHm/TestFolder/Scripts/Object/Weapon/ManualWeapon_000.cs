@@ -5,7 +5,7 @@ public class ManualWeapon_000 : IManualWeapon
 {
     public int weaponID = 000;
 
-    public WeaponEffectData effectData = new WeaponEffectData()
+    public EffectTypeData effectData = new EffectTypeData()
     {
         // 요소 직접 추가
     };
