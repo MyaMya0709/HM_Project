@@ -55,127 +55,129 @@ MonoBehaviour:
   - 1.3
   - 1.4
   - 1.5
-  attackEffect:
-    Knockback:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Airborne:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Stun:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Slow:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    DotDamage:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-  downEffect:
-    Knockback:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Airborne:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Stun:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Slow:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    DotDamage:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-  chargeEffect:
-    Knockback:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Airborne:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Stun:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Slow:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    DotDamage:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-  dashEffect:
-    Knockback:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Airborne:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Stun:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    Slow:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
-    DotDamage:
-      isSum: 0
-      onoff: 0
-      valueA: 0
-      valueB: 0
-      valueC: 0
+  baseWeaponEffectList: []
+  selecWeaponEffectList:
+  - AttackEffect:
+      Knockback:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Airborne:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Stun:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Slow:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      DotDamage:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+    DownEffect:
+      Knockback:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Airborne:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Stun:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Slow:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      DotDamage:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+    ChargeEffect:
+      Knockback:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Airborne:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Stun:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Slow:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      DotDamage:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+    DashEffect:
+      Knockback:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Airborne:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Stun:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      Slow:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      DotDamage:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
