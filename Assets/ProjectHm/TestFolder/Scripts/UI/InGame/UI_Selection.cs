@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
@@ -10,10 +11,14 @@ public class UI_Selection : UI
     public List<SlotData> slotDatas = new();
     public GameObject player;
 
+    protected override void Awake()
+    {
+        player = GameObject.FindWithTag("Player");
+    }
+
     private void OnEnable()
     {
         Debug.Log("SelecUI ½ÇÇà");
-        player = GameObject.FindWithTag("Player");
         SetSlot();
     }
 

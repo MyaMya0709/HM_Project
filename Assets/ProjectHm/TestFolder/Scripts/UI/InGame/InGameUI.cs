@@ -2,18 +2,19 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Game : UI
+public class InGameUI : MonoBehaviour 
 {
-    [SerializeField] private Button menuButton;
-    [SerializeField] private Button testSelecButton;
-    [SerializeField] private RectTransform menuUI;
-    [SerializeField] private RectTransform selecUI;
+    public UI_Menu menuUI;
+    public UI_Selection selecUI;
+    public Button menuButton;
+    public Button testSelecButton;
+    public Image expBar;
 
+    // Ȱ��ȭ/��Ȱ��ȭ �� �Լ� �߰�/����
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
+        // gameUI.menuButton set
         menuButton.onClick.AddListener(() =>
         {
             if (!menuUI.gameObject.activeSelf)
@@ -23,6 +24,7 @@ public class UI_Game : UI
             }
         });
 
+        // gameUI.testSelecButton set
         testSelecButton.onClick.AddListener(() =>
         {
             if (!selecUI.gameObject.activeSelf)

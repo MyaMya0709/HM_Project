@@ -1,0 +1,13 @@
+{
+  "data":
+  {
+    "0": {
+      "weaponID": 0,
+      "baseLevel": 0
+    },
+    "100": {
+      "weaponID": 100,
+      "baseLevel": 0
+    }
+  }
+}
