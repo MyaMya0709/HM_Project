@@ -10,7 +10,9 @@ public class InGameUI : MonoBehaviour
     public Button testSelecButton;
     public Image expBar;
 
-    // È°ï¿½ï¿½È­/ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ß°ï¿½/ï¿½ï¿½ï¿½ï¿½
+    // È°¼ºÈ­/ºñÈ°¼ºÈ­ ½Ã ÇÔ¼ö Ãß°¡/Á¦°Å
+    private void OnEnable() => PlayerCondition.OnPlayerLevelUp += EnableSelecUI;
+    private void OnDisable() => PlayerCondition.OnPlayerLevelUp -= EnableSelecUI;
 
     private void Awake()
     {
@@ -35,4 +37,8 @@ public class InGameUI : MonoBehaviour
         });
     }
 
+    public void EnableSelecUI()
+    {
+        selecUI.gameObject.SetActive(true);
+    }
 }

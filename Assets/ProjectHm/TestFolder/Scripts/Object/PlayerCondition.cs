@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -37,8 +38,11 @@ public class PlayerCondition : MonoBehaviour
     [SerializeField] private Image expBar;
     public List<IAutoWeapon> autoWeapons;
 
+    public static event Action OnPlayerLevelUp;
+
     protected void Awake()
     {
+        expBar = FindAnyObjectByType<InGameUI>().expBar;
         controller = GetComponent<PlayerController>();
     }
 
@@ -63,7 +67,8 @@ public class PlayerCondition : MonoBehaviour
         // TODO : 플레이어 스텟 계산
 
         Time.timeScale = 0f;
-        UIManager.Instance.selecUI.gameObject.SetActive(true);
+        // 플레이어 렙업 이벤트 발생 호출
+        OnPlayerLevelUp?.Invoke();
 
         UpdateExp();
     }
