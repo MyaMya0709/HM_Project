@@ -1,6 +1,8 @@
 {
+  "playerLevel": 0,
   "moveSpeedLevel": 0,
   "attackPowerLevel": 0,
-  "attackSpeedLevel": 0
+  "attackSpeedLevel": 0,
+  "haveGold" : 0
 }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Continue : UI
+public class UI_Continue : MonoBehaviour
 {
     [SerializeField] private Button stageButton;
     [SerializeField] private Button infoButton;
@@ -17,9 +17,8 @@ public class UI_Continue : UI
     [SerializeField] private RectTransform enhancePanel;
     
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
 
         continuePanel = GetComponent<RectTransform>();
 
@@ -70,7 +69,7 @@ public class UI_Continue : UI
          });
     }
 
-    public override void Clear()
+    public void Clear()
     {
         stagePanel.gameObject.SetActive(false);
         infoPanel.gameObject.SetActive(false);

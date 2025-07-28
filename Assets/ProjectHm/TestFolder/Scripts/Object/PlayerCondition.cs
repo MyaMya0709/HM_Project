@@ -53,7 +53,7 @@ public class PlayerCondition : MonoBehaviour
 
         playerData = GameManager.Instance.playerData;
         playerLevel = 0;
-        maxExp = DataManager.Instance.maxExpList[playerLevel];
+        maxExp = DataManager.Instance.maxExpDic[playerLevel];
         curExp = 0;
         UpdateExp();
 
@@ -65,7 +65,7 @@ public class PlayerCondition : MonoBehaviour
     {
         playerLevel++;
         curExp = 0f;
-        maxExp = DataManager.Instance.maxExpList[playerLevel];
+        maxExp = DataManager.Instance.maxExpDic[playerLevel];
 
         // TODO : 플레이어 스텟 계산
 

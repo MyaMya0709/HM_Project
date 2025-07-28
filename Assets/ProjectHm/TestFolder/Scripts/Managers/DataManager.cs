@@ -9,9 +9,9 @@ public class DataManager : MonoBehaviour
     public static DataManager Instance;
 
     #region PlayerStatTable
-    // key:playerLevel / value:MaxExp
-    public Dictionary<int, float> maxExpList
-    = new Dictionary<int, float>()
+    // key:playerLevel / value:LevelUpCost
+    public Dictionary<int, int> levelUpCostDic
+    = new Dictionary<int, int>()
     {
         {0, 50},
         {1, 100},
@@ -62,8 +62,7 @@ public class DataManager : MonoBehaviour
         {46, 4600},
         {47, 4700},
         {48, 4800},
-        {49, 4900},
-        {50, 5000}
+        {49, 4900}
     };
     // key:statLevel / value:movaSpeed
     public Dictionary<int, float> moveSpeedDic
@@ -127,6 +126,63 @@ public class DataManager : MonoBehaviour
         {13, 11.3f},
         {14, 11.4f},
         {15, 11.5f}
+    };
+
+    // key:playerLevel / value:MaxExp
+    public Dictionary<int, float> maxExpDic
+    = new Dictionary<int, float>()
+    {
+        {0, 50},
+        {1, 100},
+        {2, 200},
+        {3, 300},
+        {4, 400},
+        {5, 500},
+        {6, 600},
+        {7, 700},
+        {8, 800},
+        {9, 900},
+        {10, 1000},
+        {11, 1100},
+        {12, 1200},
+        {13, 1300},
+        {14, 1400},
+        {15, 1500},
+        {16, 1600},
+        {17, 1700},
+        {18, 1800},
+        {19, 1900},
+        {20, 2000},
+        {21, 2100},
+        {22, 2200},
+        {23, 2300},
+        {24, 2400},
+        {25, 2500},
+        {26, 2600},
+        {27, 2700},
+        {28, 2800},
+        {29, 2900},
+        {30, 3000},
+        {31, 3100},
+        {32, 3200},
+        {33, 3300},
+        {34, 3400},
+        {35, 3500},
+        {36, 3600},
+        {37, 3700},
+        {38, 3800},
+        {39, 3900},
+        {40, 4000},
+        {41, 4100},
+        {42, 4200},
+        {43, 4300},
+        {44, 4400},
+        {45, 4500},
+        {46, 4600},
+        {47, 4700},
+        {48, 4800},
+        {49, 4900},
+        {50, 5000}
     };
     #endregion
 

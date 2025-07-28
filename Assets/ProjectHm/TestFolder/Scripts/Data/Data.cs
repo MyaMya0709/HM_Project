@@ -7,15 +7,20 @@ using UnityEngine;
 [Serializable]
 public class PlayerData
 {
+    public int playerLevel;
     public int moveSpeedLevel;
     public int attackPowerLevel;
     public int attackSpeedLevel;
 
+    public int haveGold;
+
     public void Clear()
     {
+        playerLevel = 0;
         moveSpeedLevel = 0;
         attackPowerLevel = 0;
         attackSpeedLevel = 0;
+        haveGold = 0;
     }
 
     public PlayerData LoadData()
