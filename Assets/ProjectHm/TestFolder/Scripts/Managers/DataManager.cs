@@ -8,6 +8,18 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
 
+    public List<CharacterData> characterDataList = new();
+
+    // weaponID로 Prefab,Data 찾기
+    public List<GameObject> manualPrefabList = new();
+    public List<ManualWeaponData> manualDataList = new();
+
+    // weaponID - 100으로 Prefab,Data 찾기
+    public List<GameObject> autoPrefabList = new();
+    public List<AutoWeaponData> autoDataList = new();
+
+    public List<SlotData> allSelecSlotDatas = new List<SlotData>();
+
     #region PlayerStatTable
     // key:playerLevel / value:LevelUpCost
     public Dictionary<int, int> levelUpCostDic
@@ -219,20 +231,6 @@ public class DataManager : MonoBehaviour
         {4, 1.4f},
         {5, 1.5f},
     };
-    #endregion
-
-    #region WeaponData
-    // weaponID로 Prefab,Data 찾기
-    public List<GameObject> manualPrefabList = new();
-    public List<ManualWeaponData> manualDataList = new();
-
-    // weaponID - 100으로 Prefab,Data 찾기
-    public List<GameObject> autoPrefabList = new();
-    public List<AutoWeaponData> autoDataList = new();
-    #endregion
-
-    #region SlotData
-    public List<SlotData> allSlotDatas = new List<SlotData>();
     #endregion
 
     private void Awake()
