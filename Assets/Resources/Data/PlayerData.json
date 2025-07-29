@@ -4,6 +4,7 @@
   "attackPowerLevel": 0,
   "attackSpeedLevel": 0,
   "characterID": 0,
-  "haveGold" : 0
+  "haveGold": 0,
+  "statUpPoint": 0
 }
 

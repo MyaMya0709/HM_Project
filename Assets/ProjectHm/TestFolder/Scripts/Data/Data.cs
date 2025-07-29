@@ -14,6 +14,7 @@ public class PlayerData
 
     public int characterID;
     public int haveGold;
+    public int statUpPoint;
 
     public void Clear()
     {
