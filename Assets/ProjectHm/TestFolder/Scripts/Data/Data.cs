@@ -13,6 +13,7 @@ public class PlayerData
     public int attackSpeedLevel;
 
     public int characterID;
+    public int weaponID;
     public int haveGold;
     public int statUpPoint;
 

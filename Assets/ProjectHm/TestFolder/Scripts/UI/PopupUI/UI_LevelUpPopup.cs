@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UI_LevelUpPopup : MonoBehaviour
 {
-    public PlayerData playerData;
+    public PlayerData data;
     public int statUpPoint;
 
     [SerializeField] private TMP_Text playerLevelTMP;
@@ -15,10 +15,10 @@ public class UI_LevelUpPopup : MonoBehaviour
 
     private void Awake()
     {
-        if (playerData.playerLevel >= 50) playerLevelUpBtn.gameObject.SetActive(false);
+        if (data.playerLevel >= 50) playerLevelUpBtn.gameObject.SetActive(false);
         else playerLevelUpBtn.gameObject.SetActive(true);
 
-        levelUpCostTMP.text = DataManager.Instance.levelUpCostDic[playerData.playerLevel].ToString();
+        levelUpCostTMP.text = DataManager.Instance.levelUpCostDic[data.playerLevel].ToString();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,27 +36,27 @@ public class UI_LevelUpPopup : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            if (playerData.haveGold >= DataManager.Instance.levelUpCostDic[playerData.playerLevel] || playerData.playerLevel <= 49)
+            if (data.haveGold >= DataManager.Instance.levelUpCostDic[data.playerLevel] || data.playerLevel <= 49)
             {
-                playerData.haveGold -= DataManager.Instance.levelUpCostDic[playerData.playerLevel];
-                playerData.playerLevel++;
+                data.haveGold -= DataManager.Instance.levelUpCostDic[data.playerLevel];
+                data.playerLevel++;
                 statUpPoint++;
 
                 //바뀐 정보값 수정
-                playerLevelTMP.text = playerData.playerLevel.ToString();
+                playerLevelTMP.text = data.playerLevel.ToString();
                 //levelUpCostTMP.text = DataManager.Instance.levelUpCostDic[playerData.playerLevel].ToString();
 
                 //레벨업 후 최대레벨 달성했으면 버튼 숨김
                 //if (playerData.playerLevel >= 50) playerLevelUpBtn.gameObject.SetActive(false);
             }
 
-            else if (playerData.haveGold < DataManager.Instance.levelUpCostDic[playerData.playerLevel])
+            else if (data.haveGold < DataManager.Instance.levelUpCostDic[data.playerLevel])
             {
                 // 알림창 - 골드부족
                 Debug.Log("레벨업 골드 부족");
             }
 
-            else if (playerData.playerLevel > 49)
+            else if (data.playerLevel > 49)
             {
                 //알림창 - 레벨 최대치
                 Debug.Log("레벨 최대치");

@@ -5,7 +5,13 @@ using UnityEngine.UI;
 
 public class UI_StatUpPopup : MonoBehaviour
 {
+    [Header("PlayerData")]
     public PlayerData data;
+    public int playerLevel;
+    public int moveSpeedLevel;
+    public int attackPowerLevel;
+    public int attackSpeedLevel;
+    public int statUpPoint;
 
     [Header("Level")]
     [SerializeField] private TMP_Text ATKPowerLevelTMP;
@@ -36,30 +42,56 @@ public class UI_StatUpPopup : MonoBehaviour
     [SerializeField] private Button statDownBtn;
 
     [SerializeField] private Button saveButton;
-    public int statUpPoint;
+
+    [SerializeField] private UI_InfoPanel infoPanel;
+
+    private void Awake()
+    {
+        DataSet();
+        StatPopupSet();
+        ButtonSet();
+    }
 
     private void OnEnable()
     {
+        DataSet();
         StatPopupSet();
         ButtonSet();
+    }
+
+    private void Start()
+    {
+        DataSet();
+        StatPopupSet();
+        ButtonSet();
+    }
+
+    public void DataSet()
+    {
+        playerLevel = data.playerLevel;
+        moveSpeedLevel = data.moveSpeedLevel;
+        attackPowerLevel = data.attackPowerLevel;
+        attackSpeedLevel = data.attackSpeedLevel;
+        statUpPoint = data.statUpPoint;
+        Debug.Log("DataSet 완료");
     }
 
     // 버튼 오브젝트 활성/비활성 업데이트
     public void ButtonSet()
     {
-        if (data.attackPowerLevel >= 10) ATKPowerUpBtn.gameObject.SetActive(false);
+        if (attackPowerLevel >= 10) ATKPowerUpBtn.gameObject.SetActive(false);
         else ATKPowerUpBtn.gameObject.SetActive(true);
-        if (data.attackPowerLevel <= 0) ATKPowerDownBtn.gameObject.SetActive(false);
+        if (attackPowerLevel <= 0) ATKPowerDownBtn.gameObject.SetActive(false);
         else ATKPowerDownBtn.gameObject.SetActive(true);
 
-        if (data.attackSpeedLevel >= 10) ATKSpeedUpBtn.gameObject.SetActive(false);
+        if (attackSpeedLevel >= 10) ATKSpeedUpBtn.gameObject.SetActive(false);
         else ATKSpeedUpBtn.gameObject.SetActive(true);
-        if (data.attackSpeedLevel <= 0) ATKSpeedDownBtn.gameObject.SetActive(false);
+        if (attackSpeedLevel <= 0) ATKSpeedDownBtn.gameObject.SetActive(false);
         else ATKSpeedDownBtn.gameObject.SetActive(true);
 
-        if (data.moveSpeedLevel >= 10) moveSpeedUpBtn.gameObject.SetActive(false);
+        if (moveSpeedLevel >= 10) moveSpeedUpBtn.gameObject.SetActive(false);
         else moveSpeedUpBtn.gameObject.SetActive(true);
-        if (data.moveSpeedLevel <= 0) moveSpeedDownBtn.gameObject.SetActive(false);
+        if (moveSpeedLevel <= 0) moveSpeedDownBtn.gameObject.SetActive(false);
         else moveSpeedDownBtn.gameObject.SetActive(true);
 
         // 이후 다른 스탯 구현시 추가예정
@@ -67,16 +99,16 @@ public class UI_StatUpPopup : MonoBehaviour
 
     // 모든 레벨/스탯 업데이트
     public void StatPopupSet()
-    { 
-        ATKPowerLevelTMP.text = data.attackPowerLevel.ToString();
-        ATKSpeedLevelTMP.text = data.attackSpeedLevel.ToString();
-        moveSpeedLevelTMP.text = data.moveSpeedLevel.ToString();
+    {
+        ATKPowerLevelTMP.text = $"Lv.{attackPowerLevel.ToString()}";
+        ATKSpeedLevelTMP.text = $"Lv.{attackSpeedLevel.ToString()}";
+        moveSpeedLevelTMP.text = $"Lv.{moveSpeedLevel.ToString()}";
         //jumpPowerLevel.text = playerData.moveSpeedLevel.ToString();
         //statLevel.text = playerData.moveSpeedLevel.ToString();
 
-        ATKPowerTMP.text = DataManager.Instance.attackPowerDic[data.attackPowerLevel].ToString();
-        ATKSpeedTMP.text = DataManager.Instance.attackSpeedDic[data.attackSpeedLevel].ToString();
-        moveSpeedTMP.text = DataManager.Instance.moveSpeedDic[data.moveSpeedLevel].ToString();
+        ATKPowerTMP.text = DataManager.Instance.attackPowerDic[attackPowerLevel].ToString();
+        ATKSpeedTMP.text = DataManager.Instance.attackSpeedDic[attackSpeedLevel].ToString();
+        moveSpeedTMP.text = DataManager.Instance.moveSpeedDic[moveSpeedLevel].ToString();
         //jumpPower.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
         //stat.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
     }
@@ -85,7 +117,7 @@ public class UI_StatUpPopup : MonoBehaviour
     #region StatUp & Down
     public void ATKPowerLevelUP()
     {
-        if (statUpPoint <= 0 || data.attackPowerLevel >= 10)
+        if (statUpPoint <= 0 || attackPowerLevel >= 10)
         {
             //TODO: 포인트부족 popup 호출 or 최고렙 달성 popup 호출
             Debug.Log("statUpPoint부족 or 이미 최고렙 달성");
@@ -94,17 +126,17 @@ public class UI_StatUpPopup : MonoBehaviour
 
         if (gameObject.activeSelf)
         {
-            if (data.attackPowerLevel < 10)
+            if (attackPowerLevel < 10)
             {
-                data.attackPowerLevel++;
+                attackPowerLevel++;
                 statUpPoint--;
 
-                ATKPowerLevelTMP.text = $"Lv.{data.attackPowerLevel.ToString()}";
-                ATKPowerTMP.text = $"{DataManager.Instance.attackPowerDic[data.attackPowerLevel].ToString()}";
+                ATKPowerLevelTMP.text = $"Lv.{attackPowerLevel.ToString()}";
+                ATKPowerTMP.text = $"{DataManager.Instance.attackPowerDic[attackPowerLevel].ToString()}";
 
                 // 렙업 버튼 클릭 후, 만렙이면 버튼 비활성화 or 레벨이 1이면 레벨다운 버튼 활성화
-                if (data.attackPowerLevel >= 10) ATKPowerUpBtn.gameObject.SetActive(false);
-                else if (data.attackPowerLevel == 1 && !ATKPowerDownBtn.gameObject.activeSelf) ATKPowerDownBtn.gameObject.SetActive(true);
+                if (attackPowerLevel >= 10) ATKPowerUpBtn.gameObject.SetActive(false);
+                else if (attackPowerLevel == 1 && !ATKPowerDownBtn.gameObject.activeSelf) ATKPowerDownBtn.gameObject.SetActive(true);
                 Debug.Log("ATKPowerLvUP!");
             }
         }
@@ -112,7 +144,7 @@ public class UI_StatUpPopup : MonoBehaviour
 
     public void ATKSpeedLevelUP()
     {
-        if (statUpPoint <= 0 || data.attackSpeedLevel >= 10)
+        if (statUpPoint <= 0 || attackSpeedLevel >= 10)
         {
             //TODO: 포인트부족 popup 호출 or 최고렙 달성 popup 호출
             Debug.Log("statUpPoint부족 or 이미 최고렙 달성");
@@ -121,13 +153,13 @@ public class UI_StatUpPopup : MonoBehaviour
 
         if (gameObject.activeSelf)
         {
-            if (data.attackSpeedLevel < 10)
+            if (attackSpeedLevel < 10)
             {
-                data.attackSpeedLevel++;
+                attackSpeedLevel++;
                 statUpPoint--;
 
-                ATKSpeedLevelTMP.text = $"Lv.{data.attackSpeedLevel.ToString()}";
-                ATKSpeedTMP.text = $"{DataManager.Instance.attackPowerDic[data.attackSpeedLevel].ToString()}";
+                ATKSpeedLevelTMP.text = $"Lv.{attackSpeedLevel.ToString()}";
+                ATKSpeedTMP.text = $"{DataManager.Instance.attackPowerDic[attackSpeedLevel].ToString()}";
                 Debug.Log("ATKSpeedLvUP!");
             }
         }
@@ -135,27 +167,27 @@ public class UI_StatUpPopup : MonoBehaviour
 
     public void MoveSpeedLevelUP()
     {
-        if (statUpPoint <= 0 || data.moveSpeedLevel >= 10)
+        if (statUpPoint <= 0 || moveSpeedLevel >= 10)
         {
             //TODO: 포인트부족 popup 호출 or 최고렙 달성 popup 호출
             Debug.Log("statUpPoint부족 or 이미 최고렙 달성");
             return;
         }
 
-        if (data.moveSpeedLevel < 10)
+        if (moveSpeedLevel < 10)
         {
-            data.moveSpeedLevel++;
+            moveSpeedLevel++;
             statUpPoint--;
 
-            moveSpeedLevelTMP.text = $"Lv.{data.moveSpeedLevel.ToString()}";
-            moveSpeedTMP.text = $"{DataManager.Instance.attackPowerDic[data.moveSpeedLevel].ToString()}";
+            moveSpeedLevelTMP.text = $"Lv.{moveSpeedLevel.ToString()}";
+            moveSpeedTMP.text = $"{DataManager.Instance.attackPowerDic[moveSpeedLevel].ToString()}";
             Debug.Log("moveSpeedLvUP!");
         }
     }
 
     public void ATKPowerLevelDown()
     {
-        if (data.attackPowerLevel <= 0)
+        if (attackPowerLevel <= 0)
         {
             //TODO: 최저레벨 popup 호출
             Debug.Log("이미 0 레벨!");
@@ -164,17 +196,17 @@ public class UI_StatUpPopup : MonoBehaviour
 
         if (gameObject.activeSelf)
         {
-            if (data.attackPowerLevel > 0)
+            if (attackPowerLevel > 0)
             {
-                data.attackPowerLevel--;
+                attackPowerLevel--;
                 statUpPoint++;
 
-                ATKPowerLevelTMP.text = $"Lv.{data.attackPowerLevel.ToString()}";
-                ATKPowerTMP.text = $"{DataManager.Instance.attackPowerDic[data.attackPowerLevel].ToString()}";
+                ATKPowerLevelTMP.text = $"Lv.{attackPowerLevel.ToString()}";
+                ATKPowerTMP.text = $"{DataManager.Instance.attackPowerDic[attackPowerLevel].ToString()}";
 
                 // 렙다운 버튼 클릭 후, 0렙이면 버튼 비활성화 or 레벨이 9이면 레벨업 버튼 활성화
-                if (data.attackPowerLevel <= 0) ATKPowerDownBtn.gameObject.SetActive(false);
-                else if (data.attackPowerLevel == 9 && !ATKPowerUpBtn.gameObject.activeSelf) ATKPowerUpBtn.gameObject.SetActive(true);
+                if (attackPowerLevel <= 0) ATKPowerDownBtn.gameObject.SetActive(false);
+                else if (attackPowerLevel == 9 && !ATKPowerUpBtn.gameObject.activeSelf) ATKPowerUpBtn.gameObject.SetActive(true);
                 Debug.Log("ATKPowerLv Down!");
             }
         }
@@ -182,7 +214,7 @@ public class UI_StatUpPopup : MonoBehaviour
 
     public void ATKSpeedLevelDown()
     {
-        if (data.attackSpeedLevel <= 0)
+        if (attackSpeedLevel <= 0)
         {
             //TODO: 최저레벨 popup 호출
             Debug.Log("이미 0 레벨!");
@@ -191,17 +223,17 @@ public class UI_StatUpPopup : MonoBehaviour
 
         if (gameObject.activeSelf)
         {
-            if (data.attackSpeedLevel > 0)
+            if (attackSpeedLevel > 0)
             {
-                data.attackSpeedLevel--;
+                attackSpeedLevel--;
                 statUpPoint++;
 
-                ATKSpeedLevelTMP.text = $"Lv.{data.attackSpeedLevel.ToString()}";
-                ATKSpeedTMP.text = $"{DataManager.Instance.attackSpeedDic[data.attackSpeedLevel].ToString()}";
+                ATKSpeedLevelTMP.text = $"Lv.{attackSpeedLevel.ToString()}";
+                ATKSpeedTMP.text = $"{DataManager.Instance.attackSpeedDic[attackSpeedLevel].ToString()}";
 
                 // 렙다운 버튼 클릭 후, 0렙이면 버튼 비활성화 or 레벨이 9이면 레벨업 버튼 활성화
-                if (data.attackSpeedLevel <= 0) ATKSpeedDownBtn.gameObject.SetActive(false);
-                else if (data.attackSpeedLevel == 9 && !ATKSpeedDownBtn.gameObject.activeSelf) ATKSpeedDownBtn.gameObject.SetActive(true);
+                if (attackSpeedLevel <= 0) ATKSpeedDownBtn.gameObject.SetActive(false);
+                else if (attackSpeedLevel == 9 && !ATKSpeedDownBtn.gameObject.activeSelf) ATKSpeedDownBtn.gameObject.SetActive(true);
                 Debug.Log("ATKSpeedLv Down!");
             }
         }
@@ -209,7 +241,7 @@ public class UI_StatUpPopup : MonoBehaviour
 
     public void MoveSpeedLevelDown()
     {
-        if (data.moveSpeedLevel <= 0)
+        if (moveSpeedLevel <= 0)
         {
             //TODO: 최저레벨 popup 호출
             Debug.Log("이미 0 레벨!");
@@ -218,17 +250,17 @@ public class UI_StatUpPopup : MonoBehaviour
 
         if (gameObject.activeSelf)
         {
-            if (data.moveSpeedLevel > 0)
+            if (moveSpeedLevel > 0)
             {
-                data.moveSpeedLevel--;
+                moveSpeedLevel--;
                 statUpPoint++;
 
-                moveSpeedLevelTMP.text = $"Lv.{data.moveSpeedLevel.ToString()}";
-                moveSpeedTMP.text = $"{DataManager.Instance.moveSpeedDic[data.moveSpeedLevel].ToString()}";
+                moveSpeedLevelTMP.text = $"Lv.{moveSpeedLevel.ToString()}";
+                moveSpeedTMP.text = $"{DataManager.Instance.moveSpeedDic[moveSpeedLevel].ToString()}";
 
                 // 렙다운 버튼 클릭 후, 0렙이면 버튼 비활성화 or 레벨이 9이면 레벨업 버튼 활성화
-                if (data.moveSpeedLevel <= 0) moveSpeedDownBtn.gameObject.SetActive(false);
-                else if (data.moveSpeedLevel == 9 && !moveSpeedDownBtn.gameObject.activeSelf) moveSpeedDownBtn.gameObject.SetActive(true);
+                if (moveSpeedLevel <= 0) moveSpeedDownBtn.gameObject.SetActive(false);
+                else if (moveSpeedLevel == 9 && !moveSpeedDownBtn.gameObject.activeSelf) moveSpeedDownBtn.gameObject.SetActive(true);
                 Debug.Log("moveSpeedLv Down!");
             }
         }
@@ -237,7 +269,15 @@ public class UI_StatUpPopup : MonoBehaviour
 
     public void OnSaveButton()
     {
-        GameManager.Instance.playerData = data;
+        data.playerLevel = playerLevel;
+        data.moveSpeedLevel = moveSpeedLevel;
+        data.attackPowerLevel = attackPowerLevel;
+        data.attackSpeedLevel = attackSpeedLevel;
+        data.statUpPoint = statUpPoint;
+
+        GameManager.Instance.GetPlayerData(data);
+        infoPanel.InfoPanelSet();
+
         gameObject.SetActive(false);
     }
 }

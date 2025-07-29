@@ -22,7 +22,7 @@ public class UI_Continue : MonoBehaviour
     protected void Awake()
     {
         continuePanel = GetComponent<RectTransform>();
-        curGold.text = GameManager.Instance.playerData.haveGold.ToString();
+        curGold.text = GameManager.Instance.SetPlayerData().haveGold.ToString();
 
         stageButton.onClick.AddListener(() =>
         {

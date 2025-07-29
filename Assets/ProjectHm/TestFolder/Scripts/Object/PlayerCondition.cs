@@ -51,7 +51,7 @@ public class PlayerCondition : MonoBehaviour
         expBar = FindAnyObjectByType<InGameUI>().expBar;
         controller = GetComponent<PlayerController>();
 
-        playerData = GameManager.Instance.playerData;
+        playerData = GameManager.Instance.SetPlayerData();
         playerLevel = 0;
         maxExp = DataManager.Instance.maxExpDic[playerLevel];
         curExp = 0;

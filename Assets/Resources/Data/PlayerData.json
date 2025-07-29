@@ -1,10 +1,11 @@
 {
-  "playerLevel": 0,
+  "playerLevel": 50,
   "moveSpeedLevel": 0,
   "attackPowerLevel": 0,
   "attackSpeedLevel": 0,
   "characterID": 0,
-  "haveGold": 0,
-  "statUpPoint": 0
+  "weaponID": 0,
+  "haveGold": 99999,
+  "statUpPoint": 50
 }
 

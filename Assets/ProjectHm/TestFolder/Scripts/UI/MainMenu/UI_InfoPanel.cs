@@ -28,7 +28,7 @@ public class UI_InfoPanel : MonoBehaviour
     [Header("CharacterSet")]
     public CharacterData characterData;
 
-    [SerializeField] private Sprite characterImage;
+    [SerializeField] private Image characterImage;
     [SerializeField] private TMP_Text characterName;
     [SerializeField] private TMP_Text characterDescription;
 
@@ -42,15 +42,10 @@ public class UI_InfoPanel : MonoBehaviour
 
     public void InfoPanelSet()
     {
-        playerData = GameManager.Instance.playerData;
+        playerData = GameManager.Instance.SetPlayerData();
         if (playerData == null) Debug.Log("playerData로드 안됨");
 
-        // DataManager의 characterDataList를 순회
-        foreach (CharacterData CData in DataManager.Instance.characterDataList)
-        {
-            // playerData의 characterID와 같은 아이디의 CharacterData 찾아서 참조
-            if (CData.ID == playerData.characterID) characterData = CData;
-        }
+        characterData = GameManager.Instance.SetCharacterData();
         if (characterData == null) Debug.Log("characterData로드 안됨");
 
         playerLevelTMP.text = playerData.playerLevel.ToString();
@@ -112,7 +107,7 @@ public class UI_InfoPanel : MonoBehaviour
     {
         UI_LevelUpPopup popup = levelUpPopup.GetComponent<UI_LevelUpPopup>();
         if (!levelUpPopup.gameObject.activeSelf) levelUpPopup.gameObject.SetActive(true);
-        popup.playerData = playerData;
+        popup.data = playerData;
     }
 
     public void OnStatUpPopup()
