@@ -12,6 +12,7 @@ public class PlayerData
     public int attackPowerLevel;
     public int attackSpeedLevel;
 
+    public int characterID;
     public int haveGold;
 
     public void Clear()

@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,12 +16,13 @@ public class UI_Continue : MonoBehaviour
     [SerializeField] private RectTransform infoPanel;
     [SerializeField] private RectTransform storePanel;
     [SerializeField] private RectTransform enhancePanel;
+    [SerializeField] private TMP_Text curGold;
     
 
     protected void Awake()
     {
-
         continuePanel = GetComponent<RectTransform>();
+        curGold.text = GameManager.Instance.playerData.haveGold.ToString();
 
         stageButton.onClick.AddListener(() =>
         {
