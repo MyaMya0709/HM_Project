@@ -53,7 +53,7 @@ public class UI_Selection : UI
     {
         List<SlotData> list = new();
 
-        foreach (SlotData slotData in DataManager.Instance.allSlotDatas)
+        foreach (SlotData slotData in DataManager.Instance.allSelecSlotDatas)
         {
             if ((slotData.type == SlotType.ManualWeapon) && (slotData.weaponID != player.GetComponent<PlayerController>().currentWeapon.data.weaponID))
                 continue;
@@ -66,8 +66,8 @@ public class UI_Selection : UI
 
     public SlotData SlotDataSet()
     {
-        int selscData = Random.Range(0, DataManager.Instance.allSlotDatas.Count);
-        SlotData data = DataManager.Instance.allSlotDatas[selscData];
+        int selscData = Random.Range(0, DataManager.Instance.allSelecSlotDatas.Count);
+        SlotData data = DataManager.Instance.allSelecSlotDatas[selscData];
 
         return data;
     }
