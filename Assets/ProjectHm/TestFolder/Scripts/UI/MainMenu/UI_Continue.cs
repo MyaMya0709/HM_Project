@@ -16,13 +16,13 @@ public class UI_Continue : MonoBehaviour
     [SerializeField] private RectTransform infoPanel;
     [SerializeField] private RectTransform storePanel;
     [SerializeField] private RectTransform enhancePanel;
-    [SerializeField] private TMP_Text curGold;
+    [SerializeField] private TMP_Text curGoldTMP;
     
 
     protected void Awake()
     {
         continuePanel = GetComponent<RectTransform>();
-        curGold.text = GameManager.Instance.SetPlayerData().haveGold.ToString();
+        curGoldTMP.text = GameManager.Instance.SetPlayerData().haveGold.ToString();
 
         stageButton.onClick.AddListener(() =>
         {
@@ -67,6 +67,7 @@ public class UI_Continue : MonoBehaviour
                  Clear();
                  stagePanel.gameObject.SetActive(true);
                  continuePanel.gameObject.SetActive(false);
+                 //GameManager의 플레이어 데이터 저장
              }
          });
     }

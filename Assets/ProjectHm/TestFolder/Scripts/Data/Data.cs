@@ -23,7 +23,10 @@ public class PlayerData
         moveSpeedLevel = 0;
         attackPowerLevel = 0;
         attackSpeedLevel = 0;
+        characterID = 0;
+        weaponID = 0;
         haveGold = 0;
+        statUpPoint = 0;
     }
 
     public PlayerData LoadData()
@@ -50,8 +53,21 @@ public class WeaponData
 }
 
 [Serializable]
-public class WeaponDataContainer
+public class WeaponDataDic
 {
-    public Dictionary<int, WeaponData> data = new();
+    public Dictionary<int, WeaponData> data;
+
+    public WeaponDataDic LoadData(string fileName = default)
+    {
+        TextAsset textAsset = Resources.Load<TextAsset>(string.IsNullOrEmpty(fileName) ? $"Data/{typeof(WeaponData)}" : $"Data/{fileName}");
+        if (textAsset == null)
+            Debug.LogError("JSON 파일을 찾을 수 없습니다!");
+
+        WeaponDataDic dic = JsonConvert.DeserializeObject<WeaponDataDic>(textAsset.text);
+        if (dic.data == null)
+            Debug.Log("PlayerDataLoad 실패");
+
+        return dic;
+    }
 }
 #endregion

@@ -101,7 +101,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, float> attackPowerDic
     = new Dictionary<int, float>()
     {
-        {0, 10f},
+        {0, 5f},
         {1, 10f},
         {2, 20f},
         {3, 30f},
