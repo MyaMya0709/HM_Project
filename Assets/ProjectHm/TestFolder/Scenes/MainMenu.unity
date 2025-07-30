@@ -5657,6 +5657,8 @@ MonoBehaviour:
     weaponID: 0
     haveGold: 0
     statUpPoint: 0
+    openCharacterIDList: 
+    openWeaponIDList: 
   playerLevel: 0
   moveSpeedLevel: 0
   attackPowerLevel: 0
@@ -5819,6 +5821,8 @@ MonoBehaviour:
     weaponID: 0
     haveGold: 0
     statUpPoint: 0
+    openCharacterIDList: 
+    openWeaponIDList: 
   playerLevelTMP: {fileID: 1199289387}
   ATKPowerLevelTMP: {fileID: 426262116}
   ATKSpeedLevelTMP: {fileID: 1652180375}
@@ -5832,10 +5836,13 @@ MonoBehaviour:
   statTMP: {fileID: 1871586623}
   levelUpBtn: {fileID: 1552277120}
   statSetBtn: {fileID: 483590211}
-  characterData: {fileID: 0}
+  curCharacterData: {fileID: 0}
+  characterDataList: []
   characterImage: {fileID: 232750525}
   characterName: {fileID: 1799508621}
   characterDescription: {fileID: 253284732}
+  leftBtn: {fileID: 0}
+  rightBtn: {fileID: 0}
   levelUpPopup: {fileID: 399714762}
   statUpPopup: {fileID: 383732467}
 --- !u!114 &388268514
@@ -6071,6 +6078,8 @@ MonoBehaviour:
     weaponID: 0
     haveGold: 0
     statUpPoint: 0
+    openCharacterIDList: 
+    openWeaponIDList: 
   curLevel: 0
   beforeLevel: 0
   afterLevel: 0
@@ -14864,11 +14873,12 @@ MonoBehaviour:
     weaponID: 0
     haveGold: 0
     statUpPoint: 0
+    openCharacterIDList: 
+    openWeaponIDList: 
   curMWData:
     weaponID: 0
     baseLevel: 0
   curCharacterData: {fileID: 0}
-  characterDataDic: {fileID: 0}
   selecStageID: 0
   isGameOver: 0
 --- !u!4 &975973548

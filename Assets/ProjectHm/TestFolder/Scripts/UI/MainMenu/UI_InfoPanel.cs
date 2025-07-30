@@ -1,6 +1,5 @@
+using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,11 +25,16 @@ public class UI_InfoPanel : MonoBehaviour
     [SerializeField] private Button statSetBtn;
 
     [Header("CharacterSet")]
-    public CharacterData characterData;
+    [SerializeField] private CharacterData curCharacterData;
+    [SerializeField] private List<CharacterData> characterDataList;
 
     [SerializeField] private Image characterImage;
     [SerializeField] private TMP_Text characterName;
     [SerializeField] private TMP_Text characterDescription;
+
+    [SerializeField] private Button leftBtn;
+    [SerializeField] private Button rightBtn;
+
 
     [Header("Popup")]
     [SerializeField] private RectTransform levelUpPopup;
@@ -42,6 +46,7 @@ public class UI_InfoPanel : MonoBehaviour
     }
     private void OnDisable()
     {
+        //info창이 비활성화 될때마다 Json 저장
         GameManager.Instance.SavePlayerData();
     }
 
@@ -50,8 +55,8 @@ public class UI_InfoPanel : MonoBehaviour
         data = GameManager.Instance.SetPlayerData();
         if (data == null) Debug.Log("playerData로드 안됨");
 
-        characterData = GameManager.Instance.SetCharacterData();
-        if (characterData == null) Debug.Log("characterData로드 안됨");
+        curCharacterData = GameManager.Instance.SetCharacterData();
+        if (curCharacterData == null) Debug.Log("characterData로드 안됨");
 
         //레벨 값 세팅
         playerLevelTMP.text = $"Lv.{data.playerLevel.ToString()}";
@@ -68,8 +73,8 @@ public class UI_InfoPanel : MonoBehaviour
         if (data.playerLevel >= 50) levelUpBtn.gameObject.SetActive(false);
         else levelUpBtn.gameObject.SetActive(true);
 
-        characterName.text = characterData.Name;
-        characterDescription.text = characterData.Description;
+        characterName.text = curCharacterData.Name;
+        characterDescription.text = curCharacterData.Description;
     }
 
     // 스탯 표시 함수
@@ -82,25 +87,25 @@ public class UI_InfoPanel : MonoBehaviour
         //stat.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
 
         // 보너스 스탯 표기
-        if (characterData.bonusStatValue != null && characterData.bonusStatType != null)
+        if (curCharacterData.bonusStatValue != null && curCharacterData.bonusStatType != null)
         {
-            for (int i = 0; i < characterData.bonusStatType.Count; i++)
+            for (int i = 0; i < curCharacterData.bonusStatType.Count; i++)
             {
-                StatType statType = characterData.bonusStatType[i];
+                StatType statType = curCharacterData.bonusStatType[i];
                 switch (statType)
                 {
                     case StatType.attackPower:
-                        ATKPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
+                        ATKPowerTMP.text += $"+({curCharacterData.bonusStatValue[i]})";
                         Debug.Log("스탯 적용 : attackPower");
                         break;
 
                     case StatType.attackSpeed:
-                        ATKSpeedTMP.text += $"+({characterData.bonusStatValue[i]})";
+                        ATKSpeedTMP.text += $"+({curCharacterData.bonusStatValue[i]})";
                         Debug.Log("스탯 적용 : attackSpeed");
                         break;
 
                     case StatType.moveSpeed:
-                        moveSpeedTMP.text += $"+({characterData.bonusStatValue[i]})";
+                        moveSpeedTMP.text += $"+({curCharacterData.bonusStatValue[i]})";
                         Debug.Log("스탯 적용 : moveSpeed");
                         break;
                     default:
@@ -128,6 +133,13 @@ public class UI_InfoPanel : MonoBehaviour
 
     public void OnChangeCharacter(Button btn)
     {
+        if (btn == leftBtn)
+        {
 
+        }
+        else if (btn == rightBtn)
+        {
+
+        }
     }
 }

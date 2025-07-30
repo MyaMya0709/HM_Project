@@ -10,7 +10,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private CharacterData curCharacterData;
 
     // 해금된 캐릭터만 가진 Dic으로 변경 예정
-    [SerializeField] private CharacterData characterDataDic;
+    public Dictionary<int, CharacterData> characterDataDic;
     // 해금된 무기만 가진 Dic
     public WeaponDataDic weaponDataDic;
 
@@ -50,7 +50,12 @@ public class GameManager : Singleton<GameManager>
 
     public CharacterData SetCharacterData()
     {
-        return characterDataDic;
+        return curCharacterData;
+    }
+
+    public void GetCharacterData(CharacterData data)
+    {
+        curCharacterData = data;
     }
 
 
@@ -58,14 +63,15 @@ public class GameManager : Singleton<GameManager>
     {
         foreach (CharacterData CData in DataManager.Instance.characterDataList)
         {
-            // playerData의 characterID와 같은 아이디의 CharacterData 찾아서 참조
-            if (CData.ID == playerData.characterID)
-            {
-                characterDataDic = CData;
-                if (characterDataDic.name != null) Debug.Log($"CharacterData: {characterDataDic.ID} Load");
-            }
+            // 임시로 캐릭터 데이터 전부 로드
+            // 추후 character 해금용 bool값을 적용하면 해당 변수가 true일 때만 추가하는 로직 추가
+            characterDataDic.Add(CData.ID, CData);  
+            Debug.Log($"CharacterDataID - {CData.ID} Load");
         }
-        if (characterDataDic.name == null) Debug.Log($"CharacterData Load 실패");
+        if (characterDataDic.Count == 0) Debug.Log($"CharacterDatas Load 실패");
+
+        curCharacterData = characterDataDic[playerData.characterID];
+        if (curCharacterData == null) Debug.Log($"CharacterData Load 실패");
     }
 
     public void SavePlayerData()

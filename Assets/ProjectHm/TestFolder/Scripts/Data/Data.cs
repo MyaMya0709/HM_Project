@@ -17,6 +17,9 @@ public class PlayerData
     public int haveGold;
     public int statUpPoint;
 
+    public List<int> openCharacterIDList;
+    public List<int> openWeaponIDList;
+
     public void Clear()
     {
         playerLevel = 0;
@@ -27,6 +30,8 @@ public class PlayerData
         weaponID = 0;
         haveGold = 0;
         statUpPoint = 0;
+        openCharacterIDList.Clear();
+        openWeaponIDList.Clear();
     }
 
     public PlayerData LoadData()
