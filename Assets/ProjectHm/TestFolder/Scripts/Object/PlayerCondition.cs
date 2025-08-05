@@ -91,7 +91,7 @@ public class PlayerCondition : MonoBehaviour
 
     public void StartStatSetting()
     {
-        // 영구 스탯 불러오기
+        // 영구 스탯 + 캐릭터 보너스 스탯 불러오기
         baseMoveSpeed = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel];
         baseAttackPower = DataManager.Instance.attackPowerDic[playerData.attackPowerLevel];
         baseAttackSpeed = DataManager.Instance.attackSpeedDic[playerData.attackSpeedLevel];

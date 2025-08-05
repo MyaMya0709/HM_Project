@@ -109,7 +109,7 @@ public class UI_InfoPanel : MonoBehaviour
                         break;
                 }
             }
-            Debug.Log("보너스 스탯 적용");
+            Debug.Log("보너스 스탯 표기 적용");
         }
     }
 

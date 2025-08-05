@@ -7,23 +7,24 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private PlayerData playerData = new();
     public int playerLevel;
+    public int statUpPoint;
+
     public int moveSpeedLevel;
     public int attackPowerLevel;
     public int attackSpeedLevel;
+
+    public int curGold;
 
     public int characterID;
     [SerializeField] private CharacterData characterData;
     public List<int> openCharacterIDList;
 
     public int weaponID;
-    public int curGold;
-    public int statUpPoint;
+    [SerializeField] private WeaponData curMWData;
+    // 해금된 무기
+    public WeaponDataList openWeaponList;
+    public Dictionary<int, WeaponData> weaponDatas = new();
 
-    [SerializeField] private WeaponData curMWData = new();
-
-
-    // 해금된 무기만 가진 Dic
-    public WeaponDataDic weaponDataDic;
 
     public int selecStageID = 0;
 
@@ -36,19 +37,19 @@ public class GameManager : Singleton<GameManager>
         LoadPlayerData();
         GetCharacterData();
 
-        weaponDataDic = weaponDataDic.LoadData();
+        LoadWeaponData();
 
         playerLevel = playerData.playerLevel;
         moveSpeedLevel = playerData.moveSpeedLevel;
         attackPowerLevel = playerData.attackPowerLevel;
         attackSpeedLevel = playerData.attackSpeedLevel;
+        statUpPoint = playerData.statUpPoint;
+        curGold = playerData.haveGold;
 
         characterID = playerData.characterID;
-        weaponID = playerData.weaponID;
-        curGold = playerData.haveGold;
-        statUpPoint = playerData.statUpPoint;
-
         openCharacterIDList = playerData.openCharacterIDList;
+
+        weaponID = playerData.weaponID;
     }
 
     public void GameStart()
@@ -56,7 +57,6 @@ public class GameManager : Singleton<GameManager>
         StageManager.Instance.StageSet();
         SpawnManager.Instance.StartWaves();
     }
-
     public void GameOver()
     {
         isGameOver = true;
@@ -72,13 +72,13 @@ public class GameManager : Singleton<GameManager>
         playerData.moveSpeedLevel = moveSpeedLevel;
         playerData.attackPowerLevel = attackPowerLevel;
         playerData.attackSpeedLevel = attackSpeedLevel;
+        playerData.statUpPoint = statUpPoint;
+        playerData.haveGold = curGold;
 
         playerData.characterID = characterID;
-        playerData.weaponID = weaponID;
-        playerData.haveGold = curGold;
-        playerData.statUpPoint = statUpPoint;
+        openCharacterIDList = playerData.openCharacterIDList;
 
-        playerData.openCharacterIDList = openCharacterIDList;
+        playerData.weaponID = weaponID;
     }
 
 
@@ -99,6 +99,51 @@ public class GameManager : Singleton<GameManager>
         if (characterData == null) Debug.Log($"CharacterData Load 실패");
 
         playerData.characterID = characterData.ID;
+    }
+
+    public void SaveWeaponData()
+    {
+        string json = JsonUtility.ToJson(openWeaponList);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "WeaponData.json"), json);
+        Debug.Log(Application.persistentDataPath);
+    }
+    public void LoadWeaponData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "WeaponData.json");
+
+        string json;
+        if (File.Exists(path))
+        {
+            // 파일 있으면 로드
+            json = File.ReadAllText(path);
+
+            //리스트에 역직렬화
+            openWeaponList = JsonUtility.FromJson<WeaponDataList>(json);
+            if (openWeaponList.datas.Count == 0) Debug.Log($"openWeaponList LoadFail");
+
+            //Dictionary으로 전환
+            foreach (WeaponData waepon in openWeaponList.datas)
+            {
+                weaponDatas.Add(waepon.weaponID, waepon);
+            }
+            if (weaponDatas.Count != 0) Debug.Log($"weaponDataLoad");
+        }
+        else
+        {
+            // 파일 없으면 클리어 파일 세이브 후, 데이터 클리어
+            openWeaponList.Clear();
+
+            //Dictionary으로 전환
+            foreach (WeaponData waepon in openWeaponList.datas)
+            {
+                weaponDatas.Add(waepon.weaponID, waepon);
+            }
+
+            json = JsonUtility.ToJson(openWeaponList);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "WeaponData.json"), json);
+
+            if (weaponDatas.Count != 0) Debug.Log($"New WeaponData Save");
+        }
     }
 
 
@@ -128,7 +173,6 @@ public class GameManager : Singleton<GameManager>
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "PlayerData.json"), json);
 
             if (playerData != null) Debug.Log($"New PlayerData Save");
-
         }
     }
 

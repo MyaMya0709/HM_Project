@@ -29,3 +29,8 @@ public enum StatType
     attackPower,
     attackSpeed
 }
+public enum WeaponType
+{
+    manual,
+    auto
+}
