@@ -8722,6 +8722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b7539dd8c9b734eb406b2da08eab17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterDataList: []
   manualPrefabList:
   - {fileID: 3691733087425890900, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
   manualDataList:
@@ -8730,7 +8731,7 @@ MonoBehaviour:
   - {fileID: 7815197726315998923, guid: 92ac6024902ed4b4891af625e4e6b3f4, type: 3}
   autoDataList:
   - {fileID: 11400000, guid: 5462b7257b874cd438de8ceea038a54a, type: 2}
-  allSlotDatas:
+  allSelecSlotDatas:
   - {fileID: 11400000, guid: ae7500526482f574a9c057c88ab6c81e, type: 2}
   - {fileID: 11400000, guid: 4aa51eca32bec0e4c97ac1d43e8a9b25, type: 2}
   - {fileID: 11400000, guid: 5ad3d3b45e2202d4fbf5b19112da88ed, type: 2}

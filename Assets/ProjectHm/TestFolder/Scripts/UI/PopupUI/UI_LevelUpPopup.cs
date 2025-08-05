@@ -4,12 +4,8 @@ using UnityEngine.UI;
 
 public class UI_LevelUpPopup : MonoBehaviour
 {
-    public PlayerData data;
-    public int curLevel;
     public int beforeLevel;
     public int afterLevel;
-    public int statUpPoint;
-    public int curGold;
 
     [SerializeField] private RectTransform levelUpArea;
     [SerializeField] private RectTransform maxLevel;
@@ -26,10 +22,6 @@ public class UI_LevelUpPopup : MonoBehaviour
 
     private void OnEnable()
     {
-        curLevel = data.playerLevel;
-        statUpPoint = data.statUpPoint;
-        curGold = data.haveGold;
-
         PopupSet();
     }
 
@@ -37,19 +29,23 @@ public class UI_LevelUpPopup : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            if (curGold >= DataManager.Instance.levelUpCostDic[curLevel] && curLevel <= 49)
+            if (GameManager.Instance.curGold >= DataManager.Instance.levelUpCostDic[GameManager.Instance.playerLevel] && GameManager.Instance.playerLevel <= 49)
             {
-                curGold -= DataManager.Instance.levelUpCostDic[curLevel];
-                curGoldTMP.text = $"{curGold}";
-                curLevel++;
-                statUpPoint++;
+                GameManager.Instance.curGold -= DataManager.Instance.levelUpCostDic[GameManager.Instance.playerLevel];
+                curGoldTMP.text = $"{GameManager.Instance.curGold}";
+
+                GameManager.Instance.playerLevel++;
+                GameManager.Instance.statUpPoint++;
                 
                 //팝업창 세팅
                 PopupSet();
                 Debug.Log("Level UP!");
+
+                GameManager.Instance.GetPlayerData();
+                GameManager.Instance.SavePlayerData();
             }
 
-            else if (curGold < DataManager.Instance.levelUpCostDic[curLevel])
+            else if (GameManager.Instance.curGold < DataManager.Instance.levelUpCostDic[GameManager.Instance.playerLevel])
             {
                 // 알림창 - 골드부족
                 Debug.Log("레벨업 골드 부족");
@@ -60,7 +56,7 @@ public class UI_LevelUpPopup : MonoBehaviour
     public void PopupSet()
     {
         // 최대 레벨 체크 후 정보창 세팅
-        if (curLevel >= 50)
+        if (GameManager.Instance.playerLevel >= 50)
         {
             playerLevelUpBtn.gameObject.SetActive(false);
             spendGoldArea.gameObject.SetActive(false);
@@ -75,19 +71,16 @@ public class UI_LevelUpPopup : MonoBehaviour
             levelUpArea.gameObject.SetActive(true);
             maxLevel.gameObject.SetActive(false);
 
-            beforeLevelTMP.text = $"Lv.{curLevel}";
-            afterLevelTMP.text = $"Lv.{curLevel + 1}";
-            levelUpCostTMP.text = DataManager.Instance.levelUpCostDic[curLevel].ToString();
+            beforeLevelTMP.text = $"Lv.{GameManager.Instance.playerLevel}";
+            afterLevelTMP.text = $"Lv.{GameManager.Instance.playerLevel + 1}";
+            levelUpCostTMP.text = DataManager.Instance.levelUpCostDic[GameManager.Instance.playerLevel].ToString();
         }
     }
 
     public void OnExit()
     {
-        data.playerLevel = curLevel;
-        data.statUpPoint = statUpPoint;
-        data.haveGold = curGold;
+        GameManager.Instance.GetPlayerData();
 
-        GameManager.Instance.GetPlayerData(data);
         infoPanel.InfoPanelSet();
 
         gameObject.SetActive(false);

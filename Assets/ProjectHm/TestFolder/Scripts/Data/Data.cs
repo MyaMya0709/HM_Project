@@ -18,7 +18,6 @@ public class PlayerData
     public int statUpPoint;
 
     public List<int> openCharacterIDList;
-    public List<int> openWeaponIDList;
 
     public void Clear()
     {
@@ -31,7 +30,7 @@ public class PlayerData
         haveGold = 0;
         statUpPoint = 0;
         openCharacterIDList.Clear();
-        openWeaponIDList.Clear();
+        openCharacterIDList.Add(0);
     }
 
     public PlayerData LoadData()

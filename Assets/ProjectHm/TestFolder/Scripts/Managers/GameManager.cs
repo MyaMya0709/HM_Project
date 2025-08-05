@@ -6,11 +6,22 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private PlayerData playerData = new();
-    [SerializeField] private WeaponData curMWData = new();
-    [SerializeField] private CharacterData curCharacterData;
+    public int playerLevel;
+    public int moveSpeedLevel;
+    public int attackPowerLevel;
+    public int attackSpeedLevel;
 
-    // 해금된 캐릭터만 가진 Dic으로 변경 예정
-    public Dictionary<int, CharacterData> characterDataDic;
+    public int characterID;
+    [SerializeField] private CharacterData characterData;
+    public List<int> openCharacterIDList;
+
+    public int weaponID;
+    public int curGold;
+    public int statUpPoint;
+
+    [SerializeField] private WeaponData curMWData = new();
+
+
     // 해금된 무기만 가진 Dic
     public WeaponDataDic weaponDataDic;
 
@@ -23,9 +34,21 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
 
         LoadPlayerData();
-        LoadCharacterData();
+        GetCharacterData();
 
         weaponDataDic = weaponDataDic.LoadData();
+
+        playerLevel = playerData.playerLevel;
+        moveSpeedLevel = playerData.moveSpeedLevel;
+        attackPowerLevel = playerData.attackPowerLevel;
+        attackSpeedLevel = playerData.attackSpeedLevel;
+
+        characterID = playerData.characterID;
+        weaponID = playerData.weaponID;
+        curGold = playerData.haveGold;
+        statUpPoint = playerData.statUpPoint;
+
+        openCharacterIDList = playerData.openCharacterIDList;
     }
 
     public void GameStart()
@@ -43,36 +66,41 @@ public class GameManager : Singleton<GameManager>
     {
         return playerData;
     }
-    public void GetPlayerData(PlayerData data)
+    public void GetPlayerData()
     {
-        playerData = data;
+        playerData.playerLevel = playerLevel;
+        playerData.moveSpeedLevel = moveSpeedLevel;
+        playerData.attackPowerLevel = attackPowerLevel;
+        playerData.attackSpeedLevel = attackSpeedLevel;
+
+        playerData.characterID = characterID;
+        playerData.weaponID = weaponID;
+        playerData.haveGold = curGold;
+        playerData.statUpPoint = statUpPoint;
+
+        playerData.openCharacterIDList = openCharacterIDList;
     }
+
 
     public CharacterData SetCharacterData()
     {
-        return curCharacterData;
+        return characterData;
     }
 
-    public void GetCharacterData(CharacterData data)
-    {
-        curCharacterData = data;
-    }
-
-
-    public void LoadCharacterData()
+    public void GetCharacterData()
     {
         foreach (CharacterData CData in DataManager.Instance.characterDataList)
         {
-            // 임시로 캐릭터 데이터 전부 로드
-            // 추후 character 해금용 bool값을 적용하면 해당 변수가 true일 때만 추가하는 로직 추가
-            characterDataDic.Add(CData.ID, CData);  
-            Debug.Log($"CharacterDataID - {CData.ID} Load");
+            if(CData.ID == characterID)
+            {
+                characterData = CData;
+            }
         }
-        if (characterDataDic.Count == 0) Debug.Log($"CharacterDatas Load 실패");
+        if (characterData == null) Debug.Log($"CharacterData Load 실패");
 
-        curCharacterData = characterDataDic[playerData.characterID];
-        if (curCharacterData == null) Debug.Log($"CharacterData Load 실패");
+        playerData.characterID = characterData.ID;
     }
+
 
     public void SavePlayerData()
     {

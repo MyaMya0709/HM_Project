@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class UI_InfoPanel : MonoBehaviour
 {
     [Header("PlayerSet")]
-    public PlayerData data;
-
     [SerializeField] private TMP_Text playerLevelTMP;
     [SerializeField] private TMP_Text ATKPowerLevelTMP;
     [SerializeField] private TMP_Text ATKSpeedLevelTMP;
@@ -25,7 +24,7 @@ public class UI_InfoPanel : MonoBehaviour
     [SerializeField] private Button statSetBtn;
 
     [Header("CharacterSet")]
-    [SerializeField] private CharacterData curCharacterData;
+    [SerializeField] private CharacterData characterData;
     [SerializeField] private List<CharacterData> characterDataList;
 
     [SerializeField] private Image characterImage;
@@ -52,17 +51,14 @@ public class UI_InfoPanel : MonoBehaviour
 
     public void InfoPanelSet()
     {
-        data = GameManager.Instance.SetPlayerData();
-        if (data == null) Debug.Log("playerData로드 안됨");
-
-        curCharacterData = GameManager.Instance.SetCharacterData();
-        if (curCharacterData == null) Debug.Log("characterData로드 안됨");
+        characterData = GameManager.Instance.SetCharacterData();
+        if (characterData == null) Debug.Log("characterData로드 안됨");
 
         //레벨 값 세팅
-        playerLevelTMP.text = $"Lv.{data.playerLevel.ToString()}";
-        ATKPowerLevelTMP.text = $"Lv.{data.attackPowerLevel.ToString()}";
-        ATKSpeedLevelTMP.text = $"Lv.{data.attackSpeedLevel.ToString()}";
-        moveSpeedLevelTMP.text = $"Lv.{data.moveSpeedLevel.ToString()}";
+        playerLevelTMP.text = $"Lv.{GameManager.Instance.playerLevel.ToString()}";
+        ATKPowerLevelTMP.text = $"Lv.{GameManager.Instance.attackPowerLevel.ToString()}";
+        ATKSpeedLevelTMP.text = $"Lv.{GameManager.Instance.attackSpeedLevel.ToString()}";
+        moveSpeedLevelTMP.text = $"Lv.{GameManager.Instance.moveSpeedLevel.ToString()}";
         //jumpPowerLevel.text = playerData.moveSpeedLevel.ToString();
         //statLevel.text = playerData.moveSpeedLevel.ToString();
 
@@ -70,42 +66,42 @@ public class UI_InfoPanel : MonoBehaviour
         StatSet();
 
         //레벨 업 버튼 체크
-        if (data.playerLevel >= 50) levelUpBtn.gameObject.SetActive(false);
+        if (GameManager.Instance.playerLevel >= 50) levelUpBtn.gameObject.SetActive(false);
         else levelUpBtn.gameObject.SetActive(true);
 
-        characterName.text = curCharacterData.Name;
-        characterDescription.text = curCharacterData.Description;
+        characterName.text = characterData.Name;
+        characterDescription.text = characterData.Description;
     }
 
     // 스탯 표시 함수
     public void StatSet()
     {
-        ATKPowerTMP.text = DataManager.Instance.attackPowerDic[data.attackPowerLevel].ToString();
-        ATKSpeedTMP.text = DataManager.Instance.attackSpeedDic[data.attackSpeedLevel].ToString();
-        moveSpeedTMP.text = DataManager.Instance.moveSpeedDic[data.moveSpeedLevel].ToString();
+        ATKPowerTMP.text = DataManager.Instance.attackPowerDic[GameManager.Instance.attackPowerLevel].ToString();
+        ATKSpeedTMP.text = DataManager.Instance.attackSpeedDic[GameManager.Instance.attackSpeedLevel].ToString();
+        moveSpeedTMP.text = DataManager.Instance.moveSpeedDic[GameManager.Instance.moveSpeedLevel].ToString();
         //jumpPower.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
         //stat.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
 
         // 보너스 스탯 표기
-        if (curCharacterData.bonusStatValue != null && curCharacterData.bonusStatType != null)
+        if (characterData.bonusStatValue != null && characterData.bonusStatType != null)
         {
-            for (int i = 0; i < curCharacterData.bonusStatType.Count; i++)
+            for (int i = 0; i < characterData.bonusStatType.Count; i++)
             {
-                StatType statType = curCharacterData.bonusStatType[i];
+                StatType statType = characterData.bonusStatType[i];
                 switch (statType)
                 {
                     case StatType.attackPower:
-                        ATKPowerTMP.text += $"+({curCharacterData.bonusStatValue[i]})";
+                        ATKPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
                         Debug.Log("스탯 적용 : attackPower");
                         break;
 
                     case StatType.attackSpeed:
-                        ATKSpeedTMP.text += $"+({curCharacterData.bonusStatValue[i]})";
+                        ATKSpeedTMP.text += $"+({characterData.bonusStatValue[i]})";
                         Debug.Log("스탯 적용 : attackSpeed");
                         break;
 
                     case StatType.moveSpeed:
-                        moveSpeedTMP.text += $"+({curCharacterData.bonusStatValue[i]})";
+                        moveSpeedTMP.text += $"+({characterData.bonusStatValue[i]})";
                         Debug.Log("스탯 적용 : moveSpeed");
                         break;
                     default:
@@ -120,14 +116,12 @@ public class UI_InfoPanel : MonoBehaviour
     public void OnLevelUpPopup()
     {
         UI_LevelUpPopup popup = levelUpPopup.GetComponent<UI_LevelUpPopup>();
-        popup.data = data;
         if (!levelUpPopup.gameObject.activeSelf) levelUpPopup.gameObject.SetActive(true);
     }
 
     public void OnStatUpPopup()
     {
         UI_StatUpPopup popup = statUpPopup.GetComponent<UI_StatUpPopup>();
-        popup.data = data;
         if (!statUpPopup.gameObject.activeSelf) statUpPopup.gameObject.SetActive(true);
     }
 
@@ -135,11 +129,47 @@ public class UI_InfoPanel : MonoBehaviour
     {
         if (btn == leftBtn)
         {
+            Debug.Log("좌측버튼 클릭");
+            for (int i = 0; i < GameManager.Instance.openCharacterIDList.Count; i++)
+            {
+                if (GameManager.Instance.openCharacterIDList[i] == GameManager.Instance.characterID)
+                {
+                    if (i - 1 < 0)
+                        GameManager.Instance.characterID = GameManager.Instance.openCharacterIDList[GameManager.Instance.openCharacterIDList.Count - 1];
+                    else
+                    {
+                        GameManager.Instance.characterID = GameManager.Instance.openCharacterIDList[i - 1];
+                    }
 
+                    Debug.Log("이전 캐릭터 정보");
+                    break;
+                }
+            }
+            GameManager.Instance.GetCharacterData();
+            GameManager.Instance.SavePlayerData();
+            InfoPanelSet();
         }
         else if (btn == rightBtn)
         {
-
+            Debug.Log("우측버튼 클릭");
+            for (int i = 0; i < GameManager.Instance.openCharacterIDList.Count; i++)
+            {
+                if (GameManager.Instance.openCharacterIDList[i] == GameManager.Instance.characterID)
+                {
+                    if (i + 1 >= GameManager.Instance.openCharacterIDList.Count)
+                        GameManager.Instance.characterID = GameManager.Instance.openCharacterIDList[0];
+                    else
+                    {
+                        GameManager.Instance.characterID = GameManager.Instance.openCharacterIDList[i + 1];
+                    }
+                    
+                    Debug.Log("다음 캐릭터 정보");
+                    break;
+                }
+            }
+            GameManager.Instance.GetCharacterData();
+            GameManager.Instance.SavePlayerData();
+            InfoPanelSet();
         }
     }
 }

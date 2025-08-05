@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UI_StatUpPopup : MonoBehaviour
 {
     [Header("PlayerData")]
-    public PlayerData data;
     public int playerLevel;
     public int moveSpeedLevel;
     public int attackPowerLevel;
@@ -54,11 +53,11 @@ public class UI_StatUpPopup : MonoBehaviour
 
     public void DataSet()
     {
-        playerLevel = data.playerLevel;
-        moveSpeedLevel = data.moveSpeedLevel;
-        attackPowerLevel = data.attackPowerLevel;
-        attackSpeedLevel = data.attackSpeedLevel;
-        statUpPoint = data.statUpPoint;
+        playerLevel = GameManager.Instance.playerLevel;
+        moveSpeedLevel = GameManager.Instance.moveSpeedLevel;
+        attackPowerLevel = GameManager.Instance.attackPowerLevel;
+        attackSpeedLevel = GameManager.Instance.attackSpeedLevel;
+        statUpPoint = GameManager.Instance.statUpPoint;
         Debug.Log("DataSet ¿Ï·á");
     }
 
@@ -263,13 +262,14 @@ public class UI_StatUpPopup : MonoBehaviour
 
     public void OnSaveButton()
     {
-        data.playerLevel = playerLevel;
-        data.moveSpeedLevel = moveSpeedLevel;
-        data.attackPowerLevel = attackPowerLevel;
-        data.attackSpeedLevel = attackSpeedLevel;
-        data.statUpPoint = statUpPoint;
+        GameManager.Instance.playerLevel = playerLevel;
+        GameManager.Instance.moveSpeedLevel = moveSpeedLevel;
+        GameManager.Instance.attackPowerLevel = attackPowerLevel;
+        GameManager.Instance.attackSpeedLevel = attackSpeedLevel;
+        GameManager.Instance.statUpPoint = statUpPoint;
 
-        GameManager.Instance.GetPlayerData(data);
+        GameManager.Instance.GetPlayerData();
+        GameManager.Instance.SavePlayerData();
         infoPanel.InfoPanelSet();
 
         gameObject.SetActive(false);
