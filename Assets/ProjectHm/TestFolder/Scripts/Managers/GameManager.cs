@@ -20,7 +20,9 @@ public class GameManager : Singleton<GameManager>
     public List<int> openCharacterIDList;
 
     public int weaponID;
-    [SerializeField] private WeaponData curMWData;
+    public WeaponData curMWData;
+    public IManualWeapon weaponData;
+
     // 해금된 무기
     public WeaponDataList openWeaponList;
     public Dictionary<int, WeaponData> weaponDatas = new();

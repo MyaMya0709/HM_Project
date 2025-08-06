@@ -5,13 +5,20 @@ public class ManualWeapon_000 : IManualWeapon
 {
     public int weaponID = 000;
 
+    public WeaponEffectData weaponEffectData = new WeaponEffectData()
+    {
+        AttackEffect = new EffectTypeData()
+        {
+
+        }
+    };
+
     public EffectTypeData effectData = new EffectTypeData()
     {
         // 요소 직접 추가
     };
 
     public Transform attackPoint;
-
 
     public float AttackStunDur = 0.1f;
     public float DownAtkStunDur = 0.25f;
