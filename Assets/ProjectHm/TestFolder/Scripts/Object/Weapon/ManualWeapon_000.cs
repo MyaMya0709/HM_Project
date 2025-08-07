@@ -4,20 +4,6 @@ using UnityEngine;
 public class ManualWeapon_000 : IManualWeapon
 {
     public int weaponID = 000;
-
-    public WeaponEffectData weaponEffectData = new WeaponEffectData()
-    {
-        AttackEffect = new EffectTypeData()
-        {
-
-        }
-    };
-
-    public EffectTypeData effectData = new EffectTypeData()
-    {
-        // 요소 직접 추가
-    };
-
     public Transform attackPoint;
 
     public float AttackStunDur = 0.1f;
@@ -28,11 +14,11 @@ public class ManualWeapon_000 : IManualWeapon
     public float chargeTimeLevel3 = 1.0f;         // 차징 3단계 시간
     public int chargeLevel = 0;                   // 차징 단계
 
-    public bool isDashAttack = false;
+    public bool isDashAttack = true;
 
     [Header("Weapon Effect Check")]
     public bool mutipleAttack = false;
-    public bool isStun = true;
+    public bool isStun = false;
 
     [Header("Effects")]
     public GameObject hitEffect;
@@ -78,7 +64,7 @@ public class ManualWeapon_000 : IManualWeapon
             if (enemyCollider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
                 Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                enemy.TakeDamage(this, playerController);
+                enemy.TakeDamage(totalDamage, data.baseWeaponEffectList[baseWeaponLevel].downEffect);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DownAtkStunDur));
@@ -101,9 +87,9 @@ public class ManualWeapon_000 : IManualWeapon
         Debug.Log("ChargingAttack");
 
         ChargingLevel();
-        totalDamage *= chargeLevel;
-        effectData.Airborne.onoff = true;
-        effectData.Airborne.valueA *= chargeLevel;
+        //totalDamage *= chargeLevel;
+        //effectData.Airborne.onoff = true;
+        //effectData.Airborne.valueA *= chargeLevel;
 
         Vector2 size = new Vector2(0.1f, 1f);                        // 날려보낼 박스 크기
         Vector2 origin = attackPoint.position;                       // 출발점
@@ -117,17 +103,17 @@ public class ManualWeapon_000 : IManualWeapon
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(this, playerController);
+                enemy.TakeDamage(totalDamage * chargeLevel, data.baseWeaponEffectList[baseWeaponLevel].chargeEffect);
             }
         }
 
         // ▶ 범위 디버그 사각형 시각화 (게임 씬에서도 보임)
         DrawDebugBox((Vector2)attackPoint.position + direction * (totalRange * 0.5f * chargeLevel), new Vector2(totalRange * chargeLevel, 1.0f), Color.red, 3f);
 
-        totalDamage /= chargeLevel;
-        effectData.Airborne.onoff = false;
-        effectData.Airborne.valueA /= chargeLevel;
-        chargeLevel = 0;
+        //totalDamage /= chargeLevel;
+        //effectData.Airborne.onoff = false;
+        //effectData.Airborne.valueA /= chargeLevel;
+        //chargeLevel = 0;
 
         // 디버그용 로그
         Debug.Log($"Attack hit {hits.Length} enemies.");
@@ -150,7 +136,7 @@ public class ManualWeapon_000 : IManualWeapon
             // 접근 가능 여부 판단
             if (hit.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(this, playerController);
+                enemy.TakeDamage(totalDamage, data.baseWeaponEffectList[baseWeaponLevel].dashEffect);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DashAtkStunDur));
@@ -201,7 +187,7 @@ public class ManualWeapon_000 : IManualWeapon
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(this, playerController);
+                enemy.TakeDamage(totalDamage, data.baseWeaponEffectList[baseWeaponLevel].attackEffect);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(AttackStunDur));
@@ -238,7 +224,7 @@ public class ManualWeapon_000 : IManualWeapon
                 {
                     // 디버그용 로그
                     Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                    enemy.TakeDamage(this, playerController);
+                    enemy.TakeDamage(totalDamage, data.baseWeaponEffectList[baseWeaponLevel].attackEffect);
                     if (isStun)
                     {
                         StartCoroutine(enemy.TakeStun(AttackStunDur));

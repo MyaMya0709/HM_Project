@@ -3,20 +3,20 @@ using System;
 [Serializable]
 public class WeaponEffectData
 {
-    public EffectTypeData AttackEffect;
-    public EffectTypeData DownEffect;
-    public EffectTypeData ChargeEffect;
-    public EffectTypeData DashEffect;
+    public EffectTypeData attackEffect;
+    public EffectTypeData downEffect;
+    public EffectTypeData chargeEffect;
+    public EffectTypeData dashEffect;
 }
 
 [Serializable]
 public class EffectTypeData
 {
-    public BaseEffectData Knockback;
-    public BaseEffectData Airborne;
-    public BaseEffectData Stun;
-    public BaseEffectData Slow;
-    public BaseEffectData DotDamage;
+    public BaseEffectData knockback;
+    public BaseEffectData airborne;
+    public BaseEffectData stun;
+    public BaseEffectData slow;
+    public BaseEffectData dotDamage;
 }
 
 [Serializable]

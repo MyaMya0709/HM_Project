@@ -26,6 +26,8 @@ public class BaseEnemy : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
 
+    public Vector2 hitNormal;
+
     public GameObject droppedItemPrepab;
     public Animator animator;
     
@@ -78,17 +80,17 @@ public class BaseEnemy : MonoBehaviour
         //rb.MovePosition(targetPos);
     }
 
-    public void TakeDamage(ManualWeapon_000 WeaponData, PlayerController player)
+    public void TakeDamage(float Damage, EffectTypeData effectData)
     {
-        curHp -= WeaponData.totalDamage;
+        curHp -= Damage;
         if (curHp <= 0)
         {
             Dead();
         }
 
-        ApplyEffect(WeaponData.effectData, player);
+        ApplyEffect(effectData);
 
-        SpawnDamagePopup((int)WeaponData.totalDamage);
+        SpawnDamagePopup((int)Damage);
     }
 
     public void SpawnDamagePopup(int damage)
@@ -104,13 +106,13 @@ public class BaseEnemy : MonoBehaviour
     }
 
     #region Effect
-    public void ApplyEffect(EffectTypeData effectData, PlayerController player)
+    public void ApplyEffect(EffectTypeData effectData)
     {
-        if (effectData.Knockback.onoff) StartCoroutine(Knockback(player.lastLookDirection, effectData.Knockback.valueA));                                        // valueA == Power, valueB, valueC
-        if (effectData.Airborne.onoff) StartCoroutine(Airborne(effectData.Airborne.valueA));                                                                     // valueA == Power, valueB, valueC
-        if (effectData.Stun.onoff) StartCoroutine(TakeStun(effectData.DotDamage.valueB));                                                                        // valueA, valueB == Duration, valueC
-        if (effectData.Slow.onoff) StartCoroutine(Slow(effectData.Slow.valueA, effectData.DotDamage.valueB));                                                    // valueA, valueB == Duration, valueC
-        if (effectData.DotDamage.onoff) StartCoroutine(DotDamage(effectData.DotDamage.valueA, effectData.DotDamage.valueB, effectData.DotDamage.valueC));        // valueA == Damage, valueB == Duration, valueC ==  Delay
+        if (effectData.knockback.onoff) StartCoroutine(Knockback(hitNormal, effectData.knockback.valueA));                                                       // valueA == Power, valueB, valueC
+        if (effectData.airborne.onoff) StartCoroutine(Airborne(effectData.airborne.valueA));                                                                     // valueA == Power, valueB, valueC
+        if (effectData.stun.onoff) StartCoroutine(TakeStun(effectData.stun.valueB));                                                                        // valueA, valueB == Duration, valueC
+        if (effectData.slow.onoff) StartCoroutine(Slow(effectData.slow.valueA, effectData.dotDamage.valueB));                                                    // valueA, valueB == Duration, valueC
+        if (effectData.dotDamage.onoff) StartCoroutine(DotDamage(effectData.dotDamage.valueA, effectData.dotDamage.valueB, effectData.dotDamage.valueC));        // valueA == Damage, valueB == Duration, valueC ==  Delay
     }
 
     public IEnumerator Slow(float amount, float duration)
@@ -140,6 +142,7 @@ public class BaseEnemy : MonoBehaviour
         isDamage = true;
 
         Debug.Log("knockback");
+        Debug.Log($"넉백 방향{direction.x}");
         float knockbackPower = 20f;
         Vector2 knockbackDirection = direction;
         Vector2 basePos = rb.position;
@@ -175,6 +178,8 @@ public class BaseEnemy : MonoBehaviour
 
     public IEnumerator TakeStun(float stunDuration)
     {
+        Debug.Log("stun");
+
         isDamage = true;
         rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(stunDuration);
@@ -291,6 +296,14 @@ public class BaseEnemy : MonoBehaviour
         if (baseCore != null)
         {
             AttackBase(baseCore);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        foreach (var contact in collision.contacts)
+        {
+            hitNormal = contact.normal; // 공격이 들어오는 방향 == 넉백되는 방향
         }
     }
 }
