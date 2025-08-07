@@ -78,31 +78,44 @@ public class GameManager : Singleton<GameManager>
         playerData.haveGold = curGold;
 
         playerData.characterID = characterID;
-        openCharacterIDList = playerData.openCharacterIDList;
+        playerData.openCharacterIDList = openCharacterIDList;
 
         playerData.weaponID = weaponID;
     }
-
-
-    public CharacterData SetCharacterData()
+    public void SavePlayerData()
     {
-        return characterData;
+        string json = JsonUtility.ToJson(playerData);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "PlayerData.json"), json);
+        Debug.Log(Application.persistentDataPath);
     }
-
-    public void GetCharacterData()
+    public void LoadPlayerData()
     {
-        foreach (CharacterData CData in DataManager.Instance.characterDataList)
+        string path = Path.Combine(Application.persistentDataPath, "PlayerData.json");
+
+        string json;
+        if (File.Exists(path))
         {
-            if(CData.ID == characterID)
-            {
-                characterData = CData;
-            }
+            // 파일 있으면 로드
+            json = File.ReadAllText(path);
+            playerData = JsonUtility.FromJson<PlayerData>(json);
+            if (playerData != null) Debug.Log($"playerDataLoad");
         }
-        if (characterData == null) Debug.Log($"CharacterData Load 실패");
+        else
+        {
+            // 파일 없으면 클리어 파일 세이브 후, 데이터 클리어
+            playerData.Clear();
+            json = JsonUtility.ToJson(playerData);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "PlayerData.json"), json);
 
-        playerData.characterID = characterData.ID;
+            if (playerData != null) Debug.Log($"New PlayerData Save");
+        }
     }
 
+    public void SetWeaponData()
+    {
+        curMWData = weaponDatas[weaponID];
+        weaponData = DataManager.Instance.manualPrefabList[weaponID].GetComponent<IManualWeapon>();
+    }
     public void SaveWeaponData()
     {
         string json = JsonUtility.ToJson(openWeaponList);
@@ -149,33 +162,22 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void SavePlayerData()
+    public CharacterData SetCharacterData()
     {
-        string json = JsonUtility.ToJson(playerData);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, "PlayerData.json"), json);
-        Debug.Log(Application.persistentDataPath);
+        return characterData;
     }
-    public void LoadPlayerData()
+    public void GetCharacterData()
     {
-        string path = Path.Combine(Application.persistentDataPath, "PlayerData.json");
-
-        string json;
-        if (File.Exists(path))
+        foreach (CharacterData CData in DataManager.Instance.characterDataList)
         {
-            // 파일 있으면 로드
-            json = File.ReadAllText(path);
-            playerData = JsonUtility.FromJson<PlayerData>(json);
-            if (playerData != null) Debug.Log($"playerDataLoad");
+            if(CData.ID == characterID)
+            {
+                characterData = CData;
+            }
         }
-        else
-        {
-            // 파일 없으면 클리어 파일 세이브 후, 데이터 클리어
-            playerData.Clear();
-            json = JsonUtility.ToJson(playerData);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "PlayerData.json"), json);
+        if (characterData == null) Debug.Log($"CharacterData Load 실패");
 
-            if (playerData != null) Debug.Log($"New PlayerData Save");
-        }
+        playerData.characterID = characterData.ID;
     }
 
     public void GameReset()

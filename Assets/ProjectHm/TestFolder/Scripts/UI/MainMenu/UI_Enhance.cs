@@ -6,7 +6,6 @@ public class UI_Enhance : MonoBehaviour
 {
     public WeaponData data;
 
-
     [SerializeField] private TMP_Text name_TMP;
     [SerializeField] private TMP_Text level_TMP;
     [SerializeField] private TMP_Text discrip_TMP;
@@ -22,7 +21,7 @@ public class UI_Enhance : MonoBehaviour
     [Header("AttackTap")]
     [SerializeField] private RectTransform attackTap;
     [SerializeField] private TMP_Text AT_AttackDamage_TMP;
-    [SerializeField] private TMP_Text AT_Knockback_TMP;
+    [SerializeField] private TMP_Text AT_KnockbackPower_TMP;
     [SerializeField] private TMP_Text AT_AirbornePower_TMP;
     [SerializeField] private TMP_Text AT_StunDuration_TMP;
     [SerializeField] private TMP_Text AT_SlowDuration_TMP;
@@ -33,7 +32,7 @@ public class UI_Enhance : MonoBehaviour
     [Header("DropAttackTap")]
     [SerializeField] private RectTransform dropAttackTap;
     [SerializeField] private TMP_Text DropAT_AttackDamage_TMP;
-    [SerializeField] private TMP_Text DropAT_Knockback_TMP;
+    [SerializeField] private TMP_Text DropAT_KnockbackPower_TMP;
     [SerializeField] private TMP_Text DropAT_AirbornePower_TMP;
     [SerializeField] private TMP_Text DropAT_StunDuration_TMP;
     [SerializeField] private TMP_Text DropAT_SlowDuration_TMP;
@@ -44,7 +43,7 @@ public class UI_Enhance : MonoBehaviour
     [Header("ChargeAttackTap")]
     [SerializeField] private RectTransform chargeAttackTap;
     [SerializeField] private TMP_Text ChargeAT_AttackDamage_TMP;
-    [SerializeField] private TMP_Text ChargeAT_Knockback_TMP;
+    [SerializeField] private TMP_Text ChargeAT_KnockbackPower_TMP;
     [SerializeField] private TMP_Text ChargeAT_AirbornePower_TMP;
     [SerializeField] private TMP_Text ChargeAT_StunDuration_TMP;
     [SerializeField] private TMP_Text ChargeAT_SlowDuration_TMP;
@@ -55,7 +54,7 @@ public class UI_Enhance : MonoBehaviour
     [Header("DashAttackTap")]
     [SerializeField] private RectTransform dashAttackTap;
     [SerializeField] private TMP_Text DashAT_AttackDamage_TMP;
-    [SerializeField] private TMP_Text DashAT_Knockback_TMP;
+    [SerializeField] private TMP_Text DashAT_KnockbackPower_TMP;
     [SerializeField] private TMP_Text DashAT_AirbornePower_TMP;
     [SerializeField] private TMP_Text DashAT_StunDuration_TMP;
     [SerializeField] private TMP_Text DashAT_SlowDuration_TMP;
@@ -93,6 +92,13 @@ public class UI_Enhance : MonoBehaviour
         //movePower_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
     }
 
+    public void OnEnhanceUpPopup()
+    {
+        if(!enhanceUpPopup.gameObject.activeSelf)
+        enhanceUpPopup.gameObject.SetActive(true);
+    }
+
+    #region Taps
     public void OnStatusTap()
     {
         statusTap.gameObject.SetActive(true);
@@ -101,7 +107,6 @@ public class UI_Enhance : MonoBehaviour
         chargeAttackTap.gameObject.SetActive (false);
         dashAttackTap.gameObject .SetActive (false);
     }
-
     public void OnAttackTap()
     {
         statusTap.gameObject.SetActive(false);
@@ -134,4 +139,5 @@ public class UI_Enhance : MonoBehaviour
         chargeAttackTap.gameObject.SetActive(false);
         dashAttackTap.gameObject.SetActive(true);
     }
+    #endregion
 }
