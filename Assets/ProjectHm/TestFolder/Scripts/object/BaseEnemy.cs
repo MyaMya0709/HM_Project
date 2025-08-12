@@ -111,7 +111,7 @@ public class BaseEnemy : MonoBehaviour
         if (effectData.knockback.onoff) StartCoroutine(Knockback(hitNormal, effectData.knockback.valueA));                                                       // valueA == Power, valueB, valueC
         if (effectData.airborne.onoff) StartCoroutine(Airborne(effectData.airborne.valueA));                                                                     // valueA == Power, valueB, valueC
         if (effectData.stun.onoff) StartCoroutine(TakeStun(effectData.stun.valueB));                                                                        // valueA, valueB == Duration, valueC
-        if (effectData.slow.onoff) StartCoroutine(Slow(effectData.slow.valueA, effectData.dotDamage.valueB));                                                    // valueA, valueB == Duration, valueC
+        if (effectData.slow.onoff) StartCoroutine(Slow(effectData.slow.valueA, effectData.slow.valueB));                                                    // valueA, valueB == Duration, valueC
         if (effectData.dotDamage.onoff) StartCoroutine(DotDamage(effectData.dotDamage.valueA, effectData.dotDamage.valueB, effectData.dotDamage.valueC));        // valueA == Damage, valueB == Duration, valueC ==  Delay
     }
 

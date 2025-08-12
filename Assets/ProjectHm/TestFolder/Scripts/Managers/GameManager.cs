@@ -21,6 +21,7 @@ public class GameManager : Singleton<GameManager>
 
     public int weaponID;
     public WeaponData curMWData;
+    public GameObject curWeapon;
     public IManualWeapon weaponData;
 
     // 해금된 무기
@@ -39,8 +40,6 @@ public class GameManager : Singleton<GameManager>
         LoadPlayerData();
         GetCharacterData();
 
-        LoadWeaponData();
-
         playerLevel = playerData.playerLevel;
         moveSpeedLevel = playerData.moveSpeedLevel;
         attackPowerLevel = playerData.attackPowerLevel;
@@ -52,6 +51,9 @@ public class GameManager : Singleton<GameManager>
         openCharacterIDList = playerData.openCharacterIDList;
 
         weaponID = playerData.weaponID;
+
+        LoadWeaponData();
+        SetWeaponData();
     }
 
     public void GameStart()
@@ -114,7 +116,9 @@ public class GameManager : Singleton<GameManager>
     public void SetWeaponData()
     {
         curMWData = weaponDatas[weaponID];
-        weaponData = DataManager.Instance.manualPrefabList[weaponID].GetComponent<IManualWeapon>();
+        curWeapon = DataManager.Instance.manualPrefabList[weaponID];
+        weaponData = curWeapon.GetComponent<IManualWeapon>();
+        weaponData.baseWeaponLevel = curMWData.baseLevel;
     }
     public void SaveWeaponData()
     {

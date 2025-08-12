@@ -45,6 +45,7 @@ public class WeaponData
 {
     public int weaponID;
     public int baseLevel;
+    public bool isBuy;      // 구입여부
 }
 
 [Serializable]
@@ -56,8 +57,8 @@ public class WeaponDataList
     {
         datas = new List<WeaponData>()
             {
-                new WeaponData { weaponID = 0, baseLevel = 0 },
-                new WeaponData { weaponID = 100, baseLevel = 0 }
+                new WeaponData { weaponID = 0, baseLevel = 0, isBuy = true },
+                new WeaponData { weaponID = 100, baseLevel = 0, isBuy = true }
             };
     }
 }

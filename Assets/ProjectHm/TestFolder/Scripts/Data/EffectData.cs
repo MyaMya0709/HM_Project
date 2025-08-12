@@ -4,7 +4,7 @@ using System;
 public class WeaponEffectData
 {
     public EffectTypeData attackEffect;
-    public EffectTypeData downEffect;
+    public EffectTypeData dropEffect;
     public EffectTypeData chargeEffect;
     public EffectTypeData dashEffect;
 }
@@ -12,6 +12,7 @@ public class WeaponEffectData
 [Serializable]
 public class EffectTypeData
 {
+    public float damageMultiple;
     public BaseEffectData knockback;
     public BaseEffectData airborne;
     public BaseEffectData stun;

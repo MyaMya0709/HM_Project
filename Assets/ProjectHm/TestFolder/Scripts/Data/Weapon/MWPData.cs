@@ -5,6 +5,7 @@ using UnityEngine;
 public class ManualWeaponData : ScriptableObject
 {
     public int weaponID;
+    public int unlockCost;
 
     public List<float> baseMoveList;
     public List<float> baseDamageList;
@@ -14,7 +15,8 @@ public class ManualWeaponData : ScriptableObject
     public List<float> selecDamageList;
     public List<float> selecRangeList;
 
-    // 레벨로 효과 찾기
+    // 레벨로 원하는 값 찾기
+    public List<int> enhanceCostList;
     public List<WeaponEffectData> baseWeaponEffectList;
     public List<WeaponEffectData> selecWeaponEffectList;
 }

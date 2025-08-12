@@ -13,6 +13,7 @@ public class ManualWeapon_000 : IManualWeapon
     public float chargeTimeLevel2 = 0.6f;         // 차징 2단계 시간
     public float chargeTimeLevel3 = 1.0f;         // 차징 3단계 시간
     public int chargeLevel = 0;                   // 차징 단계
+    public float chargeAttackMultiple = 0;        // 차징 단계별 공격력 배수
 
     public bool isDashAttack = true;
 
@@ -64,7 +65,7 @@ public class ManualWeapon_000 : IManualWeapon
             if (enemyCollider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
                 Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                enemy.TakeDamage(totalDamage, data.baseWeaponEffectList[baseWeaponLevel].downEffect);
+                enemy.TakeDamage(totalDamage, data.baseWeaponEffectList[baseWeaponLevel].dropEffect);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DownAtkStunDur));
@@ -76,9 +77,21 @@ public class ManualWeapon_000 : IManualWeapon
     public void ChargingLevel()
     {
         // 차징 단계 확인
-        if (playerController.holdTime >= chargeTimeLevel3) chargeLevel = 3;
-        else if (playerController.holdTime >= chargeTimeLevel2) chargeLevel = 2;
-        else chargeLevel = 1;
+        if (playerController.holdTime >= chargeTimeLevel3)
+        {
+            chargeLevel = 3;
+            chargeAttackMultiple = 1.0f;
+        }
+        else if (playerController.holdTime >= chargeTimeLevel2)
+        {
+            chargeLevel = 2;
+            chargeAttackMultiple = 0.6f;
+        }
+        else
+        {
+            chargeLevel = 1;
+            chargeAttackMultiple = 0.3f;
+        }
         Debug.Log($"Hold: {playerController.holdTime:F2}s → Level {chargeLevel}");
     }
 
@@ -103,7 +116,7 @@ public class ManualWeapon_000 : IManualWeapon
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(totalDamage * chargeLevel, data.baseWeaponEffectList[baseWeaponLevel].chargeEffect);
+                enemy.TakeDamage( totalDamage * chargeAttackMultiple * data.baseWeaponEffectList[baseWeaponLevel].chargeEffect.damageMultiple, data.baseWeaponEffectList[baseWeaponLevel].chargeEffect);
             }
         }
 
