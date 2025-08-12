@@ -117,9 +117,10 @@ public class BaseEnemy : MonoBehaviour
 
     public IEnumerator Slow(float amount, float duration)
     {
-        enemyData.moveSpeed -= amount;
+        float oriSpeed = enemyData.moveSpeed;
+        enemyData.moveSpeed *= (100 - amount)/100;
         yield return new WaitForSeconds(duration);
-        enemyData.moveSpeed += amount;
+        enemyData.moveSpeed = oriSpeed;
     }
 
     public IEnumerator DotDamage(float damage, float duration, float delay)

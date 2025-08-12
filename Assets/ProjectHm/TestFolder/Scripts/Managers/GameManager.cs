@@ -65,6 +65,42 @@ public class GameManager : Singleton<GameManager>
     {
         isGameOver = true;
     }
+    public void GameReset()
+    {
+        string json;
+        playerData.Clear();
+        json = JsonUtility.ToJson(playerData);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "PlayerData.json"), json);
+
+        if (playerData != null) Debug.Log($"New PlayerData Save");
+
+        // TODO : 무기, 캐릭터 정보 리셋로직 작성
+    }
+
+
+    public void SpendGold(int gold)
+    {
+        curGold -= gold;
+        GetPlayerData();
+        SavePlayerData();
+    }
+
+    public void WeaponLevelUp()
+    {
+        curMWData.baseLevel++;
+        weaponData.BaseLevelUp();
+        for (int i = 0; i > openWeaponList.datas.Count; i++)
+        {
+            if (openWeaponList.datas[i].weaponID == curMWData.weaponID)
+            {
+                openWeaponList.datas[i].baseLevel++;
+            }
+        }
+        weaponDatas[curMWData.weaponID].baseLevel++;
+
+        SaveWeaponData();
+    }
+
 
     public PlayerData SetPlayerData()
     {
@@ -165,7 +201,6 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-
     public CharacterData SetCharacterData()
     {
         return characterData;
@@ -182,18 +217,6 @@ public class GameManager : Singleton<GameManager>
         if (characterData == null) Debug.Log($"CharacterData Load 실패");
 
         playerData.characterID = characterData.ID;
-    }
-
-    public void GameReset()
-    {
-        string json;
-        playerData.Clear();
-        json = JsonUtility.ToJson(playerData);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, "PlayerData.json"), json);
-
-        if (playerData != null) Debug.Log($"New PlayerData Save");
-
-        // TODO : 무기, 캐릭터 정보 리셋로직 작성
     }
 }
 

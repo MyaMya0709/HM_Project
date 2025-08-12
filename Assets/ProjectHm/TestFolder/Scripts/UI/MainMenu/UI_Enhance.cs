@@ -85,47 +85,51 @@ public class UI_Enhance : MonoBehaviour
 
     public void UISet()
     {
+        //name_TMP.text = 
+        level_TMP.text = $"Lv.{GameManager.Instance.weaponData.baseWeaponLevel}";
+        //discrip_TMP.text = 
+
         attackDamage_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
         //attackSpeed_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
         attackRange_TMP.text = $"{GameManager.Instance.weaponData.data.baseRangeList[GameManager.Instance.curMWData.baseLevel]}";
         moveSpeed_TMP.text = $"{GameManager.Instance.weaponData.data.baseMoveList[GameManager.Instance.curMWData.baseLevel]}";
         //movePower_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
 
-        AT_AttackDamage_TMP.text = (GameManager.Instance.weaponData.totalDamage * GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.damageMultiple).ToString();
+        AT_AttackDamage_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.damageMultiple.ToString();
         AT_KnockbackPower_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.knockback.valueA.ToString();
         AT_AirbornePower_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.airborne.valueA.ToString();
-        AT_StunDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.stun.valueB.ToString();
-        AT_SlowDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.slow.valueA.ToString();
-        AT_SlowDecrease_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.slow.valueB.ToString();
+        AT_StunDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.stun.valueB}s";
+        AT_SlowDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.slow.valueA}s";
+        AT_SlowDecrease_TMP.text = $"-{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.slow.valueB}%";
         AT_DotDamage_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.dotDamage.valueA.ToString();
-        AT_DotDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.dotDamage.valueB.ToString();
+        AT_DotDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect.dotDamage.valueB}";
 
-        DropAT_AttackDamage_TMP.text = (GameManager.Instance.weaponData.totalDamage * GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.damageMultiple).ToString();
+        DropAT_AttackDamage_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.damageMultiple.ToString();
         DropAT_KnockbackPower_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.knockback.valueA.ToString();
         DropAT_AirbornePower_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.airborne.valueA.ToString();
-        DropAT_StunDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.stun.valueB.ToString();
-        DropAT_SlowDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.slow.valueA.ToString();
-        DropAT_SlowDecrease_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.slow.valueB.ToString();
+        DropAT_StunDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.stun.valueB}s";
+        DropAT_SlowDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.slow.valueA}s";
+        DropAT_SlowDecrease_TMP.text = $"-{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.slow.valueB}%";
         DropAT_DotDamage_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.dotDamage.valueA.ToString();
-        DropAT_DotDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.dotDamage.valueB.ToString();
-
-        ChargeAT_AttackDamage_TMP.text = (GameManager.Instance.weaponData.totalDamage * GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.damageMultiple).ToString();
+        DropAT_DotDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect.dotDamage.valueB}s";
+            
+        ChargeAT_AttackDamage_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.damageMultiple.ToString();
         ChargeAT_KnockbackPower_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.knockback.valueA.ToString();
         ChargeAT_AirbornePower_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.airborne.valueA.ToString();
-        ChargeAT_StunDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.stun.valueB.ToString();
-        ChargeAT_SlowDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.slow.valueA.ToString();
-        ChargeAT_SlowDecrease_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.slow.valueB.ToString();
+        ChargeAT_StunDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.stun.valueB}s";
+        ChargeAT_SlowDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.slow.valueA}s";
+        ChargeAT_SlowDecrease_TMP.text = $"-{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.slow.valueB}%";
         ChargeAT_DotDamage_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.dotDamage.valueA.ToString();
-        ChargeAT_DotDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.dotDamage.valueB.ToString();
-
-        DashAT_AttackDamage_TMP.text = (GameManager.Instance.weaponData.totalDamage * GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.damageMultiple).ToString();
+        ChargeAT_DotDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect.dotDamage.valueB}s";
+            
+        DashAT_AttackDamage_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.damageMultiple.ToString();
         DashAT_KnockbackPower_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.knockback.valueA.ToString();
         DashAT_AirbornePower_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.airborne.valueA.ToString();
-        DashAT_StunDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.stun.valueB.ToString();
-        DashAT_SlowDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.slow.valueA.ToString();
-        DashAT_SlowDecrease_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.slow.valueB.ToString();
+        DashAT_StunDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.stun.valueB}s";
+        DashAT_SlowDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.slow.valueA}s";
+        DashAT_SlowDecrease_TMP.text = $"-{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.slow.valueB}%";
         DashAT_DotDamage_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.dotDamage.valueA.ToString();
-        DashAT_DotDuration_TMP.text = GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.dotDamage.valueB.ToString();
+        DashAT_DotDuration_TMP.text = $"{GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect.dotDamage.valueB}s";
     }
 
     public void OnEnhanceUpPopup()

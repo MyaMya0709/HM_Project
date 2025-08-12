@@ -44,8 +44,6 @@ public abstract class IManualWeapon : MonoBehaviour
         baseWeaponLevel++;
         baseDamage = data.baseDamageList[baseWeaponLevel];
         baseRange = data.baseRangeList[baseWeaponLevel];
-
-        GetTotalStat();
     }
 
     public void SelecLevelUp()
@@ -65,7 +63,7 @@ public abstract class IManualWeapon : MonoBehaviour
         totalRange = baseRange * selecRange;
     }
 
-    // 게임 시작용 초기화 함수
+    // 게임 시작용 스텟 세팅 함수
     public void SetStat()
     {
         baseDamage = data.baseDamageList[baseWeaponLevel];

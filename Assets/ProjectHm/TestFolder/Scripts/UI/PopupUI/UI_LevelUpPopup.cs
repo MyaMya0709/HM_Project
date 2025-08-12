@@ -31,9 +31,6 @@ public class UI_LevelUpPopup : MonoBehaviour
         {
             if (GameManager.Instance.curGold >= DataManager.Instance.levelUpCostDic[GameManager.Instance.playerLevel] && GameManager.Instance.playerLevel <= 49)
             {
-                GameManager.Instance.curGold -= DataManager.Instance.levelUpCostDic[GameManager.Instance.playerLevel];
-                curGoldTMP.text = $"{GameManager.Instance.curGold}";
-
                 GameManager.Instance.playerLevel++;
                 GameManager.Instance.statUpPoint++;
                 
@@ -41,8 +38,8 @@ public class UI_LevelUpPopup : MonoBehaviour
                 PopupSet();
                 Debug.Log("Level UP!");
 
-                GameManager.Instance.GetPlayerData();
-                GameManager.Instance.SavePlayerData();
+                GameManager.Instance.SpendGold(DataManager.Instance.levelUpCostDic[GameManager.Instance.playerLevel]);
+                curGoldTMP.text = $"{GameManager.Instance.curGold}";
             }
 
             else if (GameManager.Instance.curGold < DataManager.Instance.levelUpCostDic[GameManager.Instance.playerLevel])

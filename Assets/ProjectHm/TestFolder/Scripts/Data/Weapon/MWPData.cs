@@ -5,7 +5,7 @@ using UnityEngine;
 public class ManualWeaponData : ScriptableObject
 {
     public int weaponID;
-    public int unlockCost;
+    public int buyCost;
 
     public List<float> baseMoveList;
     public List<float> baseDamageList;
