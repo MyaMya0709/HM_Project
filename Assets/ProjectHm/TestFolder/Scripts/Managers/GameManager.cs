@@ -28,7 +28,6 @@ public class GameManager : Singleton<GameManager>
     public WeaponDataList openWeaponList;
     public Dictionary<int, WeaponData> weaponDatas = new();
 
-
     public int selecStageID = 0;
 
     public bool isGameOver = false;
@@ -53,7 +52,7 @@ public class GameManager : Singleton<GameManager>
         weaponID = playerData.weaponID;
 
         LoadWeaponData();
-        SetWeaponData();
+        GetWeaponData();
     }
 
     public void GameStart()
@@ -89,14 +88,16 @@ public class GameManager : Singleton<GameManager>
     {
         curMWData.baseLevel++;
         weaponData.BaseLevelUp();
-        for (int i = 0; i > openWeaponList.datas.Count; i++)
+
+        for (int i = 0; i < openWeaponList.datas.Count; i++)
         {
-            if (openWeaponList.datas[i].weaponID == curMWData.weaponID)
-            {
-                openWeaponList.datas[i].baseLevel++;
-            }
+            if(openWeaponList.datas[i].weaponID == curMWData.weaponID)
+            Debug.Log($"{openWeaponList.datas[i].baseLevel}");
         }
-        weaponDatas[curMWData.weaponID].baseLevel++;
+
+        Debug.Log($"{curMWData.baseLevel}");
+        Debug.Log($"{weaponData.baseWeaponLevel}");
+        Debug.Log($"{weaponDatas[curMWData.weaponID].baseLevel}");
 
         SaveWeaponData();
     }
@@ -149,7 +150,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void SetWeaponData()
+    public void GetWeaponData()
     {
         curMWData = weaponDatas[weaponID];
         curWeapon = DataManager.Instance.manualPrefabList[weaponID];
@@ -174,14 +175,14 @@ public class GameManager : Singleton<GameManager>
 
             //리스트에 역직렬화
             openWeaponList = JsonUtility.FromJson<WeaponDataList>(json);
-            if (openWeaponList.datas.Count == 0) Debug.Log($"openWeaponList LoadFail");
+            if (openWeaponList.datas.Count != 0) Debug.Log($"openWeaponList Load");
 
             //Dictionary으로 전환
             foreach (WeaponData waepon in openWeaponList.datas)
             {
                 weaponDatas.Add(waepon.weaponID, waepon);
             }
-            if (weaponDatas.Count != 0) Debug.Log($"weaponDataLoad");
+            if (weaponDatas.Count != 0) Debug.Log($"weaponData Load");
         }
         else
         {

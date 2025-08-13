@@ -44,6 +44,14 @@ public abstract class IManualWeapon : MonoBehaviour
         baseWeaponLevel++;
         baseDamage = data.baseDamageList[baseWeaponLevel];
         baseRange = data.baseRangeList[baseWeaponLevel];
+
+        if(playerCondition != null) GetTotalStat();
+        else
+        {
+            totalWeaponDamage = baseDamage * selecDamage;
+            totalDamage = totalWeaponDamage;
+            totalRange = baseRange * selecRange;
+        }
     }
 
     public void SelecLevelUp()

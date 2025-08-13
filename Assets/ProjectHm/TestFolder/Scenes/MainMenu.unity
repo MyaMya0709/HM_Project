@@ -42000,6 +42000,7 @@ MonoBehaviour:
   name_TMP: {fileID: 32942027}
   level_TMP: {fileID: 1148469665}
   discrip_TMP: {fileID: 1584246214}
+  image: {fileID: 0}
   statusTap: {fileID: 805030840}
   attackDamage_TMP: {fileID: 756124000}
   attackSpeed_TMP: {fileID: 960169473}

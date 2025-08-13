@@ -28,7 +28,7 @@ public class PlayerData
         attackPowerLevel = 0;
         attackSpeedLevel = 0;
         statUpPoint = 0;
-        haveGold = 0;
+        haveGold = 999999999;
 
         characterID = 0;
         openCharacterIDList.Clear();
@@ -45,7 +45,7 @@ public class WeaponData
 {
     public int weaponID;
     public int baseLevel;
-    public bool isBuy;      // 备涝咯何
+    public bool isBuy = false;      // 备涝咯何
 }
 
 [Serializable]
