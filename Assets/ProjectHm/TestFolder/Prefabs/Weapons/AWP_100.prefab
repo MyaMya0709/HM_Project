@@ -61,7 +61,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
-  weaponID: 100
+  weaponID: 0
   attackPoint: {fileID: 0}
 --- !u!1 &9130683031265614955
 GameObject:
