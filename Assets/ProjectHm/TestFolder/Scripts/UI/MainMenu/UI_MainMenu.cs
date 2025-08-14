@@ -16,14 +16,14 @@ public class UI_MainMenu : UI
     {
         base.Awake();
 
-        startButton.onClick.AddListener(() =>
-        {
-            if (mainPanel.gameObject.activeSelf)
-            {
-                //°ÔÀÓ ¾À ·Îµå & Æ©Åä¸®¾ó UI On
-                SceneLoader.Instance.LoadSceneAsync("InGame");
-            }
-        });
+        //startButton.onClick.AddListener(() =>
+        //{
+        //    if (mainPanel.gameObject.activeSelf)
+        //    {
+        //        //°ÔÀÓ ¾À ·Îµå & Æ©Åä¸®¾ó UI On
+        //        SceneLoader.Instance.LoadSceneAsync("InGame");
+        //    }
+        //});
 
         continueButton.onClick.AddListener(() =>
         {
@@ -34,14 +34,14 @@ public class UI_MainMenu : UI
             }
         });
 
-        settingButton.onClick.AddListener(() =>
-        {
-            if (mainPanel.gameObject.activeSelf)
-            {
-                // SettingUI Open
-                settingPanel.gameObject.SetActive(true);
-            }
-        });
+        //settingButton.onClick.AddListener(() =>
+        //{
+        //    if (mainPanel.gameObject.activeSelf)
+        //    {
+        //        // SettingUI Open
+        //        settingPanel.gameObject.SetActive(true);
+        //    }
+        //});
 
         mainExitButton.onClick.AddListener(() =>
         {

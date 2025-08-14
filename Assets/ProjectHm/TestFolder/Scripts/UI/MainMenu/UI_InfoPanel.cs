@@ -51,7 +51,7 @@ public class UI_InfoPanel : MonoBehaviour
 
     public void InfoPanelSet()
     {
-        characterData = GameManager.Instance.SetCharacterData();
+        characterData = GameManager.Instance.curCharacterData;
         if (characterData == null) Debug.Log("characterData로드 안됨");
 
         //레벨 값 세팅
@@ -130,46 +130,43 @@ public class UI_InfoPanel : MonoBehaviour
         if (btn == leftBtn)
         {
             Debug.Log("좌측버튼 클릭");
-            for (int i = 0; i < GameManager.Instance.openCharacterIDList.Count; i++)
+            for (int i = 0; i < GameManager.Instance.unlockCharacterList.Count; i++)
             {
-                if (GameManager.Instance.openCharacterIDList[i] == GameManager.Instance.characterID)
+                if (GameManager.Instance.unlockCharacterList[i] == GameManager.Instance.characterID)
                 {
                     if (i - 1 < 0)
-                        GameManager.Instance.characterID = GameManager.Instance.openCharacterIDList[GameManager.Instance.openCharacterIDList.Count - 1];
+                        GameManager.Instance.characterID = GameManager.Instance.unlockCharacterList[GameManager.Instance.unlockCharacterList.Count - 1];
                     else
                     {
-                        GameManager.Instance.characterID = GameManager.Instance.openCharacterIDList[i - 1];
+                        GameManager.Instance.characterID = GameManager.Instance.unlockCharacterList[i - 1];
                     }
 
                     Debug.Log("이전 캐릭터 정보");
                     break;
                 }
             }
-            GameManager.Instance.GetCharacterData();
-            GameManager.Instance.SavePlayerData();
-            InfoPanelSet();
         }
         else if (btn == rightBtn)
         {
             Debug.Log("우측버튼 클릭");
-            for (int i = 0; i < GameManager.Instance.openCharacterIDList.Count; i++)
+            for (int i = 0; i < GameManager.Instance.unlockCharacterList.Count; i++)
             {
-                if (GameManager.Instance.openCharacterIDList[i] == GameManager.Instance.characterID)
+                if (GameManager.Instance.unlockCharacterList[i] == GameManager.Instance.characterID)
                 {
-                    if (i + 1 >= GameManager.Instance.openCharacterIDList.Count)
-                        GameManager.Instance.characterID = GameManager.Instance.openCharacterIDList[0];
+                    if (i + 1 >= GameManager.Instance.unlockCharacterList.Count)
+                        GameManager.Instance.characterID = GameManager.Instance.unlockCharacterList[0];
                     else
                     {
-                        GameManager.Instance.characterID = GameManager.Instance.openCharacterIDList[i + 1];
+                        GameManager.Instance.characterID = GameManager.Instance.unlockCharacterList[i + 1];
                     }
                     
                     Debug.Log("다음 캐릭터 정보");
                     break;
                 }
             }
-            GameManager.Instance.GetCharacterData();
-            GameManager.Instance.SavePlayerData();
-            InfoPanelSet();
         }
+        GameManager.Instance.GetCharacterData();
+        GameManager.Instance.SavePlayerData();
+        InfoPanelSet();
     }
 }

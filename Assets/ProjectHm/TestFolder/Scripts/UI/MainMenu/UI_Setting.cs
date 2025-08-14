@@ -5,7 +5,6 @@ public class UI_Setting : UI
 {
     [SerializeField] private Button exitButton;
     [SerializeField] private RectTransform settingPanel;
-    [SerializeField] private RectTransform mainPanel;
 
     protected override void Awake()
     {
@@ -18,7 +17,6 @@ public class UI_Setting : UI
             if (settingPanel.gameObject.activeSelf)
             {
                 settingPanel.gameObject.SetActive(false);
-                mainPanel.gameObject.SetActive(true);
             }
         });
     }

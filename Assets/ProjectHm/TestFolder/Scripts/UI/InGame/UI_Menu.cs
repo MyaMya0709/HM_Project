@@ -18,11 +18,6 @@ public class UI_Menu : UI
                 Time.timeScale = 1f;
                 gameObject.SetActive(false);
             }
-            else
-            {
-                Time.timeScale = 0f;
-                gameObject.SetActive(true);
-            }
         });
 
         continueButton.onClick.AddListener(() =>
@@ -32,11 +27,6 @@ public class UI_Menu : UI
                 Time.timeScale = 1f;
                 gameObject.SetActive(false);
             }
-            else
-            {
-                Time.timeScale = 0f;
-                gameObject.SetActive(true);
-            }
         });
 
         exitButton.onClick.AddListener(() =>
@@ -45,11 +35,6 @@ public class UI_Menu : UI
             {
                 Time.timeScale = 1f;
                 gameObject.SetActive(false);
-            }
-            else
-            {
-                Time.timeScale = 0f;
-                gameObject.SetActive(true);
             }
         });
     }

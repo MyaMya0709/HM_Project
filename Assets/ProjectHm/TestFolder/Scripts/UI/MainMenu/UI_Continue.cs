@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class UI_Continue : MonoBehaviour
 {
     [SerializeField] private Button stageButton;
-    [SerializeField] private Button infoButton;
     [SerializeField] private Button storeButton;
+    [SerializeField] private Button playerButton;
     [SerializeField] private Button enhanceButton;
     [SerializeField] private Button exitButton;
     [SerializeField] private RectTransform continuePanel;
@@ -33,7 +33,7 @@ public class UI_Continue : MonoBehaviour
             }
         });
 
-        infoButton.onClick.AddListener(() =>
+        playerButton.onClick.AddListener(() =>
         {
             if (continuePanel.gameObject.activeSelf)
             {

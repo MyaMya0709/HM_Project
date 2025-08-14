@@ -146,7 +146,7 @@ public class UI_EnhancePopup : MonoBehaviour
         GameManager.Instance.SpendGold(GameManager.Instance.weaponData.data.enhanceCostList[GameManager.Instance.weaponData.baseWeaponLevel]);
 
         // 게임메니저의 무기 레벨업 및 json 저장
-        GameManager.Instance.WeaponLevelUp();
+        GameManager.Instance.WeaponBaseLevelUp();
 
         BottomInfoSet();
 
