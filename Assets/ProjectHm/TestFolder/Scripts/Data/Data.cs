@@ -17,8 +17,6 @@ public class PlayerData
     public int haveGold;
 
     public int characterID;
-    public List<int> openCharacterIDList;
-
     public int weaponID;
 
     public void Clear()
@@ -31,9 +29,6 @@ public class PlayerData
         haveGold = 999999999;
 
         characterID = 0;
-        openCharacterIDList.Clear();
-        openCharacterIDList.Add(0);
-
         weaponID = 0;
     }
 }
@@ -45,7 +40,6 @@ public class WeaponData
 {
     public int weaponID;
     public int baseLevel;
-    public bool isBuy = false;      // 구입여부
 }
 
 [Serializable]
@@ -57,9 +51,27 @@ public class WeaponDataList
     {
         datas = new List<WeaponData>()
             {
-                new WeaponData { weaponID = 0, baseLevel = 0, isBuy = true },
-                new WeaponData { weaponID = 100, baseLevel = 0, isBuy = true }
+                new WeaponData { weaponID = 0, baseLevel = 0 }
             };
+    }
+}
+#endregion
+
+#region UnlockData
+[Serializable]
+public class UnlockData
+{
+    public List<int> characterIDs;
+    public List<int> skillIDs;
+    public List<int> waeaponIDs;
+    public List<int> autoWeaponIDs;
+
+    public void Clear()
+    {
+        characterIDs = new List<int>() { 0 };
+        skillIDs = new List<int> { 0 };
+        waeaponIDs = new List<int> { 0 };
+        autoWeaponIDs = new List<int> { 0 };
     }
 }
 #endregion

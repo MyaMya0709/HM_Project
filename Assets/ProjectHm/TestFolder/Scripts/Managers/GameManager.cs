@@ -5,28 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    [Header("Player")]
     [SerializeField] private PlayerData playerData = new();
     public int playerLevel;
     public int statUpPoint;
-
     public int moveSpeedLevel;
     public int attackPowerLevel;
     public int attackSpeedLevel;
-
+    public int weaponID;
+    public int characterID;
     public int curGold;
 
-    public int characterID;
-    [SerializeField] private CharacterData characterData;
-    public List<int> openCharacterIDList;
+    [Header("Character")]
+    public CharacterData curCharacterData;
 
-    public int weaponID;
-    public WeaponData curMWData;
-    public GameObject curWeapon;
-    public IManualWeapon weaponData;
+    [Header("Weapon")]
+    public WeaponData curMWData;                                         // 현재 장착한 무기의 ID,Level
+    public GameObject curWeapon;                                         // 현재 장착한 무기 프리펩
+    public IManualWeapon weaponData;                                     // 현재 장착한 무기 데이터
+    public WeaponDataList openWeaponList;                                // 구입한 무기 리스트
+    public Dictionary<int, WeaponData> weaponDatas = new();              // 구입한 무기 Dic
 
-    // 해금된 무기
-    public WeaponDataList openWeaponList;
-    public Dictionary<int, WeaponData> weaponDatas = new();
+    [Header("UnLockDatas")]
+    public UnlockData unlockData;                                        // 해금된 Data
+    public List<int> unlockCharacterList;                                // 해금된 캐릭터 ID 리스트
+    public List<int> unlockSkillList;                                    // 해금된 스킬 ID 리스트
+    public List<int> unlockWeaponList;                                   // 해금된 무기 ID 리스트
+    public List<int> unlockAutoWeaponList;                               // 해금된 자동무기 ID 리스트
 
     public int selecStageID = 0;
 
@@ -37,7 +42,8 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
 
         LoadPlayerData();
-        GetCharacterData();
+        LoadUnLockData();
+        LoadWeaponData();
 
         playerLevel = playerData.playerLevel;
         moveSpeedLevel = playerData.moveSpeedLevel;
@@ -47,11 +53,11 @@ public class GameManager : Singleton<GameManager>
         curGold = playerData.haveGold;
 
         characterID = playerData.characterID;
-        openCharacterIDList = playerData.openCharacterIDList;
+        //openCharacterIDList = playerData.openCharacterIDList;
 
         weaponID = playerData.weaponID;
 
-        LoadWeaponData();
+        GetCharacterData();
         GetWeaponData();
     }
 
@@ -77,14 +83,12 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void SpendGold(int gold)
+    public void WeaponInit(GameObject holder)
     {
-        curGold -= gold;
-        GetPlayerData();
-        SavePlayerData();
+        Instantiate(weaponData.gameObject, holder.transform);
     }
 
-    public void WeaponLevelUp()
+    public void WeaponBaseLevelUp()
     {
         curMWData.baseLevel++;
         weaponData.BaseLevelUp();
@@ -101,7 +105,12 @@ public class GameManager : Singleton<GameManager>
 
         SaveWeaponData();
     }
-
+    public void SpendGold(int gold)
+    {
+        curGold -= gold;
+        GetPlayerData();
+        SavePlayerData();
+    }
 
     public PlayerData SetPlayerData()
     {
@@ -117,7 +126,6 @@ public class GameManager : Singleton<GameManager>
         playerData.haveGold = curGold;
 
         playerData.characterID = characterID;
-        playerData.openCharacterIDList = openCharacterIDList;
 
         playerData.weaponID = weaponID;
     }
@@ -204,7 +212,7 @@ public class GameManager : Singleton<GameManager>
 
     public CharacterData SetCharacterData()
     {
-        return characterData;
+        return curCharacterData;
     }
     public void GetCharacterData()
     {
@@ -212,12 +220,63 @@ public class GameManager : Singleton<GameManager>
         {
             if(CData.ID == characterID)
             {
-                characterData = CData;
+                curCharacterData = CData;
             }
         }
-        if (characterData == null) Debug.Log($"CharacterData Load 실패");
+        if (curCharacterData == null) Debug.Log($"CharacterData Load 실패");
 
-        playerData.characterID = characterData.ID;
+        playerData.characterID = curCharacterData.ID;
+    }
+
+    public void SaveUnlockData()
+    {
+        string json = JsonUtility.ToJson(unlockData);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "unlockData.json"), json);
+        Debug.Log(Application.persistentDataPath);
+    }
+    public void LoadUnLockData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "UnlockData.json");
+
+        string json;
+        if (File.Exists(path))
+        {
+            // 파일 있으면 로드
+            json = File.ReadAllText(path);
+
+            // 역직렬화
+            unlockData = JsonUtility.FromJson<UnlockData>(json);
+
+            // 각각의 리스트에 할당
+            unlockCharacterList = unlockData.characterIDs;
+            unlockSkillList = unlockData.skillIDs;
+            unlockWeaponList = unlockData.waeaponIDs;
+            unlockAutoWeaponList = unlockData.autoWeaponIDs;
+            if (unlockCharacterList.Count != 0) Debug.Log($"unlockCharacterList Load");
+            if (unlockSkillList.Count != 0) Debug.Log($"unlockSkillList Load");
+            if (unlockWeaponList.Count != 0) Debug.Log($"unlockWeaponList Load");
+            if (unlockAutoWeaponList.Count != 0) Debug.Log($"unlockAutoWeaponList Load");
+        }
+        else
+        {
+            // 파일 없으면 클리어 파일 세이브 후, 데이터 클리어
+            unlockData.Clear();
+
+            // 각각의 리스트에 할당
+            unlockCharacterList = unlockData.characterIDs;
+            unlockSkillList = unlockData.skillIDs;
+            unlockWeaponList = unlockData.waeaponIDs;
+            unlockAutoWeaponList = unlockData.autoWeaponIDs;
+            if (unlockCharacterList.Count != 0) Debug.Log($"unlockCharacterList Load");
+            if (unlockSkillList.Count != 0) Debug.Log($"unlockSkillList Load");
+            if (unlockWeaponList.Count != 0) Debug.Log($"unlockWeaponList Load");
+            if (unlockAutoWeaponList.Count != 0) Debug.Log($"unlockAutoWeaponList Load");
+
+            // 해금데이터 Json 저장 
+            json = JsonUtility.ToJson(unlockData);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UnlockData.json"), json);
+            if (unlockData.characterIDs.Count != 0) Debug.Log($"New unlockData Save");
+        }
     }
 }
 
