@@ -20,4 +20,9 @@ public class UI_Setting : UI
             }
         });
     }
+
+    public void OnGameReset()
+    {
+
+    }
 }

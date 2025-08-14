@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class UI_Continue : MonoBehaviour
 {
+    [SerializeField] private Button settingButton;
     [SerializeField] private Button stageButton;
-    [SerializeField] private Button storeButton;
     [SerializeField] private Button playerButton;
     [SerializeField] private Button enhanceButton;
+    [SerializeField] private Button storeButton;
     [SerializeField] private Button exitButton;
+    [SerializeField] private RectTransform settingPopup;
     [SerializeField] private RectTransform continuePanel;
     [SerializeField] private RectTransform stagePanel;
     [SerializeField] private RectTransform infoPanel;
@@ -23,6 +25,14 @@ public class UI_Continue : MonoBehaviour
     {
         continuePanel = GetComponent<RectTransform>();
         curGoldTMP.text = GameManager.Instance.SetPlayerData().haveGold.ToString();
+
+        settingButton.onClick.AddListener(() =>
+        {
+            if (continuePanel.gameObject.activeSelf)
+            {
+                settingPopup.gameObject.SetActive(true);
+            }
+        });
 
         stageButton.onClick.AddListener(() =>
         {

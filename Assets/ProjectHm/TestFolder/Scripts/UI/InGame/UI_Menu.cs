@@ -35,6 +35,7 @@ public class UI_Menu : UI
             {
                 Time.timeScale = 1f;
                 gameObject.SetActive(false);
+                SceneLoader.Instance.LoadSceneAsync("MainMenu");
             }
         });
     }
