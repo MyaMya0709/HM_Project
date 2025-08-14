@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public PlayerCondition condition;
     public Rigidbody2D rb;
     public Vector2 moveInput;
+    public GameObject weaponHolder;
     public IManualWeapon currentWeapon;
     public Animator animator;
 
@@ -67,7 +68,14 @@ public class PlayerController : MonoBehaviour
         condition = GetComponent<PlayerCondition>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        currentWeapon = GetComponentInChildren<IManualWeapon>();
+
+        if (weaponHolder.transform.childCount == 0)
+        {
+            GameManager.Instance.WeaponInit(weaponHolder);
+            currentWeapon = GetComponentInChildren<IManualWeapon>();
+        }
+        else currentWeapon = GetComponentInChildren<IManualWeapon>();
+
     }
 
     private void Update()

@@ -4691,6 +4691,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &755525109 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4422676186039363708, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+  m_PrefabInstance: {fileID: 6766501741709853824}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &831479896 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4198897976886587706, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
@@ -8722,7 +8727,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b7539dd8c9b734eb406b2da08eab17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterDataList: []
+  characterDataList:
+  - {fileID: 11400000, guid: 7841865accd6f5d429c518e3f36cfa5a, type: 2}
+  - {fileID: 11400000, guid: d1f6c33170d223144ae5ec6097e50205, type: 2}
+  - {fileID: 11400000, guid: 95eba05c862ebf54f8bd59a5741c549b, type: 2}
   manualPrefabList:
   - {fileID: 3691733087425890900, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
   manualDataList:
@@ -9460,26 +9468,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 931723982582046899, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: isStun
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 931723982582046899, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: isDashAttack
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 931723982582046899, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: effectData.Airborne.onoff
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 931723982582046899, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: effectData.Knockback.onoff
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 931723982582046899, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: effectData.Knockback.valueA
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1346517936567723325, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
       propertyPath: m_Name
       value: Player
@@ -9524,8 +9512,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5436040420309497436, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: weaponHolder
+      value: 
+      objectReference: {fileID: 755525109}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3057765410505989899, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
