@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
@@ -24,6 +25,7 @@ public class UI_InfoPanel : MonoBehaviour
     [SerializeField] private Button statSetBtn;
 
     [Header("CharacterSet")]
+    [SerializeField] private int characterID;
     [SerializeField] private CharacterData characterData;
     [SerializeField] private List<CharacterData> characterDataList;
 
@@ -33,14 +35,22 @@ public class UI_InfoPanel : MonoBehaviour
 
     [SerializeField] private Button leftBtn;
     [SerializeField] private Button rightBtn;
-
+    [SerializeField] private Button selecBtn;
+    [SerializeField] private Button buyBtn;
 
     [Header("Popup")]
     [SerializeField] private RectTransform levelUpPopup;
     [SerializeField] private RectTransform statUpPopup;
 
+    public bool isUnlock = false;
+
     private void OnEnable()
     {
+        characterID = GameManager.Instance.characterID;
+        characterData = GameManager.Instance.curCharacterData;
+        if (characterData == null) Debug.Log("characterData로드 안됨");
+
+        UnlockCheck();
         InfoPanelSet();
     }
     private void OnDisable()
@@ -51,9 +61,6 @@ public class UI_InfoPanel : MonoBehaviour
 
     public void InfoPanelSet()
     {
-        characterData = GameManager.Instance.curCharacterData;
-        if (characterData == null) Debug.Log("characterData로드 안됨");
-
         //레벨 값 세팅
         playerLevelTMP.text = $"Lv.{GameManager.Instance.playerLevel.ToString()}";
         ATKPowerLevelTMP.text = $"Lv.{GameManager.Instance.attackPowerLevel.ToString()}";
@@ -62,15 +69,27 @@ public class UI_InfoPanel : MonoBehaviour
         //jumpPowerLevel.text = playerData.moveSpeedLevel.ToString();
         //statLevel.text = playerData.moveSpeedLevel.ToString();
 
-        //스탯 값 세팅
-        StatSet();
-
         //레벨 업 버튼 체크
         if (GameManager.Instance.playerLevel >= 50) levelUpBtn.gameObject.SetActive(false);
         else levelUpBtn.gameObject.SetActive(true);
 
         characterName.text = characterData.Name;
         characterDescription.text = characterData.Description;
+
+        //스탯 값 세팅
+        StatSet();
+
+        // 캐릭터 선택/구매 버튼 세팅
+        if (isUnlock)
+        {
+            selecBtn.gameObject.SetActive(true);
+            buyBtn.gameObject.SetActive(false);
+        }
+        else
+        {
+            selecBtn.gameObject.SetActive(false);
+            buyBtn.gameObject.SetActive(true);
+        }
     }
 
     // 스탯 표시 함수
@@ -82,8 +101,8 @@ public class UI_InfoPanel : MonoBehaviour
         //jumpPower.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
         //stat.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
 
-        // 보너스 스탯 표기
-        if (characterData.bonusStatValue != null && characterData.bonusStatType != null)
+        // 해금되었으면 보너스 스탯 표기
+        if (isUnlock && characterData.bonusStatValue != null && characterData.bonusStatType != null)
         {
             for (int i = 0; i < characterData.bonusStatType.Count; i++)
             {
@@ -113,6 +132,20 @@ public class UI_InfoPanel : MonoBehaviour
         }
     }
 
+    public void UnlockCheck()
+    {
+        // 현재 보여지는 캐릭터가 해금 되었는지 확인
+        for (int i = 0; i < GameManager.Instance.unlockCharacterList.Count; i++)
+        {
+            if (GameManager.Instance.unlockCharacterList[i] == characterID)
+            {
+                isUnlock = true;
+                break;
+            }
+            isUnlock = false;
+        }
+    } 
+
     public void OnLevelUpPopup()
     {
         UI_LevelUpPopup popup = levelUpPopup.GetComponent<UI_LevelUpPopup>();
@@ -127,46 +160,66 @@ public class UI_InfoPanel : MonoBehaviour
 
     public void OnChangeCharacter(Button btn)
     {
-        if (btn == leftBtn)
+        // 캐릭터 데이터 전체 순회
+        for (int i = 0; i < DataManager.Instance.characterDataList.Count; i++)
         {
-            Debug.Log("좌측버튼 클릭");
-            for (int i = 0; i < GameManager.Instance.unlockCharacterList.Count; i++)
+            // 데이터 리스트에서 현재 위치 확인
+            if (DataManager.Instance.characterDataList[i].ID == characterID)
             {
-                if (GameManager.Instance.unlockCharacterList[i] == GameManager.Instance.characterID)
+                if (btn == leftBtn)
                 {
+                    // 이전 캐릭터의 ID, Data 세팅
+                    Debug.Log("좌측버튼 클릭");
+
+                    // 현 위치가 0일 때
                     if (i - 1 < 0)
-                        GameManager.Instance.characterID = GameManager.Instance.unlockCharacterList[GameManager.Instance.unlockCharacterList.Count - 1];
+                    {
+                        characterData = DataManager.Instance.characterDataList[DataManager.Instance.characterDataList.Count - 1];
+                        characterID = characterData.ID;
+                    }
+                    // 현 위치가 0이 아닐때
                     else
                     {
-                        GameManager.Instance.characterID = GameManager.Instance.unlockCharacterList[i - 1];
+                        characterData = DataManager.Instance.characterDataList[i - 1];
+                        characterID = characterData.ID;
                     }
 
                     Debug.Log("이전 캐릭터 정보");
                     break;
                 }
-            }
-        }
-        else if (btn == rightBtn)
-        {
-            Debug.Log("우측버튼 클릭");
-            for (int i = 0; i < GameManager.Instance.unlockCharacterList.Count; i++)
-            {
-                if (GameManager.Instance.unlockCharacterList[i] == GameManager.Instance.characterID)
+                else if (btn == rightBtn)
                 {
-                    if (i + 1 >= GameManager.Instance.unlockCharacterList.Count)
-                        GameManager.Instance.characterID = GameManager.Instance.unlockCharacterList[0];
+                    //다음 캐릭터의 ID, Data 세팅
+                    Debug.Log("우측버튼 클릭");
+
+                    // 현 위치가 리스트의 마지막일 때
+                    if (i + 1 >= DataManager.Instance.characterDataList.Count)
+                    {
+                        characterData = DataManager.Instance.characterDataList[0];
+                        characterID = characterData.ID;
+                    }
+                    // 현 위치가 리스트의 마지막이 아닐 때
                     else
                     {
-                        GameManager.Instance.characterID = GameManager.Instance.unlockCharacterList[i + 1];
+                        characterData = DataManager.Instance.characterDataList[i + 1];
+                        characterID = characterData.ID;
                     }
-                    
+
                     Debug.Log("다음 캐릭터 정보");
                     break;
                 }
-            }
+            } 
         }
-        GameManager.Instance.GetCharacterData();
-        GameManager.Instance.SavePlayerData();
+        UnlockCheck();
         InfoPanelSet();
     }
+
+    public void OnSelecCharacter()
+    {
+        GameManager.Instance.characterID = characterID;
+        GameManager.Instance.GetCharacterData();
+        GameManager.Instance.GetPlayerData();
+    }
+
+    
 }

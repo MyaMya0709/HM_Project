@@ -18,6 +18,8 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Character")]
     public CharacterData curCharacterData;
+    public PurchaseCharacterList purchaseCharacterList;                  // 구매한 캐릭터 리스트
+    public Dictionary<int, CharacterData> characterDataDic = new();      // 구매한 캐릭터 Dic
 
     [Header("Weapon")]
     public WeaponData curMWData;                                         // 현재 장착한 무기의 ID,Level
@@ -27,7 +29,7 @@ public class GameManager : Singleton<GameManager>
     public Dictionary<int, WeaponData> weaponDatas = new();              // 구입한 무기 Dic
 
     [Header("UnLockDatas")]
-    public UnlockData unlockData;                                        // 해금된 Data
+    public UnlockData unlockData;                                        // 해금된 요소의 Data
     public List<int> unlockCharacterList;                                // 해금된 캐릭터 ID 리스트
     public List<int> unlockSkillList;                                    // 해금된 스킬 ID 리스트
     public List<int> unlockWeaponList;                                   // 해금된 무기 ID 리스트
@@ -105,12 +107,14 @@ public class GameManager : Singleton<GameManager>
 
         SaveWeaponData();
     }
+
     public void SpendGold(int gold)
     {
         curGold -= gold;
         GetPlayerData();
         SavePlayerData();
     }
+
 
     public PlayerData SetPlayerData()
     {
@@ -157,6 +161,7 @@ public class GameManager : Singleton<GameManager>
             if (playerData != null) Debug.Log($"New PlayerData Save");
         }
     }
+
 
     public void GetWeaponData()
     {
@@ -210,6 +215,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+
     public CharacterData SetCharacterData()
     {
         return curCharacterData;
@@ -227,6 +233,51 @@ public class GameManager : Singleton<GameManager>
 
         playerData.characterID = curCharacterData.ID;
     }
+    public void SaveCharacterData()
+    {
+        string json = JsonUtility.ToJson(purchaseCharacterList);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "CharacterData.json"), json);
+        Debug.Log(Application.persistentDataPath);
+    }
+    public void LoadCharacterData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "CharacterData.json");
+
+        string json;
+        if (File.Exists(path))
+        {
+            // 파일 있으면 로드
+            json = File.ReadAllText(path);
+
+            //리스트에 역직렬화
+            purchaseCharacterList = JsonUtility.FromJson<PurchaseCharacterList>(json);
+            if (purchaseCharacterList.characterIDs.Count != 0) Debug.Log($"purchaseCharacterList Load");
+
+            //Dictionary으로 전환
+            foreach (int waepon in purchaseCharacterList.characterIDs)
+            {
+                characterDataDic.Add(waepon, DataManager.Instance.characterDataList[waepon]);
+            }
+            if (characterDataDic.Count != 0) Debug.Log($"characterDataDic Load");
+        }
+        else
+        {
+            // 파일 없으면 클리어 파일 세이브 후, 데이터 클리어
+            purchaseCharacterList.Clear();
+
+            //Dictionary으로 전환
+            foreach (int waepon in purchaseCharacterList.characterIDs)
+            {
+                characterDataDic.Add(waepon, DataManager.Instance.characterDataList[waepon]);
+            }
+
+            json = JsonUtility.ToJson(purchaseCharacterList);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "CharacterData.json"), json);
+
+            if (characterDataDic.Count != 0) Debug.Log($"new characterDataDic Save");
+        }
+    }
+
 
     public void SaveUnlockData()
     {

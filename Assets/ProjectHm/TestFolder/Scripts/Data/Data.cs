@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -53,6 +54,19 @@ public class WeaponDataList
             {
                 new WeaponData { weaponID = 0, baseLevel = 0 }
             };
+    }
+}
+#endregion
+
+#region PurchaseCharacterData
+[Serializable]
+public class PurchaseCharacterList
+{
+    public List<int> characterIDs;
+
+    public void Clear()
+    {
+        characterIDs = new List<int>() { 0, 1, 2 };
     }
 }
 #endregion
