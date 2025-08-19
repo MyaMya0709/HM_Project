@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManualWeapon_000 : IManualWeapon
+public class ManualWeapon_100 : IManualWeapon
 {
-    public int weaponID = 000;
     public Transform attackPoint;
 
     public float AttackStunDur = 0.1f;
@@ -274,5 +273,4 @@ public class ManualWeapon_000 : IManualWeapon
         transform.localScale = s;
         facingRight = !facingRight;
     }
-
 }

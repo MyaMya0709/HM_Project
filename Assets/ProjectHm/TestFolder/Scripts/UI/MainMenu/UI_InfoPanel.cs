@@ -27,8 +27,6 @@ public class UI_InfoPanel : MonoBehaviour
     [Header("CharacterSet")]
     [SerializeField] private int characterID;
     [SerializeField] private CharacterData characterData;
-    [SerializeField] private List<CharacterData> characterDataList;
-
     [SerializeField] private Image characterImage;
     [SerializeField] private TMP_Text characterName;
     [SerializeField] private TMP_Text characterDescription;
@@ -37,11 +35,15 @@ public class UI_InfoPanel : MonoBehaviour
     [SerializeField] private Button rightBtn;
     [SerializeField] private Button selecBtn;
     [SerializeField] private Button buyBtn;
+    [SerializeField] private GameObject selectedCheck;
+    [SerializeField] private GameObject unlockCheck;
 
     [Header("Popup")]
     [SerializeField] private RectTransform levelUpPopup;
     [SerializeField] private RectTransform statUpPopup;
+    [SerializeField] private RectTransform purchasePopup;
 
+    public bool isPurchase = false;
     public bool isUnlock = false;
 
     private void OnEnable()
@@ -51,6 +53,7 @@ public class UI_InfoPanel : MonoBehaviour
         if (characterData == null) Debug.Log("characterData로드 안됨");
 
         UnlockCheck();
+        PurchaseChack();
         InfoPanelSet();
     }
     private void OnDisable()
@@ -69,6 +72,13 @@ public class UI_InfoPanel : MonoBehaviour
         //jumpPowerLevel.text = playerData.moveSpeedLevel.ToString();
         //statLevel.text = playerData.moveSpeedLevel.ToString();
 
+        
+        StatSet();                 //스탯 값 세팅
+        ButtonSet();               //버튼 세팅
+    }
+
+    public void ButtonSet()
+    {
         //레벨 업 버튼 체크
         if (GameManager.Instance.playerLevel >= 50) levelUpBtn.gameObject.SetActive(false);
         else levelUpBtn.gameObject.SetActive(true);
@@ -76,19 +86,41 @@ public class UI_InfoPanel : MonoBehaviour
         characterName.text = characterData.Name;
         characterDescription.text = characterData.Description;
 
-        //스탯 값 세팅
-        StatSet();
-
         // 캐릭터 선택/구매 버튼 세팅
         if (isUnlock)
         {
-            selecBtn.gameObject.SetActive(true);
-            buyBtn.gameObject.SetActive(false);
+            if (isPurchase)
+            {
+                if (characterID == GameManager.Instance.characterID)
+                {
+                    unlockCheck.SetActive(false);
+                    selectedCheck.SetActive(true);
+                    selecBtn.gameObject.SetActive(false);
+                    buyBtn.gameObject.SetActive(false);
+                }
+                else
+                {
+                    unlockCheck.SetActive(false);
+                    selectedCheck.SetActive(false);
+                    selecBtn.gameObject.SetActive(true);
+                    buyBtn.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                unlockCheck.SetActive(false);
+                selectedCheck.SetActive(false);
+                selecBtn.gameObject.SetActive(false);
+                buyBtn.gameObject.SetActive(true);
+            }
+
         }
         else
         {
+            unlockCheck.SetActive(true);
+            selectedCheck.SetActive(false);
             selecBtn.gameObject.SetActive(false);
-            buyBtn.gameObject.SetActive(true);
+            buyBtn.gameObject.SetActive(false);
         }
     }
 
@@ -142,9 +174,23 @@ public class UI_InfoPanel : MonoBehaviour
                 isUnlock = true;
                 break;
             }
-            isUnlock = false;
+            else isUnlock = false;
         }
-    } 
+    }
+
+    public void PurchaseChack()
+    {
+        // 현재 보여지는 캐릭터를 구입하였는지 확인
+        for (int i = 0; i < GameManager.Instance.purchaseCharacterList.characterIDs.Count; i++)
+        {
+            if (GameManager.Instance.purchaseCharacterList.characterIDs[i] == characterID)
+            {
+                isPurchase = true;
+                break;
+            }
+            else isPurchase= false;
+        }
+    }
 
     public void OnLevelUpPopup()
     {
@@ -211,6 +257,7 @@ public class UI_InfoPanel : MonoBehaviour
             } 
         }
         UnlockCheck();
+        PurchaseChack();
         InfoPanelSet();
     }
 
@@ -221,5 +268,9 @@ public class UI_InfoPanel : MonoBehaviour
         GameManager.Instance.GetPlayerData();
     }
 
-    
+    public void OnPurchasePopup()
+    {
+        purchasePopup.GetComponent<UI_PurchasePopup>().dataID = characterID;
+        if (!purchasePopup.gameObject.activeSelf) purchasePopup.gameObject.SetActive(true);
+    }
 }

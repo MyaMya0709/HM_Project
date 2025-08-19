@@ -4,12 +4,27 @@ using UnityEngine.UI;
 
 public class UI_Enhance : MonoBehaviour
 {
-    public WeaponData data;
+    //public WeaponData data;
+
+    [Header("WeaponInfo")]
+    public int weaponID;
+    public WeaponData curMWData;
+    public GameObject curWeapon;
+    public IManualWeapon weaponData;
 
     [SerializeField] private TMP_Text name_TMP;
     [SerializeField] private TMP_Text level_TMP;
     [SerializeField] private TMP_Text discrip_TMP;
     [SerializeField] private Image image;
+
+
+    [SerializeField] private Button leftBtn;
+    [SerializeField] private Button rightBtn;
+    [SerializeField] private Button levelUpBtn;
+    [SerializeField] private Button selecBtn;
+    [SerializeField] private Button buyBtn;
+    [SerializeField] private GameObject selectedCheck;
+    [SerializeField] private GameObject unlockCheck;
 
     [Header("Status")]
     [SerializeField] private RectTransform statusTap;
@@ -70,26 +85,111 @@ public class UI_Enhance : MonoBehaviour
     [SerializeField] private Button chargeAttackTapBtn;
     [SerializeField] private Button dashAttackTapBtn;
 
-    [SerializeField] private Button levelUpBtn;
-    [SerializeField] private Button leftBtn;
-    [SerializeField] private Button rightBtn;
-
     [SerializeField] private RectTransform enhanceUpPopup;
+    [SerializeField] private RectTransform purchasePopup;
 
     [SerializeField] private TMP_Text curGoldTMP;
 
+    public bool isPurchase = false;
+    public bool isUnlock = false;
+
     private void OnEnable()
     {
+        weaponID = GameManager.Instance.weaponID;
+        curMWData = GameManager.Instance.weaponDatas[weaponID];
+        curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
+        weaponData = curWeapon.GetComponent<IManualWeapon>();
+        weaponData.baseWeaponLevel = curMWData.baseLevel;
+
         OnStatusTap();
         RightInfoSet();
     }
 
-    public void RightInfoSet()
+    public void UnlockCheck()
     {
-        //name_TMP.text = 
-        level_TMP.text = $"Lv.{GameManager.Instance.weaponData.baseWeaponLevel}";
-        //discrip_TMP.text = 
-        //image.sprite = 
+        // 현재 보여지는 캐릭터가 해금 되었는지 확인
+        for (int i = 0; i < GameManager.Instance.unlockWeaponList.Count; i++)
+        {
+            if (GameManager.Instance.unlockWeaponList[i] == weaponID)
+            {
+                isUnlock = true;
+                break;
+            }
+            else isUnlock = false;
+        }
+    }
+
+    public void PurchaseChack()
+    {
+        // 현재 보여지는 캐릭터를 구입하였는지 확인
+        for (int i = 0; i < GameManager.Instance.purchaseWeaponList.datas.Count; i++)
+        {
+            if (GameManager.Instance.purchaseWeaponList.datas[i].weaponID == weaponID)
+            {
+                isPurchase = true;
+                break;
+            }
+            else isPurchase = false;
+        }
+    }
+
+    public void OnChangeWeapon(Button btn)
+    {
+        // 메인무기 데이터 전체 순회
+        for (int i = 0; i < DataManager.Instance.manualPrefabList.Count; i++)
+        {
+            // 데이터 리스트에서 현재 위치 확인
+            if (DataManager.Instance.manualPrefabList[i].GetComponent<IManualWeapon>().data.weaponID == weaponID)
+            {
+                if (btn == leftBtn)
+                {
+                    // 이전 무기의 ID, Data 세팅
+                    Debug.Log("좌측버튼 클릭");
+
+                    // 현 위치가 0일 때
+                    if (i - 1 < 0)
+                    {
+                        weaponID = DataManager.Instance.manualPrefabList[DataManager.Instance.manualPrefabList.Count - 1].GetComponent<IManualWeapon>().data.weaponID;
+                    }
+                    // 현 위치가 0이 아닐때
+                    else
+                    {
+                        weaponID = DataManager.Instance.manualPrefabList[i - 1].GetComponent<IManualWeapon>().data.weaponID;
+                    }
+
+                    Debug.Log("이전 무기 ID");
+                    break;
+                }
+                else if (btn == rightBtn)
+                {
+                    //다음 무기의 ID, Data 세팅
+                    Debug.Log("우측버튼 클릭");
+
+                    // 현 위치가 리스트의 마지막일 때
+                    if (i + 1 > DataManager.Instance.manualPrefabList.Count - 1)
+                    {
+                        weaponID = DataManager.Instance.manualPrefabList[0].GetComponent<IManualWeapon>().data.weaponID;
+                    }
+                    // 현 위치가 리스트의 마지막이 아닐 때
+                    else
+                    {
+                        weaponID = DataManager.Instance.manualPrefabList[i + 1].GetComponent<IManualWeapon>().data.weaponID;
+                    }
+
+                    Debug.Log("다음 무기 ID");
+                    break;
+                }
+            }
+        }
+        RightInfoSet();
+
+        if (statusTap.gameObject.activeSelf) StatusInfoSet();
+        else if (attackTap.gameObject.activeSelf) AttackInfoSet();
+        else if (dropAttackTap.gameObject.activeSelf) DropAttackInfoSet();
+        else if (chargeAttackTap.gameObject.activeSelf) ChargeAttackInfoSet();
+        else if (dashAttackTap.gameObject.activeSelf) DashAttackInfoSet();
+
+
     }
 
     public void OnEnhanceUpPopup()
@@ -97,8 +197,84 @@ public class UI_Enhance : MonoBehaviour
         if(!enhanceUpPopup.gameObject.activeSelf)
         enhanceUpPopup.gameObject.SetActive(true);
     }
+    public void OnPurchasePopup()
+    {
+        purchasePopup.GetComponent<UI_PurchasePopup>().dataID = weaponID;
+        if (!purchasePopup.gameObject.activeSelf) purchasePopup.gameObject.SetActive(true);
+    }
+    public void OnSelecWeapon()
+    {
+        GameManager.Instance.GetWeaponData(weaponID);
+        selecBtn.gameObject.SetActive(false);
+        selectedCheck.SetActive(true);
+    }
 
     #region InfoSet
+    public void RightInfoSet()
+    {
+        try
+        {
+            curMWData = GameManager.Instance.weaponDatas[weaponID];
+            curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
+            weaponData = curWeapon.GetComponent<IManualWeapon>();
+            weaponData.baseWeaponLevel = curMWData.baseLevel;
+        }
+        catch
+        {
+            curMWData = null;
+            curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
+            weaponData = curWeapon.GetComponent<IManualWeapon>();
+            weaponData.baseWeaponLevel = 0;
+        }
+
+        //name_TMP.text = 
+        level_TMP.text = $"Lv.{weaponData.baseWeaponLevel}";
+        //discrip_TMP.text = 
+        //image.sprite = 
+
+        UnlockCheck();                         // 잠금해제 체크
+        PurchaseChack();                       // 구입여부 체크
+
+        // 무기 정보, 선택/구매 버튼 세팅
+        if (isUnlock)
+        {
+            if (isPurchase)
+            {
+                if (weaponID == GameManager.Instance.weaponID)
+                {
+                    unlockCheck.SetActive(false);
+                    levelUpBtn.gameObject.SetActive(true);
+                    selectedCheck.SetActive(true);
+                    selecBtn.gameObject.SetActive(false);
+                    buyBtn.gameObject.SetActive(false);
+                }
+                else
+                {
+                    unlockCheck.SetActive(false);
+                    levelUpBtn.gameObject.SetActive(true);
+                    selectedCheck.SetActive(false);
+                    selecBtn.gameObject.SetActive(true);
+                    buyBtn.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                unlockCheck.SetActive(false);
+                levelUpBtn.gameObject.SetActive(false);
+                selectedCheck.SetActive(false);
+                selecBtn.gameObject.SetActive(false);
+                buyBtn.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            unlockCheck.SetActive(true);
+            levelUpBtn.gameObject.SetActive(false);
+            selectedCheck.SetActive(false);
+            selecBtn.gameObject.SetActive(false);
+            buyBtn.gameObject.SetActive(false);
+        }
+    }
     public void StatusInfoSet()
     {
         attackDamage_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";

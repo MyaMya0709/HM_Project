@@ -1,10 +1,15 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using TMPro;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    [SerializeField] private TMP_Text curGoldTMP;
+
     [Header("Player")]
     [SerializeField] private PlayerData playerData = new();
     public int playerLevel;
@@ -24,8 +29,8 @@ public class GameManager : Singleton<GameManager>
     [Header("Weapon")]
     public WeaponData curMWData;                                         // 현재 장착한 무기의 ID,Level
     public GameObject curWeapon;                                         // 현재 장착한 무기 프리펩
-    public IManualWeapon weaponData;                                     // 현재 장착한 무기 데이터
-    public WeaponDataList openWeaponList;                                // 구입한 무기 리스트
+    public IManualWeapon weaponData;                                     // 현재 장착한 무기 정보 데이터
+    public WeaponDataList purchaseWeaponList;                            // 구입한 무기 리스트
     public Dictionary<int, WeaponData> weaponDatas = new();              // 구입한 무기 Dic
 
     [Header("UnLockDatas")]
@@ -44,8 +49,6 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
 
         LoadPlayerData();
-        LoadUnLockData();
-        LoadWeaponData();
 
         playerLevel = playerData.playerLevel;
         moveSpeedLevel = playerData.moveSpeedLevel;
@@ -55,12 +58,14 @@ public class GameManager : Singleton<GameManager>
         curGold = playerData.haveGold;
 
         characterID = playerData.characterID;
-        //openCharacterIDList = playerData.openCharacterIDList;
-
         weaponID = playerData.weaponID;
 
+        LoadUnLockData();
+        LoadWeaponData();
+        LoadCharacterData();
+
         GetCharacterData();
-        GetWeaponData();
+        GetWeaponData(weaponID);
     }
 
     public void GameStart()
@@ -89,16 +94,15 @@ public class GameManager : Singleton<GameManager>
     {
         Instantiate(weaponData.gameObject, holder.transform);
     }
-
     public void WeaponBaseLevelUp()
     {
         curMWData.baseLevel++;
         weaponData.BaseLevelUp();
 
-        for (int i = 0; i < openWeaponList.datas.Count; i++)
+        for (int i = 0; i < purchaseWeaponList.datas.Count; i++)
         {
-            if(openWeaponList.datas[i].weaponID == curMWData.weaponID)
-            Debug.Log($"{openWeaponList.datas[i].baseLevel}");
+            if(purchaseWeaponList.datas[i].weaponID == curMWData.weaponID)
+            Debug.Log($"{purchaseWeaponList.datas[i].baseLevel}");
         }
 
         Debug.Log($"{curMWData.baseLevel}");
@@ -107,14 +111,100 @@ public class GameManager : Singleton<GameManager>
 
         SaveWeaponData();
     }
+    public void BuyWeapon(int id)
+    {
+        // 중복 여부 확인
+        bool isOverlap = false;
+        foreach (WeaponData data in purchaseWeaponList.datas)
+        {
+            if (data.weaponID != id)
+            {
+                isOverlap = false;
+            }
+            else
+            {
+                isOverlap = true;
+                Debug.Log("purchaseWeaponList에 중복 요소 있음");
+                break;
+            }
+        }
 
+        // 중복이 없다면 실행
+        if (!isOverlap)
+        {
+            //재화 사용
+            SpendGold(DataManager.Instance.manualDataList[id - 100].price);
+
+            // openWeaponList 리스트에 추가
+            purchaseWeaponList.datas.Add(
+                new WeaponData()
+                {
+                    weaponID = id, baseLevel = 0
+                });
+
+            // 리스트 오름차순 정렬
+            purchaseWeaponList.datas.Sort((x, y) => x.weaponID.CompareTo(y.weaponID));
+
+            foreach (WeaponData data in purchaseWeaponList.datas)
+            {
+                if (data.weaponID == id)
+                {
+                    // 딕셔너리에 추가
+                    weaponDatas.Add(id, data);
+                }
+            }
+
+            //무기 데이터 저장
+            SaveWeaponData();
+        }
+    }
+    public void BuyCharacter(int id)
+    {
+       //중복 확인
+        if (!purchaseCharacterList.characterIDs.Contains(id))
+        {
+            //재화 사용
+            SpendGold(DataManager.Instance.characterDataList[id].price);
+
+            // characterIDs 리스트에 추가
+            purchaseCharacterList.characterIDs.Add(id);
+            // 리스트 오름차순 정렬
+            purchaseCharacterList.characterIDs.Sort();
+
+            // 딕셔너리에 추가
+            if (!characterDataDic.ContainsKey(id))
+            {
+                characterDataDic.Add(id, DataManager.Instance.characterDataList[id]);
+            }
+
+            //캐릭터 데이터 저장
+            SaveCharacterData();
+        }
+        else
+        {
+            Debug.Log("purchaseCharacterList 중복");
+        }
+    }
+
+    public void SetGold()
+    {
+        curGoldTMP.text = curGold.ToString();
+    }
+    public void GetGold(int gold)
+    {
+        curGold += gold;
+        SaveData();
+    }
     public void SpendGold(int gold)
     {
         curGold -= gold;
+        SaveData();
+    }
+    public void SaveData()
+    {
         GetPlayerData();
         SavePlayerData();
     }
-
 
     public PlayerData SetPlayerData()
     {
@@ -163,16 +253,18 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void GetWeaponData()
+    public void GetWeaponData(int id)
     {
+        weaponID = id;
         curMWData = weaponDatas[weaponID];
-        curWeapon = DataManager.Instance.manualPrefabList[weaponID];
+        curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
         weaponData = curWeapon.GetComponent<IManualWeapon>();
         weaponData.baseWeaponLevel = curMWData.baseLevel;
+        SaveData();
     }
     public void SaveWeaponData()
     {
-        string json = JsonUtility.ToJson(openWeaponList);
+        string json = JsonUtility.ToJson(purchaseWeaponList);
         File.WriteAllText(Path.Combine(Application.persistentDataPath, "WeaponData.json"), json);
         Debug.Log(Application.persistentDataPath);
     }
@@ -187,11 +279,11 @@ public class GameManager : Singleton<GameManager>
             json = File.ReadAllText(path);
 
             //리스트에 역직렬화
-            openWeaponList = JsonUtility.FromJson<WeaponDataList>(json);
-            if (openWeaponList.datas.Count != 0) Debug.Log($"openWeaponList Load");
+            purchaseWeaponList = JsonUtility.FromJson<WeaponDataList>(json);
+            if (purchaseWeaponList.datas.Count != 0) Debug.Log($"purchaseWeaponList Load");
 
             //Dictionary으로 전환
-            foreach (WeaponData waepon in openWeaponList.datas)
+            foreach (WeaponData waepon in purchaseWeaponList.datas)
             {
                 weaponDatas.Add(waepon.weaponID, waepon);
             }
@@ -200,21 +292,20 @@ public class GameManager : Singleton<GameManager>
         else
         {
             // 파일 없으면 클리어 파일 세이브 후, 데이터 클리어
-            openWeaponList.Clear();
+            purchaseWeaponList.Clear();
 
             //Dictionary으로 전환
-            foreach (WeaponData waepon in openWeaponList.datas)
+            foreach (WeaponData waepon in purchaseWeaponList.datas)
             {
                 weaponDatas.Add(waepon.weaponID, waepon);
             }
 
-            json = JsonUtility.ToJson(openWeaponList);
+            json = JsonUtility.ToJson(purchaseWeaponList);
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "WeaponData.json"), json);
 
             if (weaponDatas.Count != 0) Debug.Log($"New WeaponData Save");
         }
     }
-
 
     public CharacterData SetCharacterData()
     {

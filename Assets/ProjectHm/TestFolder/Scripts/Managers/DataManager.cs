@@ -10,11 +10,11 @@ public class DataManager : MonoBehaviour
 
     public List<CharacterData> characterDataList = new();
 
-    // weaponID로 Prefab,Data 찾기
+    // weaponID -100으로 Prefab,Data 찾기
     public List<GameObject> manualPrefabList = new();
     public List<ManualWeaponData> manualDataList = new();
 
-    // weaponID - 100으로 Prefab,Data 찾기
+    // weaponID -200으로 Prefab,Data 찾기
     public List<GameObject> autoPrefabList = new();
     public List<AutoWeaponData> autoDataList = new();
 

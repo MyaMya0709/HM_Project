@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c79c532421b6e234eab19ad4ad48e26c, type: 3}
-  m_Name: MW_000
+  m_Name: MW_103
   m_EditorClassIdentifier: 
-  weaponID: 0
-  buyost: 0
+  weaponID: 103
+  price: 1000
   baseMoveList:
   - 0
   - 0

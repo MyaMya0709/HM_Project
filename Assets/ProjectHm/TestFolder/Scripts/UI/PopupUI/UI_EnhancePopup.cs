@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.GPUPrefixSum;
 
@@ -125,8 +126,8 @@ public class UI_EnhancePopup : MonoBehaviour
     // 팝업창 하단부 세팅
     public void BottomInfoSet()
     {
-        afterLevel_TMP.text = $"Lv.{GameManager.Instance.weaponData.baseWeaponLevel + 1}";
-        spendGold_TMP.text = $"{GameManager.Instance.weaponData.data.enhanceCostList[GameManager.Instance.weaponData.baseWeaponLevel]}";
+        afterLevel_TMP.text = $"Lv.{enhanceUI.gameObject.GetComponent<UI_Enhance>().weaponData.baseWeaponLevel + 1}";
+        spendGold_TMP.text = $"{enhanceUI.gameObject.GetComponent<UI_Enhance>().weaponData.data.enhanceCostList[enhanceUI.gameObject.GetComponent<UI_Enhance>().weaponData.baseWeaponLevel]}";
     }
 
     // 무기의 스텟, 효과 값 세팅용 함수

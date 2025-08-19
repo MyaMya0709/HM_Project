@@ -8733,8 +8733,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 95eba05c862ebf54f8bd59a5741c549b, type: 2}
   manualPrefabList:
   - {fileID: 3691733087425890900, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+  - {fileID: 3691733087425890900, guid: 42cadfa6fdf9e644985753dd75c80061, type: 3}
+  - {fileID: 3691733087425890900, guid: 023102327a3690e4781ff1573ea983fb, type: 3}
+  - {fileID: 3691733087425890900, guid: b8b8cc5be0d537a4c8e94551f47988fa, type: 3}
   manualDataList:
   - {fileID: 11400000, guid: 4e06adcaf33ebcf42aabd6c708ec70ee, type: 2}
+  - {fileID: 11400000, guid: 5b74d94420f4f0a428495beb93cc6e4b, type: 2}
+  - {fileID: 11400000, guid: 1a093ec0d5739ea44b506351bddd8a43, type: 2}
+  - {fileID: 11400000, guid: b3aa5b74d31cb7c4eb322fcf88e0660e, type: 2}
   autoPrefabList:
   - {fileID: 7815197726315998923, guid: 92ac6024902ed4b4891af625e4e6b3f4, type: 3}
   autoDataList:

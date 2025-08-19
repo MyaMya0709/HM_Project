@@ -16,6 +16,7 @@ MonoBehaviour:
   Name: Probation
   Description: "\uACAC\uC2B5\uC0DD, \uC774\uC81C \uB9C9 \uD6C8\uB828\uC744 \uC2DC\uC791\uD55C
     \uC720\uB2DB"
+  price: 500
   bonusStatType: 01000000
   bonusStatValue:
   - 2

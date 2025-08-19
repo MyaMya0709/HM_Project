@@ -50,10 +50,8 @@ public class WeaponDataList
 
     public void Clear()
     {
-        datas = new List<WeaponData>()
-            {
-                new WeaponData { weaponID = 0, baseLevel = 0 }
-            };
+        datas.Clear();
+        datas.Add(new WeaponData { weaponID = 100, baseLevel = 0 });
     }
 }
 #endregion
