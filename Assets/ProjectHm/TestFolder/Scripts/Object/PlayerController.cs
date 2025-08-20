@@ -74,7 +74,12 @@ public class PlayerController : MonoBehaviour
             GameManager.Instance.WeaponInit(weaponHolder);
             currentWeapon = GetComponentInChildren<IManualWeapon>();
         }
-        else currentWeapon = GetComponentInChildren<IManualWeapon>();
+        else
+        {
+            foreach (Transform child in weaponHolder.transform) Destroy(child.gameObject);
+            currentWeapon = GetComponentInChildren<IManualWeapon>();
+        }
+        
 
     }
 

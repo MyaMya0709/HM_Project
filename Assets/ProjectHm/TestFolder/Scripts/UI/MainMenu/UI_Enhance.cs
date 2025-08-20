@@ -296,11 +296,11 @@ public class UI_Enhance : MonoBehaviour
     }
     public void StatusInfoSet()
     {
-        attackDamage_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
-        //attackSpeed_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
-        attackRange_TMP.text = $"{GameManager.Instance.weaponData.data.baseRangeList[GameManager.Instance.curMWData.baseLevel]}";
-        moveSpeed_TMP.text = $"{GameManager.Instance.weaponData.data.baseMoveList[GameManager.Instance.curMWData.baseLevel]}";
-        //movePower_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
+        attackDamage_TMP.text = $"{weaponData.data.baseDamageList[weaponData.baseWeaponLevel]}";
+        //attackSpeed_TMP.text = $"{weaponData.data.baseDamageList[weaponData.baseWeaponLevel]}";
+        attackRange_TMP.text = $"{weaponData.data.baseRangeList[weaponData.baseWeaponLevel]}";
+        moveSpeed_TMP.text = $"{weaponData.data.baseMoveList[weaponData.baseWeaponLevel]}";
+        //movePower_TMP.text = $"{weaponData.data.baseDamageList[weaponData.baseWeaponLevel]}";
     }
     public void AttackInfoSet()
     {
@@ -313,7 +313,7 @@ public class UI_Enhance : MonoBehaviour
             AT_SlowDecrease_TMP,
             AT_DotDamage_TMP,
             AT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect);
+            weaponData.data.baseWeaponEffectList[weaponData.baseWeaponLevel].attackEffect);
     }
     public void DropAttackInfoSet()
     {
@@ -326,7 +326,7 @@ public class UI_Enhance : MonoBehaviour
             DropAT_SlowDecrease_TMP,
             DropAT_DotDamage_TMP,
             DropAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect);
+            weaponData.data.baseWeaponEffectList[weaponData.baseWeaponLevel].dropEffect);
     }
     public void ChargeAttackInfoSet()
     {
@@ -339,7 +339,7 @@ public class UI_Enhance : MonoBehaviour
             ChargeAT_SlowDecrease_TMP,
             ChargeAT_DotDamage_TMP,
             ChargeAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect);
+            weaponData.data.baseWeaponEffectList[weaponData.baseWeaponLevel].chargeEffect);
     }
     public void DashAttackInfoSet()
     {
@@ -352,7 +352,7 @@ public class UI_Enhance : MonoBehaviour
             DashAT_SlowDecrease_TMP,
             DashAT_DotDamage_TMP,
             DashAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect);
+            weaponData.data.baseWeaponEffectList[weaponData.baseWeaponLevel].dashEffect);
     }
     public void UISet(TMP_Text dmgText, TMP_Text knockbackText, TMP_Text airborneText, TMP_Text stunText, TMP_Text slowDurText, TMP_Text slowDecText, TMP_Text dotDmgText, TMP_Text dotDurText, EffectTypeData data)
     {
