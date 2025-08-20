@@ -48,7 +48,7 @@ public class PlayerCondition : MonoBehaviour
 
     private void Start()
     {
-        expBar = FindAnyObjectByType<InGameUI>().expBar;
+        expBar = FindAnyObjectByType<UI_Main>().expBar;
         controller = GetComponent<PlayerController>();
 
         playerData = GameManager.Instance.SetPlayerData();
@@ -174,9 +174,9 @@ public class PlayerCondition : MonoBehaviour
         if (!isOverlap)
         {
             // 프리펩 가져오기
-            GameObject autoWeapon = DataManager.Instance.autoPrefabList[weaponID - 100];
+            GameObject autoWeapon = DataManager.Instance.autoPrefabList[weaponID - 200];
             // 데이터 가져오기
-            autoWeapon.GetComponent<IAutoWeapon>().data = DataManager.Instance.autoDataList[weaponID - 100];
+            autoWeapon.GetComponent<IAutoWeapon>().data = DataManager.Instance.autoDataList[weaponID - 200];
             // 무기 실체화
             Transform weaponPos = gameObject.transform.Find("AutoWeapons");
             GameObject clone = Instantiate(autoWeapon, weaponPos);

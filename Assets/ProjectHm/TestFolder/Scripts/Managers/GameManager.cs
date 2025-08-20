@@ -42,7 +42,7 @@ public class GameManager : Singleton<GameManager>
 
     public int selecStageID = 0;
 
-    public bool isGameOver = false;
+    public bool isGameFinish = false;
 
     protected override void Awake()
     {
@@ -68,15 +68,12 @@ public class GameManager : Singleton<GameManager>
         GetWeaponData(weaponID);
     }
 
-    public void GameStart()
+    
+    public void GameFinish()
     {
-        StageManager.Instance.StageSet();
-        SpawnManager.Instance.StartWaves();
+        isGameFinish = true;
     }
-    public void GameOver()
-    {
-        isGameOver = true;
-    }
+
     public void GameReset()
     {
         string json;
@@ -239,6 +236,7 @@ public class GameManager : Singleton<GameManager>
 
     public void GetWeaponData(int id)
     {
+        Debug.Log("장착 무기 정보 세팅");
         weaponID = id;
         curMWData = weaponDatas[weaponID];
         curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
@@ -329,9 +327,9 @@ public class GameManager : Singleton<GameManager>
             if (purchaseCharacterList.characterIDs.Count != 0) Debug.Log($"purchaseCharacterList Load");
 
             //Dictionary으로 전환
-            foreach (int waepon in purchaseCharacterList.characterIDs)
+            foreach (int characterID in purchaseCharacterList.characterIDs)
             {
-                characterDataDic.Add(waepon, DataManager.Instance.characterDataList[waepon]);
+                characterDataDic.Add(characterID, DataManager.Instance.characterDataList[characterID]);
             }
             if (characterDataDic.Count != 0) Debug.Log($"characterDataDic Load");
         }

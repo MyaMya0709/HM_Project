@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class BaseCore : MonoBehaviour
 {
+    public SpawnManager spawnManager;
+
     [Header("Base Stats")]
     public float maxHealth = 200f;
     public float currentHealth;
@@ -17,9 +19,6 @@ public class BaseCore : MonoBehaviour
 
     private void Awake()
     {
-        // 기지 파괴 시 GameOver() 호출
-        OnBaseDestroy += GameManager.Instance.GameOver;
-
         currentHealth = maxHealth;
         HPBar.fillAmount = 1;
     }
@@ -44,7 +43,8 @@ public class BaseCore : MonoBehaviour
     {
         Debug.Log("기지 파괴됨! 게임 오버 처리");
         // GameManager에 게임오버 알림
-        OnBaseDestroy?.Invoke();
+        spawnManager.isGameOver = true;
+
         Destroy(gameObject); // or 비활성화
     }
 }

@@ -1,14 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Overlays;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SpawnManager : MonoBehaviour
 {
-    public static SpawnManager Instance;
+    public UIManager uiManager;
+    public StageManager stageManager;
 
     public List<WaveData> waves;
     public List<SpawnData> spawnDataList = new();            // 생성할 적의 데이터 리스트
@@ -21,83 +19,40 @@ public class SpawnManager : MonoBehaviour
     private int maxWave;
     public float waveDelay = 10f;
     private int currentWaveIndex = 0;
-    private int aliveEnemies = 0;
+    public int killEnemies = 0;
+    public int aliveEnemies = 0;
     private bool isSpawning = false;
+    private bool isGameClear = false;
+    public bool isGameOver = false;
 
     private Coroutine spawnCoroutine;
 
     public System.Action<int> OnWaveStarted;
+    public event Action<bool> OnFinishGame;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     // 웨이브 시작
     public void StartWaves()
     {
-        waves = StageManager.Instance.waveList;
+        waves = stageManager.waveList;
 
         maxWave = waves.Count;
         currentWaveIndex = 0;
         spawnCoroutine = StartCoroutine(RunWave(currentWaveIndex));
     }
 
-    // Spawner,AttackPoint 찾기
-    //public void SpawnerSetting()
-    //{
-    //    Transform spawner = GameObject.Find("EnemySpawner")?.transform;
-    //    if (spawner == null)
-    //        Debug.LogError("EnemySpawner를 찾지 못했습니다!");
-    //    else
-    //        Debug.Log("Spawner 찾음: " + spawner.name);
-
-    //    foreach (Transform child in spawner)
-    //    {
-    //        if (child.name == "Ground")
-    //        {
-    //            foreach (Transform child2 in child)
-    //            {
-    //                spawnGruondPoints.Add(child2);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            foreach (Transform child2 in child)
-    //            {
-    //                spawnSkyPoints.Add(child2);
-    //            }
-    //        }
-    //    }
-
-    //    Transform baseCore = GameObject.FindWithTag("Base").transform;
-    //    foreach (Transform child in baseCore)
-    //    {
-    //        if (child.name == "AttackPoint")
-    //        {
-    //            attackPoint = child.transform;
-    //        }
-    //    }
-        
-    //    if (attackPoint == null)
-    //        Debug.LogError("AttackPoint를 찾지 못했습니다!");
-    //    else
-    //        Debug.Log("AttackPoint 찾음: " + attackPoint.name);
-    //}
-
     // wave 생성 로직
     private IEnumerator RunWave(int waveIndex)
     {
         Debug.Log($"Wave {waveIndex+1}");
-        isSpawning = true;
 
         if (waveIndex > maxWave)
         {
-            //모든 웨이브 종료시 호출
-            GameManager.Instance.GameClear();
-            isSpawning = false;
+            Debug.Log($"Wave Finish");
             yield break;
         }
+
+        isSpawning = true;
 
         if (waveIndex == 0)
             yield return new WaitForSeconds(1f);
@@ -141,8 +96,10 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(spawnDataList[i].spawnDelay);
 
             // 기지 파괴시 StopCoroutine() 실행
-            if (GameManager.Instance.isGameOver == true)
+            if (isGameOver == true)
             {
+                Time.timeScale = 0f;
+                uiManager.finishUI.gameObject.SetActive(true);
                 StopCoroutine();
             }
         }
@@ -160,11 +117,11 @@ public class SpawnManager : MonoBehaviour
         Transform spawnPoint;
         if (enemyData.MoveType == EnemyMoveType.Ground)
         {
-            spawnPoint = spawnGruondPoints[Random.Range(0, spawnGruondPoints.Count)];
+            spawnPoint = spawnGruondPoints[UnityEngine.Random.Range(0, spawnGruondPoints.Count)];
         }
         else
         {
-            spawnPoint = spawnSkyPoints[Random.Range(0, spawnSkyPoints.Count)];
+            spawnPoint = spawnSkyPoints[UnityEngine.Random.Range(0, spawnSkyPoints.Count)];
         }
 
         GameObject enemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
@@ -180,11 +137,15 @@ public class SpawnManager : MonoBehaviour
     private void HandleEnemyDeath()
     {
         aliveEnemies--;
-        //if (!isSpawning && aliveEnemies <= 0)
-        //{
-        //    currentWaveIndex++;
-        //    StartCoroutine(RunWave(currentWaveIndex));
-        //}
+        killEnemies++;
+        // 게임오버 로직 실행
+        if (!isSpawning && aliveEnemies <= 0)
+        {
+            //모든 웨이브 종료시 호출
+            isGameClear = true;
+            //게임 클리어 UI 호출
+            uiManager.finishUI.OnEnableFinshUI(isGameClear);
+        }
     }
 
     public void StopCoroutine()

@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InGameUI : MonoBehaviour 
+public class UI_Main : MonoBehaviour 
 {
     public UI_Menu menuUI;
     public UI_Selection selecUI;

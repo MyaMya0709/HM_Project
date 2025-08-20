@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
-    public static StageManager Instance;
+    public SpawnManager spawnManager;
     public StageDataObj dataObj;
     public int curStageID;
     public StageData data;
@@ -21,7 +21,6 @@ public class StageManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
         curStageID = GameManager.Instance.selecStageID;
         Debug.Log($"현재 스테이지 : {curStageID}");
     }
@@ -32,8 +31,11 @@ public class StageManager : MonoBehaviour
         //string current = SceneManager.GetActiveScene().name;
 
         //if (current == "InGame")
-        GameManager.Instance.GameStart();
-    }
+
+        StageSet();
+        spawnManager.StartWaves();
+    
+}
 
     // StageData Setting
     public void StageSet()
