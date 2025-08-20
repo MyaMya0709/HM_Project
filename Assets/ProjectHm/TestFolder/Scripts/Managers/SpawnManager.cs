@@ -142,7 +142,7 @@ public class SpawnManager : MonoBehaviour
         }
 
         // 웨이브의 전체 적 수량 저장
-        aliveEnemies = spawnDataList.Count;
+        aliveEnemies += spawnDataList.Count;
         Debug.Log($"적의 수: {aliveEnemies}");
 
         for (int i = 0; i < spawnDataList.Count; i++)
@@ -158,6 +158,10 @@ public class SpawnManager : MonoBehaviour
         }
 
         isSpawning = false;
+
+        //웨이브 스폰 끝나면 바로 다음 웨이브 시작
+        currentWaveIndex++;
+        StartWaves();
     }
 
     // 적 실체화 및 적의 숫자 계산
@@ -186,11 +190,11 @@ public class SpawnManager : MonoBehaviour
     private void HandleEnemyDeath()
     {
         aliveEnemies--;
-        if (!isSpawning && aliveEnemies <= 0)
-        {
-            currentWaveIndex++;
-            StartCoroutine(RunWave(currentWaveIndex));
-        }
+        //if (!isSpawning && aliveEnemies <= 0)
+        //{
+        //    currentWaveIndex++;
+        //    StartCoroutine(RunWave(currentWaveIndex));
+        //}
     }
 
     public void StopCoroutine()
