@@ -94,23 +94,7 @@ public class GameManager : Singleton<GameManager>
     {
         Instantiate(weaponData.gameObject, holder.transform);
     }
-    public void WeaponBaseLevelUp()
-    {
-        curMWData.baseLevel++;
-        weaponData.BaseLevelUp();
 
-        for (int i = 0; i < purchaseWeaponList.datas.Count; i++)
-        {
-            if(purchaseWeaponList.datas[i].weaponID == curMWData.weaponID)
-            Debug.Log($"{purchaseWeaponList.datas[i].baseLevel}");
-        }
-
-        Debug.Log($"{curMWData.baseLevel}");
-        Debug.Log($"{weaponData.baseWeaponLevel}");
-        Debug.Log($"{weaponDatas[curMWData.weaponID].baseLevel}");
-
-        SaveWeaponData();
-    }
     public void BuyWeapon(int id)
     {
         // 중복 여부 확인

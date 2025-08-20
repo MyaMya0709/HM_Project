@@ -113,7 +113,7 @@ public class UI_EnhancePopup : MonoBehaviour
     [SerializeField] private Button levelUpBtn;
     [SerializeField] private Button exitBtn;
 
-    [SerializeField] private RectTransform enhanceUI;
+    [SerializeField] private UI_Enhance enhanceUI;
 
     [SerializeField] private TMP_Text curGoldTMP;
 
@@ -126,8 +126,8 @@ public class UI_EnhancePopup : MonoBehaviour
     // 팝업창 하단부 세팅
     public void BottomInfoSet()
     {
-        afterLevel_TMP.text = $"Lv.{enhanceUI.gameObject.GetComponent<UI_Enhance>().weaponData.baseWeaponLevel + 1}";
-        spendGold_TMP.text = $"{enhanceUI.gameObject.GetComponent<UI_Enhance>().weaponData.data.enhanceCostList[enhanceUI.gameObject.GetComponent<UI_Enhance>().weaponData.baseWeaponLevel]}";
+        afterLevel_TMP.text = $"Lv.{enhanceUI.weaponData.baseWeaponLevel + 1}";
+        spendGold_TMP.text = $"{enhanceUI.weaponData.data.enhanceCostList[enhanceUI.weaponData.baseWeaponLevel]}";
     }
 
     // 무기의 스텟, 효과 값 세팅용 함수
@@ -144,10 +144,10 @@ public class UI_EnhancePopup : MonoBehaviour
     {
         Debug.Log("무기 렙업");
         // 재화 사용 저장 및 json 저장
-        GameManager.Instance.SpendGold(GameManager.Instance.weaponData.data.enhanceCostList[GameManager.Instance.weaponData.baseWeaponLevel]);
+        GameManager.Instance.SpendGold(enhanceUI.weaponData.data.enhanceCostList[enhanceUI.weaponData.baseWeaponLevel]);
 
         // 게임메니저의 무기 레벨업 및 json 저장
-        GameManager.Instance.WeaponBaseLevelUp();
+        enhanceUI.WeaponBaseLevelUp();
 
         BottomInfoSet();
 
@@ -163,7 +163,7 @@ public class UI_EnhancePopup : MonoBehaviour
 
     public void OnExit()
     {
-        enhanceUI.GetComponent<UI_Enhance>().RightInfoSet();
+        enhanceUI.RightInfoSet();
         if (gameObject.activeSelf)
             gameObject.SetActive(false);
     }
@@ -171,17 +171,17 @@ public class UI_EnhancePopup : MonoBehaviour
     #region InfoSet
     public void StatusInfoSet()
     {
-        before_AttackDamage_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
-        //before_AttackSpeed_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
-        before_AttackRange_TMP.text = $"{GameManager.Instance.weaponData.data.baseRangeList[GameManager.Instance.curMWData.baseLevel]}";
-        before_MoveSpeed_TMP.text = $"{GameManager.Instance.weaponData.data.baseMoveList[GameManager.Instance.curMWData.baseLevel]}";
-        //before_MovePower_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel]}";
+        before_AttackDamage_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel]}";
+        //before_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel]}";
+        before_AttackRange_TMP.text = $"{enhanceUI.weaponData.data.baseRangeList[enhanceUI.curMWData.baseLevel]}";
+        before_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveList[enhanceUI.curMWData.baseLevel]}";
+        //before_MovePower_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel]}";
 
-        after_AttackDamage_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel + 1]}";
-        //after_AttackSpeed_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel + 1]}";
-        after_AttackRange_TMP.text = $"{GameManager.Instance.weaponData.data.baseRangeList[GameManager.Instance.curMWData.baseLevel + 1]}";
-        after_MoveSpeed_TMP.text = $"{GameManager.Instance.weaponData.data.baseMoveList[GameManager.Instance.curMWData.baseLevel + 1]}";
-        //after_MovePower_TMP.text = $"{GameManager.Instance.weaponData.data.baseDamageList[GameManager.Instance.curMWData.baseLevel + 1]}";
+        after_AttackDamage_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel + 1]}";
+        //after_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_AttackRange_TMP.text = $"{enhanceUI.weaponData.data.baseRangeList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveList[enhanceUI.curMWData.baseLevel + 1]}";
+        //after_MovePower_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel + 1]}";
     }
     public void AttackInfoSet()
     {
@@ -194,7 +194,7 @@ public class UI_EnhancePopup : MonoBehaviour
             before_AT_SlowDecrease_TMP,
             before_AT_DotDamage_TMP,
             before_AT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].attackEffect);
+            enhanceUI.weaponData.data.baseWeaponEffectList[enhanceUI.weaponData.baseWeaponLevel].attackEffect);
 
         UISet(
             after_AT_AttackDamage_TMP,
@@ -205,7 +205,7 @@ public class UI_EnhancePopup : MonoBehaviour
             after_AT_SlowDecrease_TMP,
             after_AT_DotDamage_TMP,
             after_AT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel + 1].attackEffect);
+            enhanceUI.weaponData.data.baseWeaponEffectList[enhanceUI.weaponData.baseWeaponLevel + 1].attackEffect);
     }
     public void DropAttackInfoSet()
     {
@@ -218,7 +218,7 @@ public class UI_EnhancePopup : MonoBehaviour
             before_DropAT_SlowDecrease_TMP,
             before_DropAT_DotDamage_TMP,
             before_DropAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dropEffect);
+            enhanceUI.weaponData.data.baseWeaponEffectList[enhanceUI.weaponData.baseWeaponLevel].dropEffect);
 
         UISet(
             after_DropAT_AttackDamage_TMP,
@@ -229,7 +229,7 @@ public class UI_EnhancePopup : MonoBehaviour
             after_DropAT_SlowDecrease_TMP,
             after_DropAT_DotDamage_TMP,
             after_DropAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel + 1].dropEffect);
+            enhanceUI.weaponData.data.baseWeaponEffectList[enhanceUI.weaponData.baseWeaponLevel + 1].dropEffect);
     }
     public void ChargeAttackInfoSet()
     {
@@ -242,7 +242,7 @@ public class UI_EnhancePopup : MonoBehaviour
             before_ChargeAT_SlowDecrease_TMP,
             before_ChargeAT_DotDamage_TMP,
             before_ChargeAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].chargeEffect);
+            enhanceUI.weaponData.data.baseWeaponEffectList[enhanceUI.weaponData.baseWeaponLevel].chargeEffect);
 
         UISet(
             after_ChargeAT_AttackDamage_TMP,
@@ -253,7 +253,7 @@ public class UI_EnhancePopup : MonoBehaviour
             after_ChargeAT_SlowDecrease_TMP,
             after_ChargeAT_DotDamage_TMP,
             after_ChargeAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel + 1].chargeEffect);
+            enhanceUI.weaponData.data.baseWeaponEffectList[enhanceUI.weaponData.baseWeaponLevel + 1].chargeEffect);
     }
     public void DashAttackInfoSet()
     {
@@ -266,7 +266,7 @@ public class UI_EnhancePopup : MonoBehaviour
             before_DashAT_SlowDecrease_TMP,
             before_DashAT_DotDamage_TMP,
             before_DashAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel].dashEffect);
+            enhanceUI.weaponData.data.baseWeaponEffectList[enhanceUI.weaponData.baseWeaponLevel].dashEffect);
 
         UISet(
             after_DashAT_AttackDamage_TMP,
@@ -277,7 +277,7 @@ public class UI_EnhancePopup : MonoBehaviour
             after_DashAT_SlowDecrease_TMP,
             after_DashAT_DotDamage_TMP,
             after_DashAT_DotDuration_TMP,
-            GameManager.Instance.weaponData.data.baseWeaponEffectList[GameManager.Instance.weaponData.baseWeaponLevel + 1].dashEffect);
+            enhanceUI.weaponData.data.baseWeaponEffectList[enhanceUI.weaponData.baseWeaponLevel + 1].dashEffect);
     }
     public void UISet(TMP_Text dmgText, TMP_Text knockbackText, TMP_Text airborneText, TMP_Text stunText, TMP_Text slowDurText, TMP_Text slowDecText, TMP_Text dotDmgText, TMP_Text dotDurText, EffectTypeData data)
     {

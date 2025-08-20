@@ -50478,7 +50478,7 @@ MonoBehaviour:
   spendGold_TMP: {fileID: 1069614952}
   levelUpBtn: {fileID: 1770706055}
   exitBtn: {fileID: 1665548315}
-  enhanceUI: {fileID: 1303128610}
+  enhanceUI: {fileID: 1303128611}
   curGoldTMP: {fileID: 558732372}
 --- !u!1 &1509140020
 GameObject:

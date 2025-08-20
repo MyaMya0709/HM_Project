@@ -105,6 +105,27 @@ public class UI_Enhance : MonoBehaviour
         RightInfoSet();
     }
 
+
+    public void WeaponBaseLevelUp()
+    {
+        curMWData.baseLevel++;
+        weaponData.BaseLevelUp();
+
+        // 보유 리스트의 
+        for (int i = 0; i < GameManager.Instance.purchaseWeaponList.datas.Count; i++)
+        {
+            if (GameManager.Instance.purchaseWeaponList.datas[i].weaponID == curMWData.weaponID)
+                Debug.Log($"{GameManager.Instance.purchaseWeaponList.datas[i].baseLevel}");
+        }
+
+        Debug.Log($"{curMWData.baseLevel}");
+        Debug.Log($"{weaponData.baseWeaponLevel}");
+        Debug.Log($"{GameManager.Instance.weaponDatas[weaponID].baseLevel}");
+
+        GameManager.Instance.SaveWeaponData();
+    }
+
+
     public void UnlockCheck()
     {
         // 현재 보여지는 캐릭터가 해금 되었는지 확인
@@ -118,7 +139,6 @@ public class UI_Enhance : MonoBehaviour
             else isUnlock = false;
         }
     }
-
     public void PurchaseChack()
     {
         // 현재 보여지는 캐릭터를 구입하였는지 확인
@@ -132,6 +152,7 @@ public class UI_Enhance : MonoBehaviour
             else isPurchase = false;
         }
     }
+
 
     public void OnChangeWeapon(Button btn)
     {
@@ -191,11 +212,9 @@ public class UI_Enhance : MonoBehaviour
 
 
     }
-
     public void OnEnhanceUpPopup()
     {
-        if(!enhanceUpPopup.gameObject.activeSelf)
-        enhanceUpPopup.gameObject.SetActive(true);
+        if (!enhanceUpPopup.gameObject.activeSelf) enhanceUpPopup.gameObject.SetActive(true);
     }
     public void OnPurchasePopup()
     {
@@ -212,26 +231,6 @@ public class UI_Enhance : MonoBehaviour
     #region InfoSet
     public void RightInfoSet()
     {
-        try
-        {
-            curMWData = GameManager.Instance.weaponDatas[weaponID];
-            curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
-            weaponData = curWeapon.GetComponent<IManualWeapon>();
-            weaponData.baseWeaponLevel = curMWData.baseLevel;
-        }
-        catch
-        {
-            curMWData = null;
-            curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
-            weaponData = curWeapon.GetComponent<IManualWeapon>();
-            weaponData.baseWeaponLevel = 0;
-        }
-
-        //name_TMP.text = 
-        level_TMP.text = $"Lv.{weaponData.baseWeaponLevel}";
-        //discrip_TMP.text = 
-        //image.sprite = 
-
         UnlockCheck();                         // 잠금해제 체크
         PurchaseChack();                       // 구입여부 체크
 
@@ -240,6 +239,11 @@ public class UI_Enhance : MonoBehaviour
         {
             if (isPurchase)
             {
+                curMWData = GameManager.Instance.weaponDatas[weaponID];
+                curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
+                weaponData = curWeapon.GetComponent<IManualWeapon>();
+                weaponData.baseWeaponLevel = curMWData.baseLevel;
+
                 if (weaponID == GameManager.Instance.weaponID)
                 {
                     unlockCheck.SetActive(false);
@@ -259,6 +263,11 @@ public class UI_Enhance : MonoBehaviour
             }
             else
             {
+                curMWData = null;
+                curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
+                weaponData = curWeapon.GetComponent<IManualWeapon>();
+                weaponData.baseWeaponLevel = 0;
+
                 unlockCheck.SetActive(false);
                 levelUpBtn.gameObject.SetActive(false);
                 selectedCheck.SetActive(false);
@@ -268,12 +277,22 @@ public class UI_Enhance : MonoBehaviour
         }
         else
         {
+            curMWData = null;
+            curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
+            weaponData = curWeapon.GetComponent<IManualWeapon>();
+            weaponData.baseWeaponLevel = 0;
+
             unlockCheck.SetActive(true);
             levelUpBtn.gameObject.SetActive(false);
             selectedCheck.SetActive(false);
             selecBtn.gameObject.SetActive(false);
             buyBtn.gameObject.SetActive(false);
         }
+
+        //name_TMP.text = 
+        level_TMP.text = $"Lv.{weaponData.baseWeaponLevel}";
+        //discrip_TMP.text = 
+        //image.sprite = 
     }
     public void StatusInfoSet()
     {

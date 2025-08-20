@@ -52,8 +52,6 @@ public class UI_InfoPanel : MonoBehaviour
         characterData = GameManager.Instance.curCharacterData;
         if (characterData == null) Debug.Log("characterData로드 안됨");
 
-        UnlockCheck();
-        PurchaseChack();
         InfoPanelSet();
     }
     private void OnDisable()
@@ -64,6 +62,9 @@ public class UI_InfoPanel : MonoBehaviour
 
     public void InfoPanelSet()
     {
+        UnlockCheck();
+        PurchaseChack();
+
         //레벨 값 세팅
         playerLevelTMP.text = $"Lv.{GameManager.Instance.playerLevel.ToString()}";
         ATKPowerLevelTMP.text = $"Lv.{GameManager.Instance.attackPowerLevel.ToString()}";
@@ -72,7 +73,6 @@ public class UI_InfoPanel : MonoBehaviour
         //jumpPowerLevel.text = playerData.moveSpeedLevel.ToString();
         //statLevel.text = playerData.moveSpeedLevel.ToString();
 
-        
         StatSet();                 //스탯 값 세팅
         ButtonSet();               //버튼 세팅
     }
@@ -177,7 +177,6 @@ public class UI_InfoPanel : MonoBehaviour
             else isUnlock = false;
         }
     }
-
     public void PurchaseChack()
     {
         // 현재 보여지는 캐릭터를 구입하였는지 확인
@@ -256,8 +255,6 @@ public class UI_InfoPanel : MonoBehaviour
                 }
             } 
         }
-        UnlockCheck();
-        PurchaseChack();
         InfoPanelSet();
     }
 
@@ -266,6 +263,7 @@ public class UI_InfoPanel : MonoBehaviour
         GameManager.Instance.characterID = characterID;
         GameManager.Instance.GetCharacterData();
         GameManager.Instance.GetPlayerData();
+        ButtonSet();
     }
 
     public void OnPurchasePopup()
