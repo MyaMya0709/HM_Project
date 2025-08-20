@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e39d06bd1cad214ba266540b9c74f00, type: 3}
-  m_Name: TestStageGroupList
+  m_Name: TestStageGroupList_01
   m_EditorClassIdentifier: 
+  ID: 1
   groupPool:
   - {fileID: 11400000, guid: 48c5506613424b74a90aad622019c1a2, type: 2}
   - {fileID: 11400000, guid: 252aa6c60e2dbdc4d9202001789a7702, type: 2}
-  - {fileID: 11400000, guid: d5d46d5d7da14674293ffbfc20c7007f, type: 2}

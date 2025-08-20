@@ -46,5 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageDatas:
   - {fileID: 11400000, guid: ee2e3066cdc1178439719c918a638e53, type: 2}
+  - {fileID: 11400000, guid: c571efb89adba9c46b479979646e2d22, type: 2}
+  - {fileID: 11400000, guid: 87c582ee9b5fc334796d8b7df05904f3, type: 2}
+  - {fileID: 11400000, guid: 0f70014f11abc86408149bb1692e9af7, type: 2}
   allStageGroupPool:
   - {fileID: 11400000, guid: 62feb7ed71f777647bf5c7a157e9fb4d, type: 2}
+  - {fileID: 11400000, guid: 8469a15515f9cd04f973c175756eaba4, type: 2}
+  - {fileID: 11400000, guid: 3d5b87bbdff19fd408c2e293355d51c7, type: 2}

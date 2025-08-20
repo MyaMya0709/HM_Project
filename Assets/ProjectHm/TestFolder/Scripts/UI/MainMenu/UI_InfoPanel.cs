@@ -133,8 +133,8 @@ public class UI_InfoPanel : MonoBehaviour
         //jumpPower.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
         //stat.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
 
-        // 해금되었으면 보너스 스탯 표기
-        if (isUnlock && characterData.bonusStatValue != null && characterData.bonusStatType != null)
+        // 보너스 스탯 표기
+        if (characterData.bonusStatValue != null && characterData.bonusStatType != null)
         {
             for (int i = 0; i < characterData.bonusStatType.Count; i++)
             {
@@ -264,6 +264,7 @@ public class UI_InfoPanel : MonoBehaviour
         GameManager.Instance.GetCharacterData();
         GameManager.Instance.GetPlayerData();
         ButtonSet();
+        Debug.Log("캐릭터 선택");
     }
 
     public void OnPurchasePopup()

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e39d06bd1cad214ba266540b9c74f00, type: 3}
-  m_Name: TestStageGroupList 1
+  m_Name: TestStageGroupList_00
   m_EditorClassIdentifier: 
   groupPool:
   - {fileID: 11400000, guid: 48c5506613424b74a90aad622019c1a2, type: 2}

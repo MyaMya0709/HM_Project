@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Data/Stage")]
 public class StageData : ScriptableObject
 {
+    public int ID;
     public int maxWave;
     public float waveDelay;
     public int stageCost;

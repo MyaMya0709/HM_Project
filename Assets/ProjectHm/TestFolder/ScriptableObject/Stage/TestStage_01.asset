@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16bf273573b0df240a333b71e056b675, type: 3}
-  m_Name: TestStage 1
+  m_Name: TestStage_01
   m_EditorClassIdentifier: 
-  maxWave: 4
+  ID: 1
+  maxWave: 1
   waveDelay: 30
-  stageCost: 100
-  poolID: 00000000
+  stageCost: 20
+  poolID: 0000000001000000

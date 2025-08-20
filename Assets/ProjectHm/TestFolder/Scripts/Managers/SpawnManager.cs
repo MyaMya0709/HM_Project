@@ -27,23 +27,11 @@ public class SpawnManager : MonoBehaviour
     private Coroutine spawnCoroutine;
 
     public System.Action<int> OnWaveStarted;
-    public System.Action OnAllWavesCleared;
 
     private void Awake()
     {
         Instance = this;
-        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
-    //void OnDestroy()
-    //{
-    //    SceneManager.sceneLoaded -= OnSceneLoaded;
-    //}
-
-    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    //{
-    //    SpawnerSetting();
-    //}
 
     // 웨이브 시작
     public void StartWaves()
@@ -103,17 +91,18 @@ public class SpawnManager : MonoBehaviour
         Debug.Log($"Wave {waveIndex+1}");
         isSpawning = true;
 
+        if (waveIndex > maxWave)
+        {
+            //모든 웨이브 종료시 호출
+            GameManager.Instance.GameClear();
+            isSpawning = false;
+            yield break;
+        }
+
         if (waveIndex == 0)
             yield return new WaitForSeconds(1f);
         else
             yield return new WaitForSeconds(waveDelay);
-
-        if (waveIndex > maxWave)
-        {
-            //모든 웨이브 종료시 호출 - Invoke(이곳에 함수 입력 예정)
-            OnAllWavesCleared?.Invoke();
-            yield break;
-        }
 
         // 현재 웨이브에 해당하는 웨이브 데이터 호출
         WaveData wave = new WaveData()
@@ -145,6 +134,7 @@ public class SpawnManager : MonoBehaviour
         aliveEnemies += spawnDataList.Count;
         Debug.Log($"적의 수: {aliveEnemies}");
 
+        // 웨이브 스폰
         for (int i = 0; i < spawnDataList.Count; i++)
         {
             SpawnEnemy(spawnDataList[i].enemyData);

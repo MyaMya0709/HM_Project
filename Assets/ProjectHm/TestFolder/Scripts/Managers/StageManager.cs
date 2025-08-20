@@ -23,6 +23,7 @@ public class StageManager : MonoBehaviour
     {
         Instance = this;
         curStageID = GameManager.Instance.selecStageID;
+        Debug.Log($"현재 스테이지 : {curStageID}");
     }
 
     private void Start()
@@ -59,6 +60,7 @@ public class StageManager : MonoBehaviour
         {
             if (pool == null) Debug.Log("AllStageGroupPool 순회 불가");
 
+            // Stage에서 사용할 Pool들을 로드
             for (int i = 0; i < data.poolID.Length; i++)
             {
                 if (pool.ID == data.poolID[i])
@@ -119,13 +121,12 @@ public class StageManager : MonoBehaviour
             return null;
         }
 
-        Debug.Log($"MakeWaveData, {maxCost}");
+        Debug.Log($"MakeWaveData Cost : {maxCost}");
         WaveData makeWave = new WaveData()
         {
             groupList = new List<GroupData>()
         };
         int curCost = 0;
-        int groupCount = 0;
         
         // wave에 무작위 group 추가
         while (curCost < maxCost && groupList.Count > 0)
@@ -135,7 +136,7 @@ public class StageManager : MonoBehaviour
             makeWave.groupList.Add(randomGroupData);
             curCost += randomGroupData.groupCost;
 
-            groupCount++;
+            Debug.Log($"누적 코스트, {curCost}");
         }
 
         if (makeWave.groupList.Count > 0)

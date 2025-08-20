@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: autoWeapon_100
   m_EditorClassIdentifier: 
   type: 2
-  tatle: AutoWeapon_100
+  tatle: AutoWeapon_200
   icon: {fileID: 0}
   description: AutoWeapon_100
   statType: 0
-  weaponID: 100
+  weaponID: 200

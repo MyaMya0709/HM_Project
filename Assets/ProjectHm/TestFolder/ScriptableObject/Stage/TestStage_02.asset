@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 773e7687593188d4ca443f73b57e1659, type: 3}
-  m_Name: manualWeapon_000
+  m_Script: {fileID: 11500000, guid: 16bf273573b0df240a333b71e056b675, type: 3}
+  m_Name: TestStage_02
   m_EditorClassIdentifier: 
-  type: 1
-  tatle: ManualWeapon_100
-  icon: {fileID: 0}
-  description: ManualWeapon_100
-  statType: 0
-  weaponID: 100
+  ID: 2
+  maxWave: 1
+  waveDelay: 30
+  stageCost: 40
+  poolID: 000000000100000002000000
