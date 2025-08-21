@@ -296,10 +296,10 @@ public class UI_Enhance : MonoBehaviour
     }
     public void StatusInfoSet()
     {
-        attackDamage_TMP.text = $"{weaponData.data.baseDamageList[weaponData.baseWeaponLevel]}";
+        attackDamage_TMP.text = $"{weaponData.data.baseAttackPowerList[weaponData.baseWeaponLevel]}";
         //attackSpeed_TMP.text = $"{weaponData.data.baseDamageList[weaponData.baseWeaponLevel]}";
         attackRange_TMP.text = $"{weaponData.data.baseRangeList[weaponData.baseWeaponLevel]}";
-        moveSpeed_TMP.text = $"{weaponData.data.baseMoveList[weaponData.baseWeaponLevel]}";
+        //moveSpeed_TMP.text = $"{weaponData.data.baseMoveList[weaponData.baseWeaponLevel]}";
         //movePower_TMP.text = $"{weaponData.data.baseDamageList[weaponData.baseWeaponLevel]}";
     }
     public void AttackInfoSet()

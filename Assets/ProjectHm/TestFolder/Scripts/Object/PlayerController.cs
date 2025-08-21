@@ -41,9 +41,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Attack")]
     public float rebound = 4.5f;
+    public float attackCooldown;
+
     public int attackCount = 0;                   // 공중 공격 횟수
     public float attackRest = 0.6f;               // 공중공격 4회 이후 딜레이
     public float lastOnAirTime;                   // 4번째 공중공격 시간
+
     public float chargingStart;                   // 차징 시작 시간
     public float holdTime;                        // 차징을 하고 있던 시간
     public float chargingTime = 0.3f;             // 차징 시간
@@ -79,8 +82,13 @@ public class PlayerController : MonoBehaviour
             foreach (Transform child in weaponHolder.transform) Destroy(child.gameObject);
             currentWeapon = GetComponentInChildren<IManualWeapon>();
         }
-        
+    }
 
+    private void Start()
+    {
+        //attackCooldown = 1f / currentWeapon.totalAttackSpeed;
+        //if (animator != null)
+        //    animator.speed = currentWeapon.totalAttackSpeed; // 애니메이션 속도 반영
     }
 
     private void Update()
@@ -158,7 +166,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("DeshCoroutine");
         isDashing = true; // isDashing 동안 사용자의 입력을 받지 않음
         isAbleDash = false;
-        dashDirection = direction;
+        dashDirection = direction;    //방향
         basePos = rb.position;
         targetPos = basePos + dashDirection * dashDistance;
 

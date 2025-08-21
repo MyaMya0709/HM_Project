@@ -129,7 +129,7 @@ public class UI_InfoPanel : MonoBehaviour
     {
         ATKPowerTMP.text = DataManager.Instance.attackPowerDic[GameManager.Instance.attackPowerLevel].ToString();
         ATKSpeedTMP.text = DataManager.Instance.attackSpeedDic[GameManager.Instance.attackSpeedLevel].ToString();
-        moveSpeedTMP.text = DataManager.Instance.moveSpeedDic[GameManager.Instance.moveSpeedLevel].ToString();
+        moveSpeedTMP.text = DataManager.Instance.movePowerDic[GameManager.Instance.moveSpeedLevel].ToString();
         //jumpPower.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
         //stat.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
 
@@ -141,17 +141,17 @@ public class UI_InfoPanel : MonoBehaviour
                 StatType statType = characterData.bonusStatType[i];
                 switch (statType)
                 {
-                    case StatType.attackPower:
+                    case StatType.AttackPower:
                         ATKPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
                         Debug.Log("½ºÅÈ Àû¿ë : attackPower");
                         break;
 
-                    case StatType.attackSpeed:
+                    case StatType.AttackSpeed:
                         ATKSpeedTMP.text += $"+({characterData.bonusStatValue[i]})";
                         Debug.Log("½ºÅÈ Àû¿ë : attackSpeed");
                         break;
 
-                    case StatType.moveSpeed:
+                    case StatType.MoveSpeed:
                         moveSpeedTMP.text += $"+({characterData.bonusStatValue[i]})";
                         Debug.Log("½ºÅÈ Àû¿ë : moveSpeed");
                         break;

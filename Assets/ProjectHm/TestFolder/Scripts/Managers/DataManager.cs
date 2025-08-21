@@ -76,27 +76,7 @@ public class DataManager : MonoBehaviour
         {48, 4800},
         {49, 4900}
     };
-    // key:statLevel / value:movaSpeed
-    public Dictionary<int, float> moveSpeedDic
-    = new Dictionary<int, float>()
-    {
-        {0, 6f},
-        {1, 6.1f},
-        {2, 6.2f},
-        {3, 6.3f},
-        {4, 6.4f},
-        {5, 6.5f},
-        {6, 6.6f},
-        {7, 6.7f},
-        {8, 6.8f},
-        {9, 6.9f},
-        {10, 7f},
-        {11, 7.1f},
-        {12, 7.2f},
-        {13, 7.3f},
-        {14, 7.4f},
-        {15, 7.5f}
-    };
+
     // key:statLevel / value:attackPower
     public Dictionary<int, float> attackPowerDic
     = new Dictionary<int, float>()
@@ -138,6 +118,48 @@ public class DataManager : MonoBehaviour
         {13, 11.3f},
         {14, 11.4f},
         {15, 11.5f}
+    };
+    // key:statLevel / value:[moveSpeed, jumpPower]
+    public Dictionary<int, float[]> movePowerDic
+    = new Dictionary<int, float[]>()
+    {
+        {0, new float[] { 6f, 50f } },
+        {1, new float[] { 6.1f, 50.1f }},
+        {2, new float[] { 6.2f, 50.2f }},
+        {3, new float[] { 6.3f, 50.3f }},
+        {4, new float[] { 6.4f, 50.4f }},
+        {5, new float[] { 6.5f, 50.5f }},
+        {6, new float[] { 6.6f, 50.6f }},
+        {7, new float[] { 6.7f, 50.7f }},
+        {8, new float[] { 6.8f, 50.8f }},
+        {9, new float[] { 6.9f, 50.9f }},
+        {10, new float[] { 7.0f, 51.0f }},
+        {11, new float[] { 7.1f, 51.1f }},
+        {12, new float[] { 7.2f, 51.2f }},
+        {13, new float[] { 7.3f, 51.3f }},
+        {14, new float[] { 7.4f, 51.4f }},
+        {15, new float[] { 7.5f, 51.5f }}
+    };
+    // key:statLevel / value:[dashPower, superJumpPower]  dashPower는 dashDistance의미
+    public Dictionary<int, float[]> actPowerDic
+    = new Dictionary<int, float[]>()
+    {
+        {0, new float[] { 4f, 100f } },
+        {1, new float[] { 4.1f, 100.1f }},
+        {2, new float[] { 4.2f, 100.2f }},
+        {3, new float[] { 4.3f, 100.3f }},
+        {4, new float[] { 4.4f, 100.4f }},
+        {5, new float[] { 4.5f, 100.5f }},
+        {6, new float[] { 4.6f, 100.6f }},
+        {7, new float[] { 4.7f, 100.7f }},
+        {8, new float[] { 4.8f, 100.8f }},
+        {9, new float[] { 4.9f, 100.9f }},
+        {10, new float[] { 5.0f, 101.0f }},
+        {11, new float[] { 5.1f, 101.1f }},
+        {12, new float[] { 5.2f, 101.2f }},
+        {13, new float[] { 5.3f, 101.3f }},
+        {14, new float[] { 5.4f, 101.4f }},
+        {15, new float[] { 5.5f, 101.5f }}
     };
 
     // key:playerLevel / value:MaxExp
@@ -199,17 +221,6 @@ public class DataManager : MonoBehaviour
     #endregion
 
     #region SelecStatTable
-    public Dictionary<int, float> selecMoveSpeedDic
-    = new Dictionary<int, float>()
-    {
-        {0, 1f},
-        {1, 1.1f},
-        {2, 1.2f},
-        {3, 1.2f},
-        {4, 1.4f},
-        {5, 1.5f},
-    };
-
     public Dictionary<int, float> selecAttackPowerDic
     = new Dictionary<int, float>()
     {
@@ -230,6 +241,30 @@ public class DataManager : MonoBehaviour
         {3, 1.2f},
         {4, 1.4f},
         {5, 1.5f},
+    };
+
+    // key:statLevel / value:[moveSpeed, jumpPower]
+    public Dictionary<int, float[]> selecMovePowerDic
+    = new Dictionary<int, float[]>()
+    {
+        {0, new float[] { 1f, 1f } },
+        {1, new float[] { 1.1f, 1.1f }},
+        {2, new float[] { 1.2f, 1.2f }},
+        {3, new float[] { 1.3f, 1.3f }},
+        {4, new float[] { 1.4f, 1.4f }},
+        {5, new float[] { 1.5f, 1.5f }}
+    };
+
+    // key:statLevel / value:[dashPower, superJumpPower]  dashPower는 dashDistance의미
+    public Dictionary<int, float[]> selecActPowerDic
+    = new Dictionary<int, float[]>()
+    {
+        {0, new float[] { 1f, 1f } },
+        {1, new float[] { 1.1f, 1.1f }},
+        {2, new float[] { 1.2f, 1.2f }},
+        {3, new float[] { 1.3f, 1.3f }},
+        {4, new float[] { 1.4f, 1.4f }},
+        {5, new float[] { 1.5f, 1.5f }}
     };
     #endregion
 

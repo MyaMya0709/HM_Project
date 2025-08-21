@@ -171,16 +171,16 @@ public class UI_EnhancePopup : MonoBehaviour
     #region InfoSet
     public void StatusInfoSet()
     {
-        before_AttackDamage_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel]}";
+        before_AttackDamage_TMP.text = $"{enhanceUI.weaponData.data.baseAttackPowerList[enhanceUI.curMWData.baseLevel]}";
         //before_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel]}";
         before_AttackRange_TMP.text = $"{enhanceUI.weaponData.data.baseRangeList[enhanceUI.curMWData.baseLevel]}";
-        before_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveList[enhanceUI.curMWData.baseLevel]}";
+        //before_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveList[enhanceUI.curMWData.baseLevel]}";
         //before_MovePower_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel]}";
 
-        after_AttackDamage_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_AttackDamage_TMP.text = $"{enhanceUI.weaponData.data.baseAttackPowerList[enhanceUI.curMWData.baseLevel + 1]}";
         //after_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel + 1]}";
         after_AttackRange_TMP.text = $"{enhanceUI.weaponData.data.baseRangeList[enhanceUI.curMWData.baseLevel + 1]}";
-        after_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveList[enhanceUI.curMWData.baseLevel + 1]}";
+        //after_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveList[enhanceUI.curMWData.baseLevel + 1]}";
         //after_MovePower_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel + 1]}";
     }
     public void AttackInfoSet()

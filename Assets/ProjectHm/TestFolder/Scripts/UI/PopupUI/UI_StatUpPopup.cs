@@ -93,7 +93,7 @@ public class UI_StatUpPopup : MonoBehaviour
 
         ATKPowerTMP.text = DataManager.Instance.attackPowerDic[attackPowerLevel].ToString();
         ATKSpeedTMP.text = DataManager.Instance.attackSpeedDic[attackSpeedLevel].ToString();
-        moveSpeedTMP.text = DataManager.Instance.moveSpeedDic[moveSpeedLevel].ToString();
+        moveSpeedTMP.text = DataManager.Instance.movePowerDic[moveSpeedLevel].ToString();
         //jumpPower.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
         //stat.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
     }
@@ -169,7 +169,7 @@ public class UI_StatUpPopup : MonoBehaviour
             statUpPoint--;
 
             moveSpeedLevelTMP.text = $"Lv.{moveSpeedLevel.ToString()}";
-            moveSpeedTMP.text = $"{DataManager.Instance.moveSpeedDic[moveSpeedLevel].ToString()}";
+            moveSpeedTMP.text = $"{DataManager.Instance.movePowerDic[moveSpeedLevel].ToString()}";
 
             // 렙업 버튼 클릭 후, 만렙이면 버튼 비활성화 or 레벨이 1이면 레벨다운 버튼 활성화
             if (moveSpeedLevel >= 10) moveSpeedUpBtn.gameObject.SetActive(false);
@@ -249,7 +249,7 @@ public class UI_StatUpPopup : MonoBehaviour
                 statUpPoint++;
 
                 moveSpeedLevelTMP.text = $"Lv.{moveSpeedLevel.ToString()}";
-                moveSpeedTMP.text = $"{DataManager.Instance.moveSpeedDic[moveSpeedLevel].ToString()}";
+                moveSpeedTMP.text = $"{DataManager.Instance.movePowerDic[moveSpeedLevel].ToString()}";
 
                 // 렙다운 버튼 클릭 후, 0렙이면 레벨다운 버튼 비활성화 or 레벨이 9이면 레벨업 버튼 활성화
                 if (moveSpeedLevel <= 0) moveSpeedDownBtn.gameObject.SetActive(false);

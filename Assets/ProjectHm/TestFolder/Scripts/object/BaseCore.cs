@@ -15,8 +15,6 @@ public class BaseCore : MonoBehaviour
     [Header("Effects")]
     public GameObject hitEffect;
 
-    public event System.Action OnBaseDestroy;
-
     private void Awake()
     {
         currentHealth = maxHealth;

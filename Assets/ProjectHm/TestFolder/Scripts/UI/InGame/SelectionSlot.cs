@@ -52,7 +52,7 @@ public class SelectionSlot : MonoBehaviour
         {
             case SlotType.StatUP:
                 Debug.Log("스탯 업");
-                playerCondition.SelecStatLevelUP(slotData.statType);
+                playerCondition.SelecStatLevelUP(slotData.statLvType);
                 break;
 
             // TODO: 무기 추가 + 레벨업 통합하기

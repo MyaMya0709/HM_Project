@@ -51,7 +51,7 @@ public class GameManager : Singleton<GameManager>
         LoadPlayerData();
 
         playerLevel = playerData.playerLevel;
-        moveSpeedLevel = playerData.moveSpeedLevel;
+        moveSpeedLevel = playerData.movePowerLevel;
         attackPowerLevel = playerData.attackPowerLevel;
         attackSpeedLevel = playerData.attackSpeedLevel;
         statUpPoint = playerData.statUpPoint;
@@ -194,7 +194,7 @@ public class GameManager : Singleton<GameManager>
     public void GetPlayerData()
     {
         playerData.playerLevel = playerLevel;
-        playerData.moveSpeedLevel = moveSpeedLevel;
+        playerData.movePowerLevel = moveSpeedLevel;
         playerData.attackPowerLevel = attackPowerLevel;
         playerData.attackSpeedLevel = attackSpeedLevel;
         playerData.statUpPoint = statUpPoint;

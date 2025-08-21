@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 773e7687593188d4ca443f73b57e1659, type: 3}
-  m_Name: AttackSpeedUp
+  m_Name: MovePowerUp
   m_EditorClassIdentifier: 
   type: 0
-  tatle: Attack Speed UP
+  tatle: Move Power UP
   icon: {fileID: 0}
-  description: 'Attack Speed
+  description: 'Move Power
 
     Level Up!'
-  statLvType: 1
+  statLvType: 3
   weaponID: 0

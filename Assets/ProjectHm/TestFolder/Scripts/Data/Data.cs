@@ -11,9 +11,12 @@ using UnityEngine.TextCore.Text;
 public class PlayerData
 {
     public int playerLevel;
-    public int moveSpeedLevel;
+
     public int attackPowerLevel;
     public int attackSpeedLevel;
+    public int movePowerLevel;
+    public int actPowerLevel;
+
     public int statUpPoint;
     public int haveGold;
 
@@ -23,9 +26,12 @@ public class PlayerData
     public void Clear()
     {
         playerLevel = 0;
-        moveSpeedLevel = 0;
+
         attackPowerLevel = 0;
         attackSpeedLevel = 0;
+        movePowerLevel = 0;
+        actPowerLevel = 0;
+
         statUpPoint = 0;
         haveGold = 999999999;
 

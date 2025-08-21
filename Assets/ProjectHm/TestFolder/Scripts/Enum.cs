@@ -25,7 +25,20 @@ public enum SlotType
 
 public enum StatType
 {
-    moveSpeed,
-    attackPower,
-    attackSpeed
+    AttackPower,
+    AttackSpeed,
+    AttackRange,
+    MoveSpeed,
+    JumpPower,
+    DashPower,
+    SuperJumpPower
+}
+
+public enum StatLvType
+{
+    AttackPower,
+    AttackSpeed,
+    AttackRange,
+    MovePower,
+    ActPower
 }

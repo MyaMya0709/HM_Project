@@ -27,7 +27,6 @@ public class SpawnManager : MonoBehaviour
     public Coroutine spawnCoroutine;
 
     public System.Action<int> OnWaveStarted;
-    public event Action<bool> OnFinishGame;
 
 
     // 웨이브 시작
