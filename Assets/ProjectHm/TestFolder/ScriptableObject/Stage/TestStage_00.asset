@@ -15,5 +15,5 @@ MonoBehaviour:
   ID: 0
   maxWave: 1
   waveDelay: 30
-  stageCost: 50
+  stageCost: 10
   poolID: 00000000

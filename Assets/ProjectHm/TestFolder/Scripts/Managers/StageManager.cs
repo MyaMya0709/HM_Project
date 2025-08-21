@@ -137,8 +137,6 @@ public class StageManager : MonoBehaviour
             
             makeWave.groupList.Add(randomGroupData);
             curCost += randomGroupData.groupCost;
-
-            Debug.Log($"누적 코스트, {curCost}");
         }
 
         if (makeWave.groupList.Count > 0)

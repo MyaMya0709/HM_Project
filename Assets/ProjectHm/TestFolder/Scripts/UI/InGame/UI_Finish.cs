@@ -61,6 +61,7 @@ public class UI_Finish : MonoBehaviour
 
     public void OnEnableFinshUI(bool isGameClear)
     {
+        Time.timeScale = 0f;
         gameObject.SetActive(true);
         if (isGameClear) GameClearResult();
         else GameOverResult();

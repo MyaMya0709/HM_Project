@@ -3416,9 +3416,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f42f7608e5736640b94f9549aa0340a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 0}
-  clearTitle: {fileID: 0}
-  gameOverTitle: {fileID: 0}
+  uiManager: {fileID: 1231687877}
+  clearTitle: {fileID: 646391044}
+  gameOverTitle: {fileID: 2049929309}
   clearStage: {fileID: 1367453346}
   bestLevel: {fileID: 692333624}
   curLevel: {fileID: 826388247}
@@ -8779,7 +8779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed993bfdc2e1d740b3878dee536a582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnManager: {fileID: 0}
+  uiManager: {fileID: 1231687877}
   maxHealth: 200
   currentHealth: 0
   HPBar: {fileID: 936978496}
@@ -10391,9 +10391,13 @@ MonoBehaviour:
   - {fileID: 1450330974}
   - {fileID: 217032493}
   attackPoint: {fileID: 512146397}
+  maxWave: 0
   waveDelay: 10
+  currentWaveIndex: 0
   killEnemies: 0
   aliveEnemies: 0
+  isSpawning: 0
+  isGameClear: 0
   isGameOver: 0
 --- !u!4 &1497130809
 Transform:

@@ -16,16 +16,15 @@ public class SpawnManager : MonoBehaviour
 
     public Transform attackPoint;
 
-    private int maxWave;
+    public int maxWave;
     public float waveDelay = 10f;
-    private int currentWaveIndex = 0;
+    public int currentWaveIndex = 0;
     public int killEnemies = 0;
     public int aliveEnemies = 0;
-    private bool isSpawning = false;
-    private bool isGameClear = false;
-    public bool isGameOver = false;
+    public bool isSpawning = false;
+    public bool isGameFinish = false;
 
-    private Coroutine spawnCoroutine;
+    public Coroutine spawnCoroutine;
 
     public System.Action<int> OnWaveStarted;
     public event Action<bool> OnFinishGame;
@@ -36,7 +35,7 @@ public class SpawnManager : MonoBehaviour
     {
         waves = stageManager.waveList;
 
-        maxWave = waves.Count;
+        maxWave = stageManager.data.maxWave;
         currentWaveIndex = 0;
         spawnCoroutine = StartCoroutine(RunWave(currentWaveIndex));
     }
@@ -46,7 +45,7 @@ public class SpawnManager : MonoBehaviour
     {
         Debug.Log($"Wave {waveIndex+1}");
 
-        if (waveIndex > maxWave)
+        if (waveIndex >= maxWave)
         {
             Debug.Log($"Wave Finish");
             yield break;
@@ -96,10 +95,8 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(spawnDataList[i].spawnDelay);
 
             // 기지 파괴시 StopCoroutine() 실행
-            if (isGameOver == true)
+            if (isGameFinish == true)
             {
-                Time.timeScale = 0f;
-                uiManager.finishUI.gameObject.SetActive(true);
                 StopCoroutine();
             }
         }
@@ -108,7 +105,7 @@ public class SpawnManager : MonoBehaviour
 
         //웨이브 스폰 끝나면 바로 다음 웨이브 시작
         currentWaveIndex++;
-        StartWaves();
+        spawnCoroutine = StartCoroutine(RunWave(currentWaveIndex));
     }
 
     // 적 실체화 및 적의 숫자 계산
@@ -133,18 +130,18 @@ public class SpawnManager : MonoBehaviour
         enemy.GetComponent<BaseEnemy>().OnDeath += HandleEnemyDeath;
     }
 
-    // 남아있는 적의 수 == 0 / 다음 웨이브 시작
+    // 남아있는 적의 수 == 0 / 
     private void HandleEnemyDeath()
     {
         aliveEnemies--;
         killEnemies++;
         // 게임오버 로직 실행
-        if (!isSpawning && aliveEnemies <= 0)
+          if (!isSpawning && aliveEnemies <= 0)
         {
             //모든 웨이브 종료시 호출
-            isGameClear = true;
+            isGameFinish = true;
             //게임 클리어 UI 호출
-            uiManager.finishUI.OnEnableFinshUI(isGameClear);
+            uiManager.finishUI.OnEnableFinshUI(!isSpawning);
         }
     }
 

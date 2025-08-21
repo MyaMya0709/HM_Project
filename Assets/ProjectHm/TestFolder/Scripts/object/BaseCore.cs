@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class BaseCore : MonoBehaviour
 {
-    public SpawnManager spawnManager;
+    public UIManager uiManager;
 
     [Header("Base Stats")]
     public float maxHealth = 200f;
@@ -43,7 +43,10 @@ public class BaseCore : MonoBehaviour
     {
         Debug.Log("기지 파괴됨! 게임 오버 처리");
         // GameManager에 게임오버 알림
-        spawnManager.isGameOver = true;
+        uiManager.spawnManager.isGameFinish = true;
+
+        Time.timeScale = 0f;
+        uiManager.finishUI.OnEnableFinshUI(!uiManager.spawnManager.isSpawning);
 
         Destroy(gameObject); // or 비활성화
     }
