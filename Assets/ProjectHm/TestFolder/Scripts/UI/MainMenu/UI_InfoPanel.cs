@@ -11,13 +11,15 @@ public class UI_InfoPanel : MonoBehaviour
     [SerializeField] private TMP_Text playerLevelTMP;
     [SerializeField] private TMP_Text ATKPowerLevelTMP;
     [SerializeField] private TMP_Text ATKSpeedLevelTMP;
-    [SerializeField] private TMP_Text moveSpeedLevelTMP;
-    [SerializeField] private TMP_Text jumpPowerLevelTMP;
-    [SerializeField] private TMP_Text statLevelTMP;
+    [SerializeField] private TMP_Text movePowerLevelTMP;
+    [SerializeField] private TMP_Text actPowerLevelTMP;
+    [SerializeField] private TMP_Text masteryLevelTMP;
 
     [SerializeField] private TMP_Text ATKPowerTMP;
     [SerializeField] private TMP_Text ATKSpeedTMP;
     [SerializeField] private TMP_Text moveSpeedTMP;
+    [SerializeField] private TMP_Text moveSpeedTMP;
+    [SerializeField] private TMP_Text jumpPowerTMP;
     [SerializeField] private TMP_Text jumpPowerTMP;
     [SerializeField] private TMP_Text statTMP;
 
@@ -69,7 +71,7 @@ public class UI_InfoPanel : MonoBehaviour
         playerLevelTMP.text = $"Lv.{GameManager.Instance.playerLevel.ToString()}";
         ATKPowerLevelTMP.text = $"Lv.{GameManager.Instance.attackPowerLevel.ToString()}";
         ATKSpeedLevelTMP.text = $"Lv.{GameManager.Instance.attackSpeedLevel.ToString()}";
-        moveSpeedLevelTMP.text = $"Lv.{GameManager.Instance.moveSpeedLevel.ToString()}";
+        movePowerLevelTMP.text = $"Lv.{GameManager.Instance.moveSpeedLevel.ToString()}";
         //jumpPowerLevel.text = playerData.moveSpeedLevel.ToString();
         //statLevel.text = playerData.moveSpeedLevel.ToString();
 

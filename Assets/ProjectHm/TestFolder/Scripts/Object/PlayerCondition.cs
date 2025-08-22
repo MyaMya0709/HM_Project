@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class PlayerCondition : MonoBehaviour
 {
     public PlayerController controller;
+    public IManualWeapon curWeapon;
     public CharacterData characterData;
     public PlayerData playerData;
 
@@ -47,17 +48,12 @@ public class PlayerCondition : MonoBehaviour
     public List<IAutoWeapon> autoWeapons;
 
     public static event Action OnPlayerLevelUp;
-    public static event Action OnPlayerStatUp;
 
     protected void Awake()
     {
-
-    }
-
-    private void Start()
-    {
         expBar = FindAnyObjectByType<UI_Main>().expBar;
         controller = GetComponent<PlayerController>();
+        curWeapon = controller.currentWeapon;
 
         playerData = GameManager.Instance.SetPlayerData();
         characterData = GameManager.Instance.SetCharacterData();
@@ -66,8 +62,12 @@ public class PlayerCondition : MonoBehaviour
         curExp = 0;
         UpdateExp();
 
-        StartStatSetting();
         autoWeapons = new List<IAutoWeapon>();
+    }
+
+    private void Start()
+    {
+        StartStatSetting();
     }
 
     public void LevelUP()
@@ -107,6 +107,7 @@ public class PlayerCondition : MonoBehaviour
         baseJumpPower = DataManager.Instance.movePowerDic[playerData.movePowerLevel][1];
         baseDashPower = DataManager.Instance.actPowerDic[playerData.actPowerLevel][0];
         baseSuperJumpPower = DataManager.Instance.actPowerDic[playerData.actPowerLevel][1];
+        Debug.Log("기본 스탯 로드");
 
         // 보너스 스탯 적용
         if (characterData.bonusStatValue != null && characterData.bonusStatType != null)
@@ -151,7 +152,7 @@ public class PlayerCondition : MonoBehaviour
                         break;
                 }
             }
-            Debug.Log("보너스 스탯 표기 적용");
+            Debug.Log("보너스 스탯 적용");
         }
 
         // 선택지 스탯 레벨 초기화
@@ -160,18 +161,27 @@ public class PlayerCondition : MonoBehaviour
         selecMovePowerLv = 0;
         selecActPowerLv = 0;
 
+        // 무기 스탯 계산
+        controller.currentWeapon.TotalStatSet();
+
         // 초기화된 종합 스탯 계산
-        totalAttackPower = baseAttackPower * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv];
-        totalAttackSpeed = baseAttackSpeed * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv];
-        totalMoveSpeed = baseMoveSpeed * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0];
-        totalJumpPower = baseJumpPower * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1];
-        totalDashPower = baseDashPower * DataManager.Instance.selecActPowerDic[selecActPowerLv][0];
-        totalSuperJumpPower = baseSuperJumpPower * DataManager.Instance.selecActPowerDic[selecActPowerLv][1];
+        GetTotalStat();
+
+        controller.currentWeapon.GetTotalStat();
 
         // 자동무기 리스트 초기화
         // 자동무기 레벨 초기화
+    }
 
-        controller.currentWeapon.TotalStatSet();
+    public void GetTotalStat()
+    {
+        Debug.Log("플레이어 종합 스탯 세팅");
+        totalAttackPower = (baseAttackPower + curWeapon.totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv];
+        totalAttackSpeed = (baseAttackSpeed + curWeapon.totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv];
+        totalMoveSpeed = (baseMoveSpeed + curWeapon.totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0];
+        totalJumpPower = (baseJumpPower + curWeapon.totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1];
+        totalDashPower = (baseDashPower + curWeapon.totalWeaponDashPower) * DataManager.Instance.selecActPowerDic[selecActPowerLv][0];
+        totalSuperJumpPower = (baseSuperJumpPower + curWeapon.totalWeaponSuperJumpPower) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1];
     }
 
     public void SelecStatLevelUP(StatLvType stat)
@@ -195,7 +205,7 @@ public class PlayerCondition : MonoBehaviour
                 break;
         }
         StatSetting(stat);
-        OnPlayerStatUp?.Invoke();
+        controller.currentWeapon.GetTotalStat();
     }
 
     public void StatSetting(StatLvType stat)
@@ -203,21 +213,21 @@ public class PlayerCondition : MonoBehaviour
         switch (stat)
         {
             case StatLvType.AttackPower:
-                totalAttackPower = baseAttackPower * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv];
+                totalAttackPower = (baseAttackPower + curWeapon.totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv];
                 break;
 
             case StatLvType.AttackSpeed:
-                totalAttackSpeed = baseAttackSpeed * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv];
+                totalAttackSpeed = (baseAttackSpeed + curWeapon.totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv];
                 break;
 
             case StatLvType.MovePower:
-                totalMoveSpeed = baseMoveSpeed * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0];
-                totalJumpPower = baseJumpPower * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1];
+                totalMoveSpeed = (baseMoveSpeed + curWeapon.totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0];
+                totalJumpPower = (baseJumpPower + curWeapon.totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1];
                 break;
 
             case StatLvType.ActPower:
-                totalDashPower = baseDashPower * DataManager.Instance.selecActPowerDic[selecActPowerLv][0];
-                totalSuperJumpPower = baseSuperJumpPower * DataManager.Instance.selecActPowerDic[selecActPowerLv][1];
+                totalDashPower = (baseDashPower + curWeapon.totalWeaponDashPower) * DataManager.Instance.selecActPowerDic[selecActPowerLv][0];
+                totalSuperJumpPower = (baseSuperJumpPower + curWeapon.totalWeaponSuperJumpPower) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1];
                 break;
 
             default:

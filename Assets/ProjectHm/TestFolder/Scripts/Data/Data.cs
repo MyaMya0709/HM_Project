@@ -36,7 +36,7 @@ public class PlayerData
         haveGold = 999999999;
 
         characterID = 0;
-        weaponID = 0;
+        weaponID = 100;
     }
 }
 #endregion
@@ -86,10 +86,10 @@ public class UnlockData
 
     public void Clear()
     {
-        characterIDs = new List<int>() { 0 };
+        characterIDs = new List<int>() { 0,1,2 };
         skillIDs = new List<int> { 0 };
-        waeaponIDs = new List<int> { 0 };
-        autoWeaponIDs = new List<int> { 0 };
+        waeaponIDs = new List<int> { 100 };
+        autoWeaponIDs = new List<int> { 200 };
     }
 }
 #endregion

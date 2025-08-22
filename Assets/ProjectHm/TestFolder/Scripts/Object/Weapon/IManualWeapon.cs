@@ -46,8 +46,11 @@ public abstract class IManualWeapon : MonoBehaviour
     public float totalDashPower;
     public float totalSuperJumpPower;
 
-    private void OnEnable() => PlayerCondition.OnPlayerStatUp += GetTotalStat;
-    private void OnDisable() => PlayerCondition.OnPlayerStatUp -= GetTotalStat;
+    private void Awake()
+    {
+        selecWeaponLevel = 0;
+        StartStatSet();
+    }
 
     protected virtual void Start()
     {
@@ -56,8 +59,7 @@ public abstract class IManualWeapon : MonoBehaviour
         enemyLayer = LayerMask.GetMask("Enemy");
         sr = GetComponentInChildren<SpriteRenderer>();
 
-        selecWeaponLevel = 0;
-        TotalStatSet();
+        GetTotalStat();
     }
 
     public abstract void Attack();
@@ -67,48 +69,43 @@ public abstract class IManualWeapon : MonoBehaviour
     
     public void BaseLevelUp()
     {
+        Debug.Log("무기 영구 강화 레벨업");
         baseWeaponLevel++;
 
-        TotalStatSet();
-    }
+        baseAttackPower = data.baseAttackPowerList[baseWeaponLevel];
+        baseAttackSpeed = data.baseAttackSpeedList[baseWeaponLevel];
+        baseRange = data.baseRangeList[baseWeaponLevel];
+        baseMoveSpeed = data.baseMoveSpeedList[baseWeaponLevel];
+        baseJumpPower = data.basejumpPowerList[baseWeaponLevel];
+        baseDashPower = data.baseDashPowerList[baseWeaponLevel];
+        baseSuperJumpPower = data.selecSuperJumpPowerList[baseWeaponLevel];
 
+        TotalStatSet();
+        GetTotalStat();
+    }
     public void SelecLevelUp()
     {
+        Debug.Log("선택지 임시 무기 레벨업");
         selecWeaponLevel++;
 
+        selecAttackPower = data.selecAttackSpeedList[selecWeaponLevel];
+        selecAttackSpeed = data.selecAttackSpeedList[selecWeaponLevel];
+        selecRange = data.selecRangeList[selecWeaponLevel];
+        selecMoveSpeed = data.selecMoveSpeedList[selecWeaponLevel];
+        selecJumpPower = data.selecjumpPowerList[selecWeaponLevel];
+        selecDashPower = data.selecDashPowerList[selecWeaponLevel];
+        selecSuperJumpPower = data.selecSuperJumpPowerList[selecWeaponLevel];
+
         TotalStatSet();
-    }
+        GetTotalStat();
 
-    // 총스탯 계산 함수
-    public void GetTotalStat()
-    {
-        if (playerCondition != null)
-        {
-            totalWeaponAttackPower = baseAttackPower* selecAttackPower;
-            totalWeaponAttackSpeed = baseAttackSpeed * selecAttackSpeed;
-            totalWeaponRange = baseRange * selecRange;
-            totalWeaponMoveSpeed = baseMoveSpeed * selecMoveSpeed;
-            totalWeaponJumpPower = baseJumpPower * selecJumpPower;
-            totalWeaponDashPower = baseDashPower * selecDashPower;
-            totalWeaponSuperJumpPower = baseSuperJumpPower * selecSuperJumpPower;
-
-            totalAttackPower = playerCondition.totalAttackPower + totalWeaponAttackPower;
-            totalAttackSpeed = playerCondition.totalAttackPower + totalWeaponAttackSpeed;
-            totalRange = totalWeaponRange;
-            totalMoveSpeed = playerCondition.totalMoveSpeed + totalWeaponMoveSpeed;
-            totalJumpPower = playerCondition.totalJumpPower + totalWeaponJumpPower;
-            totalDashPower = playerCondition.totalDashPower + totalWeaponDashPower;
-            totalSuperJumpPower = playerCondition.totalSuperJumpPower + totalWeaponSuperJumpPower;
-        }
-        else
-        {
-            Debug.Log("playerCondition 없음");
-        }
+        playerCondition.GetTotalStat();
     }
 
     // 게임 시작용 스텟 세팅 함수
-    public void TotalStatSet()
+    public void StartStatSet()
     {
+        Debug.Log("시작할 때, 무기 스탯 세팅");
         baseAttackPower = data.baseAttackPowerList[baseWeaponLevel];
         baseAttackSpeed = data.baseAttackSpeedList[baseWeaponLevel];
         baseRange = data.baseRangeList[baseWeaponLevel];
@@ -125,7 +122,46 @@ public abstract class IManualWeapon : MonoBehaviour
         selecDashPower = data.selecDashPowerList[selecWeaponLevel];
         selecSuperJumpPower = data.selecSuperJumpPowerList[selecWeaponLevel];
 
-        GetTotalStat();
+        TotalStatSet();
+    }
+
+    // 무기의 종합 스탯
+    public void TotalStatSet()
+    {
+        Debug.Log("무기의 종합 스탯 세팅");
+        totalWeaponAttackPower = baseAttackPower * selecAttackPower;
+        totalWeaponAttackSpeed = baseAttackSpeed * selecAttackSpeed;
+        totalWeaponRange = baseRange * selecRange;
+        totalWeaponMoveSpeed = baseMoveSpeed * selecMoveSpeed;
+        totalWeaponJumpPower = baseJumpPower * selecJumpPower;
+        totalWeaponDashPower = baseDashPower * selecDashPower;
+        totalWeaponSuperJumpPower = baseSuperJumpPower * selecSuperJumpPower;
+    }
+
+    // 총스탯 계산 함수
+    public void GetTotalStat()
+    {
+        if (playerCondition != null)
+        {
+            totalAttackPower = (playerCondition.baseAttackPower + totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[playerCondition.selecAttackPowerLv];
+            totalAttackSpeed = (playerCondition.baseAttackSpeed + totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[playerCondition.selecAttackSpeedLv];
+            totalRange = totalWeaponRange;
+            totalMoveSpeed = (playerCondition.baseMoveSpeed + totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][0];
+            totalJumpPower = (playerCondition.baseJumpPower + totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][1];
+            totalDashPower = (playerCondition.baseDashPower + totalWeaponDashPower) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][0];
+            totalSuperJumpPower = (playerCondition.baseSuperJumpPower + totalWeaponSuperJumpPower) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][1];
+        }
+        else
+        {
+            totalAttackPower = totalWeaponAttackPower;
+            totalAttackSpeed = totalWeaponAttackSpeed;
+            totalRange = totalWeaponRange;
+            totalMoveSpeed = totalWeaponMoveSpeed;
+            totalJumpPower = totalWeaponJumpPower;
+            totalDashPower = totalWeaponDashPower;
+            totalSuperJumpPower = totalWeaponSuperJumpPower;
+            Debug.Log("playerCondition 없음");
+        }
     }
 
     // 게임 초기화용 함수
