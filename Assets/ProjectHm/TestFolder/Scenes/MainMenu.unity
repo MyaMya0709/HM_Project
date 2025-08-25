@@ -46785,8 +46785,8 @@ MonoBehaviour:
   levelUpBtn: {fileID: 343917028}
   selecBtn: {fileID: 784553146}
   buyBtn: {fileID: 1646383808}
-  selectedCheck: {fileID: 109891484}
-  unlockCheck: {fileID: 1266827958}
+  selectedCheck: {fileID: 109891485}
+  unlockCheck: {fileID: 1266827959}
   statusTap: {fileID: 1340874543}
   ATKPower_TMP: {fileID: 1383688054}
   ATKSpeed_TMP: {fileID: 586495746}
