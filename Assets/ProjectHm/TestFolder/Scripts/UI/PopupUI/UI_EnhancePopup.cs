@@ -9,17 +9,21 @@ public class UI_EnhancePopup : MonoBehaviour
 {
     [Header("Status")]
     [SerializeField] private RectTransform statusTap;
-    [SerializeField] private TMP_Text before_AttackDamage_TMP;
+    [SerializeField] private TMP_Text before_AttackPower_TMP;
     [SerializeField] private TMP_Text before_AttackSpeed_TMP;
     [SerializeField] private TMP_Text before_AttackRange_TMP;
     [SerializeField] private TMP_Text before_MoveSpeed_TMP;
-    [SerializeField] private TMP_Text before_MovePower_TMP;
-    
-    [SerializeField] private TMP_Text after_AttackDamage_TMP;
+    [SerializeField] private TMP_Text before_JumpPower_TMP;
+    [SerializeField] private TMP_Text before_DashPower_TMP;
+    [SerializeField] private TMP_Text before_SuperJump_TMP;
+
+    [SerializeField] private TMP_Text after_AttackPower_TMP;
     [SerializeField] private TMP_Text after_AttackSpeed_TMP;
     [SerializeField] private TMP_Text after_AttackRange_TMP;
     [SerializeField] private TMP_Text after_MoveSpeed_TMP;
     [SerializeField] private TMP_Text after_MovePower_TMP;
+    [SerializeField] private TMP_Text after_DashPower_TMP;
+    [SerializeField] private TMP_Text after_SuperJump_TMP;
 
     [Header("AttackTap")]
     [SerializeField] private RectTransform attackTap;
@@ -114,7 +118,7 @@ public class UI_EnhancePopup : MonoBehaviour
     [SerializeField] private Button exitBtn;
 
     [SerializeField] private UI_Enhance enhanceUI;
-
+    [SerializeField] private RectTransform maxLevel;
     [SerializeField] private TMP_Text curGoldTMP;
 
     private void OnEnable()
@@ -126,9 +130,23 @@ public class UI_EnhancePopup : MonoBehaviour
     // 팝업창 하단부 세팅
     public void BottomInfoSet()
     {
-        afterLevel_TMP.text = $"Lv.{enhanceUI.weaponData.baseWeaponLevel + 1}";
-        spendGold_TMP.text = $"{enhanceUI.weaponData.data.enhanceCostList[enhanceUI.weaponData.baseWeaponLevel]}";
+        if(enhanceUI.weaponData.baseWeaponLevel + 1 >= enhanceUI.weaponData.data.enhanceCostList.Count)
+        {
+            afterLevel_TMP.transform.parent.gameObject.SetActive(false);
+            spendGold_TMP.transform.parent.gameObject.SetActive(false);
+            levelUpBtn.gameObject.SetActive(false);
+        }
+        else
+        {
+            afterLevel_TMP.transform.parent.gameObject.SetActive(true);
+            spendGold_TMP.transform.parent.gameObject.SetActive(true);
+            levelUpBtn.gameObject.SetActive(true);
+
+            afterLevel_TMP.text = $"Lv.{enhanceUI.weaponData.baseWeaponLevel + 1}";
+            spendGold_TMP.text = $"{enhanceUI.weaponData.data.enhanceCostList[enhanceUI.weaponData.baseWeaponLevel]}";
+        }
     }
+           
 
     // 무기의 스텟, 효과 값 세팅용 함수
     public void UIInfoSet()
@@ -142,6 +160,8 @@ public class UI_EnhancePopup : MonoBehaviour
 
     public void OnLevelUp()
     {
+        MaxLevelSet();
+
         Debug.Log("무기 렙업");
         // 재화 사용 저장 및 json 저장
         GameManager.Instance.SpendGold(enhanceUI.weaponData.data.enhanceCostList[enhanceUI.weaponData.baseWeaponLevel]);
@@ -157,31 +177,54 @@ public class UI_EnhancePopup : MonoBehaviour
         else if (dropAttackTap.gameObject.activeSelf) DropAttackInfoSet();
         else if (chargeAttackTap.gameObject.activeSelf) ChargeAttackInfoSet();
         else if (dashAttackTap.gameObject.activeSelf) DashAttackInfoSet();
-        
+
         curGoldTMP.text = GameManager.Instance.curGold.ToString();
     }
 
     public void OnExit()
     {
         enhanceUI.RightInfoSet();
-        if (gameObject.activeSelf)
-            gameObject.SetActive(false);
+        if (gameObject.activeSelf) gameObject.SetActive(false);
     }
 
     #region InfoSet
+    public void MaxLevelSet()
+    {
+        if(enhanceUI.weaponData.baseWeaponLevel + 1 >= enhanceUI.weaponData.data.enhanceCostList.Count-1)
+        {
+            afterLevel_TMP.transform.parent.gameObject.SetActive(false);
+            spendGold_TMP.transform.parent.gameObject.SetActive(false);
+            levelUpBtn.gameObject.SetActive(false);
+
+            maxLevel.gameObject.SetActive(true);
+            statusTap.gameObject.SetActive(false);
+            attackTap.gameObject.SetActive(false);
+            dropAttackTap.gameObject.SetActive(false);
+            chargeAttackTap.gameObject.SetActive(false);
+            dashAttackTap.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("최대레벨이 아님");
+        }
+    } 
     public void StatusInfoSet()
     {
-        before_AttackDamage_TMP.text = $"{enhanceUI.weaponData.data.baseAttackPowerList[enhanceUI.curMWData.baseLevel]}";
-        //before_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel]}";
+        before_AttackPower_TMP.text = $"{enhanceUI.weaponData.data.baseAttackPowerList[enhanceUI.curMWData.baseLevel]}";
+        before_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseAttackSpeedList[enhanceUI.curMWData.baseLevel]}";
         before_AttackRange_TMP.text = $"{enhanceUI.weaponData.data.baseRangeList[enhanceUI.curMWData.baseLevel]}";
-        //before_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveList[enhanceUI.curMWData.baseLevel]}";
-        //before_MovePower_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel]}";
+        before_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveSpeedList[enhanceUI.curMWData.baseLevel]}";
+        before_JumpPower_TMP.text = $"{enhanceUI.weaponData.data.basejumpPowerList[enhanceUI.curMWData.baseLevel]}";
+        before_DashPower_TMP.text = $"{enhanceUI.weaponData.data.baseDashPowerList[enhanceUI.curMWData.baseLevel]}";
+        before_SuperJump_TMP.text = $"{enhanceUI.weaponData.data.baseSuperJumpPowerList[enhanceUI.curMWData.baseLevel]}";
 
-        after_AttackDamage_TMP.text = $"{enhanceUI.weaponData.data.baseAttackPowerList[enhanceUI.curMWData.baseLevel + 1]}";
-        //after_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_AttackPower_TMP.text = $"{enhanceUI.weaponData.data.baseAttackPowerList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseAttackSpeedList[enhanceUI.curMWData.baseLevel + 1]}";
         after_AttackRange_TMP.text = $"{enhanceUI.weaponData.data.baseRangeList[enhanceUI.curMWData.baseLevel + 1]}";
-        //after_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveList[enhanceUI.curMWData.baseLevel + 1]}";
-        //after_MovePower_TMP.text = $"{enhanceUI.weaponData.data.baseDamageList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveSpeedList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_MovePower_TMP.text = $"{enhanceUI.weaponData.data.basejumpPowerList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_DashPower_TMP.text = $"{enhanceUI.weaponData.data.baseDashPowerList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_SuperJump_TMP.text = $"{enhanceUI.weaponData.data.baseSuperJumpPowerList[enhanceUI.curMWData.baseLevel + 1]}";
     }
     public void AttackInfoSet()
     {
@@ -295,48 +338,88 @@ public class UI_EnhancePopup : MonoBehaviour
     #region Taps
     public void OnStatusTap()
     {
-        statusTap.gameObject.SetActive(true);
-        attackTap.gameObject.SetActive(false);
-        dropAttackTap.gameObject.SetActive(false);
-        chargeAttackTap.gameObject.SetActive(false);
-        dashAttackTap.gameObject.SetActive(false);
-        StatusInfoSet();
+        try
+        {
+            maxLevel.gameObject.SetActive(false);
+            statusTap.gameObject.SetActive(true);
+            attackTap.gameObject.SetActive(false);
+            dropAttackTap.gameObject.SetActive(false);
+            chargeAttackTap.gameObject.SetActive(false);
+            dashAttackTap.gameObject.SetActive(false);
+            StatusInfoSet();
+        }
+        catch
+        {
+            MaxLevelSet();
+        }
     }
     public void OnAttackTap()
     {
-        statusTap.gameObject.SetActive(false);
-        attackTap.gameObject.SetActive(true);
-        dropAttackTap.gameObject.SetActive(false);
-        chargeAttackTap.gameObject.SetActive(false);
-        dashAttackTap.gameObject.SetActive(false);
-        AttackInfoSet();
+        try
+        {
+            maxLevel.gameObject.SetActive(false);
+            statusTap.gameObject.SetActive(false);
+            attackTap.gameObject.SetActive(true);
+            dropAttackTap.gameObject.SetActive(false);
+            chargeAttackTap.gameObject.SetActive(false);
+            dashAttackTap.gameObject.SetActive(false);
+            AttackInfoSet();
+        }
+        catch 
+        {
+            MaxLevelSet();
+        }
     }
     public void OnDropAttackTap()
     {
-        statusTap.gameObject.SetActive(false);
-        attackTap.gameObject.SetActive(false);
-        dropAttackTap.gameObject.SetActive(true);
-        chargeAttackTap.gameObject.SetActive(false);
-        dashAttackTap.gameObject.SetActive(false);
-        DropAttackInfoSet();
+        try
+        {
+            maxLevel.gameObject.SetActive(false);
+            statusTap.gameObject.SetActive(false);
+            attackTap.gameObject.SetActive(false);
+            dropAttackTap.gameObject.SetActive(true);
+            chargeAttackTap.gameObject.SetActive(false);
+            dashAttackTap.gameObject.SetActive(false);
+            DropAttackInfoSet();
+        }
+        catch
+        {
+            MaxLevelSet() ;
+        }
     }
     public void OnChargeAttackTap()
     {
-        statusTap.gameObject.SetActive(false);
-        attackTap.gameObject.SetActive(false);
-        dropAttackTap.gameObject.SetActive(false);
-        chargeAttackTap.gameObject.SetActive(true);
-        dashAttackTap.gameObject.SetActive(false);
-        ChargeAttackInfoSet();
+        try
+        {
+            maxLevel.gameObject.SetActive(false);
+            statusTap.gameObject.SetActive(false);
+            attackTap.gameObject.SetActive(false);
+            dropAttackTap.gameObject.SetActive(false);
+            chargeAttackTap.gameObject.SetActive(true);
+            dashAttackTap.gameObject.SetActive(false);
+            ChargeAttackInfoSet();
+        }
+        catch
+        {
+            MaxLevelSet();
+        }
     }
     public void OnDashAttackTap()
     {
-        statusTap.gameObject.SetActive(false);
-        attackTap.gameObject.SetActive(false);
-        dropAttackTap.gameObject.SetActive(false);
-        chargeAttackTap.gameObject.SetActive(false);
-        dashAttackTap.gameObject.SetActive(true);
-        DashAttackInfoSet();
+        try
+        {
+            maxLevel.gameObject.SetActive(false);
+            statusTap.gameObject.SetActive(false);
+            attackTap.gameObject.SetActive(false);
+            dropAttackTap.gameObject.SetActive(false);
+            chargeAttackTap.gameObject.SetActive(false);
+            dashAttackTap.gameObject.SetActive(true);
+            DashAttackInfoSet();
+        }
+        catch
+        {
+            MaxLevelSet();
+        }
     }
     #endregion
 }

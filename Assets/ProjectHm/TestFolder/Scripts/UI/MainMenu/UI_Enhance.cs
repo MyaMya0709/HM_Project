@@ -23,16 +23,19 @@ public class UI_Enhance : MonoBehaviour
     [SerializeField] private Button levelUpBtn;
     [SerializeField] private Button selecBtn;
     [SerializeField] private Button buyBtn;
-    [SerializeField] private GameObject selectedCheck;
-    [SerializeField] private GameObject unlockCheck;
+    [SerializeField] private RectTransform selectedCheck;
+    [SerializeField] private RectTransform unlockCheck;
 
     [Header("Status")]
     [SerializeField] private RectTransform statusTap;
-    [SerializeField] private TMP_Text attackDamage_TMP;
-    [SerializeField] private TMP_Text attackSpeed_TMP;
-    [SerializeField] private TMP_Text attackRange_TMP;
+    [SerializeField] private TMP_Text ATKPower_TMP;
+    [SerializeField] private TMP_Text ATKSpeed_TMP;
+    [SerializeField] private TMP_Text ATKRange_TMP;
     [SerializeField] private TMP_Text moveSpeed_TMP;
-    [SerializeField] private TMP_Text movePower_TMP;
+    [SerializeField] private TMP_Text jumpPower_TMP;
+    [SerializeField] private TMP_Text dashPower_TMP;
+    [SerializeField] private TMP_Text superJumpPower_TMP;
+
 
     [Header("AttackTap")]
     [SerializeField] private RectTransform attackTap;
@@ -225,7 +228,21 @@ public class UI_Enhance : MonoBehaviour
     {
         GameManager.Instance.GetWeaponData(weaponID);
         selecBtn.gameObject.SetActive(false);
-        selectedCheck.SetActive(true);
+        selectedCheck.gameObject.SetActive(true);
+
+        // 무기 선택 버튼,선택 체크창 길이 조절
+        if (weaponData.baseWeaponLevel >= weaponData.data.enhanceCostList.Count - 1)
+        {
+            levelUpBtn.gameObject.SetActive(false);
+            selectedCheck.sizeDelta = new Vector2(420f, selectedCheck.sizeDelta.y);
+            selecBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(420f, selecBtn.GetComponent<RectTransform>().sizeDelta.y);
+        }
+        else
+        {
+            levelUpBtn.gameObject.SetActive(true);
+            selectedCheck.sizeDelta = new Vector2(210f, selectedCheck.sizeDelta.y);
+            selecBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(210f, selecBtn.GetComponent<RectTransform>().sizeDelta.y);
+        }
     }
 
     #region InfoSet
@@ -237,54 +254,81 @@ public class UI_Enhance : MonoBehaviour
         // 무기 정보, 선택/구매 버튼 세팅
         if (isUnlock)
         {
+            //잠금 해제
             if (isPurchase)
             {
+                // 구매 완료된 무기의 정보
                 curMWData = GameManager.Instance.weaponDatas[weaponID];
                 curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
                 weaponData = curWeapon.GetComponent<IManualWeapon>();
                 weaponData.baseWeaponLevel = curMWData.baseLevel;
 
+                // 노출된 무기 정보가 장착한 무기와 같은지 확인
                 if (weaponID == GameManager.Instance.weaponID)
                 {
-                    unlockCheck.SetActive(false);
-                    levelUpBtn.gameObject.SetActive(true);
-                    selectedCheck.SetActive(true);
+                    unlockCheck.gameObject.SetActive(false);
+                    selectedCheck.gameObject.SetActive(true);
                     selecBtn.gameObject.SetActive(false);
                     buyBtn.gameObject.SetActive(false);
+
+                    // 렙업 버튼 세팅 및 무기 선택 버튼,선택 체크창 길이 조절
+                    if (weaponData.baseWeaponLevel >= weaponData.data.enhanceCostList.Count - 1)
+                    {
+                        levelUpBtn.gameObject.SetActive(false);
+                        selectedCheck.sizeDelta = new Vector2(420f, selectedCheck.sizeDelta.y);
+                    }
+                    else
+                    {
+                        levelUpBtn.gameObject.SetActive(true);
+                        selectedCheck.sizeDelta = new Vector2(210f, selectedCheck.sizeDelta.y);
+                    }
                 }
                 else
                 {
-                    unlockCheck.SetActive(false);
-                    levelUpBtn.gameObject.SetActive(true);
-                    selectedCheck.SetActive(false);
+                    unlockCheck.gameObject.SetActive(false);
+                    selectedCheck.gameObject.SetActive(false);
                     selecBtn.gameObject.SetActive(true);
                     buyBtn.gameObject.SetActive(false);
+
+                    // 렙업 버튼 세팅 및 무기 선택 버튼,선택 체크창 길이 조절
+                    if (weaponData.baseWeaponLevel >= weaponData.data.enhanceCostList.Count - 1)
+                    {
+                        levelUpBtn.gameObject.SetActive(false);
+                        selecBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(420f, selecBtn.GetComponent<RectTransform>().sizeDelta.y);
+                    }
+                    else
+                    {
+                        levelUpBtn.gameObject.SetActive(true);
+                        selecBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(210f, selecBtn.GetComponent<RectTransform>().sizeDelta.y);
+                    }
                 }
             }
             else
             {
+                //구매 미완료 시 노출 정보
                 curMWData = null;
                 curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
                 weaponData = curWeapon.GetComponent<IManualWeapon>();
                 weaponData.baseWeaponLevel = 0;
 
-                unlockCheck.SetActive(false);
+                unlockCheck.gameObject.SetActive(false);
                 levelUpBtn.gameObject.SetActive(false);
-                selectedCheck.SetActive(false);
+                selectedCheck.gameObject.SetActive(false);
                 selecBtn.gameObject.SetActive(false);
                 buyBtn.gameObject.SetActive(true);
             }
         }
         else
         {
+            //잠금 미해제 시 노출 정보
             curMWData = null;
             curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
             weaponData = curWeapon.GetComponent<IManualWeapon>();
             weaponData.baseWeaponLevel = 0;
 
-            unlockCheck.SetActive(true);
+            unlockCheck.gameObject.SetActive(true);
             levelUpBtn.gameObject.SetActive(false);
-            selectedCheck.SetActive(false);
+            selectedCheck.gameObject.SetActive(false);
             selecBtn.gameObject.SetActive(false);
             buyBtn.gameObject.SetActive(false);
         }
@@ -296,11 +340,14 @@ public class UI_Enhance : MonoBehaviour
     }
     public void StatusInfoSet()
     {
-        attackDamage_TMP.text = $"{weaponData.data.baseAttackPowerList[weaponData.baseWeaponLevel]}";
-        //attackSpeed_TMP.text = $"{weaponData.data.baseDamageList[weaponData.baseWeaponLevel]}";
-        attackRange_TMP.text = $"{weaponData.data.baseRangeList[weaponData.baseWeaponLevel]}";
-        //moveSpeed_TMP.text = $"{weaponData.data.baseMoveList[weaponData.baseWeaponLevel]}";
-        //movePower_TMP.text = $"{weaponData.data.baseDamageList[weaponData.baseWeaponLevel]}";
+        ATKPower_TMP.text = $"{weaponData.data.baseAttackPowerList[weaponData.baseWeaponLevel]}";
+        ATKSpeed_TMP.text = $"{weaponData.data.baseAttackSpeedList[weaponData.baseWeaponLevel]}";
+        ATKRange_TMP.text = $"{weaponData.data.baseRangeList[weaponData.baseWeaponLevel]}";
+        moveSpeed_TMP.text = $"{weaponData.data.baseMoveSpeedList[weaponData.baseWeaponLevel]}";
+        jumpPower_TMP.text = $"{weaponData.data.basejumpPowerList[weaponData.baseWeaponLevel]}";
+        dashPower_TMP.text = $"{weaponData.data.baseDashPowerList[weaponData.baseWeaponLevel]}";
+        superJumpPower_TMP.text = $"{weaponData.data.baseSuperJumpPowerList[weaponData.baseWeaponLevel]}";
+
     }
     public void AttackInfoSet()
     {
