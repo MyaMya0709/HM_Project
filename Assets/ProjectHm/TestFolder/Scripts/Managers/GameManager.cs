@@ -14,9 +14,13 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private PlayerData playerData = new();
     public int playerLevel;
     public int statUpPoint;
-    public int moveSpeedLevel;
+
     public int attackPowerLevel;
     public int attackSpeedLevel;
+    public int movePowerLevel;
+    public int actPowerLevel;
+    public int masteryLevel;
+
     public int weaponID;
     public int characterID;
     public int curGold;
@@ -51,9 +55,13 @@ public class GameManager : Singleton<GameManager>
         LoadPlayerData();
 
         playerLevel = playerData.playerLevel;
-        moveSpeedLevel = playerData.movePowerLevel;
+
         attackPowerLevel = playerData.attackPowerLevel;
         attackSpeedLevel = playerData.attackSpeedLevel;
+        movePowerLevel = playerData.movePowerLevel;
+        actPowerLevel = playerData.actPowerLevel;
+        masteryLevel = playerData.masteryLevel;
+
         statUpPoint = playerData.statUpPoint;
         curGold = playerData.haveGold;
 
@@ -194,9 +202,13 @@ public class GameManager : Singleton<GameManager>
     public void GetPlayerData()
     {
         playerData.playerLevel = playerLevel;
-        playerData.movePowerLevel = moveSpeedLevel;
+
         playerData.attackPowerLevel = attackPowerLevel;
         playerData.attackSpeedLevel = attackSpeedLevel;
+        playerData.movePowerLevel = movePowerLevel;
+        playerData.actPowerLevel = actPowerLevel;
+        playerData.masteryLevel = masteryLevel;
+
         playerData.statUpPoint = statUpPoint;
         playerData.haveGold = curGold;
 

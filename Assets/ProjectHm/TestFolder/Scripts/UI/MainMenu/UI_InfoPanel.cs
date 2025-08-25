@@ -18,13 +18,14 @@ public class UI_InfoPanel : MonoBehaviour
     [SerializeField] private TMP_Text ATKPowerTMP;
     [SerializeField] private TMP_Text ATKSpeedTMP;
     [SerializeField] private TMP_Text moveSpeedTMP;
-    [SerializeField] private TMP_Text moveSpeedTMP;
     [SerializeField] private TMP_Text jumpPowerTMP;
-    [SerializeField] private TMP_Text jumpPowerTMP;
-    [SerializeField] private TMP_Text statTMP;
+    [SerializeField] private TMP_Text dashPowerTMP;
+    [SerializeField] private TMP_Text superJumpPowerTMP;
+    [SerializeField] private TMP_Text masteryStatTMP;
 
     [SerializeField] private Button levelUpBtn;
-    [SerializeField] private Button statSetBtn;
+    [SerializeField] private Button statSetBtn1;
+    [SerializeField] private Button statSetBtn2;
 
     [Header("CharacterSet")]
     [SerializeField] private int characterID;
@@ -68,12 +69,12 @@ public class UI_InfoPanel : MonoBehaviour
         PurchaseChack();
 
         //레벨 값 세팅
-        playerLevelTMP.text = $"Lv.{GameManager.Instance.playerLevel.ToString()}";
-        ATKPowerLevelTMP.text = $"Lv.{GameManager.Instance.attackPowerLevel.ToString()}";
-        ATKSpeedLevelTMP.text = $"Lv.{GameManager.Instance.attackSpeedLevel.ToString()}";
-        movePowerLevelTMP.text = $"Lv.{GameManager.Instance.moveSpeedLevel.ToString()}";
-        //jumpPowerLevel.text = playerData.moveSpeedLevel.ToString();
-        //statLevel.text = playerData.moveSpeedLevel.ToString();
+        playerLevelTMP.text = $"Lv.{GameManager.Instance.playerLevel}";
+        ATKPowerLevelTMP.text = $"Lv.{GameManager.Instance.attackPowerLevel}";
+        ATKSpeedLevelTMP.text = $"Lv.{GameManager.Instance.attackSpeedLevel}";
+        movePowerLevelTMP.text = $"Lv.{GameManager.Instance.movePowerLevel}";
+        actPowerLevelTMP.text = $"{GameManager.Instance.actPowerLevel}";
+        masteryLevelTMP.text = $"{GameManager.Instance.masteryLevel}";
 
         StatSet();                 //스탯 값 세팅
         ButtonSet();               //버튼 세팅
@@ -82,8 +83,18 @@ public class UI_InfoPanel : MonoBehaviour
     public void ButtonSet()
     {
         //레벨 업 버튼 체크
-        if (GameManager.Instance.playerLevel >= 50) levelUpBtn.gameObject.SetActive(false);
-        else levelUpBtn.gameObject.SetActive(true);
+        if (GameManager.Instance.playerLevel >= 50)
+        {
+            levelUpBtn.gameObject.SetActive(false);
+            statSetBtn1.gameObject.SetActive(false);
+            statSetBtn2.gameObject.SetActive(true);
+        }
+        else
+        {
+            levelUpBtn.gameObject.SetActive(true);
+            statSetBtn1.gameObject.SetActive(true);
+            statSetBtn2.gameObject.SetActive(false);
+        }
 
         characterName.text = characterData.Name;
         characterDescription.text = characterData.Description;
@@ -129,11 +140,13 @@ public class UI_InfoPanel : MonoBehaviour
     // 스탯 표시 함수
     public void StatSet()
     {
-        ATKPowerTMP.text = DataManager.Instance.attackPowerDic[GameManager.Instance.attackPowerLevel].ToString();
-        ATKSpeedTMP.text = DataManager.Instance.attackSpeedDic[GameManager.Instance.attackSpeedLevel].ToString();
-        moveSpeedTMP.text = DataManager.Instance.movePowerDic[GameManager.Instance.moveSpeedLevel].ToString();
-        //jumpPower.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
-        //stat.text = DataManager.Instance.moveSpeedDic[playerData.moveSpeedLevel].ToString();
+        ATKPowerTMP.text = $"{DataManager.Instance.attackPowerDic[GameManager.Instance.attackPowerLevel]}";
+        ATKSpeedTMP.text = $"{DataManager.Instance.attackSpeedDic[GameManager.Instance.attackSpeedLevel]}";
+        moveSpeedTMP.text = $"{DataManager.Instance.movePowerDic[GameManager.Instance.movePowerLevel][0]}";
+        jumpPowerTMP.text = $"{DataManager.Instance.movePowerDic[GameManager.Instance.movePowerLevel][1]}";
+        dashPowerTMP.text = $"{DataManager.Instance.actPowerDic[GameManager.Instance.actPowerLevel][0]}";
+        superJumpPowerTMP.text = $"{DataManager.Instance.actPowerDic[GameManager.Instance.actPowerLevel][1]}";
+        masteryStatTMP.text = $"{DataManager.Instance.masteryStatDic[GameManager.Instance.masteryLevel]}";
 
         // 보너스 스탯 표기
         if (characterData.bonusStatValue != null && characterData.bonusStatType != null)
@@ -145,18 +158,39 @@ public class UI_InfoPanel : MonoBehaviour
                 {
                     case StatType.AttackPower:
                         ATKPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
-                        Debug.Log("스탯 적용 : attackPower");
+                        Debug.Log("스탯 적용 : AttackPower");
                         break;
 
                     case StatType.AttackSpeed:
                         ATKSpeedTMP.text += $"+({characterData.bonusStatValue[i]})";
-                        Debug.Log("스탯 적용 : attackSpeed");
+                        Debug.Log("스탯 적용 : AttackSpeed");
                         break;
 
                     case StatType.MoveSpeed:
                         moveSpeedTMP.text += $"+({characterData.bonusStatValue[i]})";
-                        Debug.Log("스탯 적용 : moveSpeed");
+                        Debug.Log("스탯 적용 : MoveSpeed");
                         break;
+
+                    case StatType.JumpPower:
+                        jumpPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
+                        Debug.Log("스탯 적용 : JumpPower");
+                        break;
+
+                    case StatType.DashPower:
+                        dashPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
+                        Debug.Log("스탯 적용 : DashPower");
+                        break;
+
+                    case StatType.SuperJumpPower:
+                        superJumpPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
+                        Debug.Log("스탯 적용 : SuperJumpPower");
+                        break;
+
+                    case StatType.Mastery:
+                        masteryStatTMP.text += $"+({characterData.bonusStatValue[i]})";
+                        Debug.Log("스탯 적용 : Mastery");
+                        break;
+
                     default:
                         Debug.Log("스탯적용 불가");
                         break;

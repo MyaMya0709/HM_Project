@@ -23,11 +23,13 @@ public class PlayerCondition : MonoBehaviour
     public float baseJumpPower;
     public float baseDashPower;
     public float baseSuperJumpPower;
+    public float baseMasteryStat;
 
     public int selecAttackPowerLv;
     public int selecAttackSpeedLv;
     public int selecMovePowerLv;
     public int selecActPowerLv;
+    public int selecMasteryLv;
 
     public float totalAttackPower;
     public float totalAttackSpeed;
@@ -35,6 +37,7 @@ public class PlayerCondition : MonoBehaviour
     public float totalJumpPower;
     public float totalDashPower;
     public float totalSuperJumpPower;
+    public float totalMasteryStat;
 
     public int curGold = 0;
     public float maxExp;
@@ -107,6 +110,7 @@ public class PlayerCondition : MonoBehaviour
         baseJumpPower = DataManager.Instance.movePowerDic[playerData.movePowerLevel][1];
         baseDashPower = DataManager.Instance.actPowerDic[playerData.actPowerLevel][0];
         baseSuperJumpPower = DataManager.Instance.actPowerDic[playerData.actPowerLevel][1];
+        baseMasteryStat = DataManager.Instance.masteryStatDic[playerData.masteryLevel];
         Debug.Log("기본 스탯 로드");
 
         // 보너스 스탯 적용
@@ -147,6 +151,11 @@ public class PlayerCondition : MonoBehaviour
                         Debug.Log("스탯 적용 : SuperJumpPower");
                         break;
 
+                    case StatType.Mastery:
+                        baseMasteryStat += characterData.bonusStatValue[i];
+                        Debug.Log("스탯 적용 : Mastery");
+                        break;
+
                     default:
                         Debug.Log("스탯적용 불가");
                         break;
@@ -160,6 +169,7 @@ public class PlayerCondition : MonoBehaviour
         selecAttackSpeedLv = 0;
         selecMovePowerLv = 0;
         selecActPowerLv = 0;
+        selecMasteryLv = 0;
 
         // 무기 스탯 계산
         controller.currentWeapon.TotalStatSet();
@@ -167,6 +177,7 @@ public class PlayerCondition : MonoBehaviour
         // 초기화된 종합 스탯 계산
         GetTotalStat();
 
+        // 무기의 종합 스탯 계산
         controller.currentWeapon.GetTotalStat();
 
         // 자동무기 리스트 초기화
@@ -182,6 +193,7 @@ public class PlayerCondition : MonoBehaviour
         totalJumpPower = (baseJumpPower + curWeapon.totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1];
         totalDashPower = (baseDashPower + curWeapon.totalWeaponDashPower) * DataManager.Instance.selecActPowerDic[selecActPowerLv][0];
         totalSuperJumpPower = (baseSuperJumpPower + curWeapon.totalWeaponSuperJumpPower) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1];
+        totalMasteryStat = baseMasteryStat * DataManager.Instance.selecMasteryStatDic[selecMasteryLv];
     }
 
     public void SelecStatLevelUP(StatLvType stat)
@@ -199,6 +211,9 @@ public class PlayerCondition : MonoBehaviour
                 break;
             case StatLvType.ActPower:
                 selecActPowerLv++;
+                break;
+            case StatLvType.Mastery:
+                selecMasteryLv++;
                 break;
             default:
                 Debug.Log("존재하지 않는 StatType");
@@ -230,8 +245,12 @@ public class PlayerCondition : MonoBehaviour
                 totalSuperJumpPower = (baseSuperJumpPower + curWeapon.totalWeaponSuperJumpPower) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1];
                 break;
 
+            case StatLvType.Mastery:
+                totalMasteryStat = baseMasteryStat * DataManager.Instance.selecMasteryStatDic[selecMasteryLv];
+                break;
+
             default:
-                Debug.Log("존재하지 않는 StatType");
+                Debug.Log("존재하지 않는 StatLvType");
                 break;
         }
     }

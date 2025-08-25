@@ -31,7 +31,8 @@ public enum StatType
     MoveSpeed,
     JumpPower,
     DashPower,
-    SuperJumpPower
+    SuperJumpPower,
+    Mastery
 }
 
 public enum StatLvType
@@ -40,5 +41,6 @@ public enum StatLvType
     AttackSpeed,
     AttackRange,
     MovePower,
-    ActPower
+    ActPower,
+    Mastery
 }

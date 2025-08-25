@@ -16,6 +16,7 @@ public class PlayerData
     public int attackSpeedLevel;
     public int movePowerLevel;
     public int actPowerLevel;
+    public int masteryLevel;
 
     public int statUpPoint;
     public int haveGold;
@@ -31,6 +32,7 @@ public class PlayerData
         attackSpeedLevel = 0;
         movePowerLevel = 0;
         actPowerLevel = 0;
+        masteryLevel = 0;
 
         statUpPoint = 0;
         haveGold = 999999999;
