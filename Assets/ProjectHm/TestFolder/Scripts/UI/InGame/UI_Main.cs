@@ -7,7 +7,6 @@ public class UI_Main : MonoBehaviour
     public UI_Menu menuUI;
     public UI_Selection selecUI;
     public Button menuButton;
-    public Button testSelecButton;
     public Image expBar;
 
     // 활성화/비활성화 시 함수 추가/제거
@@ -23,16 +22,6 @@ public class UI_Main : MonoBehaviour
             {
                 Time.timeScale = 0f;
                 menuUI.gameObject.SetActive(true);
-            }
-        });
-
-        // gameUI.testSelecButton set
-        testSelecButton.onClick.AddListener(() =>
-        {
-            if (!selecUI.gameObject.activeSelf)
-            {
-                Time.timeScale = 0f;
-                selecUI.gameObject.SetActive(true);
             }
         });
     }
