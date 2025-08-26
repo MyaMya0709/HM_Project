@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public abstract class IManualWeapon : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public abstract class IManualWeapon : MonoBehaviour
     public PlayerCondition playerCondition;
     public SpriteRenderer sr;
     public LayerMask enemyLayer;
+    public Animator anim;
 
     public Transform attackPoint;
 
@@ -58,6 +60,7 @@ public abstract class IManualWeapon : MonoBehaviour
         playerCondition = GetComponentInParent<PlayerCondition>();
         enemyLayer = LayerMask.GetMask("Enemy");
         sr = GetComponentInChildren<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 
         GetTotalStat();
     }
@@ -162,6 +165,11 @@ public abstract class IManualWeapon : MonoBehaviour
             totalSuperJumpPower = totalWeaponSuperJumpPower;
             Debug.Log("playerCondition 없음");
         }
+
+        // 쿨타임 설정 및 애니메이션 재생 속도 세팅
+        playerController.attackCooldown = 1f / totalAttackSpeed;
+        anim.SetFloat("AttackSpeed",totalAttackSpeed);
+        playerController.animator.SetFloat("AttackSpeed", totalAttackSpeed);
     }
 
     // 게임 초기화용 함수

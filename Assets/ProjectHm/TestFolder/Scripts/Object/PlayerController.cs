@@ -89,13 +89,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        //attackCooldown = 1f / currentWeapon.totalAttackSpeed;
-        //if (animator != null)
-        //    animator.speed = currentWeapon.totalAttackSpeed; // 애니메이션 속도 반영
-    }
-
     private void Update()
     {
         IsLooting();
@@ -172,6 +165,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Move");
             isMove = true;
             animator.SetBool("isMove",true);
+            currentWeapon.anim?.SetBool("isMove",true);
 
             // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
             if (Mathf.Abs(moveInput.x) > 0.01f)
@@ -184,10 +178,10 @@ public class PlayerController : MonoBehaviour
         {
             isMove = false;
             animator.SetBool("isMove", false);
+            currentWeapon.anim?.SetBool("isMove", false);
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
         }
     }
-
 
     public IEnumerator StartDash(Vector2 direction)
     {
@@ -340,15 +334,17 @@ public class PlayerController : MonoBehaviour
 
         else if (context.canceled)
         {
-            if (!isAbleAttack) return;
-
             Debug.Log("OnAttack");
             holdTime = Time.time - chargingStart;
             isCharging = false;
 
+            // ===== 공격 실행 가능 여부 체크 =====
+            isAbleAttack = Time.time - lastAttackTime >= attackCooldown;
 
             if (!IsGrounded()) // 공중 체크
             {
+                if (!isAbleAttack) return;
+
                 // 딜레이 체크
                 if (lastOnAirTime + attackRest >= Time.time)
                     return;
@@ -359,6 +355,7 @@ public class PlayerController : MonoBehaviour
                 animator?.SetTrigger("OnAttack");
                 // 무기공격 로직 연결 예정
                 currentWeapon.Attack();
+                currentWeapon.anim?.SetTrigger("OnAttack");
 
                 // 공격 횟수
                 attackCount++;
@@ -371,27 +368,33 @@ public class PlayerController : MonoBehaviour
                     attackCount = 0;
                 }
             }
-            else if (IsGrounded())
+            else // 지상 공격
             {
                 // 차징시간에 따라 일반공격과 차징공격 분리
                 if (holdTime > chargingTime)
                 {
-                    Debug.Log("ChargingAttack");
-                    //animator?.SetTrigger("ChargingAttack");
-                    currentWeapon.ChargingAttack();
+                    if (isAbleAttack) // 차징 공격도 쿨타임 체크
+                    {
+                        Debug.Log("ChargingAttack");
+                        //animator?.SetTrigger("ChargingAttack");
+                        currentWeapon.ChargingAttack();
+                    }
                 }
                 else
                 {
-                    Debug.Log("Attack");
-                    // 땅에 닿으면 횟수 초기화
-                    attackCount = 0;
-                    // 일반 공격
-                    animator?.SetTrigger("OnAttack");
-                    currentWeapon.Attack();
+                    if (isAbleAttack) // 일반 공격도 쿨타임 체크
+                    {
+                        Debug.Log("Attack");
+                        // 땅에 닿으면 횟수 초기화
+                        attackCount = 0;
+                        // 일반 공격
+                        animator?.SetTrigger("OnAttack");
+                        currentWeapon.Attack();
+                        currentWeapon.anim?.SetTrigger("OnAttack");
+                    }
                 }
             }
-
-            lastAttackTime = Time.time;
+            if(isAbleAttack) lastAttackTime = Time.time;
         }
     }
 

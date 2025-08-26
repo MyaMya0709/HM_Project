@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1727274341808414588}
   - component: {fileID: 1565793449964205548}
+  - component: {fileID: 7261787795670454609}
   m_Layer: 0
   m_Name: MWP_100
   m_TagString: Untagged
@@ -96,6 +97,28 @@ MonoBehaviour:
   isStun: 1
   hitEffect: {fileID: 0}
   facingRight: 1
+--- !u!95 &7261787795670454609
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691733087425890900}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 2a78b27ed76e5d54d8cdee53a43b2023, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3969289391613558563
 GameObject:
   m_ObjectHideFlags: 0

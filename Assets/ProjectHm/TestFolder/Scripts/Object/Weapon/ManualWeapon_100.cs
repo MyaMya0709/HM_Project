@@ -252,12 +252,4 @@ public class ManualWeapon_100 : IManualWeapon
     {
         Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * totalRange, color, duration);
     }
-
-    private void Flip()
-    {
-        Vector3 s = transform.localScale;
-        s.x *= -1;
-        transform.localScale = s;
-        facingRight = !facingRight;
-    }
 }
