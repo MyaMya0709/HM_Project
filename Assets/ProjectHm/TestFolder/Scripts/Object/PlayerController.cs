@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 0.15f;
     public float dashDistance = 4f;
     public Vector2 dashDirection;
-    public Vector2 lastLookDirection = Vector2.right; // 기본은 오른쪽
+    public Vector2 lastLookDirection = Vector2.left;  // 기본은 왼쪽
     public LayerMask obstacle;                        // 장애물 레이어
     public Vector2 basePos;
     public Vector2 targetPos;
@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour
     public float lootingRadius = 10f;             // 루팅 가능 거리
     public float lootingSpeed = 30f;              // 루팅 속도
 
+    public bool facingRight = false;
+
     private void Awake()
     {
         condition = GetComponent<PlayerCondition>();
@@ -94,6 +96,15 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         IsLooting();
+
+        if (lastLookDirection.x > 0 && facingRight)
+        {
+            Flip();
+        }
+        else if (lastLookDirection.x < 0 && !facingRight)
+        {
+            Flip();
+        }
     }
 
     private void FixedUpdate()
@@ -108,6 +119,14 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(moveInput.x * condition.totalMoveSpeed, rb.linearVelocity.y);
         }
+    }
+
+    public void Flip()
+    {
+        Vector3 s = transform.localScale;
+        s.x *= -1;
+        transform.localScale = s;
+        facingRight = !facingRight;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -149,17 +168,29 @@ public class PlayerController : MonoBehaviour
             // 대쉬 이후 일반 이동
             Debug.Log("Move");
             isMove = true;
+            animator.SetBool("isMove",true);
 
             // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
             if (Mathf.Abs(moveInput.x) > 0.01f)
             {
                 lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
+
+                //// x가 음수면 왼쪽 → Flip
+                //if (moveInput.x < 0)
+                //    GetComponentInChildren<SpriteRenderer>().flipX = true;
+                //else if (moveInput.x > 0)
+                //    GetComponentInChildren<SpriteRenderer>().flipX = false;
             }
         }
         // 키 입력이 끝날 때, 이동 종료 
         if (context.canceled)
+        {
             isMove = false;
+            animator.SetBool("isMove", false);
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
+        }
     }
+
 
     public IEnumerator StartDash(Vector2 direction)
     {
@@ -328,7 +359,7 @@ public class PlayerController : MonoBehaviour
                 // 위쪽 반동 추가
                 rb.linearVelocity = Vector2.up * rebound;
 
-                animator?.SetTrigger("Attack");
+                animator?.SetTrigger("OnAttack");
                 // 무기공격 로직 연결 예정
                 currentWeapon.Attack();
 
@@ -358,7 +389,7 @@ public class PlayerController : MonoBehaviour
                     // 땅에 닿으면 횟수 초기화
                     attackCount = 0;
                     // 일반 공격
-                    animator?.SetTrigger("Attack");
+                    animator?.SetTrigger("OnAttack");
                     currentWeapon.Attack();
                 }
             }

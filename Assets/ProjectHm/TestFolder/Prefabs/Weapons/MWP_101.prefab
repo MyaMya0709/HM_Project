@@ -47,23 +47,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 5b74d94420f4f0a428495beb93cc6e4b, type: 2}
-  baseWeaponLevel: 0
-  selecWeaponLevel: 0
-  baseDamage: 0
-  selecDamage: 0
-  totalWeaponDamage: 0
-  totalDamage: 0
-  baseRange: 0
-  selecRange: 0
-  totalRange: 0
   playerController: {fileID: 0}
   playerCondition: {fileID: 0}
   sr: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  weaponID: 0
   attackPoint: {fileID: 78432035083985118}
+  baseWeaponLevel: 0
+  selecWeaponLevel: 0
+  baseAttackPower: 0
+  baseAttackSpeed: 0
+  baseRange: 0
+  baseMoveSpeed: 0
+  baseJumpPower: 0
+  baseDashPower: 0
+  baseSuperJumpPower: 0
+  selecAttackPower: 0
+  selecAttackSpeed: 0
+  selecRange: 0
+  selecMoveSpeed: 0
+  selecJumpPower: 0
+  selecDashPower: 0
+  selecSuperJumpPower: 0
+  totalWeaponAttackPower: 0
+  totalWeaponAttackSpeed: 0
+  totalWeaponRange: 0
+  totalWeaponMoveSpeed: 0
+  totalWeaponJumpPower: 0
+  totalWeaponDashPower: 0
+  totalWeaponSuperJumpPower: 0
+  totalAttackPower: 0
+  totalAttackSpeed: 0
+  totalRange: 0
+  totalMoveSpeed: 0
+  totalJumpPower: 0
+  totalDashPower: 0
+  totalSuperJumpPower: 0
   AttackStunDur: 0.1
   DownAtkStunDur: 0.25
   DashAtkStunDur: 0.25
@@ -75,7 +95,6 @@ MonoBehaviour:
   mutipleAttack: 0
   isStun: 1
   hitEffect: {fileID: 0}
-  facingRight: 1
 --- !u!1 &3969289391613558563
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,13 +120,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3969289391613558563}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 1, z: 0}
-  m_LocalScale: {x: 0.1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0.35, y: 0.5, z: 0}
+  m_LocalScale: {x: -4, y: 4, z: 4}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1727274341808414588}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &655996437331281007
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -152,7 +171,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 5044508039079229312, guid: 76e9641c15d68334aa67c4e59b2fbd96, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

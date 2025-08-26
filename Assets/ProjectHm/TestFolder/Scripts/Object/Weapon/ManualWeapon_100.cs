@@ -28,18 +28,6 @@ public class ManualWeapon_100 : IManualWeapon
         base.Start();
     }
 
-    private void Update()
-    {
-        if (playerController.lastLookDirection.x < 0 && facingRight)
-        {
-            Flip();
-        }
-        else if (playerController.lastLookDirection.x > 0 && !facingRight)
-        {
-            Flip();
-        }
-    }
-
     public override void Attack()
     {
         Debug.Log("Attack");

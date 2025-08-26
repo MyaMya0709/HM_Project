@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: "\uAC15\uD55C \uC804\uC0AC, \uC804\uD22C \uACBD\uD5D8\uC774 \uD48D\uBD80\uD55C
     \uC720\uB2DB"
   price: 1500
-  bonusStatType: 0100000000000000
+  bonusStatType: 0000000001000000
   bonusStatValue:
   - 10
   - 2

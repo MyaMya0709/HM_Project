@@ -342,6 +342,8 @@ public class GameManager : Singleton<GameManager>
             foreach (int characterID in purchaseCharacterList.characterIDs)
             {
                 characterDataDic.Add(characterID, DataManager.Instance.characterDataList[characterID]);
+                if (characterDataDic.Count == 0) Debug.Log($"characterDataDic null");
+
             }
             if (characterDataDic.Count != 0) Debug.Log($"characterDataDic Load");
         }
