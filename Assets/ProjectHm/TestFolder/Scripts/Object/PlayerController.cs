@@ -77,12 +77,15 @@ public class PlayerController : MonoBehaviour
         if (weaponHolder.transform.childCount == 0)
         {
             GameManager.Instance.WeaponInit(weaponHolder);
-            currentWeapon = GetComponentInChildren<IManualWeapon>();
+            currentWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
+            Debug.Log("시작시 무기 장착");
         }
         else
         {
             foreach (Transform child in weaponHolder.transform) Destroy(child.gameObject);
-            currentWeapon = GetComponentInChildren<IManualWeapon>();
+            GameManager.Instance.WeaponInit(weaponHolder);
+            currentWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
+            Debug.Log("시작시 무기 장착");
         }
     }
 
@@ -97,11 +100,11 @@ public class PlayerController : MonoBehaviour
     {
         IsLooting();
 
-        if (lastLookDirection.x > 0 && facingRight)
+        if (lastLookDirection.x < 0 && facingRight)
         {
             Flip();
         }
-        else if (lastLookDirection.x < 0 && !facingRight)
+        else if (lastLookDirection.x > 0 && !facingRight)
         {
             Flip();
         }
@@ -174,12 +177,6 @@ public class PlayerController : MonoBehaviour
             if (Mathf.Abs(moveInput.x) > 0.01f)
             {
                 lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
-
-                //// x가 음수면 왼쪽 → Flip
-                //if (moveInput.x < 0)
-                //    GetComponentInChildren<SpriteRenderer>().flipX = true;
-                //else if (moveInput.x > 0)
-                //    GetComponentInChildren<SpriteRenderer>().flipX = false;
             }
         }
         // 키 입력이 끝날 때, 이동 종료 
