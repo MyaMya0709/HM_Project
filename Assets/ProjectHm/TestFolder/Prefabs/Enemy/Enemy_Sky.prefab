@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 2140259131867566554}
   - component: {fileID: -6951179905753428406}
   - component: {fileID: 619541072649880692}
+  - component: {fileID: 3491884869898232473}
   m_Layer: 7
   m_Name: Enemy_Sky
   m_TagString: Enemy
@@ -166,8 +167,32 @@ MonoBehaviour:
     m_Bits: 64
   groundCheck: {fileID: 8598645025410786670}
   groundCheckRadius: 0.2
+  hitNormal: {x: 0, y: 0}
   droppedItemPrepab: {fileID: 76134026972407004, guid: 0e5a4471c69129e46817985979c17542, type: 3}
   animator: {fileID: 0}
+  facingRight: 0
+--- !u!95 &3491884869898232473
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684842619354825708}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 1a867a60600c51745999b4eca410646f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9101133165995811410
 GameObject:
   m_ObjectHideFlags: 0

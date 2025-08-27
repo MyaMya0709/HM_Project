@@ -188,6 +188,9 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator StartDash(Vector2 direction)
     {
+        // 애니메이션 재생 시작
+        animator?.SetBool("isDash", true);
+
         Debug.Log("DeshCoroutine");
         isDashing = true; // isDashing 동안 사용자의 입력을 받지 않음
         isAbleDash = false;
@@ -198,10 +201,6 @@ public class PlayerController : MonoBehaviour
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
-
-
-        // 애니메이션 재생 시작
-        animator?.SetBool("isDash",true);
 
         // 대쉬 거리까지 등속 운동
         while (Vector2.Distance(rb.position, targetPos) > 0.01f)
@@ -234,9 +233,7 @@ public class PlayerController : MonoBehaviour
         // 대시 후 애니메이션 복구
         animator?.SetBool("isDash", false);
 
-
         currentWeapon.DashAttack();
-
 
         isDashing = false;
 

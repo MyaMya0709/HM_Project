@@ -31,8 +31,6 @@ public class BaseEnemy : MonoBehaviour
     public GameObject droppedItemPrepab;
     public Animator animator;
 
-    public bool facingRight = false;
-
     public bool isDead => curHp <= 0;
 
     public event System.Action OnDeath;
@@ -45,20 +43,16 @@ public class BaseEnemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponent<Animator>();
+
+        if ((target.position - transform.position).normalized.x > 0)
+        {
+            Flip();
+        }
     }
 
     private void Update()
     {
         if (isDead || target == null) return;
-
-        if (facingRight)
-        {
-            Flip();
-        }
-        else if (!facingRight)
-        {
-            Flip();
-        }
     }
     private void FixedUpdate()
     {
@@ -77,7 +71,6 @@ public class BaseEnemy : MonoBehaviour
         Vector3 s = transform.localScale;
         s.x *= -1;
         transform.localScale = s;
-        facingRight = !facingRight;
     }
 
     // 물리기반 이동이므로 FixedUpdate에서 사용해야함
