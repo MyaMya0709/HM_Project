@@ -12129,9 +12129,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 95eba05c862ebf54f8bd59a5741c549b, type: 2}
   manualPrefabList:
   - {fileID: 3691733087425890900, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
-  - {fileID: 3691733087425890900, guid: 42cadfa6fdf9e644985753dd75c80061, type: 3}
-  - {fileID: 3691733087425890900, guid: 023102327a3690e4781ff1573ea983fb, type: 3}
-  - {fileID: 3691733087425890900, guid: b8b8cc5be0d537a4c8e94551f47988fa, type: 3}
+  - {fileID: 3691733087425890900, guid: 6a05b6f3daa59334390f66ebac7479f4, type: 3}
+  - {fileID: 3691733087425890900, guid: ed6fee4a7c9e7fb4795ba6b486e62eaa, type: 3}
+  - {fileID: 3691733087425890900, guid: c1089c8ca5da8014c869b657371abbee, type: 3}
   manualDataList:
   - {fileID: 11400000, guid: 4e06adcaf33ebcf42aabd6c708ec70ee, type: 2}
   - {fileID: 11400000, guid: 5b74d94420f4f0a428495beb93cc6e4b, type: 2}
@@ -13256,6 +13256,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4198897976886587706, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222002190331703957, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222002190331703957, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

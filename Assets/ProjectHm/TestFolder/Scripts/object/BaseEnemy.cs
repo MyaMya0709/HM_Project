@@ -30,7 +30,9 @@ public class BaseEnemy : MonoBehaviour
 
     public GameObject droppedItemPrepab;
     public Animator animator;
-    
+
+    public bool facingRight = false;
+
     public bool isDead => curHp <= 0;
 
     public event System.Action OnDeath;
@@ -42,11 +44,21 @@ public class BaseEnemy : MonoBehaviour
         //target = GameManager.Instance.baseCore.AttackPoint;
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         if (isDead || target == null) return;
+
+        if (facingRight)
+        {
+            Flip();
+        }
+        else if (!facingRight)
+        {
+            Flip();
+        }
     }
     private void FixedUpdate()
     {
@@ -58,6 +70,14 @@ public class BaseEnemy : MonoBehaviour
         {
             OnMove();
         }
+    }
+
+    public void Flip()
+    {
+        Vector3 s = transform.localScale;
+        s.x *= -1;
+        transform.localScale = s;
+        facingRight = !facingRight;
     }
 
     // 물리기반 이동이므로 FixedUpdate에서 사용해야함
@@ -75,6 +95,8 @@ public class BaseEnemy : MonoBehaviour
             rb.linearVelocity = new Vector2(dir.x * enemyData.moveSpeed, dir.y * enemyData.moveSpeed);
         }
 
+        animator.SetBool("isMove",true);
+
         //Vector2 dir = ((Vector2)target.position - rb.position).normalized;
         //Vector2 targetPos = rb.position + dir * monsterData.moveSpeed * Time.fixedDeltaTime;
         //rb.MovePosition(targetPos);
@@ -85,8 +107,11 @@ public class BaseEnemy : MonoBehaviour
         curHp -= Damage;
         if (curHp <= 0)
         {
+            animator.SetTrigger("isDead");
             Dead();
         }
+
+        animator.SetTrigger("isDamage");
 
         ApplyEffect(effectData);
 

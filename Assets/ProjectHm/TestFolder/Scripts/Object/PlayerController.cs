@@ -91,6 +91,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // 착지 상태 체크해서 애니메이션 전환
+        animator.SetBool("isGrounded", IsGrounded());
+
         IsLooting();
 
         if (lastLookDirection.x < 0 && facingRight)
@@ -197,8 +200,8 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
 
 
-        // 애니메이션 트리거
-        //animator?.SetTrigger("Dash");
+        // 애니메이션 재생 시작
+        animator?.SetBool("isDash",true);
 
         // 대쉬 거리까지 등속 운동
         while (Vector2.Distance(rb.position, targetPos) > 0.01f)
@@ -218,10 +221,6 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForFixedUpdate();  // 물리 업데이트 주기에 맞추기
         }
 
-        // 대시 후 애니메이션 복구
-        //if (IsGrounded())
-        //    animator?.Play("Idle");
-
         if (!IsGrounded())
         {
             yield return new WaitForSeconds(0.05f);
@@ -231,6 +230,9 @@ public class PlayerController : MonoBehaviour
         Debug.Log("등속운동 중지");
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
+
+        // 대시 후 애니메이션 복구
+        animator?.SetBool("isDash", false);
 
 
         currentWeapon.DashAttack();
@@ -352,10 +354,12 @@ public class PlayerController : MonoBehaviour
                 // 위쪽 반동 추가
                 rb.linearVelocity = Vector2.up * rebound;
 
-                animator?.SetTrigger("OnAttack");
-                // 무기공격 로직 연결 예정
-                currentWeapon.Attack();
+                //애니메이션 재생
+                AttackAnimPlay(currentWeapon.data.weaponID);
                 currentWeapon.anim?.SetTrigger("OnAttack");
+
+                // 무기 공격 로직 실행
+                currentWeapon.Attack();
 
                 // 공격 횟수
                 attackCount++;
@@ -387,15 +391,45 @@ public class PlayerController : MonoBehaviour
                         Debug.Log("Attack");
                         // 땅에 닿으면 횟수 초기화
                         attackCount = 0;
-                        // 일반 공격
-                        animator?.SetTrigger("OnAttack");
-                        currentWeapon.Attack();
+
+                        //애니메이션 재생
+                        AttackAnimPlay(currentWeapon.data.weaponID);
                         currentWeapon.anim?.SetTrigger("OnAttack");
+
+                        // 무기 공격 로직 실행
+                        currentWeapon.Attack();
                     }
                 }
             }
             if(isAbleAttack) lastAttackTime = Time.time;
         }
+    }
+
+    public void AttackAnimPlay(int weaponID)
+    {
+        switch (weaponID)
+        {
+            case 100:
+                animator?.SetTrigger("OnAttack1");
+                break;
+
+            case 101:
+                animator?.SetTrigger("OnAttack2");
+                break;
+
+            case 102:
+                animator?.SetTrigger("OnAttack3");
+                break;
+
+            case 103:
+                animator?.SetTrigger("OnAttack2");
+                break;
+            
+            default:
+                Debug.Log("범위에 없는 무기");
+                break;
+        }
+
     }
 
     public void OnDownAttack(InputAction.CallbackContext context)
@@ -421,6 +455,9 @@ public class PlayerController : MonoBehaviour
     public IEnumerator StartDownAttack()
     {
         Debug.Log("DownAttackCoroutine");
+
+        // 애니메이션 재생
+        animator.SetTrigger("OnDropAttack");
 
         var originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;

@@ -55,6 +55,7 @@ public class UI_Selection : UI
 
         foreach (SlotData slotData in DataManager.Instance.allSelecSlotDatas)
         {
+            // 장착 무기와 아이디가 같지 않을때는 패스
             if ((slotData.type == SlotType.ManualWeapon) && (slotData.weaponID != player.GetComponent<PlayerController>().currentWeapon.data.weaponID))
                 continue;
 
