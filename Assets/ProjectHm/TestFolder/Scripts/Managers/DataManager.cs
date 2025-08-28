@@ -102,22 +102,22 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, float> attackSpeedDic
     = new Dictionary<int, float>()
     {
-        {0, 10f},
-        {1, 10.1f},
-        {2, 10.2f},
-        {3, 10.3f},
-        {4, 10.4f},
-        {5, 10.5f},
-        {6, 10.6f},
-        {7, 10.7f},
-        {8, 10.8f},
-        {9, 10.9f},
-        {10, 11f},
-        {11, 11.1f},
-        {12, 11.2f},
-        {13, 11.3f},
-        {14, 11.4f},
-        {15, 11.5f}
+        {0, 1f},
+        {1, 1.1f},
+        {2, 1.2f},
+        {3, 1.3f},
+        {4, 1.4f},
+        {5, 1.5f},
+        {6, 1.6f},
+        {7, 1.7f},
+        {8, 1.8f},
+        {9, 1.9f},
+        {10, 2f},
+        {11, 2.1f},
+        {12, 2.2f},
+        {13, 2.3f},
+        {14, 2.4f},
+        {15, 2.5f}
     };
     // key:statLevel / value:[moveSpeed, jumpPower]
     public Dictionary<int, float[]> movePowerDic

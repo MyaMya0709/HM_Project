@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
     {
         // 착지 상태 체크해서 애니메이션 전환
         animator.SetBool("isGrounded", IsGrounded());
+        currentWeapon.anim.SetBool("isGrounded", IsGrounded());
 
         IsLooting();
 
@@ -190,6 +191,7 @@ public class PlayerController : MonoBehaviour
     {
         // 애니메이션 재생 시작
         animator?.SetBool("isDash", true);
+        currentWeapon.anim?.SetBool("isDash", true);
 
         Debug.Log("DeshCoroutine");
         isDashing = true; // isDashing 동안 사용자의 입력을 받지 않음
@@ -232,6 +234,7 @@ public class PlayerController : MonoBehaviour
 
         // 대시 후 애니메이션 복구
         animator?.SetBool("isDash", false);
+        currentWeapon.anim?.SetBool("isDash", false);
 
         currentWeapon.DashAttack();
 
@@ -351,12 +354,9 @@ public class PlayerController : MonoBehaviour
                 // 위쪽 반동 추가
                 rb.linearVelocity = Vector2.up * rebound;
 
-                //애니메이션 재생
+                //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
                 AttackAnimPlay(currentWeapon.data.weaponID);
                 currentWeapon.anim?.SetTrigger("OnAttack");
-
-                // 무기 공격 로직 실행
-                currentWeapon.Attack();
 
                 // 공격 횟수
                 attackCount++;
@@ -389,12 +389,10 @@ public class PlayerController : MonoBehaviour
                         // 땅에 닿으면 횟수 초기화
                         attackCount = 0;
 
-                        //애니메이션 재생
+                        //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
                         AttackAnimPlay(currentWeapon.data.weaponID);
                         currentWeapon.anim?.SetTrigger("OnAttack");
 
-                        // 무기 공격 로직 실행
-                        currentWeapon.Attack();
                     }
                 }
             }
@@ -455,6 +453,7 @@ public class PlayerController : MonoBehaviour
 
         // 애니메이션 재생
         animator.SetTrigger("OnDropAttack");
+        currentWeapon.anim.SetTrigger("OnDropAttack");
 
         var originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
