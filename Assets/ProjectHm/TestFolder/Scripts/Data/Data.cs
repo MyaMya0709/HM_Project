@@ -49,6 +49,7 @@ public class WeaponData
 {
     public int weaponID;
     public int baseLevel;
+    public int clearStage;
 }
 
 [Serializable]
@@ -59,7 +60,7 @@ public class WeaponDataList
     public void Clear()
     {
         datas.Clear();
-        datas.Add(new WeaponData { weaponID = 100, baseLevel = 0 });
+        datas.Add(new WeaponData { weaponID = 100, baseLevel = 0, clearStage = 0 });
     }
 }
 #endregion
