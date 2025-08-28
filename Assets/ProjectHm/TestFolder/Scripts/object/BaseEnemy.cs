@@ -76,16 +76,20 @@ public class BaseEnemy : MonoBehaviour
     // 물리기반 이동이므로 FixedUpdate에서 사용해야함
     private void OnMove()
     {
+        // 기지를 향해 이동
+        Vector2 tarPos = target.position;
+        Vector2 curPos = transform.position;
+
+        Vector2 dir = (tarPos - curPos).normalized;
+        Vector2 vel = dir * enemyData.moveSpeed;
+
         if (enemyData.MoveType == EnemyMoveType.Ground)
         {
-            // 기지를 향해 이동
-            Vector2 dir = (target.position - transform.position).normalized;
-            rb.linearVelocity = new Vector2(dir.x * enemyData.moveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(vel.x , rb.linearVelocity.y);
         }
         else
         {
-            Vector2 dir = (target.position - transform.position).normalized;
-            rb.linearVelocity = new Vector2(dir.x * enemyData.moveSpeed, dir.y * enemyData.moveSpeed);
+            rb.linearVelocity = vel;
         }
 
         animator.SetBool("isMove",true);

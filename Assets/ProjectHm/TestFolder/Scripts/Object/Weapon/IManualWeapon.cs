@@ -70,6 +70,7 @@ public abstract class IManualWeapon : MonoBehaviour
     public abstract void ChargingAttack();
     public abstract void DashAttack();
     
+
     public void BaseLevelUp()
     {
         Debug.Log("무기 영구 강화 레벨업");
@@ -105,6 +106,7 @@ public abstract class IManualWeapon : MonoBehaviour
         playerCondition.GetTotalStat();
     }
 
+
     // 게임 시작용 스텟 세팅 함수
     public void StartStatSet()
     {
@@ -127,7 +129,6 @@ public abstract class IManualWeapon : MonoBehaviour
 
         TotalStatSet();
     }
-
     // 무기의 종합 스탯
     public void TotalStatSet()
     {
@@ -140,7 +141,6 @@ public abstract class IManualWeapon : MonoBehaviour
         totalWeaponDashPower = baseDashPower * selecDashPower;
         totalWeaponSuperJumpPower = baseSuperJumpPower * selecSuperJumpPower;
     }
-
     // 총스탯 계산 함수
     public void GetTotalStat()
     {
@@ -171,6 +171,7 @@ public abstract class IManualWeapon : MonoBehaviour
         anim.SetFloat("AttackSpeed",totalAttackSpeed);
         playerController.animator.SetFloat("AttackSpeed", totalAttackSpeed);
     }
+
 
     // 게임 초기화용 함수
     public void Clear()

@@ -12,4 +12,9 @@ public class AutoWeapon_200 : IAutoWeapon
         base.Start();
         SetStat();
     }
+
+    public override void Attack()
+    {
+
+    }
 }

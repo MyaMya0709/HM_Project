@@ -21,12 +21,6 @@ public class ManualWeapon_100 : IManualWeapon
 
     [Header("Effects")]
     public GameObject hitEffect;
-    public bool facingRight = true;
-
-    protected override void Start()
-    {
-        base.Start();
-    }
 
     public override void Attack()
     {

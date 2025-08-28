@@ -33173,6 +33173,7 @@ MonoBehaviour:
   curMWData:
     weaponID: 0
     baseLevel: 0
+    clearStage: 0
   curWeapon: {fileID: 0}
   weaponData: {fileID: 0}
   purchaseWeaponList:
@@ -46903,6 +46904,7 @@ MonoBehaviour:
   curMWData:
     weaponID: 0
     baseLevel: 0
+    clearStage: 0
   curWeapon: {fileID: 0}
   weaponData: {fileID: 0}
   name_TMP: {fileID: 32942027}
