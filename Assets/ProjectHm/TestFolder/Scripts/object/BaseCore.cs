@@ -44,7 +44,7 @@ public class BaseCore : MonoBehaviour
         uiManager.spawnManager.isGameFinish = true;
 
         Time.timeScale = 0f;
-        uiManager.finishUI.OnEnableFinshUI(!uiManager.spawnManager.isSpawning);
+        uiManager.finishUI.OnEnableFinishUI(!uiManager.spawnManager.isSpawning);
 
         Destroy(gameObject); // or 비활성화
     }

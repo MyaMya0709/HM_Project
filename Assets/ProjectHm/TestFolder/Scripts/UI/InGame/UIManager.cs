@@ -10,16 +10,4 @@ public class UIManager : MonoBehaviour
     public UI_Menu menuUI;
     public UI_Selection selectionUI;
     public UI_Finish finishUI;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

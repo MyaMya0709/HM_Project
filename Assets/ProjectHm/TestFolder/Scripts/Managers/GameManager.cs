@@ -72,7 +72,7 @@ public class GameManager : Singleton<GameManager>
         LoadWeaponData();
         LoadCharacterData();
 
-        GetCharacterData();
+        GetCharacterData(characterID);
         GetWeaponData(weaponID);
     }
 
@@ -81,7 +81,6 @@ public class GameManager : Singleton<GameManager>
     {
         isGameFinish = true;
     }
-
     public void GameReset()
     {
         string json;
@@ -100,80 +99,8 @@ public class GameManager : Singleton<GameManager>
         Instantiate(weaponData.gameObject, holder.transform);
     }
 
-    public void BuyWeapon(int id)
-    {
-        // 중복 여부 확인
-        bool isOverlap = false;
-        foreach (WeaponData data in purchaseWeaponList.datas)
-        {
-            if (data.weaponID != id)
-            {
-                isOverlap = false;
-            }
-            else
-            {
-                isOverlap = true;
-                Debug.Log("purchaseWeaponList에 중복 요소 있음");
-                break;
-            }
-        }
 
-        // 중복이 없다면 실행
-        if (!isOverlap)
-        {
-            //재화 사용
-            SpendGold(DataManager.Instance.manualDataList[id - 100].price);
 
-            // openWeaponList 리스트에 추가
-            purchaseWeaponList.datas.Add(
-                new WeaponData()
-                {
-                    weaponID = id, baseLevel = 0
-                });
-
-            // 리스트 오름차순 정렬
-            purchaseWeaponList.datas.Sort((x, y) => x.weaponID.CompareTo(y.weaponID));
-
-            foreach (WeaponData data in purchaseWeaponList.datas)
-            {
-                if (data.weaponID == id)
-                {
-                    // 딕셔너리에 추가
-                    weaponDatas.Add(id, data);
-                }
-            }
-
-            //무기 데이터 저장
-            SaveWeaponData();
-        }
-    }
-    public void BuyCharacter(int id)
-    {
-       //중복 확인
-        if (!purchaseCharacterList.characterIDs.Contains(id))
-        {
-            //재화 사용
-            SpendGold(DataManager.Instance.characterDataList[id].price);
-
-            // characterIDs 리스트에 추가
-            purchaseCharacterList.characterIDs.Add(id);
-            // 리스트 오름차순 정렬
-            purchaseCharacterList.characterIDs.Sort();
-
-            // 딕셔너리에 추가
-            if (!characterDataDic.ContainsKey(id))
-            {
-                characterDataDic.Add(id, DataManager.Instance.characterDataList[id]);
-            }
-
-            //캐릭터 데이터 저장
-            SaveCharacterData();
-        }
-        else
-        {
-            Debug.Log("purchaseCharacterList 중복");
-        }
-    }
 
     public void SetGold()
     {
@@ -194,6 +121,7 @@ public class GameManager : Singleton<GameManager>
         GetPlayerData();
         SavePlayerData();
     }
+
 
     public PlayerData SetPlayerData()
     {
@@ -300,12 +228,81 @@ public class GameManager : Singleton<GameManager>
             if (weaponDatas.Count != 0) Debug.Log($"New WeaponData Save");
         }
     }
+    public void BuyWeapon(int id)
+    {
+        // 중복 여부 확인
+        bool isOverlap = false;
+        foreach (WeaponData data in purchaseWeaponList.datas)
+        {
+            if (data.weaponID != id)
+            {
+                isOverlap = false;
+            }
+            else
+            {
+                isOverlap = true;
+                Debug.Log("purchaseWeaponList에 중복 요소 있음");
+                break;
+            }
+        }
+
+        // 중복이 없다면 실행
+        if (!isOverlap)
+        {
+            //재화 사용
+            SpendGold(DataManager.Instance.manualDataList[id - 100].price);
+
+            // openWeaponList 리스트에 추가
+            purchaseWeaponList.datas.Add(
+                new WeaponData()
+                {
+                    weaponID = id,
+                    baseLevel = 0
+                });
+
+            // 리스트 오름차순 정렬
+            purchaseWeaponList.datas.Sort((x, y) => x.weaponID.CompareTo(y.weaponID));
+
+            foreach (WeaponData data in purchaseWeaponList.datas)
+            {
+                if (data.weaponID == id)
+                {
+                    // 딕셔너리에 추가
+                    weaponDatas.Add(id, data);
+                }
+            }
+
+            //무기 데이터 저장
+            SaveWeaponData();
+        }
+    }
+    public void UnLockWeaponData(int id)
+    {
+        // 중복확인
+        if(!unlockWeaponList.Contains(id))
+        {
+            // 무기 추가
+            unlockWeaponList.Add(id);
+            unlockWeaponList.Sort();
+
+            unlockData.waeaponIDs.Add(id);
+            unlockData.waeaponIDs.Sort();
+
+            //해금데이터 저장
+            SaveUnlockData();
+        }
+        else
+        {
+            Debug.Log("unlockWeaponList 중복");
+        }
+    }
+
 
     public CharacterData SetCharacterData()
     {
         return curCharacterData;
     }
-    public void GetCharacterData()
+    public void GetCharacterData(int characterID)
     {
         foreach (CharacterData CData in DataManager.Instance.characterDataList)
         {
@@ -316,7 +313,9 @@ public class GameManager : Singleton<GameManager>
         }
         if (curCharacterData == null) Debug.Log($"CharacterData Load 실패");
 
-        playerData.characterID = curCharacterData.ID;
+        playerData.characterID = characterID;
+
+        SaveData();
     }
     public void SaveCharacterData()
     {
@@ -362,6 +361,53 @@ public class GameManager : Singleton<GameManager>
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "CharacterData.json"), json);
 
             if (characterDataDic.Count != 0) Debug.Log($"new characterDataDic Save");
+        }
+    }
+    public void BuyCharacter(int id)
+    {
+        //중복 확인
+        if (!purchaseCharacterList.characterIDs.Contains(id))
+        {
+            //재화 사용
+            SpendGold(DataManager.Instance.characterDataList[id].price);
+
+            // characterIDs 리스트에 추가
+            purchaseCharacterList.characterIDs.Add(id);
+            // 리스트 오름차순 정렬
+            purchaseCharacterList.characterIDs.Sort();
+
+            // 딕셔너리에 추가
+            if (!characterDataDic.ContainsKey(id))
+            {
+                characterDataDic.Add(id, DataManager.Instance.characterDataList[id]);
+            }
+
+            //캐릭터 데이터 저장
+            SaveCharacterData();
+        }
+        else
+        {
+            Debug.Log("purchaseCharacterList 중복");
+        }
+    }
+    public void UnLockCharacterData(int id)
+    {
+        //중복 확인
+        if (!unlockCharacterList.Contains(id))
+        {
+            // 캐릭터 추가
+            unlockCharacterList.Add(id);
+            unlockCharacterList.Sort();
+
+            unlockData.characterIDs.Add(id);
+            unlockData.characterIDs.Sort();
+
+            // 해금 데이터 저장
+            SaveUnlockData();
+        }
+        else
+        {
+            Debug.Log("unlockCharacterList 중복");
         }
     }
 

@@ -135,12 +135,12 @@ public class SpawnManager : MonoBehaviour
         aliveEnemies--;
         killEnemies++;
         // 게임오버 로직 실행
-          if (!isSpawning && aliveEnemies <= 0)
+        if (!isSpawning && aliveEnemies <= 0)
         {
             //모든 웨이브 종료시 호출
             isGameFinish = true;
             //게임 클리어 UI 호출
-            uiManager.finishUI.OnEnableFinshUI(!isSpawning);
+            uiManager.finishUI.OnEnableFinishUI(!isSpawning);
         }
     }
 

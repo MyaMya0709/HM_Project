@@ -297,7 +297,7 @@ public class UI_InfoPanel : MonoBehaviour
     public void OnSelecCharacter()
     {
         GameManager.Instance.characterID = characterID;
-        GameManager.Instance.GetCharacterData();
+        GameManager.Instance.GetCharacterData(characterID);
         GameManager.Instance.GetPlayerData();
         ButtonSet();
         Debug.Log("캐릭터 선택");

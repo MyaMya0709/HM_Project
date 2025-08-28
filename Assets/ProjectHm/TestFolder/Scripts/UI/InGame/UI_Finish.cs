@@ -59,7 +59,7 @@ public class UI_Finish : MonoBehaviour
         getGold.SetActive(true);
     }
 
-    public void OnEnableFinshUI(bool isGameClear)
+    public void OnEnableFinishUI(bool isGameClear)
     {
         Time.timeScale = 0f;
         gameObject.SetActive(true);
@@ -71,6 +71,8 @@ public class UI_Finish : MonoBehaviour
     {
         Time.timeScale = 1f;
         gameObject.SetActive(false);
+
+        // TODO - GameManager에 업적, 아이템 해금, 각종 누적수치 저장
 
         SceneLoader.Instance.LoadSceneAsync("MainMenu");
     }
