@@ -13,12 +13,16 @@ public abstract class IAutoWeapon : MonoBehaviour
     public int selecWeaponLevel;
 
     [Header("Attack Settings")]
-    public float selecDamage;
-    public float selecRange;
-    public float selecSpeed;
-    public float selecStat0;
-    public float selecStat1;
-    public float selecStat2;
+    public float selecFloatStat0;
+    public float selecFloatStat1;
+    public float selecFloatStat2;
+    public float selecFloatStat3;
+    public float selecFloatStat4;
+    public int selecIntStat0;
+    public int selecIntStat1;
+    public int selecIntStat2;
+    public int selecIntStat3;
+    public int selecIntStat4;
 
     protected virtual void Start()
     {
@@ -26,25 +30,42 @@ public abstract class IAutoWeapon : MonoBehaviour
         playerController = GetComponentInParent<PlayerController>();
         playerCondition = GetComponentInParent<PlayerCondition>();
         sr = GetComponentInChildren<SpriteRenderer>();
+
+        SetStat();
     }
 
     public abstract void Attack();
-
 
     public void SelecLevelUp()
     {
         Debug.Log("자동무기 선택지 렙업");
         selecWeaponLevel++;
-        selecDamage = data.damageList[selecWeaponLevel];
-        selecRange = data.rangeList[selecWeaponLevel];
+        selecFloatStat0 = data.statFloatList0[selecWeaponLevel];
+        selecFloatStat1 = data.statFloatList1[selecWeaponLevel];
+        selecFloatStat2 = data.statFloatList2[selecWeaponLevel];
+        selecFloatStat3 = data.statFloatList3[selecWeaponLevel];
+        selecFloatStat4 = data.statFloatList4[selecWeaponLevel];
+        selecIntStat0 = data.statIntList0[selecWeaponLevel];
+        selecIntStat1 = data.statIntList1[selecWeaponLevel];
+        selecIntStat2 = data.statIntList2[selecWeaponLevel];
+        selecIntStat3 = data.statIntList3[selecWeaponLevel];
+        selecIntStat4 = data.statIntList4[selecWeaponLevel];
     }
 
     // 게임 시작용 초기화 함수
     public void SetStat()
     {
         selecWeaponLevel = 0;
-        selecDamage = data.damageList[selecWeaponLevel];
-        selecRange = data.rangeList[selecWeaponLevel];
+        selecFloatStat0 = data.statFloatList0[selecWeaponLevel];
+        selecFloatStat1 = data.statFloatList1[selecWeaponLevel];
+        selecFloatStat2 = data.statFloatList2[selecWeaponLevel];
+        selecFloatStat3 = data.statFloatList3[selecWeaponLevel];
+        selecFloatStat4 = data.statFloatList4[selecWeaponLevel];
+        selecIntStat0 = data.statIntList0[selecWeaponLevel];
+        selecIntStat1 = data.statIntList1[selecWeaponLevel];
+        selecIntStat2 = data.statIntList2[selecWeaponLevel];
+        selecIntStat3 = data.statIntList3[selecWeaponLevel];
+        selecIntStat4 = data.statIntList4[selecWeaponLevel];
     }
 
     // 게임 초기화용 함수

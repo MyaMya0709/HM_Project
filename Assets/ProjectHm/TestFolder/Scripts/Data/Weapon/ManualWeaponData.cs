@@ -23,7 +23,6 @@ public class ManualWeaponData : ScriptableObject
     public List<float> selecDashPowerList;
     public List<float> selecSuperJumpPowerList;
 
-
     // 레벨로 원하는 값 찾기
     public List<int> enhanceCostList;
     public List<WeaponEffectData> baseWeaponEffectList;

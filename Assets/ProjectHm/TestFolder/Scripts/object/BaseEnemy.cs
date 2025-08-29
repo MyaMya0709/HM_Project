@@ -101,7 +101,7 @@ public class BaseEnemy : MonoBehaviour
 
     public void TakeDamage(float Damage, EffectTypeData effectData)
     {
-        curHp -= Damage;
+        curHp -= Damage * effectData.damageMultiple;
         if (curHp <= 0)
         {
             animator.SetTrigger("isDead");
@@ -112,7 +112,7 @@ public class BaseEnemy : MonoBehaviour
 
         ApplyEffect(effectData);
 
-        SpawnDamagePopup((int)Damage);
+        SpawnDamagePopup((int)(Damage * effectData.damageMultiple));
     }
 
     public void SpawnDamagePopup(int damage)
