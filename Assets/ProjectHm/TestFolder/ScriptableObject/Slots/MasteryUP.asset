@@ -15,8 +15,8 @@ MonoBehaviour:
   type: 0
   tatle: Mastery UP
   icon: {fileID: 0}
-  description: 'Act Power
+  description: 'Mastery
 
     Level Up!'
-  statLvType: 4
+  statLvType: 5
   weaponID: 0
