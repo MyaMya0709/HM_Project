@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +24,8 @@ public abstract class IAutoWeapon : MonoBehaviour
     public int selecIntStat2;
     public int selecIntStat3;
     public int selecIntStat4;
+
+    public static event Action OnWeaponLevelUp;
 
     protected virtual void Start()
     {
@@ -50,6 +53,8 @@ public abstract class IAutoWeapon : MonoBehaviour
         selecIntStat2 = data.statIntList2[selecWeaponLevel];
         selecIntStat3 = data.statIntList3[selecWeaponLevel];
         selecIntStat4 = data.statIntList4[selecWeaponLevel];
+
+        OnWeaponLevelUp?.Invoke();
     }
 
     // 게임 시작용 초기화 함수

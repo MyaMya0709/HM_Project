@@ -23,7 +23,7 @@ public class PlayerCondition : MonoBehaviour
     public float baseJumpPower;
     public float baseDashPower;
     public float baseSuperJumpPower;
-    public float baseMasteryStat;
+    public int baseMasteryStat;
 
     public int selecAttackPowerLv;
     public int selecAttackSpeedLv;
@@ -37,7 +37,7 @@ public class PlayerCondition : MonoBehaviour
     public float totalJumpPower;
     public float totalDashPower;
     public float totalSuperJumpPower;
-    public float totalMasteryStat;
+    public int totalMasteryStat;
 
     public int curGold = 0;
     public float maxExp;
@@ -152,7 +152,7 @@ public class PlayerCondition : MonoBehaviour
                         break;
 
                     case StatType.Mastery:
-                        baseMasteryStat += characterData.bonusStatValue[i];
+                        baseMasteryStat += (int)characterData.bonusStatValue[i];
                         Debug.Log("스탯 적용 : Mastery");
                         break;
 

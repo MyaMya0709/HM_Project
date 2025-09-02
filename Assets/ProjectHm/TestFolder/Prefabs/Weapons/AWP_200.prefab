@@ -183,7 +183,11 @@ MonoBehaviour:
   selecIntStat2: 0
   selecIntStat3: 0
   selecIntStat4: 0
-  weaponID: 200
-  attackPoint: {fileID: 6008320010849064700}
+  initPoint: {fileID: 6008320010849064700}
   boomerangPrefab: {fileID: 6004443744120939711, guid: 0fc44ef7e02862e4d9f180b194a8f30c, type: 3}
   fireRate: 2
+  speed: 0
+  maxDistance: 0
+  returnSpeed: 0
+  projectileUnit: 0
+  projectileUnitMax: 0

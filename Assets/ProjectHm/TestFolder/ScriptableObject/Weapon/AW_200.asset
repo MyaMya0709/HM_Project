@@ -22,23 +22,161 @@ MonoBehaviour:
   - 14
   - 15
   statFloatList1:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  statFloatList2: []
-  statFloatList3: []
-  statFloatList4: []
-  statIntList0: 000000000000000000000000000000000000000000000000
-  statIntList1: 
-  statIntList2: 
-  statIntList3: 
-  statIntList4: 
+  - 2
+  - 1.8
+  - 1.6
+  - 1.4
+  - 1.2
+  - 1
+  statFloatList2:
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  statFloatList3:
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  statFloatList4:
+  - 10
+  - 12
+  - 14
+  - 16
+  - 18
+  - 20
+  statIntList0: 010000000200000003000000040000000500000006000000
+  statIntList1: 000000000000000000000000000000000000000000000000
+  statIntList2: 000000000000000000000000000000000000000000000000
+  statIntList3: 000000000000000000000000000000000000000000000000
+  statIntList4: 000000000000000000000000000000000000000000000000
+  masteryStatFloatList0:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  masteryStatFloatList1:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  masteryStatFloatList2:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  masteryStatFloatList3:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  masteryStatFloatList4:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  masteryStatIntList0: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000
+  masteryStatIntList1: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000
+  masteryStatIntList2: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000
+  masteryStatIntList3: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000
+  masteryStatIntList4: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000
   selecWeaponEffectList:
   - attackEffect:
-      damageMultiple: 0
+      damageMultiple: 1
       knockback:
         isSum: 0
         onoff: 0
@@ -166,7 +304,7 @@ MonoBehaviour:
         valueB: 0
         valueC: 0
   - attackEffect:
-      damageMultiple: 0
+      damageMultiple: 1
       knockback:
         isSum: 0
         onoff: 0
@@ -294,7 +432,7 @@ MonoBehaviour:
         valueB: 0
         valueC: 0
   - attackEffect:
-      damageMultiple: 0
+      damageMultiple: 1
       knockback:
         isSum: 0
         onoff: 0
@@ -422,7 +560,7 @@ MonoBehaviour:
         valueB: 0
         valueC: 0
   - attackEffect:
-      damageMultiple: 0
+      damageMultiple: 1
       knockback:
         isSum: 0
         onoff: 0
@@ -550,7 +688,7 @@ MonoBehaviour:
         valueB: 0
         valueC: 0
   - attackEffect:
-      damageMultiple: 0
+      damageMultiple: 1
       knockback:
         isSum: 0
         onoff: 0
@@ -678,7 +816,7 @@ MonoBehaviour:
         valueB: 0
         valueC: 0
   - attackEffect:
-      damageMultiple: 0
+      damageMultiple: 1
       knockback:
         isSum: 0
         onoff: 0

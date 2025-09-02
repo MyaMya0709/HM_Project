@@ -162,24 +162,24 @@ public class DataManager : MonoBehaviour
         {15, new float[] { 5.5f, 101.5f }}
     };
     // key:statLevel / value:masteryStat
-    public Dictionary<int, float> masteryStatDic
-    = new Dictionary<int, float>()
-    {   { 0, 5f},
-        { 1, 10f},
-        { 2, 20f},
-        { 3, 30f},
-        { 4, 40f},
-        { 5, 50f},
-        { 6, 60f},
-        { 7, 70f},
-        { 8, 80f},
-        { 9, 90f},
-        { 10, 100f},
-        { 11, 110f},
-        { 12, 120f},
-        { 13, 130f},
-        { 14, 140f},
-        { 15, 150f}
+    public Dictionary<int, int> masteryStatDic
+    = new Dictionary<int, int>()
+    {   { 0, 1},
+        { 1, 2},
+        { 2, 3},
+        { 3, 4},
+        { 4, 5},
+        { 5, 6},
+        { 6, 7},
+        { 7, 8},
+        { 8, 9},
+        { 9, 10},
+        { 10, 11},
+        { 11, 12},
+        { 12, 13},
+        { 13, 14},
+        { 14, 15},
+        { 15, 16}
     };
 
     // key:playerLevel / value:MaxExp
@@ -287,15 +287,15 @@ public class DataManager : MonoBehaviour
         {5, new float[] { 1.5f, 1.5f }}
     };
 
-    public Dictionary<int, float> selecMasteryStatDic
-    = new Dictionary<int, float>()
+    public Dictionary<int, int> selecMasteryStatDic
+    = new Dictionary<int, int>()
     {
-        {0, 1f},
-        {1, 1.1f},
-        {2, 1.2f},
-        {3, 1.2f},
-        {4, 1.4f},
-        {5, 1.5f},
+        {0, 1},
+        {1, 2},
+        {2, 3},
+        {3, 4},
+        {4, 5},
+        {5, 6},
     };
     #endregion
 
