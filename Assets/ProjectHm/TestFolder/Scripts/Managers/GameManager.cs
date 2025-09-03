@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEditor.Overlays;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -300,15 +301,19 @@ public class GameManager : Singleton<GameManager>
 
     public CharacterData SetCharacterData()
     {
+        if (curCharacterData == null) curCharacterData = DataManager.Instance.characterDataList[0];
         return curCharacterData;
     }
     public void GetCharacterData(int characterID)
     {
-        foreach (CharacterData CData in DataManager.Instance.characterDataList)
+        if(DataManager.Instance != null)
         {
-            if(CData.ID == characterID)
+            foreach (CharacterData CData in DataManager.Instance.characterDataList)
             {
-                curCharacterData = CData;
+                if (CData.ID == characterID)
+                {
+                    curCharacterData = CData;
+                }
             }
         }
         if (curCharacterData == null) Debug.Log($"CharacterData Load 실패");
@@ -340,9 +345,11 @@ public class GameManager : Singleton<GameManager>
             //Dictionary으로 전환
             foreach (int characterID in purchaseCharacterList.characterIDs)
             {
-                characterDataDic.Add(characterID, DataManager.Instance.characterDataList[characterID]);
-                if (characterDataDic.Count == 0) Debug.Log($"characterDataDic null");
-
+                if (DataManager.Instance != null)
+                {
+                    characterDataDic.TryAdd(characterID, DataManager.Instance.characterDataList[characterID]);
+                }
+                else Debug.Log($"characterDataDic Load Fail");
             }
             if (characterDataDic.Count != 0) Debug.Log($"characterDataDic Load");
         }

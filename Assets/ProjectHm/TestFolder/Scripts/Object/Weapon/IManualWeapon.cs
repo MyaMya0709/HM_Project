@@ -166,10 +166,15 @@ public abstract class IManualWeapon : MonoBehaviour
             Debug.Log("playerCondition 없음");
         }
 
-        // 쿨타임 설정 및 애니메이션 재생 속도 세팅
-        playerController.attackCooldown = 1f / totalAttackSpeed;
-        anim.SetFloat("AttackSpeed",totalAttackSpeed);
-        playerController.animator.SetFloat("AttackSpeed", totalAttackSpeed);
+        // 인게임 플레이어가 존재할 경우
+        if (playerController != null)
+        {
+            // 쿨타임 설정 및 애니메이션 재생 속도 세팅
+            playerController.attackCooldown = 1f / totalAttackSpeed;
+            anim.SetFloat("AttackSpeed", totalAttackSpeed);
+            playerController.animator.SetFloat("AttackSpeed", totalAttackSpeed);
+        }
+        
     }
 
 

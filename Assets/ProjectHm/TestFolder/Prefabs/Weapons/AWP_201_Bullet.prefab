@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 7629674366222618973}
   - component: {fileID: 3787395938312264295}
   - component: {fileID: -3858858703464120201}
+  - component: {fileID: 3713335996791186534}
   m_Layer: 12
   m_Name: AWP_201_Bullet
   m_TagString: Untagged
@@ -190,7 +191,159 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &3713335996791186534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6004443744120939711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d765df95241c14e83ba34a357bb417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 0
+  speed: 0
+  maxDistance: 0
+  returnSpeed: 0
+  catchDistance: 0.5
+  startPos: {x: 0, y: 0}
+  initPoint: {fileID: 0}
+  isReturning: 0
+  moveDir: {x: 0, y: 0}
+  rb: {fileID: 0}
+  effect:
+    attackEffect:
+      damageMultiple: 0
+      knockback:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      airborne:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      stun:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      slow:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      dotDamage:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+    dropEffect:
+      damageMultiple: 0
+      knockback:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      airborne:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      stun:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      slow:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      dotDamage:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+    chargeEffect:
+      damageMultiple: 0
+      knockback:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      airborne:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      stun:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      slow:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      dotDamage:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+    dashEffect:
+      damageMultiple: 0
+      knockback:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      airborne:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      stun:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      slow:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+      dotDamage:
+        isSum: 0
+        onoff: 0
+        valueA: 0
+        valueB: 0
+        valueC: 0
+  facingRight: 0

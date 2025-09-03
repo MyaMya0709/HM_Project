@@ -97,7 +97,6 @@ MonoBehaviour:
   mutipleAttack: 0
   isStun: 1
   hitEffect: {fileID: 0}
-  facingRight: 1
 --- !u!95 &7928843583511271031
 Animator:
   serializedVersion: 7
@@ -195,7 +194,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3bc55ccdfea8b15458663797fe22a9b2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
