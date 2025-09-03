@@ -1,7 +1,7 @@
 using UnityEditor.Tilemaps;
 using UnityEngine;
 
-public class BoomerangProjectile : MonoBehaviour
+public class Projectile_200 : MonoBehaviour
 {
     public float damage;         // 공격 데미지
     public float speed ;         // 이동 속도

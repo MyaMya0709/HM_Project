@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AutoWeapon_200 : IAutoWeapon
+public class AutoWeapon_201 : IAutoWeapon
 {
     public Transform initPoint;
-    public GameObject boomerangPrefab;
+    public GameObject projectilePrefab;
 
     private float nextFireTime;
     public float damage;          // 공격 데미지
@@ -36,7 +36,7 @@ public class AutoWeapon_200 : IAutoWeapon
 
     void Update()
     {
-        // 타이머 + 투사체 회수 후 공격
+        // 타이머
         if (Time.time >= nextFireTime && projectileUnit == 0)
         {
             Attack();
@@ -68,7 +68,7 @@ public class AutoWeapon_200 : IAutoWeapon
             Vector2 dir = new Vector2(dirX, 0f);
 
             //투사체 생성 및 세팅
-            var obj = Instantiate(boomerangPrefab, initPoint.position, Quaternion.identity);
+            var obj = Instantiate(projectilePrefab, initPoint.position, Quaternion.identity);
             obj.GetComponent<Projectile_200>().Init(
                 dir,
                 initPoint,
