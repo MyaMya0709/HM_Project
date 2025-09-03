@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d111af5769fc1f0489c8b96efc698e65
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308259
+  packageName: Pixel Craft VFX - URP
+  packageVersion: 1.0.02
+  assetPath: Assets/Vefects/Pixel Craft VFX URP/VFX/Level Up/Particles/Loop/VFX_Level_Up_01_Color_Loop_Static.prefab
+  uploadId: 771196

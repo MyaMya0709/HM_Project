@@ -67,7 +67,7 @@ public class AutoWeapon_201 : IAutoWeapon
             fireIndex++;
 
             GameObject proj = Instantiate(projectilePrefab, initPoint.position, Quaternion.identity);
-            //proj.GetComponent<Projectile_201>().SetTarget(target);
+            proj.GetComponent<Projectile_201>().SetTarget(target);
         }
     }
 
