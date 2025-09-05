@@ -170,6 +170,8 @@ MonoBehaviour:
   hitNormal: {x: 0, y: 0}
   droppedItemPrepab: {fileID: 76134026972407004, guid: 0e5a4471c69129e46817985979c17542, type: 3}
   animator: {fileID: 0}
+  damageEffect: {fileID: 4748681987041982144, guid: 98ad7840ec21a0548963be6693f9e824, type: 3}
+  hitEffect: {fileID: 4748681987041982144, guid: bea406f8788d55146933165cdb4e557b, type: 3}
 --- !u!95 &3491884869898232473
 Animator:
   serializedVersion: 7

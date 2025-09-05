@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BaseEnemy : MonoBehaviour
 {
@@ -30,6 +32,8 @@ public class BaseEnemy : MonoBehaviour
 
     public GameObject droppedItemPrepab;
     public Animator animator;
+    public GameObject damageEffect;
+    public GameObject hitEffect;
 
     public bool isDead => curHp <= 0;
 
@@ -48,6 +52,9 @@ public class BaseEnemy : MonoBehaviour
         {
             Flip();
         }
+
+        Instantiate(damageEffect, transform.position, transform.rotation);
+        Instantiate(hitEffect, transform.position, transform.rotation);
     }
 
     private void Update()
@@ -101,10 +108,13 @@ public class BaseEnemy : MonoBehaviour
 
     public void TakeDamage(float Damage, EffectTypeData effectData)
     {
+        damageEffect.GetComponent<ParticleSystem>().Play();
+        //Instantiate(damageEffect.gameObject, transform.position, transform.rotation);
+
         curHp -= Damage * effectData.damageMultiple;
         if (curHp <= 0)
         {
-            animator.SetTrigger("isDead");
+            //animator.SetTrigger("isDead");
             Dead();
         }
 
@@ -302,9 +312,9 @@ public class BaseEnemy : MonoBehaviour
         //사망 처리
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().simulated = false;
-        
-        //animator?.SetTrigger("Dead");
+
         //사망 애니메이션 재생 후 제거
+        animator.SetTrigger("isDead");
 
         OnDeath?.Invoke();
         Destroy(gameObject, 1.5f);
@@ -318,6 +328,9 @@ public class BaseEnemy : MonoBehaviour
         BaseCore baseCore = collision.GetComponent<BaseCore>();
         if (baseCore != null)
         {
+            hitEffect.GetComponent<ParticleSystem>().Play();
+            //Instantiate(hitEffect.gameObject, transform.position, transform.rotation);
+
             AttackBase(baseCore);
         }
     }
