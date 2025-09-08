@@ -66,6 +66,16 @@ public class PlayerController : MonoBehaviour
     public float lootingRadius = 10f;             // 루팅 가능 거리
     public float lootingSpeed = 30f;              // 루팅 속도
 
+    [Header("Particle")]
+    public GameObject attackParticle1;
+    public GameObject attackParticle2;
+    public GameObject attackParticle3;
+    public GameObject moveParticle;
+    public GameObject dashParticle;
+    public GameObject downParticle;
+    public GameObject jumpParticle;
+
+
     public bool facingRight = false;
 
     private void Awake()
@@ -170,8 +180,6 @@ public class PlayerController : MonoBehaviour
             isMove = true;
             animator.SetBool("isMove",true);
             currentWeapon.anim?.SetBool("isMove",true);
-
-            //
 
             // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
             if (Mathf.Abs(moveInput.x) > 0.01f)
@@ -407,6 +415,47 @@ public class PlayerController : MonoBehaviour
         switch (weaponID)
         {
             case 100:
+                // 생성 위치
+                Transform holder = currentWeapon.attackPoint;
+
+                //// 좌우 방향에 따른 위치 조절 및 생성
+                GameObject particle;
+                if (facingRight) particle = Instantiate(attackParticle1, new Vector3(holder.position.x + 0.5f, holder.position.y, holder.position.z), holder.rotation);
+                else particle = Instantiate(attackParticle1, new Vector3(holder.position.x + -0.5f, holder.position.y, holder.position.z), holder.rotation);
+
+                // 좌우 방향에 따른 위치 조절 및 생성
+                //GameObject particle = Instantiate(attackParticle1, holder);
+                //if (facingRight) particle.transform.position += Vector3.right * 0.5f;
+                //else particle.transform.position += Vector3.left * 0.5f;
+
+                // 1번 재생 후 삭제 설정
+                var main = particle.GetComponent<ParticleSystem>().main;
+                main.stopAction = ParticleSystemStopAction.Destroy;
+
+                // 루프 off, 크기 조절 및 스케일링 모드 설정
+                var sub = particle.GetComponentInChildren<ParticleSystem>().main;
+                sub.loop = false;
+                sub.startSize = 1f;
+                //sub.scalingMode = ParticleSystemScalingMode.Local;
+
+               
+                // 플레이어의 좌우 반전을 파티클에 적용
+                var renderer = particle.GetComponentInChildren<ParticleSystemRenderer>();
+                
+                //if (facingRight)
+                if (facingRight)
+                {
+                    renderer.flip = new Vector3(0, 0, 0);
+                    Debug.Log($"{renderer.flip}");
+                }
+                else
+                {
+                    renderer.flip = new Vector3(1, 0, 0);
+                    Debug.Log($"{renderer.flip}");
+                }
+
+                particle.GetComponent<ParticleSystem>().Play();
+
                 animator?.SetTrigger("OnAttack1");
                 break;
 

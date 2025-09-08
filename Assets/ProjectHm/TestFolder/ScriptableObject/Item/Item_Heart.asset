@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26882ebc4d6f314f848796a86e4ac91, type: 3}
   m_Name: Item_Heart
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 4606908045521496030, guid: 581f8c98839956b41b3467b49a3c63e7, type: 3}
+  itemSprite: {fileID: 21300000, guid: 581f8c98839956b41b3467b49a3c63e7, type: 3}
   itemName: Heart
   itemDescription: Heart
   itemAmount: 10

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26882ebc4d6f314f848796a86e4ac91, type: 3}
   m_Name: Item_Exp
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 5375727711944648528, guid: f6b51d8159272314086e066049e82798, type: 3}
+  itemSprite: {fileID: 21300000, guid: f6b51d8159272314086e066049e82798, type: 3}
   itemName: Exp
   itemDescription: Exp
   itemAmount: 10
