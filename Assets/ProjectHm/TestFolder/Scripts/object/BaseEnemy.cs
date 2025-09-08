@@ -15,6 +15,7 @@ public class BaseEnemy : MonoBehaviour
     [Header("Movement Element")]
     public Transform target;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Collider2D col;
     public bool isDamage = false;
 
     [Header("Damage Popup")]
@@ -45,6 +46,7 @@ public class BaseEnemy : MonoBehaviour
         curHp = enemyData.maxHealth;
         //target = GameManager.Instance.baseCore.AttackPoint;
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
@@ -52,9 +54,6 @@ public class BaseEnemy : MonoBehaviour
         {
             Flip();
         }
-
-        Instantiate(damageEffect, transform.position, transform.rotation);
-        Instantiate(hitEffect, transform.position, transform.rotation);
     }
 
     private void Update()
@@ -108,9 +107,16 @@ public class BaseEnemy : MonoBehaviour
 
     public void TakeDamage(float Damage, EffectTypeData effectData)
     {
-        damageEffect.GetComponent<ParticleSystem>().Play();
-        //Instantiate(damageEffect.gameObject, transform.position, transform.rotation);
+        //가까운 피격 지점에 파티클 생성
+        Vector3 hitPos = col.ClosestPoint(transform.position);
+        GameObject particle = Instantiate(damageEffect, hitPos, transform.rotation);
 
+        //루프 off, 1번 재생 후 삭제 설정
+        var main = particle.GetComponent<ParticleSystem>().main;
+        main.loop = false;
+        main.stopAction = ParticleSystemStopAction.Destroy;
+
+        //데미지 계산
         curHp -= Damage * effectData.damageMultiple;
         if (curHp <= 0)
         {
@@ -118,10 +124,13 @@ public class BaseEnemy : MonoBehaviour
             Dead();
         }
 
+        //애니메이션 재생
         animator.SetTrigger("isDamage");
 
+        //공격의 효과 적용
         ApplyEffect(effectData);
 
+        //데미지 팝업 띄우기
         SpawnDamagePopup((int)(Damage * effectData.damageMultiple));
     }
 
@@ -328,8 +337,17 @@ public class BaseEnemy : MonoBehaviour
         BaseCore baseCore = collision.GetComponent<BaseCore>();
         if (baseCore != null)
         {
-            hitEffect.GetComponent<ParticleSystem>().Play();
+            //hitEffect.GetComponent<ParticleSystem>().Play();
             //Instantiate(hitEffect.gameObject, transform.position, transform.rotation);
+
+            //가까운 피격 지점에 파티클 생성
+            Vector3 hitPos = col.ClosestPoint(transform.position);
+            GameObject particle = Instantiate(hitEffect, hitPos, transform.rotation);
+
+            //루프 off, 1번 재생 후 삭제 설정
+            var main = particle.GetComponent<ParticleSystem>().main;
+            main.loop = false;
+            main.stopAction = ParticleSystemStopAction.Destroy;
 
             AttackBase(baseCore);
         }
