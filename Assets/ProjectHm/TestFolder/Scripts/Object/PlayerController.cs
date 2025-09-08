@@ -171,6 +171,8 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isMove",true);
             currentWeapon.anim?.SetBool("isMove",true);
 
+            //
+
             // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
             if (Mathf.Abs(moveInput.x) > 0.01f)
             {

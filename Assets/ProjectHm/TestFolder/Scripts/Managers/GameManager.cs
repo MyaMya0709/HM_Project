@@ -101,8 +101,6 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-
-
     public void SetGold()
     {
         curGoldTMP.text = curGold.ToString();
