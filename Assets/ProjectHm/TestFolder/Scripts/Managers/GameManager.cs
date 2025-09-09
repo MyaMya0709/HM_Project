@@ -97,6 +97,7 @@ public class GameManager : Singleton<GameManager>
 
     public void WeaponInit(GameObject holder)
     {
+        GetWeaponData(weaponID);
         Instantiate(weaponData.gameObject, holder.transform);
     }
 

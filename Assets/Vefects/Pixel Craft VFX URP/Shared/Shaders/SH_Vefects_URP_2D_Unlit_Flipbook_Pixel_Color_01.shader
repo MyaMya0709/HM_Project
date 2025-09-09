@@ -30,7 +30,8 @@ Shader "Vefects/SH_Vefects_URP_2D_Unlit_Flipbook_Pixel_Color_01"
 
         Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Transparent" "UniversalMaterialType"="Lit" "Queue"="Transparent" "ShaderGraphShader"="true" }
 
-		Cull [_Cull]
+		Cull [Off]
+		// Cull [_Cull]
 		Blend [_Src] [_Dst], One OneMinusSrcAlpha
 		ZTest [_ZTest]
 		ZWrite [_ZWrite]

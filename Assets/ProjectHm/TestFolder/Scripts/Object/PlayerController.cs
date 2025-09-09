@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviour
     public GameObject downParticle;
     public GameObject jumpParticle;
 
+    float dustTimer = 0f;
 
     public bool facingRight = false;
 
@@ -115,6 +117,22 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
+
+        if (IsGrounded() && isMove)
+        {
+            dustTimer += Time.deltaTime;
+            if (dustTimer >= 0.2f)
+            {
+                // 현재 위치로 이동
+                GameObject ps = Instantiate(moveParticle, transform.position, transform.rotation);
+                ps.GetComponent<ParticleSystem>().Emit(1); // 파티클 1개 생성
+                dustTimer = 0f;
+            }
+        }
+        else
+        {
+            dustTimer = 0.2f; // 이동이 멈추면 타이머 초기화
+        }
     }
 
     private void FixedUpdate()
@@ -141,7 +159,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-
         if (context.performed)
         {
             moveInput = context.ReadValue<Vector2>(); // 입력키 저장
@@ -173,6 +190,18 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("DefaultDesh");
                 tapCount = 0;
                 StartCoroutine(StartDash(lastLookDirection));
+                // 파티클 재생
+                if (facingRight)
+                {
+                    GameObject ps = Instantiate(dashParticle, new Vector3(transform.position.x - 0.2f, transform.position.y, transform.position.z), transform.rotation);
+                    ps.transform.localScale = new Vector3(-1, 1, 1);
+                }
+                else
+                {
+                    GameObject ps = Instantiate(dashParticle, new Vector3(transform.position.x + 0.2f, transform.position.y, transform.position.z), transform.rotation);
+                    ps.transform.localScale = new Vector3(1, 1, 1);
+                }
+                
             }
 
             // 대쉬 이후 일반 이동
@@ -196,7 +225,6 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
         }
     }
-
     public IEnumerator StartDash(Vector2 direction)
     {
         // 애니메이션 재생 시작
@@ -254,6 +282,7 @@ public class PlayerController : MonoBehaviour
         isAbleDash = true;
     }
 
+
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -267,6 +296,7 @@ public class PlayerController : MonoBehaviour
                 {
                     //더블 탭
                     Debug.Log("Double Tap Detected!");
+                    Instantiate(jumpParticle, transform.position, transform.rotation);
                     StartCoroutine(SuperJump());
                     lastJumpTapTime = -1f; // 리셋
                 }
@@ -281,6 +311,8 @@ public class PlayerController : MonoBehaviour
             if (IsGrounded())
             {
                 Debug.Log("Jump");
+                // 파티클 재생
+                Instantiate(jumpParticle, transform.position, transform.rotation);
                 // 점프 횟수 초기화
                 jumpCount = 0;
                 // 점프 직전에 y속도를 0으로 초기화
@@ -290,7 +322,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
     public IEnumerator SuperJump()
     {
         Debug.Log("SuperJumpCoroutine");
@@ -325,11 +356,11 @@ public class PlayerController : MonoBehaviour
         isJumpDash = false;
     }
 
+
     private bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
-
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -365,7 +396,7 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = Vector2.up * rebound;
 
                 //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
-                AttackAnimPlay(currentWeapon.data.weaponID);
+                OnAttackAnimPlay(currentWeapon.data.weaponID);
                 currentWeapon.anim?.SetTrigger("OnAttack");
 
                 // 공격 횟수
@@ -400,7 +431,7 @@ public class PlayerController : MonoBehaviour
                         attackCount = 0;
 
                         //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
-                        AttackAnimPlay(currentWeapon.data.weaponID);
+                        OnAttackAnimPlay(currentWeapon.data.weaponID);
                         currentWeapon.anim?.SetTrigger("OnAttack");
 
                     }
@@ -409,74 +440,86 @@ public class PlayerController : MonoBehaviour
             if(isAbleAttack) lastAttackTime = Time.time;
         }
     }
-
-    public void AttackAnimPlay(int weaponID)
+    public void OnAttackAnimPlay(int weaponID)
     {
         switch (weaponID)
         {
             case 100:
-                // 생성 위치
-                Transform holder = currentWeapon.attackPoint;
-
-                //// 좌우 방향에 따른 위치 조절 및 생성
-                GameObject particle;
-                if (facingRight) particle = Instantiate(attackParticle1, new Vector3(holder.position.x + 0.5f, holder.position.y, holder.position.z), holder.rotation);
-                else particle = Instantiate(attackParticle1, new Vector3(holder.position.x + -0.5f, holder.position.y, holder.position.z), holder.rotation);
-
-                // 좌우 방향에 따른 위치 조절 및 생성
-                //GameObject particle = Instantiate(attackParticle1, holder);
-                //if (facingRight) particle.transform.position += Vector3.right * 0.5f;
-                //else particle.transform.position += Vector3.left * 0.5f;
-
-                // 1번 재생 후 삭제 설정
-                var main = particle.GetComponent<ParticleSystem>().main;
-                main.stopAction = ParticleSystemStopAction.Destroy;
-
-                // 루프 off, 크기 조절 및 스케일링 모드 설정
-                var sub = particle.GetComponentInChildren<ParticleSystem>().main;
-                sub.loop = false;
-                sub.startSize = 1f;
-                //sub.scalingMode = ParticleSystemScalingMode.Local;
-
-               
-                // 플레이어의 좌우 반전을 파티클에 적용
-                var renderer = particle.GetComponentInChildren<ParticleSystemRenderer>();
-                
-                //if (facingRight)
-                if (facingRight)
-                {
-                    renderer.flip = new Vector3(0, 0, 0);
-                    Debug.Log($"{renderer.flip}");
-                }
-                else
-                {
-                    renderer.flip = new Vector3(1, 0, 0);
-                    Debug.Log($"{renderer.flip}");
-                }
-
-                particle.GetComponent<ParticleSystem>().Play();
-
-                animator?.SetTrigger("OnAttack1");
+                NomalAttackAnim();
                 break;
 
             case 101:
-                animator?.SetTrigger("OnAttack2");
+                TwohandAttackAnim();
                 break;
 
             case 102:
-                animator?.SetTrigger("OnAttack3");
+                UnderAttackAnim();
                 break;
 
             case 103:
-                animator?.SetTrigger("OnAttack2");
+                TwohandAttackAnim();
                 break;
             
             default:
                 Debug.Log("범위에 없는 무기");
                 break;
         }
-
     }
+    public void NomalAttackAnim()
+    {
+        // 생성 위치
+        Transform holder = currentWeapon.attackPoint;
+
+        // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
+        GameObject particle = Instantiate(attackParticle1, holder);
+        particle.transform.localPosition = (Vector3.left * currentWeapon.totalRange);
+        particle.transform.localScale = new Vector3(-1,1,1);
+
+       // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
+       var main = particle.GetComponent<ParticleSystem>().main;
+        main.stopAction = ParticleSystemStopAction.Destroy;
+        main.loop = false;
+        main.startSize = 2f;
+
+        animator?.SetTrigger("OnAttack1");
+    }
+    public void TwohandAttackAnim()
+    {
+        // 생성 위치
+        Transform holder = currentWeapon.attackPoint;
+
+        // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
+        GameObject particle = Instantiate(attackParticle2, holder);
+        particle.transform.localPosition = (Vector3.left * currentWeapon.totalRange);
+        particle.transform.localScale = new Vector3(-1, 1, 1);
+
+        // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
+        var main = particle.GetComponent<ParticleSystem>().main;
+        main.stopAction = ParticleSystemStopAction.Destroy;
+        main.loop = false;
+        main.startSize = 2.5f;
+
+        animator?.SetTrigger("OnAttack2");
+    }
+    public void UnderAttackAnim()
+    {
+        // 생성 위치
+        Transform holder = currentWeapon.attackPoint;
+
+        // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
+        GameObject particle = Instantiate(attackParticle3, holder);
+        particle.transform.localPosition = (Vector3.left * currentWeapon.totalRange);
+        //particle.transform.localScale = new Vector3(-1, 1, 1);
+
+        // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
+        var main = particle.GetComponent<ParticleSystem>().main;
+        main.stopAction = ParticleSystemStopAction.Destroy;
+        main.loop = false;
+        main.startSize = 2f;
+
+        animator?.SetTrigger("OnAttack3");
+    }
+
 
     public void OnDownAttack(InputAction.CallbackContext context)
     {
@@ -497,7 +540,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
     public IEnumerator StartDownAttack()
     {
         Debug.Log("DownAttackCoroutine");
@@ -523,10 +565,12 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = originalGravity;
     }
 
+
     public void EquipWeapon(IManualWeapon newWeapon)
     {
         currentWeapon = newWeapon;
     }
+
 
     public void IsLooting()
     {
@@ -535,7 +579,6 @@ public class PlayerController : MonoBehaviour
 
         StartCoroutine(OnLooting(items));
     }
-
     public IEnumerator OnLooting(Collider2D[] items)
     {
         yield return new WaitForSeconds(1f);
