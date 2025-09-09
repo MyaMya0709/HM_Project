@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1157596006885351136
+--- !u!1 &3691733087425890900
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,127 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2902046122704985652}
-  - component: {fileID: 4467117333829616141}
+  - component: {fileID: 1727274341808414588}
+  - component: {fileID: 1565793449964205548}
+  - component: {fileID: 7928843583511271031}
+  m_Layer: 0
+  m_Name: MWP_100
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1727274341808414588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691733087425890900}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 78432035083985118}
+  - {fileID: 6219060763884555385}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1565793449964205548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691733087425890900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6185bcff486ea9a4bb12b1c895fa825c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 4e06adcaf33ebcf42aabd6c708ec70ee, type: 2}
+  playerController: {fileID: 0}
+  playerCondition: {fileID: 0}
+  sr: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  anim: {fileID: 0}
+  attackPoint: {fileID: 78432035083985118}
+  baseWeaponLevel: 0
+  selecWeaponLevel: 0
+  baseAttackPower: 0
+  baseAttackSpeed: 0
+  baseRange: 0
+  baseMoveSpeed: 0
+  baseJumpPower: 0
+  baseDashPower: 0
+  baseSuperJumpPower: 0
+  selecAttackPower: 0
+  selecAttackSpeed: 0
+  selecRange: 0
+  selecMoveSpeed: 0
+  selecJumpPower: 0
+  selecDashPower: 0
+  selecSuperJumpPower: 0
+  totalWeaponAttackPower: 0
+  totalWeaponAttackSpeed: 0
+  totalWeaponRange: 0
+  totalWeaponMoveSpeed: 0
+  totalWeaponJumpPower: 0
+  totalWeaponDashPower: 0
+  totalWeaponSuperJumpPower: 0
+  totalAttackPower: 0
+  totalAttackSpeed: 0
+  totalRange: 0
+  totalMoveSpeed: 0
+  totalJumpPower: 0
+  totalDashPower: 0
+  totalSuperJumpPower: 0
+  AttackStunDur: 0.1
+  DownAtkStunDur: 0.25
+  DashAtkStunDur: 0.25
+  chargeTimeLevel2: 0.6
+  chargeTimeLevel3: 1
+  chargeLevel: 0
+  chargeAttackMultiple: 0
+  isDashAttack: 0
+  mutipleAttack: 0
+  isStun: 1
+  hitEffect: {fileID: 0}
+--- !u!95 &7928843583511271031
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691733087425890900}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 2a78b27ed76e5d54d8cdee53a43b2023, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &3969289391613558563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6219060763884555385}
+  - component: {fileID: 655996437331281007}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -17,28 +136,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2902046122704985652
+--- !u!4 &6219060763884555385
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1157596006885351136}
+  m_GameObject: {fileID: 3969289391613558563}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1727274341808414588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4467117333829616141
+--- !u!212 &655996437331281007
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1157596006885351136}
+  m_GameObject: {fileID: 3969289391613558563}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -87,125 +206,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &3691733087425890900
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1727274341808414588}
-  - component: {fileID: 1565793449964205548}
-  - component: {fileID: 7261787795670454609}
-  m_Layer: 0
-  m_Name: MWP_100
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1727274341808414588
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3691733087425890900}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 78432035083985118}
-  - {fileID: 2902046122704985652}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1565793449964205548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3691733087425890900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6185bcff486ea9a4bb12b1c895fa825c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 4e06adcaf33ebcf42aabd6c708ec70ee, type: 2}
-  playerController: {fileID: 0}
-  playerCondition: {fileID: 0}
-  sr: {fileID: 0}
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  anim: {fileID: 0}
-  attackPoint: {fileID: 78432035083985118}
-  baseWeaponLevel: 5
-  selecWeaponLevel: 0
-  baseAttackPower: 0
-  baseAttackSpeed: 0
-  baseRange: 0
-  baseMoveSpeed: 0
-  baseJumpPower: 0
-  baseDashPower: 0
-  baseSuperJumpPower: 0
-  selecAttackPower: 0
-  selecAttackSpeed: 0
-  selecRange: 0
-  selecMoveSpeed: 0
-  selecJumpPower: 0
-  selecDashPower: 0
-  selecSuperJumpPower: 0
-  totalWeaponAttackPower: 0
-  totalWeaponAttackSpeed: 0
-  totalWeaponRange: 0
-  totalWeaponMoveSpeed: 0
-  totalWeaponJumpPower: 0
-  totalWeaponDashPower: 0
-  totalWeaponSuperJumpPower: 0
-  totalAttackPower: 0
-  totalAttackSpeed: 0
-  totalRange: 0
-  totalMoveSpeed: 0
-  totalJumpPower: 0
-  totalDashPower: 0
-  totalSuperJumpPower: 0
-  AttackStunDur: 0.1
-  DownAtkStunDur: 0.25
-  DashAtkStunDur: 0.25
-  chargeTimeLevel2: 0.6
-  chargeTimeLevel3: 1
-  chargeLevel: 0
-  chargeAttackMultiple: 0
-  isDashAttack: 0
-  mutipleAttack: 0
-  isStun: 1
-  hitEffect: {fileID: 0}
---- !u!95 &7261787795670454609
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3691733087425890900}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 2a78b27ed76e5d54d8cdee53a43b2023, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4519292427527885072
 GameObject:
   m_ObjectHideFlags: 0

@@ -25664,7 +25664,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1f6c33170d223144ae5ec6097e50205, type: 2}
   - {fileID: 11400000, guid: 95eba05c862ebf54f8bd59a5741c549b, type: 2}
   manualPrefabList:
-  - {fileID: 3691733087425890900, guid: d0e6d1dc9556a1045b8b991c493c9241, type: 3}
+  - {fileID: 3691733087425890900, guid: 790941c9c1441084ca606dba1554f292, type: 3}
   - {fileID: 3691733087425890900, guid: 6a05b6f3daa59334390f66ebac7479f4, type: 3}
   - {fileID: 3691733087425890900, guid: ed6fee4a7c9e7fb4795ba6b486e62eaa, type: 3}
   - {fileID: 3691733087425890900, guid: c1089c8ca5da8014c869b657371abbee, type: 3}

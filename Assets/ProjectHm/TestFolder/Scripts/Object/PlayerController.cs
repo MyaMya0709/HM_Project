@@ -68,9 +68,6 @@ public class PlayerController : MonoBehaviour
     public float lootingSpeed = 30f;              // 루팅 속도
 
     [Header("Particle")]
-    public GameObject attackParticle1;
-    public GameObject attackParticle2;
-    public GameObject attackParticle3;
     public GameObject moveParticle;
     public GameObject dashParticle;
     public GameObject downParticle;
@@ -82,10 +79,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        condition = GetComponent<PlayerCondition>();
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-
         if (weaponHolder.transform.childCount == 0)
         {
             GameManager.Instance.WeaponInit(weaponHolder);
@@ -99,6 +92,14 @@ public class PlayerController : MonoBehaviour
             currentWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
             Debug.Log("시작시 무기 장착");
         }
+
+        condition = GetComponent<PlayerCondition>();
+        animator = GetComponent<Animator>();
+
+        if (condition.characterData == null) animator.runtimeAnimatorController = GameManager.Instance.curCharacterData.animator;
+        else animator.runtimeAnimatorController = condition.characterData.animator;
+            
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -445,19 +446,19 @@ public class PlayerController : MonoBehaviour
         switch (weaponID)
         {
             case 100:
-                NomalAttackAnim();
+                animator?.SetTrigger("OnAttack1");
                 break;
 
             case 101:
-                TwohandAttackAnim();
+                animator?.SetTrigger("OnAttack2");
                 break;
 
             case 102:
-                UnderAttackAnim();
+                animator?.SetTrigger("OnAttack3");
                 break;
 
             case 103:
-                TwohandAttackAnim();
+                animator?.SetTrigger("OnAttack2");
                 break;
             
             default:
@@ -465,61 +466,6 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-    public void NomalAttackAnim()
-    {
-        // 생성 위치
-        Transform holder = currentWeapon.attackPoint;
-
-        // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
-        GameObject particle = Instantiate(attackParticle1, holder);
-        particle.transform.localPosition = (Vector3.left * currentWeapon.totalRange);
-        particle.transform.localScale = new Vector3(-1,1,1);
-
-       // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
-       var main = particle.GetComponent<ParticleSystem>().main;
-        main.stopAction = ParticleSystemStopAction.Destroy;
-        main.loop = false;
-        main.startSize = 2f;
-
-        animator?.SetTrigger("OnAttack1");
-    }
-    public void TwohandAttackAnim()
-    {
-        // 생성 위치
-        Transform holder = currentWeapon.attackPoint;
-
-        // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
-        GameObject particle = Instantiate(attackParticle2, holder);
-        particle.transform.localPosition = (Vector3.left * currentWeapon.totalRange);
-        particle.transform.localScale = new Vector3(-1, 1, 1);
-
-        // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
-        var main = particle.GetComponent<ParticleSystem>().main;
-        main.stopAction = ParticleSystemStopAction.Destroy;
-        main.loop = false;
-        main.startSize = 2.5f;
-
-        animator?.SetTrigger("OnAttack2");
-    }
-    public void UnderAttackAnim()
-    {
-        // 생성 위치
-        Transform holder = currentWeapon.attackPoint;
-
-        // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
-        GameObject particle = Instantiate(attackParticle3, holder);
-        particle.transform.localPosition = (Vector3.left * currentWeapon.totalRange);
-        //particle.transform.localScale = new Vector3(-1, 1, 1);
-
-        // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
-        var main = particle.GetComponent<ParticleSystem>().main;
-        main.stopAction = ParticleSystemStopAction.Destroy;
-        main.loop = false;
-        main.startSize = 2f;
-
-        animator?.SetTrigger("OnAttack3");
-    }
-
 
     public void OnDownAttack(InputAction.CallbackContext context)
     {

@@ -27,4 +27,10 @@ public class ManualWeaponData : ScriptableObject
     public List<int> enhanceCostList;
     public List<WeaponEffectData> baseWeaponEffectList;
     public List<WeaponEffectData> selecWeaponEffectList;
+
+    // 파티클 일반공격, 내려찍기, 차징, 대쉬 순
+    public GameObject attackParticle1;
+    public GameObject attackParticle2;
+    public GameObject attackParticle3;
+    public GameObject attackParticle4;
 }

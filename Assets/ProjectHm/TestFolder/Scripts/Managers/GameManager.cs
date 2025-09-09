@@ -174,6 +174,15 @@ public class GameManager : Singleton<GameManager>
     }
 
 
+    public IManualWeapon SetWeaponData()
+    {
+        curMWData = weaponDatas[weaponID];
+        curWeapon = DataManager.Instance.manualPrefabList[weaponID - 100];
+        weaponData = curWeapon.GetComponent<IManualWeapon>();
+        weaponData.baseWeaponLevel = curMWData.baseLevel;
+        SaveData();
+        return weaponData;
+    }
     public void GetWeaponData(int id)
     {
         Debug.Log("장착 무기 정보 세팅");

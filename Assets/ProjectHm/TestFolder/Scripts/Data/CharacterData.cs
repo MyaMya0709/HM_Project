@@ -12,4 +12,7 @@ public class CharacterData : ScriptableObject
     // StatTyprList와 StatValueList의 순서를 동일하게 맞춰놓을 것
     public List<StatType> bonusStatType;
     public List<float> bonusStatValue;
+
+    public Sprite charSprite;
+    public AnimatorOverrideController animator;
 }

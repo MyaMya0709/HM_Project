@@ -56,7 +56,6 @@ public class PlayerCondition : MonoBehaviour
     {
         expBar = FindAnyObjectByType<UI_Main>().expBar;
         controller = GetComponent<PlayerController>();
-        curWeapon = controller.currentWeapon;
 
         playerData = GameManager.Instance.SetPlayerData();
         characterData = GameManager.Instance.SetCharacterData();
@@ -64,6 +63,9 @@ public class PlayerCondition : MonoBehaviour
         maxExp = DataManager.Instance.maxExpDic[playerLevel];
         curExp = 0;
         UpdateExp();
+
+        if (controller.currentWeapon == null) curWeapon = GameManager.Instance.weaponData;
+        else curWeapon = controller.currentWeapon;
 
         autoWeapons = new List<IAutoWeapon>();
     }
