@@ -28781,34 +28781,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5436040420309497436, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: isMove
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5436040420309497436, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: dashParticle
-      value: 
-      objectReference: {fileID: 4368490907781343256, guid: df67d39ce7202b14bb0c6cc6f49cf2ed, type: 3}
-    - target: {fileID: 5436040420309497436, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: jumpParticle
-      value: 
-      objectReference: {fileID: 6892930270313944023, guid: d1f543fb346bd844487ada1a1decd567, type: 3}
-    - target: {fileID: 5436040420309497436, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: moveParticle
-      value: 
-      objectReference: {fileID: 3406091246244054422, guid: f2785e0321c70ea4e8668f8b5b3f97ca, type: 3}
-    - target: {fileID: 5436040420309497436, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: attackParticle1
-      value: 
-      objectReference: {fileID: 6407365527429102738, guid: 68e729e0a27e0664dbb0330c3f43a436, type: 3}
-    - target: {fileID: 5436040420309497436, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: attackParticle2
-      value: 
-      objectReference: {fileID: 6407365527429102738, guid: 68e729e0a27e0664dbb0330c3f43a436, type: 3}
-    - target: {fileID: 5436040420309497436, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: attackParticle3
-      value: 
-      objectReference: {fileID: 1176513809611315510, guid: 5dd893413efa98b4a83406da1e27bed2, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 6399831722461922055, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
