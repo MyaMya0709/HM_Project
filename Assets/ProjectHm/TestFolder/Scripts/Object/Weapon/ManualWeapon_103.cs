@@ -240,9 +240,13 @@ public class ManualWeapon_103 : IManualWeapon
 
         // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
         var main = particle.GetComponent<ParticleSystem>().main;
+        main.playOnAwake = false;
+        main.simulationSpeed = totalAttackSpeed;
         main.stopAction = ParticleSystemStopAction.Destroy;
         main.loop = false;
         main.startSize = 2.5f;
+
+        particle.GetComponent<ParticleSystem>().Play();
     }
 
     private void DrawDebugBox(Vector2 center, Vector2 size, Color color, float duration)

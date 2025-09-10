@@ -22,7 +22,7 @@ MonoBehaviour:
   - 14
   - 15
   baseAttackSpeedList:
-  - 1
+  - 0.1
   - 1.1
   - 1.2
   - 1.3
@@ -1652,6 +1652,6 @@ MonoBehaviour:
         valueB: 0
         valueC: 0
   attackParticle1: {fileID: 6407365527429102738, guid: 68e729e0a27e0664dbb0330c3f43a436, type: 3}
-  attackParticle2: {fileID: 0}
+  attackParticle2: {fileID: 1211128941122700105, guid: add7fdce12919f64fb20716c553fe107, type: 3}
   attackParticle3: {fileID: 0}
   attackParticle4: {fileID: 0}
