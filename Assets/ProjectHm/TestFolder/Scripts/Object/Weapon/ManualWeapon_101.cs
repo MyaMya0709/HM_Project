@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManualWeapon_100 : IManualWeapon
+public class ManualWeapon_101 : IManualWeapon
 {
 
     public float AttackStunDur = 0.1f;
@@ -242,7 +242,7 @@ public class ManualWeapon_100 : IManualWeapon
         var main = particle.GetComponent<ParticleSystem>().main;
         main.stopAction = ParticleSystemStopAction.Destroy;
         main.loop = false;
-        main.startSize = 2f;
+        main.startSize = 2.5f;
     }
 
     private void DrawDebugBox(Vector2 center, Vector2 size, Color color, float duration)

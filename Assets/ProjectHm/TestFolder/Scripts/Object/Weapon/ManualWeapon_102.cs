@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManualWeapon_100 : IManualWeapon
+public class ManualWeapon_102 : IManualWeapon
 {
 
     public float AttackStunDur = 0.1f;
@@ -236,7 +236,6 @@ public class ManualWeapon_100 : IManualWeapon
         // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
         GameObject particle = Instantiate(data.attackParticle1, holder);
         particle.transform.localPosition = (Vector3.left * totalRange);
-        particle.transform.localScale = new Vector3(-1, 1, 1);
 
         // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
         var main = particle.GetComponent<ParticleSystem>().main;
