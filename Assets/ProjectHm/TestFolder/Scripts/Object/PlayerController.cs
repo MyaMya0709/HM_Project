@@ -104,9 +104,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        holdTime = Time.time - chargingStart;
         // 착지 상태 체크해서 애니메이션 전환
-        animator.SetBool("isGrounded", IsGrounded());
-        currentWeapon.anim.SetBool("isGrounded", IsGrounded());
+        animator.SetBool("IsGrounded", IsGrounded());
+        currentWeapon.anim.SetBool("IsGrounded", IsGrounded());
 
         IsLooting();
 
@@ -208,8 +209,8 @@ public class PlayerController : MonoBehaviour
             // 대쉬 이후 일반 이동
             Debug.Log("Move");
             isMove = true;
-            animator.SetBool("isMove",true);
-            currentWeapon.anim?.SetBool("isMove",true);
+            animator.SetBool("IsMove",true);
+            currentWeapon.anim?.SetBool("IsMove",true);
 
             // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
             if (Mathf.Abs(moveInput.x) > 0.01f)
@@ -221,16 +222,16 @@ public class PlayerController : MonoBehaviour
         if (context.canceled)
         {
             isMove = false;
-            animator.SetBool("isMove", false);
-            currentWeapon.anim?.SetBool("isMove", false);
+            animator.SetBool("IsMove", false);
+            currentWeapon.anim?.SetBool("IsMove", false);
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
         }
     }
     public IEnumerator StartDash(Vector2 direction)
     {
         // 애니메이션 재생 시작
-        animator?.SetBool("isDash", true);
-        currentWeapon.anim?.SetBool("isDash", true);
+        animator?.SetBool("IsDash", true);
+        currentWeapon.anim?.SetBool("IsDash", true);
 
         Debug.Log("DeshCoroutine");
         isDashing = true; // isDashing 동안 사용자의 입력을 받지 않음
@@ -272,10 +273,8 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
 
         // 대시 후 애니메이션 복구
-        animator?.SetBool("isDash", false);
-        currentWeapon.anim?.SetBool("isDash", false);
-
-        currentWeapon.DashAttack();
+        animator?.SetBool("IsDash", false);
+        currentWeapon.anim?.SetBool("IsDash", false);
 
         isDashing = false;
 
@@ -366,24 +365,43 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
+            // ===== 공격 실행 가능 여부 체크 =====
+            isAbleAttack = Time.time - lastAttackTime >= attackCooldown;
+
+            if (!isAbleAttack) return;
+
+            Debug.Log("Attack Start");
             chargingStart = Time.time;
-            isCharging = true;
+            
         }
 
         else if (context.performed)
         {
-            // TODO : 차징 애니메이션 추가
-            Debug.Log("Performed");
+            if (!isAbleAttack) return;
+
+            Debug.Log("performed");
+            Debug.Log($"{holdTime}");
+            if (holdTime > chargingTime)
+            {
+                isCharging = true;
+
+                Debug.Log("Start & Charging");
+                //차징 시작 & 차징 중
+                animator?.SetTrigger("OnCharging");
+                animator?.SetBool("IsCharging", isCharging);
+                currentWeapon.anim?.SetTrigger("OnCharging");
+                currentWeapon.anim?.SetBool("IsCharging", isCharging);
+            }
         }
 
         else if (context.canceled)
         {
             Debug.Log("OnAttack");
-            holdTime = Time.time - chargingStart;
+            
             isCharging = false;
 
-            // ===== 공격 실행 가능 여부 체크 =====
-            isAbleAttack = Time.time - lastAttackTime >= attackCooldown;
+            // 무기에 따른 애니메이션 선택
+            OnWeaponTypeSet(currentWeapon.data.weaponID);
 
             if (!IsGrounded()) // 공중 체크
             {
@@ -397,7 +415,7 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = Vector2.up * rebound;
 
                 //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
-                OnAttackAnimPlay(currentWeapon.data.weaponID);
+                animator?.SetTrigger("OnAttack");
                 currentWeapon.anim?.SetTrigger("OnAttack");
 
                 // 공격 횟수
@@ -419,8 +437,9 @@ public class PlayerController : MonoBehaviour
                     if (isAbleAttack) // 차징 공격도 쿨타임 체크
                     {
                         Debug.Log("ChargingAttack");
-                        //animator?.SetTrigger("ChargingAttack");
-                        currentWeapon.ChargingAttack();
+
+                        animator?.SetBool("IsCharging", isCharging);
+                        currentWeapon.anim?.SetBool("IsCharging", isCharging);
                     }
                 }
                 else
@@ -432,7 +451,7 @@ public class PlayerController : MonoBehaviour
                         attackCount = 0;
 
                         //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
-                        OnAttackAnimPlay(currentWeapon.data.weaponID);
+                        animator?.SetTrigger("OnAttack");
                         currentWeapon.anim?.SetTrigger("OnAttack");
 
                     }
@@ -441,24 +460,24 @@ public class PlayerController : MonoBehaviour
             if(isAbleAttack) lastAttackTime = Time.time;
         }
     }
-    public void OnAttackAnimPlay(int weaponID)
+    public void OnWeaponTypeSet(int weaponID)
     {
         switch (weaponID)
         {
             case 100:
-                animator?.SetTrigger("OnAttack1");
+                animator?.SetFloat("AttackType", 0f);
                 break;
 
             case 101:
-                animator?.SetTrigger("OnAttack2");
+                animator?.SetFloat("AttackType", 1f);
                 break;
 
             case 102:
-                animator?.SetTrigger("OnAttack3");
+                animator?.SetFloat("AttackType", 2f);
                 break;
 
             case 103:
-                animator?.SetTrigger("OnAttack2");
+                animator?.SetFloat("AttackType", 1f);
                 break;
             
             default:
@@ -505,7 +524,6 @@ public class PlayerController : MonoBehaviour
             yield return null; // 매 프레임 유지
         }
         rb.linearVelocity = Vector2.zero;
-        currentWeapon.DownAttack();
 
         // 도착 시 상태 초기화
         rb.gravityScale = originalGravity;

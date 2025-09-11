@@ -280,7 +280,8 @@ public class ManualWeapon_100 : IManualWeapon
     }
     public void DashAttackParticle()
     {
-        // 생성 위치
+        if (isDashAttack)
+        {// 생성 위치
         Transform holder = attackPoint;
 
         // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
@@ -296,7 +297,8 @@ public class ManualWeapon_100 : IManualWeapon
         main.loop = false;
         main.startSize = 2f;
 
-        particle.GetComponent<ParticleSystem>().Play();
+            particle.GetComponent<ParticleSystem>().Play();
+        }
     }
 
 

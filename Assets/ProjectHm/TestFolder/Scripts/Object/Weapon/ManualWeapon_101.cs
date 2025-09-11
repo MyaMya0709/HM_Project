@@ -240,11 +240,67 @@ public class ManualWeapon_101 : IManualWeapon
 
         // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
         var main = particle.GetComponent<ParticleSystem>().main;
+        main.playOnAwake = false;
+        main.simulationSpeed = totalAttackSpeed;
         main.stopAction = ParticleSystemStopAction.Destroy;
         main.loop = false;
         main.startSize = 2.5f;
-    }
 
+        particle.GetComponent<ParticleSystem>().Play();
+    }
+    public void DownAttackParticle()
+    {
+        // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
+        GameObject particle = Instantiate(data.attackParticle2, playerCondition.transform.position, playerCondition.transform.rotation);
+
+        // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
+        var main = particle.GetComponent<ParticleSystem>().main;
+        main.stopAction = ParticleSystemStopAction.Destroy;
+        main.loop = false;
+        main.startSize = 2f;
+    }
+    public void ChargeAttackParticle()
+    {
+        // 생성 위치
+        Transform holder = attackPoint;
+
+        // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
+        GameObject particle = Instantiate(data.attackParticle3, holder);
+        particle.transform.localPosition = (Vector3.left * totalRange);
+        particle.transform.localScale = new Vector3(-1, 1, 1);
+
+        // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
+        var main = particle.GetComponent<ParticleSystem>().main;
+        main.playOnAwake = false;
+        main.simulationSpeed = totalAttackSpeed;
+        main.stopAction = ParticleSystemStopAction.Destroy;
+        main.loop = false;
+        main.startSize = 2f;
+
+        particle.GetComponent<ParticleSystem>().Play();
+    }
+    public void DashAttackParticle()
+    {
+        if (isDashAttack)
+        {// 생성 위치
+            Transform holder = attackPoint;
+
+            // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
+            GameObject particle = Instantiate(data.attackParticle4, holder);
+            particle.transform.localPosition = (Vector3.left * totalRange);
+            particle.transform.localScale = new Vector3(-1, 1, 1);
+
+            // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
+            var main = particle.GetComponent<ParticleSystem>().main;
+            main.playOnAwake = false;
+            main.simulationSpeed = totalAttackSpeed;
+            main.stopAction = ParticleSystemStopAction.Destroy;
+            main.loop = false;
+            main.startSize = 2f;
+
+            particle.GetComponent<ParticleSystem>().Play();
+        }
+    }
     private void DrawDebugBox(Vector2 center, Vector2 size, Color color, float duration)
     {
         Vector2 half = size * 0.5f;
