@@ -21,6 +21,11 @@ public class Projectile_201 : MonoBehaviour
 
     public bool facingRight;
 
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     private void Start()
     {
         facingRight = moveDir.x > 0;

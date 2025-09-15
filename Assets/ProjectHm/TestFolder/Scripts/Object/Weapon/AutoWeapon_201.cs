@@ -14,7 +14,8 @@ public class AutoWeapon_201 : IAutoWeapon
     public float speed;           // 이동 속도
     public float attackRange;     // 최대 거리
 
-    private List<Transform> targetsInRange = new List<Transform>();
+    private float timer;
+    [SerializeField] private List<Transform> targetsInRange = new List<Transform>();
     private int currentProjectileCount = 1; // 시작 발사체 수
     private int fireIndex = 0; // 순환용 인덱스
 
@@ -34,16 +35,19 @@ public class AutoWeapon_201 : IAutoWeapon
     {
         base.Start();
         projectileUnit = 0;
+        timer = 0;
         StatSet();
     }
 
     void Update()
     {
-        // 타이머
-        if (Time.time >= nextFireTime && targetsInRange.Count > 0)
+        timer -= Time.deltaTime;
+
+        if (timer <= 0f && targetsInRange.Count > 0)
         {
+            Debug.Log("aaa");
             Attack();
-            nextFireTime = Time.time + fireRate;
+            timer = fireRate;
         }
     }
 

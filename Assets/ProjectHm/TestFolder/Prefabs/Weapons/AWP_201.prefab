@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d57f682acf38140920bd268b46d168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: ee9f2882aac26a147a03f2b6103de578, type: 2}
   playerController: {fileID: 0}
   playerCondition: {fileID: 0}
   enemyLayer:
