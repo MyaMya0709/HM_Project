@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ManualWeapon_100 : IManualWeapon
@@ -20,10 +21,13 @@ public class ManualWeapon_100 : IManualWeapon
     public bool isStun = false;
 
     [Header("Effects")]
-    public GameObject hitEffect;
+    public GameObject chargingParticle;
 
     public override void Attack()
     {
+        // 차징 파티클이 플레이 중이면 멈춤
+        if (chargingParticle != null && chargingParticle.GetComponent<ParticleSystem>().isPlaying) chargingParticle.GetComponent<ParticleSystem>().Clear();
+
         Debug.Log("Attack");
         if (!mutipleAttack)
         {
@@ -45,7 +49,7 @@ public class ManualWeapon_100 : IManualWeapon
             if (enemyCollider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
                 Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].dropEffect);
+                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].dropEffect, playerController.lastLookDirection);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DownAtkStunDur));
@@ -96,7 +100,7 @@ public class ManualWeapon_100 : IManualWeapon
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage( totalAttackPower * chargeAttackMultiple * data.baseWeaponEffectList[baseWeaponLevel].chargeEffect.damageMultiple, data.baseWeaponEffectList[baseWeaponLevel].chargeEffect);
+                enemy.TakeDamage( totalAttackPower * chargeAttackMultiple * data.baseWeaponEffectList[baseWeaponLevel].chargeEffect.damageMultiple, data.baseWeaponEffectList[baseWeaponLevel].chargeEffect, playerController.lastLookDirection);
             }
         }
 
@@ -129,7 +133,7 @@ public class ManualWeapon_100 : IManualWeapon
             // 접근 가능 여부 판단
             if (hit.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].dashEffect);
+                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].dashEffect, playerController.lastLookDirection);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DashAtkStunDur));
@@ -180,7 +184,7 @@ public class ManualWeapon_100 : IManualWeapon
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].attackEffect);
+                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].attackEffect, playerController.lastLookDirection);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(AttackStunDur));
@@ -217,7 +221,7 @@ public class ManualWeapon_100 : IManualWeapon
                 {
                     // 디버그용 로그
                     Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                    enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].attackEffect);
+                    enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].attackEffect, playerController.lastLookDirection);
                     if (isStun)
                     {
                         StartCoroutine(enemy.TakeStun(AttackStunDur));
@@ -258,13 +262,38 @@ public class ManualWeapon_100 : IManualWeapon
         main.loop = false;
         main.startSize = 2f;
     }
+    public void OnChargingParticle()
+    {
+        if (chargingParticle == null)
+        {
+            // 생성 위치
+            Transform holder = playerCondition.transform;
+
+            // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
+            GameObject particle = Instantiate(data.attackParticle3, holder);
+
+            chargingParticle = particle;
+
+            // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
+            var main = chargingParticle.GetComponent<ParticleSystem>().main;
+            main.playOnAwake = true;
+            main.stopAction = ParticleSystemStopAction.Destroy;
+            main.loop = true;
+            main.startSize = 1f;
+        }
+        else chargingParticle.GetComponent<ParticleSystem>().Play();
+    }
     public void ChargeAttackParticle()
     {
+        // 차징 파티클 멈춤
+        if (chargingParticle != null) chargingParticle.GetComponent<ParticleSystem>().Clear();
+        else Debug.Log($"chargingParticle == null");
+
         // 생성 위치
         Transform holder = attackPoint;
 
         // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
-        GameObject particle = Instantiate(data.attackParticle3, holder);
+        GameObject particle = Instantiate(data.attackParticle4, holder);
         particle.transform.localPosition = (Vector3.left * totalRange);
         particle.transform.localScale = new Vector3(-1, 1, 1);
 
@@ -285,7 +314,7 @@ public class ManualWeapon_100 : IManualWeapon
         Transform holder = attackPoint;
 
         // 좌우 방향에 따른 위치 조절 및 생성, 좌우 반전
-        GameObject particle = Instantiate(data.attackParticle4, holder);
+        GameObject particle = Instantiate(data.attackParticle5, holder);
         particle.transform.localPosition = (Vector3.left * totalRange);
         particle.transform.localScale = new Vector3(-1, 1, 1);
 

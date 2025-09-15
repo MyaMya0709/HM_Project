@@ -83,7 +83,7 @@ public class Projectile_200 : MonoBehaviour
             // TODO: 데미지 처리
             if (other.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(damage, effect.attackEffect);
+                enemy.TakeDamage(damage, effect.attackEffect, moveDir);
             }
             else
             {

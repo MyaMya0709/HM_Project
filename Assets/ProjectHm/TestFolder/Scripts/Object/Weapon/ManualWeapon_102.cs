@@ -45,7 +45,7 @@ public class ManualWeapon_102 : IManualWeapon
             if (enemyCollider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
                 Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].dropEffect);
+                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].dropEffect, playerController.lastLookDirection);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DownAtkStunDur));
@@ -96,7 +96,7 @@ public class ManualWeapon_102 : IManualWeapon
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage( totalAttackPower * chargeAttackMultiple * data.baseWeaponEffectList[baseWeaponLevel].chargeEffect.damageMultiple, data.baseWeaponEffectList[baseWeaponLevel].chargeEffect);
+                enemy.TakeDamage( totalAttackPower * chargeAttackMultiple * data.baseWeaponEffectList[baseWeaponLevel].chargeEffect.damageMultiple, data.baseWeaponEffectList[baseWeaponLevel].chargeEffect, playerController.lastLookDirection);
             }
         }
 
@@ -129,7 +129,7 @@ public class ManualWeapon_102 : IManualWeapon
             // 접근 가능 여부 판단
             if (hit.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].dashEffect);
+                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].dashEffect, playerController.lastLookDirection);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(DashAtkStunDur));
@@ -180,7 +180,7 @@ public class ManualWeapon_102 : IManualWeapon
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].attackEffect);
+                enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].attackEffect, playerController.lastLookDirection);
                 if (isStun)
                 {
                     StartCoroutine(enemy.TakeStun(AttackStunDur));
@@ -217,7 +217,7 @@ public class ManualWeapon_102 : IManualWeapon
                 {
                     // 디버그용 로그
                     Debug.Log($"Attack hit {hitEnemies.Length} enemies.");
-                    enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].attackEffect);
+                    enemy.TakeDamage(totalAttackPower, data.baseWeaponEffectList[baseWeaponLevel].attackEffect, playerController.lastLookDirection);
                     if (isStun)
                     {
                         StartCoroutine(enemy.TakeStun(AttackStunDur));

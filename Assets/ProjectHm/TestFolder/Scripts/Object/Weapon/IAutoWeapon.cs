@@ -7,9 +7,7 @@ public abstract class IAutoWeapon : MonoBehaviour
     public AutoWeaponData data;
     public PlayerController playerController;
     public PlayerCondition playerCondition;
-    public SpriteRenderer sr;
     public LayerMask enemyLayer;
-    public Animator animator;
 
     public int selecWeaponLevel;
 
@@ -32,7 +30,6 @@ public abstract class IAutoWeapon : MonoBehaviour
         enemyLayer = LayerMask.GetMask("Enemy");
         playerController = GetComponentInParent<PlayerController>();
         playerCondition = GetComponentInParent<PlayerCondition>();
-        sr = GetComponentInChildren<SpriteRenderer>();
 
         SetStat();
     }

@@ -381,15 +381,16 @@ public class PlayerController : MonoBehaviour
 
             Debug.Log("performed");
             Debug.Log($"{holdTime}");
-            if (holdTime > chargingTime)
+            if (holdTime > chargingTime && IsGrounded())
             {
                 isCharging = true;
 
                 Debug.Log("Start & Charging");
                 //차징 시작 & 차징 중
                 animator?.SetTrigger("OnCharging");
-                animator?.SetBool("IsCharging", isCharging);
                 currentWeapon.anim?.SetTrigger("OnCharging");
+
+                animator?.SetBool("IsCharging", isCharging);
                 currentWeapon.anim?.SetBool("IsCharging", isCharging);
             }
         }
@@ -407,7 +408,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isAbleAttack) return;
 
-                // 딜레이 체크
+                // 공중 4회 공격 딜레이 체크
                 if (lastOnAirTime + attackRest >= Time.time)
                     return;
 

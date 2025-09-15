@@ -157,6 +157,7 @@ MonoBehaviour:
   curHp: 0
   target: {fileID: 0}
   rb: {fileID: 0}
+  col: {fileID: 0}
   isDamage: 0
   sr: {fileID: 0}
   damagePopupPrefab: {fileID: 5854912545000051756, guid: e8d641850e1d37345b0600a7938985f6, type: 3}
@@ -170,8 +171,8 @@ MonoBehaviour:
   hitNormal: {x: 0, y: 0}
   droppedItemPrepab: {fileID: 76134026972407004, guid: 0e5a4471c69129e46817985979c17542, type: 3}
   animator: {fileID: 0}
-  damageEffect: {fileID: 4748681987041982144, guid: 98ad7840ec21a0548963be6693f9e824, type: 3}
-  hitEffect: {fileID: 4748681987041982144, guid: bea406f8788d55146933165cdb4e557b, type: 3}
+  damageEffect: {fileID: 5347537279173237126, guid: e15902c835a3fdf4087f1c72d1f1b541, type: 3}
+  hitEffect: {fileID: 7907286811751376635, guid: 1cfad059b394d2a40a801b3bed13aebb, type: 3}
 --- !u!95 &3491884869898232473
 Animator:
   serializedVersion: 7

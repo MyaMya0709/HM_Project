@@ -263,9 +263,6 @@ MonoBehaviour:
     m_Bits: 2048
   lootingRadius: 10
   lootingSpeed: 30
-  attackParticle1: {fileID: 6407365527429102738, guid: 68e729e0a27e0664dbb0330c3f43a436, type: 3}
-  attackParticle2: {fileID: 6407365527429102738, guid: 68e729e0a27e0664dbb0330c3f43a436, type: 3}
-  attackParticle3: {fileID: 1176513809611315510, guid: 5dd893413efa98b4a83406da1e27bed2, type: 3}
   moveParticle: {fileID: 3406091246244054422, guid: f2785e0321c70ea4e8668f8b5b3f97ca, type: 3}
   dashParticle: {fileID: 4368490907781343256, guid: df67d39ce7202b14bb0c6cc6f49cf2ed, type: 3}
   downParticle: {fileID: 0}

@@ -1653,5 +1653,6 @@ MonoBehaviour:
         valueC: 0
   attackParticle1: {fileID: 6407365527429102738, guid: 1c779b2e22cb2c047b8016a2f201bed6, type: 3}
   attackParticle2: {fileID: 1211128941122700105, guid: add7fdce12919f64fb20716c553fe107, type: 3}
-  attackParticle3: {fileID: 2244150967303933024, guid: ec1f4f6d462acb944b58335c924754b3, type: 3}
-  attackParticle4: {fileID: 2244150967303933024, guid: b508cb9100c36414299853131f9a596a, type: 3}
+  attackParticle3: {fileID: 3158539215722666923, guid: 80be4d3b67909b540bb8bdfdd8fc2c38, type: 3}
+  attackParticle4: {fileID: 2244150967303933024, guid: ec1f4f6d462acb944b58335c924754b3, type: 3}
+  attackParticle5: {fileID: 2244150967303933024, guid: b508cb9100c36414299853131f9a596a, type: 3}

@@ -28,9 +28,10 @@ public class ManualWeaponData : ScriptableObject
     public List<WeaponEffectData> baseWeaponEffectList;
     public List<WeaponEffectData> selecWeaponEffectList;
 
-    // 파티클 일반공격, 내려찍기, 차징, 대쉬 순
+    // 파티클 일반공격, 내려찍기, 차징이펙트, 차징공격, 대쉬공격 순
     public GameObject attackParticle1;
     public GameObject attackParticle2;
     public GameObject attackParticle3;
     public GameObject attackParticle4;
+    public GameObject attackParticle5;
 }

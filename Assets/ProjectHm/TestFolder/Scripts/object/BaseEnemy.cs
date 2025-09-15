@@ -29,7 +29,7 @@ public class BaseEnemy : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
 
-    public Vector2 hitNormal;
+    public Vector2 hitDir;
 
     public GameObject droppedItemPrepab;
     public Animator animator;
@@ -105,18 +105,34 @@ public class BaseEnemy : MonoBehaviour
         //rb.MovePosition(targetPos);
     }
 
-    public void TakeDamage(float Damage, EffectTypeData effectData)
+    public void TakeDamage(float Damage, EffectTypeData effectData, Vector2 dir)
     {
-        //가까운 피격 지점에 파티클 생성
-        Vector3 hitPos = col.ClosestPoint(transform.position);
+        // 공격이 들어온 방향 저장
+        hitDir = dir;
+        Debug.Log($"{hitDir}");
+
+        // 피격 위치에 가까운 지점 저장
+        float hitX;
+        if (hitDir.x < 0) hitX = col.ClosestPoint(transform.position + Vector3.right).x;
+        else hitX = col.ClosestPoint(transform.position + Vector3.left).x;
+
+        // 가까운 무작위 위치 저장
+        hitX += Random.Range(-0.2f, 0.2f);
+        float hitY = transform.position.y + Random.Range(-0.2f, 0.2f);
+        Vector3 hitPos = new Vector3(hitX, hitY, transform.position.z);
+
+        // 파티클 생성
         GameObject particle = Instantiate(damageEffect, hitPos, transform.rotation);
 
-        //루프 off, 1번 재생 후 삭제 설정
+        // 피격 방향에 따라 반전
+        if (hitDir.x < 0) particle.transform.localScale = new Vector3(-1, 1, 1); 
+        
+        // 루프 off, 1번 재생 후 삭제 설정
         var main = particle.GetComponent<ParticleSystem>().main;
         main.loop = false;
         main.stopAction = ParticleSystemStopAction.Destroy;
 
-        //데미지 계산
+        // 데미지 계산
         curHp -= Damage * effectData.damageMultiple;
         if (curHp <= 0)
         {
@@ -124,19 +140,21 @@ public class BaseEnemy : MonoBehaviour
             Dead();
         }
 
-        //애니메이션 재생
+        // 애니메이션 재생
         animator.SetTrigger("isDamage");
 
-        //공격의 효과 적용
+        // 공격의 효과 적용
         ApplyEffect(effectData);
 
-        //데미지 팝업 띄우기
+        // 데미지 팝업 띄우기
         SpawnDamagePopup((int)(Damage * effectData.damageMultiple));
     }
 
     public void SpawnDamagePopup(int damage)
     {
+        // 월드좌표 불러오기
         Bounds b = sr.bounds;
+
         Vector3 topCenter = new Vector3(b.center.x, b.max.y, b.center.z);
         Vector3 spawnPos = topCenter + headOffset;
 
@@ -149,7 +167,7 @@ public class BaseEnemy : MonoBehaviour
     #region Effect
     public void ApplyEffect(EffectTypeData effectData)
     {
-        if (effectData.knockback.onoff) StartCoroutine(Knockback(hitNormal, effectData.knockback.valueA));                                                       // valueA == Power, valueB, valueC
+        if (effectData.knockback.onoff) StartCoroutine(Knockback(hitDir, effectData.knockback.valueA));                                                       // valueA == Power, valueB, valueC
         if (effectData.airborne.onoff) StartCoroutine(Airborne(effectData.airborne.valueA));                                                                     // valueA == Power, valueB, valueC
         if (effectData.stun.onoff) StartCoroutine(TakeStun(effectData.stun.valueB));                                                                        // valueA, valueB == Duration, valueC
         if (effectData.slow.onoff) StartCoroutine(Slow(effectData.slow.valueA, effectData.slow.valueB));                                                    // valueA, valueB == Duration, valueC
@@ -327,7 +345,6 @@ public class BaseEnemy : MonoBehaviour
 
         OnDeath?.Invoke();
         Destroy(gameObject, 1.5f);
-        // 이펙트나 드랍 추가 가능
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -337,11 +354,8 @@ public class BaseEnemy : MonoBehaviour
         BaseCore baseCore = collision.GetComponent<BaseCore>();
         if (baseCore != null)
         {
-            //hitEffect.GetComponent<ParticleSystem>().Play();
-            //Instantiate(hitEffect.gameObject, transform.position, transform.rotation);
-
             //가까운 피격 지점에 파티클 생성
-            Vector3 hitPos = col.ClosestPoint(transform.position);
+            Vector3 hitPos = collision.ClosestPoint(transform.position);
             GameObject particle = Instantiate(hitEffect, hitPos, transform.rotation);
 
             //루프 off, 1번 재생 후 삭제 설정
@@ -350,14 +364,6 @@ public class BaseEnemy : MonoBehaviour
             main.stopAction = ParticleSystemStopAction.Destroy;
 
             AttackBase(baseCore);
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        foreach (var contact in collision.contacts)
-        {
-            hitNormal = contact.normal; // 공격이 들어오는 방향 == 넉백되는 방향
         }
     }
 }
