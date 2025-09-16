@@ -165,6 +165,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        Debug.Log($"{context.ReadValue<Vector2>()}");
         if (context.performed)
         {
             moveInput = context.ReadValue<Vector2>(); // 입력키 저장
@@ -182,11 +183,13 @@ public class PlayerController : MonoBehaviour
         // 키 입력이 끝날 때, 이동 종료 
         if (context.canceled)
         {
+            Debug.Log("moveEE");
+            
             MoveIn(false, 0);
         }
     }
 
-    private void MoveIn(bool onMove, float moveDir)
+    public void MoveIn(bool onMove, float moveDir)
     {
         if (onMove)
         {
@@ -260,6 +263,8 @@ public class PlayerController : MonoBehaviour
             //rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
         }
     }
+    public void RightMove() => MoveIn(true, 1f);
+    public void LeftMove() => MoveIn(true, -1f);
     public IEnumerator StartDash(Vector2 direction)
     {
         // 애니메이션 재생 시작
@@ -320,39 +325,44 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
-            //공중
-            if (!IsGrounded())
-            {
-                float currentTime = Time.time;
+            DoJump();
+        }
+    }
 
-                if (currentTime - lastJumpTapTime < doubleTapThreshold && jumpCount == 2)
-                {
-                    //더블 탭
-                    Debug.Log("Double Tap Detected!");
-                    Instantiate(jumpParticle, transform.position, transform.rotation);
-                    StartCoroutine(SuperJump());
-                    lastJumpTapTime = -1f; // 리셋
-                }
-                else
-                {
-                    jumpCount++;
-                    lastJumpTapTime = currentTime;
-                }
-            }
+    public void DoJump()
+    {
+        //공중
+        if (!IsGrounded())
+        {
+            float currentTime = Time.time;
 
-            // 일반 점프 로직
-            if (IsGrounded())
+            if (currentTime - lastJumpTapTime < doubleTapThreshold && jumpCount == 2)
             {
-                Debug.Log("Jump");
-                // 파티클 재생
+                //더블 탭
+                Debug.Log("Double Tap Detected!");
                 Instantiate(jumpParticle, transform.position, transform.rotation);
-                // 점프 횟수 초기화
-                jumpCount = 0;
-                // 점프 직전에 y속도를 0으로 초기화
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-                jumpCount++;
+                StartCoroutine(SuperJump());
+                lastJumpTapTime = -1f; // 리셋
             }
+            else
+            {
+                jumpCount++;
+                lastJumpTapTime = currentTime;
+            }
+        }
+
+        // 일반 점프 로직
+        if (IsGrounded())
+        {
+            Debug.Log("Jump");
+            // 파티클 재생
+            Instantiate(jumpParticle, transform.position, transform.rotation);
+            // 점프 횟수 초기화
+            jumpCount = 0;
+            // 점프 직전에 y속도를 0으로 초기화
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            jumpCount++;
         }
     }
     public IEnumerator SuperJump()
@@ -395,10 +405,28 @@ public class PlayerController : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    bool canMove;
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (context.started)
+        {
+            Debug.Log("moveAA");
+
+            AttackIn(false);
+
+        }
+
+        else if (context.canceled)
+        {
+            Debug.Log("moveCC");
+
+            AttackIn(true);
+            
+        }
+    }
+
+    public void AttackIn(bool type)
+    {
+        if (type == false)
         {
             // ===== 공격 실행 가능 여부 체크 =====
             isAbleAttack = Time.time - lastAttackTime >= attackCooldown;
@@ -407,14 +435,7 @@ public class PlayerController : MonoBehaviour
 
             Debug.Log("Attack Start");
             chargingStart = Time.time;
-            
-        }
 
-        else if (context.performed)
-        {
-            if (!isAbleAttack) return;
-
-            Debug.Log("performed");
             Debug.Log($"{holdTime}");
             if (holdTime > chargingTime && IsGrounded())
             {
@@ -428,12 +449,13 @@ public class PlayerController : MonoBehaviour
                 animator?.SetBool("IsCharging", isCharging);
                 currentWeapon.anim?.SetBool("IsCharging", isCharging);
             }
+
         }
 
-        else if (context.canceled)
+        else if (type == true)
         {
             Debug.Log("OnAttack");
-            
+
             isCharging = false;
 
             // 무기에 따른 애니메이션 선택
@@ -493,7 +515,7 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            if(isAbleAttack) lastAttackTime = Time.time;
+            if (isAbleAttack) lastAttackTime = Time.time;
         }
     }
     public void OnWeaponTypeSet(int weaponID)

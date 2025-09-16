@@ -62,11 +62,11 @@
                 },
                 {
                     "name": "Touch",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "7324c186-1047-4b36-81ff-dfb2c5ecb2ff",
-                    "expectedControlType": "",
+                    "expectedControlType": "Touch",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Tap,Press",
                     "initialStateCheck": false
                 }
             ],
@@ -161,11 +161,11 @@
                 },
                 {
                     "name": "",
-                    "id": "48f38cad-0db6-4b9b-9faa-8739f520d716",
-                    "path": "<Touchscreen>/primaryTouch/press",
+                    "id": "fbd4a878-b248-45c7-93d7-2b446569f430",
+                    "path": "<Touchscreen>/primaryTouch",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";PC;Mobile",
+                    "groups": "",
                     "action": "Touch",
                     "isComposite": false,
                     "isPartOfComposite": false
