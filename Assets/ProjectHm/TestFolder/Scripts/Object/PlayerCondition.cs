@@ -83,7 +83,6 @@ public class PlayerCondition : MonoBehaviour
 
         // TODO : 플레이어 스텟 계산
 
-        Time.timeScale = 0f;
         // 플레이어 렙업 이벤트 발생 호출
         OnPlayerLevelUp?.Invoke();
 

@@ -26,8 +26,15 @@ public class UI_Main : MonoBehaviour
         });
     }
 
+    public void OpenMenuUI()
+    {
+        Time.timeScale = 0f;
+        menuUI.gameObject.SetActive(true);
+    }
+
     public void EnableSelecUI()
     {
+        Time.timeScale = 0f;
         selecUI.gameObject.SetActive(true);
     }
 }

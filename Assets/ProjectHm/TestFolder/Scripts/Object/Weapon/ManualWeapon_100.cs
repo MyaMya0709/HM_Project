@@ -26,7 +26,13 @@ public class ManualWeapon_100 : IManualWeapon
     public override void Attack()
     {
         // 차징 파티클이 플레이 중이면 멈춤
-        if (chargingParticle != null && chargingParticle.GetComponent<ParticleSystem>().isPlaying) chargingParticle.GetComponent<ParticleSystem>().Clear();
+        if (chargingParticle != null && chargingParticle.GetComponent<ParticleSystem>().isPlaying)
+        {
+            var chargeMain = chargingParticle.GetComponent<ParticleSystem>().main;
+            chargeMain.loop = false;
+            //chargingParticle.GetComponent<ParticleSystem>().Stop();
+            //chargingParticle.GetComponent<ParticleSystem>().Clear();
+        }
 
         Debug.Log("Attack");
         if (!mutipleAttack)
@@ -274,7 +280,7 @@ public class ManualWeapon_100 : IManualWeapon
 
             chargingParticle = particle;
 
-            // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
+            // 재생이 끝나면 삭제, 루프 on, 크기 조절 및 스케일링 모드 설정
             var main = chargingParticle.GetComponent<ParticleSystem>().main;
             main.playOnAwake = true;
             main.stopAction = ParticleSystemStopAction.Destroy;
@@ -286,7 +292,13 @@ public class ManualWeapon_100 : IManualWeapon
     public void ChargeAttackParticle()
     {
         // 차징 파티클 멈춤
-        if (chargingParticle != null) chargingParticle.GetComponent<ParticleSystem>().Clear();
+        if (chargingParticle != null)
+        {
+            var chargeMain = chargingParticle.GetComponent<ParticleSystem>().main;
+            chargeMain.loop = false;
+            //chargingParticle.GetComponent<ParticleSystem>().Stop();
+            //chargingParticle.GetComponent<ParticleSystem>().Clear();
+        }
         else Debug.Log($"chargingParticle == null");
 
         // 생성 위치
