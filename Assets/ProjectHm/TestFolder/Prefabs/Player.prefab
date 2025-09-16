@@ -89,7 +89,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 4
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 5ff3842290ba8d644958541a44b856f4, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -374,21 +374,13 @@ MonoBehaviour:
     m_ActionId: b7464335-1a3f-4f3d-b0a1-4cb910a4c840
     m_ActionName: Player/LevelUp
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI_Main, Assembly-CSharp
-        m_MethodName: OpenMenuUI
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: eeb5d7fc-1233-44b8-a44e-f350295e0f9c
-    m_ActionName: 'UI/Menu[/Keyboard/escape]'
+      m_Calls: []
+    m_ActionId: f359ecbb-58f4-45bb-8f15-7ad37863902d
+    m_ActionName: 'Player/Menu[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7324c186-1047-4b36-81ff-dfb2c5ecb2ff
+    m_ActionName: Player/Touch
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: PC
   m_DefaultActionMap: Player

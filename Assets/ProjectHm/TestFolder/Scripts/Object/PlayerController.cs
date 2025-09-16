@@ -137,6 +137,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    bool fefef;
+
     private void FixedUpdate()
     {
         if (isJumpDash) return; // 슈퍼 점프 중에는 다른 물리 계산 안 함
@@ -145,7 +147,9 @@ public class PlayerController : MonoBehaviour
 
         if (isCharging) return;
 
-        if (isMove)
+        fefef = Time.time - lastAttackTime >= attackCooldown;
+
+        if (isMove && (fefef || !IsGrounded()))
         {
             rb.linearVelocity = new Vector2(moveInput.x * condition.totalMoveSpeed, rb.linearVelocity.y);
         }
@@ -165,8 +169,37 @@ public class PlayerController : MonoBehaviour
         {
             moveInput = context.ReadValue<Vector2>(); // 입력키 저장
             if (moveInput == null) return;            // 입력키 없을때 되돌아가기
+            if (moveInput.x > 0)
+            {
+                MoveIn(true, moveInput.x);
+            }
+            else
+            {
+                MoveIn(true, moveInput.x);
+            }
 
-            Vector2 curDir = moveInput;               // 입력 방향 저장
+        }
+        // 키 입력이 끝날 때, 이동 종료 
+        if (context.canceled)
+        {
+            MoveIn(false, 0);
+        }
+    }
+
+    private void MoveIn(bool onMove, float moveDir)
+    {
+        if (onMove)
+        {
+            Vector2 curDir = new Vector2(0f, 0f);
+            if (moveDir > 0)
+            {
+                curDir = new Vector2(1f, 0f);
+            }
+            else if(moveDir < 0)
+            {
+                curDir = new Vector2(-1f, 0f);
+            }
+
             float currentTime = Time.time;            // 누른 시간 저장
 
             // 대쉬하는중, 가능여부, 더블 탭, 입력 방향 체크
@@ -203,14 +236,14 @@ public class PlayerController : MonoBehaviour
                     GameObject ps = Instantiate(dashParticle, new Vector3(transform.position.x + 0.2f, transform.position.y, transform.position.z), transform.rotation);
                     ps.transform.localScale = new Vector3(1, 1, 1);
                 }
-                
+
             }
 
             // 대쉬 이후 일반 이동
             Debug.Log("Move");
             isMove = true;
-            animator.SetBool("IsMove",true);
-            currentWeapon.anim?.SetBool("IsMove",true);
+            animator.SetBool("IsMove", true);
+            currentWeapon.anim?.SetBool("IsMove", true);
 
             // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
             if (Mathf.Abs(moveInput.x) > 0.01f)
@@ -219,12 +252,12 @@ public class PlayerController : MonoBehaviour
             }
         }
         // 키 입력이 끝날 때, 이동 종료 
-        if (context.canceled)
+        if (!onMove)
         {
             isMove = false;
             animator.SetBool("IsMove", false);
             currentWeapon.anim?.SetBool("IsMove", false);
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
+            //rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
         }
     }
     public IEnumerator StartDash(Vector2 direction)
@@ -361,6 +394,8 @@ public class PlayerController : MonoBehaviour
     {
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
+
+    bool canMove;
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (context.started)
