@@ -12,5 +12,5 @@ EditorBuildSettings:
     path: Assets/ProjectHm/TestFolder/Scenes/InGame.unity
     guid: 9bb5b7f9e09a5484993eb8847008ac54
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 0b7c0b3e15d72644fbba77ba5b567fb6, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 92230939cfb5ee048b98feb04b088f6b, type: 3}
   m_UseUCBPForAssetBundles: 0
