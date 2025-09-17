@@ -168,15 +168,15 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"{context.ReadValue<Vector2>()}");
         if (context.performed)
         {
-            moveInput = context.ReadValue<Vector2>(); // 입력키 저장
-            if (moveInput == null) return;            // 입력키 없을때 되돌아가기
-            if (moveInput.x > 0)
+            Vector2 eeeee = context.ReadValue<Vector2>(); // 입력키 저장
+            if (eeeee == null) return;            // 입력키 없을때 되돌아가기
+            if (eeeee.x > 0)
             {
-                MoveIn(true, moveInput.x);
+                DoMove(true, eeeee.x);
             }
             else
             {
-                MoveIn(true, moveInput.x);
+                DoMove(true, eeeee.x);
             }
 
         }
@@ -185,14 +185,17 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("moveEE");
             
-            MoveIn(false, 0);
+            DoMove(false, 0);
         }
     }
 
-    public void MoveIn(bool onMove, float moveDir)
+    public void DoMove(bool onMove, float moveDir)
     {
+        if (SystemInfo.deviceType == DeviceType.Handheld) Debug.Log("폰");
+
         if (onMove)
         {
+            moveInput.x = moveDir;
             Vector2 curDir = new Vector2(0f, 0f);
             if (moveDir > 0)
             {
@@ -263,8 +266,9 @@ public class PlayerController : MonoBehaviour
             //rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
         }
     }
-    public void RightMove() => MoveIn(true, 1f);
-    public void LeftMove() => MoveIn(true, -1f);
+    public void RightMove() => DoMove(true, 1f);
+    public void LeftMove() => DoMove(true, -1f);
+    public void DontMove() => DoMove(false, 0f);
     public IEnumerator StartDash(Vector2 direction)
     {
         // 애니메이션 재생 시작
@@ -328,7 +332,6 @@ public class PlayerController : MonoBehaviour
             DoJump();
         }
     }
-
     public void DoJump()
     {
         //공중
@@ -409,22 +412,15 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
-            Debug.Log("moveAA");
-
-            AttackIn(false);
-
+            DoAttack(false);
         }
 
         else if (context.canceled)
         {
-            Debug.Log("moveCC");
-
-            AttackIn(true);
-            
+            DoAttack(true);
         }
     }
-
-    public void AttackIn(bool type)
+    public void DoAttack(bool type)
     {
         if (type == false)
         {
@@ -449,9 +445,7 @@ public class PlayerController : MonoBehaviour
                 animator?.SetBool("IsCharging", isCharging);
                 currentWeapon.anim?.SetBool("IsCharging", isCharging);
             }
-
         }
-
         else if (type == true)
         {
             Debug.Log("OnAttack");
@@ -548,19 +542,23 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            float currentTime = Time.time;
+            DoDownAttack();
+        }
+    }
+    public void DoDownAttack()
+    {
+        float currentTime = Time.time;
 
-            //더블 탭 체크
-            if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded())
-            {
-                Debug.Log("Double Tap Detected");
-                StartCoroutine(StartDownAttack());
-                lastDownTapTime = -1f; // 리셋
-            }
-            else
-            {
-                lastDownTapTime = currentTime;
-            }
+        //더블 탭 체크
+        if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded())
+        {
+            Debug.Log("Double Tap Detected");
+            StartCoroutine(StartDownAttack());
+            lastDownTapTime = -1f; // 리셋
+        }
+        else
+        {
+            lastDownTapTime = currentTime;
         }
     }
     public IEnumerator StartDownAttack()
