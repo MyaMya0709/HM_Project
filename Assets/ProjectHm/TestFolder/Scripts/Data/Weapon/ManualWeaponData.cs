@@ -6,6 +6,7 @@ public class ManualWeaponData : ScriptableObject
 {
     public int weaponID;
     public int price;
+    public float delayRatio;
 
     public List<float> baseAttackPowerList;
     public List<float> baseAttackSpeedList;

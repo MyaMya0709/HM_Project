@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponID: 100
   price: 1000
+  delayRatio: 0
   baseAttackPowerList:
   - 10
   - 11
@@ -828,7 +829,7 @@ MonoBehaviour:
         valueC: 0
       airborne:
         isSum: 0
-        onoff: 0
+        onoff: 1
         valueA: 11
         valueB: 0
         valueC: 0
