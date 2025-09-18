@@ -138,6 +138,7 @@ public class PlayerController : MonoBehaviour
     }
 
     bool fefef;
+    public bool isAttacking = false;
 
     private void FixedUpdate()
     {
@@ -147,9 +148,12 @@ public class PlayerController : MonoBehaviour
 
         if (isCharging) return;
 
-        fefef = Time.time - lastAttackTime >= attackCooldown;
 
-        if (isMove && (fefef || !IsGrounded()))
+
+
+        //fefef = Time.time - lastAttackTime >= attackCooldown;
+
+        if (isMove && (!isAttacking || !IsGrounded()))
         {
             rb.linearVelocity = new Vector2(moveInput.x * condition.totalMoveSpeed, rb.linearVelocity.y);
         }
@@ -168,27 +172,23 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"{context.ReadValue<Vector2>()}");
         if (context.performed)
         {
-            Vector2 eeeee = context.ReadValue<Vector2>(); // 입력키 저장
-            if (eeeee == null) return;            // 입력키 없을때 되돌아가기
-            if (eeeee.x > 0)
+            Vector2 curDir = context.ReadValue<Vector2>(); // 입력키 저장
+            if (curDir == null) return;            // 입력키 없을때 되돌아가기
+            if (curDir.x > 0)
             {
-                DoMove(true, eeeee.x);
+                DoMove(true, curDir.x);
             }
             else
             {
-                DoMove(true, eeeee.x);
+                DoMove(true, curDir.x);
             }
-
         }
         // 키 입력이 끝날 때, 이동 종료 
         if (context.canceled)
         {
-            Debug.Log("moveEE");
-            
             DoMove(false, 0);
         }
     }
-
     public void DoMove(bool onMove, float moveDir)
     {
         if (SystemInfo.deviceType == DeviceType.Handheld) Debug.Log("폰");
@@ -403,11 +403,6 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private bool IsGrounded()
-    {
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-    }
-
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -425,7 +420,7 @@ public class PlayerController : MonoBehaviour
         if (type == false)
         {
             // ===== 공격 실행 가능 여부 체크 =====
-            isAbleAttack = Time.time - lastAttackTime >= attackCooldown;
+            isAbleAttack = lastAttackTime + attackCooldown <= Time.time;
 
             if (!isAbleAttack) return;
 
@@ -506,11 +501,26 @@ public class PlayerController : MonoBehaviour
                         animator?.SetTrigger("OnAttack");
                         currentWeapon.anim?.SetTrigger("OnAttack");
 
+                        StartCoroutine(AttackDelay());
+
                     }
                 }
             }
             if (isAbleAttack) lastAttackTime = Time.time;
         }
+    }
+    public IEnumerator AttackCoroutine()
+    {
+
+        animator?.SetTrigger("OnAttack");
+        currentWeapon.anim?.SetTrigger("OnAttack");
+
+    }
+    public IEnumerator AttackDelay()
+    {
+        isAttacking = true;
+        yield return new WaitForSeconds(attackCooldown);
+        isAttacking = false;
     }
     public void OnWeaponTypeSet(int weaponID)
     {
@@ -537,6 +547,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+
 
     public void OnDownAttack(InputAction.CallbackContext context)
     {
@@ -583,6 +594,12 @@ public class PlayerController : MonoBehaviour
 
         // 도착 시 상태 초기화
         rb.gravityScale = originalGravity;
+    }
+
+
+    private bool IsGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
 

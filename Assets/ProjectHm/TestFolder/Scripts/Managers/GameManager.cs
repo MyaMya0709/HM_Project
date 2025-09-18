@@ -43,7 +43,7 @@ public class GameManager : Singleton<GameManager>
     public List<int> unlockWeaponList;                                   // 해금된 무기 ID 리스트
     public List<int> unlockAutoWeaponList;                               // 해금된 자동무기 ID 리스트
 
-    public int selecStageID = 0;
+    public int selecStageID = 3;
 
     public bool isGameFinish = false;
 
