@@ -511,10 +511,15 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator AttackCoroutine()
     {
+        // 후 딜레이
+        yield return new WaitForSeconds(currentWeapon.data.delayRatio * currentWeapon.totalAttackSpeed / 2);
 
+        // 공격 애니메이션 및 공격
         animator?.SetTrigger("OnAttack");
         currentWeapon.anim?.SetTrigger("OnAttack");
 
+        // 선 딜레이
+        yield return new WaitForSeconds(currentWeapon.data.delayRatio * currentWeapon.totalAttackSpeed / 2);
     }
     public IEnumerator AttackDelay()
     {
