@@ -16,7 +16,9 @@ public class BaseEnemy : MonoBehaviour
     public Transform target;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Collider2D col;
-    public bool isDamage = false;
+    public bool isAirborne = false;
+    public bool isKnockback = false;
+    public bool isStun = false;
 
     [Header("Damage Popup")]
     [SerializeField] private SpriteRenderer sr;
@@ -66,7 +68,7 @@ public class BaseEnemy : MonoBehaviour
 
         //OnMove();
 
-        if (!isDead && target != null && !isDamage)
+        if (!isDead && target != null && !isStun && !isAirborne && !isKnockback)
         {
             OnMove();
         }
@@ -141,7 +143,7 @@ public class BaseEnemy : MonoBehaviour
         }
 
         // 애니메이션 재생
-        animator.SetTrigger("isDamage");
+        animator.SetTrigger("isAirborne");
 
         // 공격의 효과 적용
         ApplyEffect(effectData);
@@ -199,7 +201,7 @@ public class BaseEnemy : MonoBehaviour
 
     public IEnumerator Knockback(Vector2 direction, float knockbackDistance)
     {
-        isDamage = true;
+        isKnockback = true;
 
         Debug.Log("knockback");
         Debug.Log($"넉백 방향{direction.x}");
@@ -233,25 +235,26 @@ public class BaseEnemy : MonoBehaviour
         //rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
-        isDamage = false;
+        isKnockback = false;
     }
 
     public IEnumerator TakeStun(float stunDuration)
     {
         Debug.Log("stun");
 
-        isDamage = true;
+        isStun = true;
         rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(stunDuration);
-        isDamage = false;
+        isStun = false;
     }
 
     public IEnumerator Airborne(float airborneForce)
     {
-        isDamage = true;
+        isAirborne = true;
 
         // 운동량 0
         rb.linearVelocity = Vector2.zero;
+        Debug.Log("aa");
 
         // 공중에 띄움
         Vector2 dir = new Vector2(0, 1f);
@@ -259,8 +262,9 @@ public class BaseEnemy : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(() => (IsGrounded()));
+        Debug.Log("bb");
 
-        isDamage = false;
+        isAirborne = false;
     }
 
     public bool IsGrounded()
