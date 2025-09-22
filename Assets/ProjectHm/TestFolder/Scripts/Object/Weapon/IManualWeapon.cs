@@ -170,9 +170,13 @@ public abstract class IManualWeapon : MonoBehaviour
         if (playerController != null)
         {
             // 쿨타임 설정 및 애니메이션 재생 속도 세팅
-            playerController.attackCooldown = 1f / totalAttackSpeed;
-            anim.SetFloat("AttackSpeed", totalAttackSpeed * 1 / (1-data.delayRatio));
-            playerController.animator.SetFloat("AttackSpeed", totalAttackSpeed * 1 / (1- data.delayRatio));
+            playerController.attackingTime = 1f / totalAttackSpeed;
+            anim.SetFloat("AttackSpeed", totalAttackSpeed / (1 - data.before_Attack_DelayRatio - data.after_Attack_DelayRatio));
+            playerController.animator.SetFloat("AttackSpeed", totalAttackSpeed / (1 - data.before_Attack_DelayRatio - data.after_Attack_DelayRatio));
+
+            playerController.chargeAttackingTime = 1f / totalAttackSpeed / data.chargeAttackSpeedMultiple;
+            anim.SetFloat("ChargeAttackSpeed", totalAttackSpeed / (1 - data.before_ChargeAttack_DelayRatio - data.after_ChargeAttack_DelayRatio));
+            playerController.animator.SetFloat("ChargeAttackSpeed", totalAttackSpeed / (1 - data.before_ChargeAttack_DelayRatio - data.after_ChargeAttack_DelayRatio));
         }
         
     }

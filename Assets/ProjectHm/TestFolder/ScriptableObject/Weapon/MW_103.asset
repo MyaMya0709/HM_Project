@@ -14,6 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponID: 103
   price: 1000
+  before_Attack_DelayRatio: 0.2
+  after_Attack_DelayRatio: 0.2
+  before_DownAttack_DelayRatio: 0.2
+  after_DownAttack_DelayRatio: 0.2
+  before_ChargeAttack_DelayRatio: 0.2
+  after_ChargeAttack_DelayRatio: 0.2
+  before_DashAttack_DelayRatio: 0.2
+  after_DashAttack_DelayRatio: 0.2
   baseAttackPowerList:
   - 10
   - 11

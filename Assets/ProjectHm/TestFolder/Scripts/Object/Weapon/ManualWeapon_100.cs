@@ -9,8 +9,8 @@ public class ManualWeapon_100 : IManualWeapon
     public float DownAtkStunDur = 0.25f;
     public float DashAtkStunDur = 0.25f;
 
-    public float chargeTimeLevel2 = 0.6f;         // 차징 2단계 시간
-    public float chargeTimeLevel3 = 1.0f;         // 차징 3단계 시간
+    public float chargeTimeLevel2 = 0.3f;         // 차징 2단계 시간
+    public float chargeTimeLevel3 = 0.7f;         // 차징 3단계 시간
     public int chargeLevel = 0;                   // 차징 단계
     public float chargeAttackMultiple = 0;        // 차징 단계별 공격력 배수
 
@@ -44,7 +44,6 @@ public class ManualWeapon_100 : IManualWeapon
             MutipleAttack();
         }
     }
-
     public override void DownAttack()
     {
         // 공격 범위 내의 적 감지
@@ -63,16 +62,15 @@ public class ManualWeapon_100 : IManualWeapon
             }
         }
     }
-
     public void ChargingLevel()
     {
         // 차징 단계 확인
-        if (playerController.holdTime >= chargeTimeLevel3)
+        if (playerController.chargingTime >= chargeTimeLevel3)
         {
             chargeLevel = 3;
             chargeAttackMultiple = 1.0f;
         }
-        else if (playerController.holdTime >= chargeTimeLevel2)
+        else if (playerController.chargingTime >= chargeTimeLevel2)
         {
             chargeLevel = 2;
             chargeAttackMultiple = 0.6f;
@@ -82,9 +80,9 @@ public class ManualWeapon_100 : IManualWeapon
             chargeLevel = 1;
             chargeAttackMultiple = 0.3f;
         }
-        Debug.Log($"Hold: {playerController.holdTime:F2}s → Level {chargeLevel}");
+        Debug.Log($"Charging: {playerController.chargingTime:F2}s → Level {chargeLevel}");
+        Debug.Log($"{playerController.holdTime}s");
     }
-
     public override void ChargingAttack()
     {
         Debug.Log("ChargingAttack");
@@ -106,7 +104,10 @@ public class ManualWeapon_100 : IManualWeapon
         {
             if (hit.collider.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
             {
-                enemy.TakeDamage( totalAttackPower * chargeAttackMultiple * data.baseWeaponEffectList[baseWeaponLevel].chargeEffect.damageMultiple, data.baseWeaponEffectList[baseWeaponLevel].chargeEffect, playerController.lastLookDirection);
+                enemy.TakeDamage(
+                    totalAttackPower * chargeAttackMultiple * data.baseWeaponEffectList[baseWeaponLevel].chargeEffect.damageMultiple,
+                    data.baseWeaponEffectList[baseWeaponLevel].chargeEffect,
+                    direction);
             }
         }
 
@@ -121,7 +122,6 @@ public class ManualWeapon_100 : IManualWeapon
         // 디버그용 로그
         Debug.Log($"Attack hit {hits.Length} enemies.");
     }
-
     public override void DashAttack()
     {
         if (!isDashAttack) return;
@@ -153,7 +153,6 @@ public class ManualWeapon_100 : IManualWeapon
         // 디버그용 로그
         Debug.Log($"Attack hit {hits.Length} enemies.");
     }
-
     public void SingleAttack()
     {
         Debug.Log("SingleAttack");
@@ -205,7 +204,6 @@ public class ManualWeapon_100 : IManualWeapon
             DrawDebugBox((Vector2)attackPoint.position + direction * (totalRange * 0.5f), new Vector2(totalRange, 1.0f), Color.red, 3f);
         }
     }
-
     public void MutipleAttack()
     {
         Debug.Log("MutipleAttack");
@@ -250,7 +248,7 @@ public class ManualWeapon_100 : IManualWeapon
         // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
         var main = particle.GetComponent<ParticleSystem>().main;
         main.playOnAwake = false;
-        main.simulationSpeed = totalAttackSpeed;
+        main.simulationSpeed = totalAttackSpeed * 1 / (1 - data.before_Attack_DelayRatio - data.after_Attack_DelayRatio);
         main.stopAction = ParticleSystemStopAction.Destroy;
         main.loop = false;
         main.startSize = 2f;
@@ -312,7 +310,7 @@ public class ManualWeapon_100 : IManualWeapon
         // 1번 재생 후 삭제, 루프 off, 크기 조절 및 스케일링 모드 설정
         var main = particle.GetComponent<ParticleSystem>().main;
         main.playOnAwake = false;
-        main.simulationSpeed = totalAttackSpeed;
+        main.simulationSpeed = totalAttackSpeed * 1 / (1 - data.before_Attack_DelayRatio - data.after_Attack_DelayRatio);
         main.stopAction = ParticleSystemStopAction.Destroy;
         main.loop = false;
         main.startSize = 2f;
@@ -357,7 +355,6 @@ public class ManualWeapon_100 : IManualWeapon
         Debug.DrawLine(bottomRight, bottomLeft, color, duration);
         Debug.DrawLine(bottomLeft, topLeft, color, duration);
     }
-
     private void DrawSingleLine(Vector2 attatckPoint, Vector2 LookDir, float duration, Color color)
     {
         Debug.DrawLine(attatckPoint, attatckPoint + LookDir.normalized * totalRange, color, duration);

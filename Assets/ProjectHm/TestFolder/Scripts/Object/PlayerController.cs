@@ -17,9 +17,16 @@ public class PlayerController : MonoBehaviour
     public bool isMove = false;
     public bool isDashing = false;
     public bool isAbleDash = true;
-    public bool isJumpDash = false;
+    public bool isSuperJump = false;
     public bool isAbleAttack = true;
     public bool isCharging = false;
+
+    public bool isNormalAttacking = false;
+    public bool isDownAttacking = false;
+    public bool isChargingAttacking = false;
+    public bool isDashAttacking = false;
+
+    public bool facingRight = false;
 
     [Header("Desh")]
     public float dashPower = 80f;
@@ -36,21 +43,23 @@ public class PlayerController : MonoBehaviour
     public float superJumpForce = 100f;
     public LayerMask groundLayer;
     public Transform groundCheck;
-    public float jumpDistance = 7f;
+    public float superJumpDistance = 7f;
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
 
     [Header("Attack")]
     public float rebound = 4.5f;
-    public float attackCooldown;
+    public float attackingTime;
+    public float chargeAttackingTime;
 
     public int attackCount = 0;                   // 공중 공격 횟수
     public float attackRest = 0.6f;               // 공중공격 4회 이후 딜레이
     public float lastOnAirTime;                   // 4번째 공중공격 시간
 
-    public float chargingStart;                   // 차징 시작 시간
-    public float holdTime;                        // 차징을 하고 있던 시간
-    public float chargingTime = 0.3f;             // 차징 시간
+    public float startCheckTime;                  // 누른 시간
+    public float holdTime;                        // 누르고 있던 시간
+    public float chargingTime;                    // 차징하고 있던 시간
+    public float chargeTime = 0.3f;               // 차징 체크 시간
     public float lastAttackTime;                  // 마지막 공격 시간
 
     [Header("DoubleTap")]
@@ -74,8 +83,6 @@ public class PlayerController : MonoBehaviour
     public GameObject jumpParticle;
 
     float dustTimer = 0f;
-
-    public bool facingRight = false;
 
     private void Awake()
     {
@@ -104,18 +111,19 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        holdTime = Time.time - chargingStart;
+        //차징 시간 체크
+        holdTime = Time.time - startCheckTime;
         // 착지 상태 체크해서 애니메이션 전환
         animator.SetBool("IsGrounded", IsGrounded());
         currentWeapon.anim.SetBool("IsGrounded", IsGrounded());
 
         IsLooting();
 
-        if (lastLookDirection.x < 0 && facingRight)
+        if (lastLookDirection.x < 0 && facingRight && !IsAttacking())
         {
             Flip();
         }
-        else if (lastLookDirection.x > 0 && !facingRight)
+        else if (lastLookDirection.x > 0 && !facingRight && !IsAttacking())
         {
             Flip();
         }
@@ -125,7 +133,7 @@ public class PlayerController : MonoBehaviour
             dustTimer += Time.deltaTime;
             if (dustTimer >= 0.2f)
             {
-                // 현재 위치로 이동
+                // 현재 위치로 먼지 생성
                 GameObject ps = Instantiate(moveParticle, transform.position, transform.rotation);
                 ps.GetComponent<ParticleSystem>().Emit(1); // 파티클 1개 생성
                 dustTimer = 0f;
@@ -137,23 +145,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    bool fefef;
-    public bool isAttacking = false;
-
     private void FixedUpdate()
     {
-        if (isJumpDash) return; // 슈퍼 점프 중에는 다른 물리 계산 안 함
+        if (isSuperJump) return; // 슈퍼 점프 중에는 다른 물리 계산 안 함
 
         if (isDashing) return;
 
         if (isCharging) return;
 
-
-
-
-        //fefef = Time.time - lastAttackTime >= attackCooldown;
-
-        if (isMove && (!isAttacking || !IsGrounded()))
+        if (isMove && (!IsAttacking() || !IsGrounded()))
         {
             rb.linearVelocity = new Vector2(moveInput.x * condition.totalMoveSpeed, rb.linearVelocity.y);
         }
@@ -192,6 +192,9 @@ public class PlayerController : MonoBehaviour
     public void DoMove(bool onMove, float moveDir)
     {
         if (SystemInfo.deviceType == DeviceType.Handheld) Debug.Log("폰");
+
+        //공격 중 이동 금지
+        if (IsAttacking()) return;
 
         if (onMove)
         {
@@ -334,6 +337,9 @@ public class PlayerController : MonoBehaviour
     }
     public void DoJump()
     {
+        // 공격 중 점프 금지
+        if (IsAttacking()) return;
+
         //공중
         if (!IsGrounded())
         {
@@ -371,15 +377,13 @@ public class PlayerController : MonoBehaviour
     public IEnumerator SuperJump()
     {
         Debug.Log("SuperJumpCoroutine");
-        isJumpDash = true;
+        isSuperJump = true;
 
         Vector2 curPos = rb.position;
-        Vector2 tarPos = curPos + Vector2.up * jumpDistance;
+        Vector2 tarPos = curPos + Vector2.up * superJumpDistance;
 
         var originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-
-        //animator.Play("Jump", -1, 0);
 
         rb.linearVelocity = Vector2.zero;
         while (Vector2.Distance(rb.position, tarPos) > 0.01f)
@@ -399,7 +403,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = originalGravity;
 
-        isJumpDash = false;
+        isSuperJump = false;
     }
 
 
@@ -420,17 +424,17 @@ public class PlayerController : MonoBehaviour
         if (type == false)
         {
             // ===== 공격 실행 가능 여부 체크 =====
-            isAbleAttack = lastAttackTime + attackCooldown <= Time.time;
-
             if (!isAbleAttack) return;
 
             Debug.Log("Attack Start");
-            chargingStart = Time.time;
+            startCheckTime = Time.time;
 
             Debug.Log($"{holdTime}");
-            if (holdTime > chargingTime && IsGrounded())
+            if (holdTime > chargeTime && IsGrounded())
             {
                 isCharging = true;
+
+                StartCoroutine(ChargingTimeCheck());
 
                 Debug.Log("Start & Charging");
                 //차징 시작 & 차징 중
@@ -462,8 +466,7 @@ public class PlayerController : MonoBehaviour
                 rb.linearVelocity = Vector2.up * rebound;
 
                 //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
-                animator?.SetTrigger("OnAttack");
-                currentWeapon.anim?.SetTrigger("OnAttack");
+                StartCoroutine(AttackCoroutine(false));
 
                 // 공격 횟수
                 attackCount++;
@@ -479,14 +482,13 @@ public class PlayerController : MonoBehaviour
             else // 지상 공격
             {
                 // 차징시간에 따라 일반공격과 차징공격 분리
-                if (holdTime > chargingTime)
+                if (holdTime > chargeTime)
                 {
                     if (isAbleAttack) // 차징 공격도 쿨타임 체크
                     {
                         Debug.Log("ChargingAttack");
 
-                        animator?.SetBool("IsCharging", isCharging);
-                        currentWeapon.anim?.SetBool("IsCharging", isCharging);
+                        StartCoroutine(AttackCoroutine(true));
                     }
                 }
                 else
@@ -498,34 +500,53 @@ public class PlayerController : MonoBehaviour
                         attackCount = 0;
 
                         //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
-                        animator?.SetTrigger("OnAttack");
-                        currentWeapon.anim?.SetTrigger("OnAttack");
-
-                        StartCoroutine(AttackDelay());
-
+                        StartCoroutine(AttackCoroutine(false));
                     }
                 }
             }
             if (isAbleAttack) lastAttackTime = Time.time;
         }
     }
-    public IEnumerator AttackCoroutine()
+    public IEnumerator ChargingTimeCheck()
     {
-        // 후 딜레이
-        yield return new WaitForSeconds(currentWeapon.data.delayRatio * currentWeapon.totalAttackSpeed / 2);
+        chargingTime = Time.time;
 
-        // 공격 애니메이션 및 공격
-        animator?.SetTrigger("OnAttack");
-        currentWeapon.anim?.SetTrigger("OnAttack");
+        yield return new WaitUntil(() => !isCharging);
 
-        // 선 딜레이
-        yield return new WaitForSeconds(currentWeapon.data.delayRatio * currentWeapon.totalAttackSpeed / 2);
+        chargingTime = Time.time - chargingTime;
     }
-    public IEnumerator AttackDelay()
+    public IEnumerator AttackCoroutine(bool ischarging)
     {
-        isAttacking = true;
-        yield return new WaitForSeconds(attackCooldown);
-        isAttacking = false;
+        if (!ischarging)
+        {
+            isNormalAttacking = true;
+            // 선 딜레이
+            yield return new WaitForSeconds(currentWeapon.data.before_Attack_DelayRatio * currentWeapon.totalAttackSpeed);
+
+            // 공격 애니메이션 및 공격
+            animator?.SetTrigger("OnAttack");
+            currentWeapon.anim?.SetTrigger("OnAttack");
+            yield return new WaitForSeconds(attackingTime);
+
+            // 후 딜레이
+            yield return new WaitForSeconds(currentWeapon.data.after_Attack_DelayRatio * currentWeapon.totalAttackSpeed);
+            isNormalAttacking = false;
+        }
+        else
+        {
+            isChargingAttacking = true;
+            // 선 딜레이
+            yield return new WaitForSeconds(currentWeapon.data.before_ChargeAttack_DelayRatio * currentWeapon.totalAttackSpeed);
+
+            // 공격 애니메이션 및 공격
+            animator?.SetBool("IsCharging", isCharging);
+            currentWeapon.anim?.SetBool("IsCharging", isCharging);
+            yield return new WaitForSeconds(attackingTime);
+
+            // 후 딜레이
+            yield return new WaitForSeconds(currentWeapon.data.after_ChargeAttack_DelayRatio * currentWeapon.totalAttackSpeed);
+            isChargingAttacking = false;
+        }
     }
     public void OnWeaponTypeSet(int weaponID)
     {
@@ -581,13 +602,18 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("DownAttackCoroutine");
 
-        // 애니메이션 재생
-        animator.SetTrigger("OnDropAttack");
-        currentWeapon.anim.SetTrigger("OnDropAttack");
+        isDownAttacking = true;
 
         var originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
+
+        //선 딜레이
+        yield return new WaitForSeconds(currentWeapon.data.before_DownAttack_DelayRatio);
+
+        // 애니메이션 재생
+        animator.SetTrigger("OnDropAttack");
+        currentWeapon.anim.SetTrigger("OnDropAttack");
 
         // 땅에 닿을 때까지 등속 운동
         while (!IsGrounded())
@@ -599,9 +625,21 @@ public class PlayerController : MonoBehaviour
 
         // 도착 시 상태 초기화
         rb.gravityScale = originalGravity;
+
+        //후 딜레이
+        yield return new WaitForSeconds(currentWeapon.data.after_DownAttack_DelayRatio);
+
+        isDownAttacking = false;
     }
 
-
+    private bool IsAttacking()
+    {
+        if (!isNormalAttacking && !isDownAttacking && !isChargingAttacking && !isDashAttacking)
+        {
+            return false;
+        }
+        else return true;
+    }
     private bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);

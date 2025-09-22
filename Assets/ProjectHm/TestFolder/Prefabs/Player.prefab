@@ -220,9 +220,14 @@ MonoBehaviour:
   isMove: 0
   isDashing: 0
   isAbleDash: 1
-  isJumpDash: 0
+  isSuperJump: 0
   isAbleAttack: 1
   isCharging: 0
+  isNormalAttacking: 0
+  isDownAttacking: 0
+  isChargingAttacking: 0
+  isDashAttacking: 0
+  facingRight: 0
   dashPower: 80
   dashCooldown: 0.15
   dashDistance: 4
@@ -239,11 +244,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 1600765360527329676}
-  jumpDistance: 7
+  superJumpDistance: 7
   groundCheckRadius: 0.2
   jumpCount: 0
   rebound: 4.5
-  attackCooldown: 0
+  attackingTime: 0
+  chargeAttackingTime: 0
   attackCount: 0
   attackRest: 0.6
   lastOnAirTime: 0
@@ -267,7 +273,6 @@ MonoBehaviour:
   dashParticle: {fileID: 4368490907781343256, guid: df67d39ce7202b14bb0c6cc6f49cf2ed, type: 3}
   downParticle: {fileID: 0}
   jumpParticle: {fileID: 6892930270313944023, guid: d1f543fb346bd844487ada1a1decd567, type: 3}
-  facingRight: 0
 --- !u!114 &2157225018441802832
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20420,7 +20420,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1496218494
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31371,10 +31371,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 2157225018441802832, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
-      propertyPath: m_UIInputModule
-      value: 
-      objectReference: {fileID: 295300624}
     - target: {fileID: 2157225018441802832, guid: ba5c59ee5b47c5946abca4989104ad29, type: 3}
       propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
