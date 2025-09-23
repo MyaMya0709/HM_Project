@@ -48,6 +48,14 @@ public abstract class IManualWeapon : MonoBehaviour
     public float totalDashPower;
     public float totalSuperJumpPower;
 
+    [Header("Weapon Effect Check")]
+    public bool mutipleAttack = false;
+    public bool isStun = false;
+    public bool isDashAttack = true;
+
+    [Header("Particle")]
+    public GameObject chargingParticle;
+
     private void Awake()
     {
         selecWeaponLevel = 0;
@@ -147,7 +155,7 @@ public abstract class IManualWeapon : MonoBehaviour
         if (playerCondition != null)
         {
             totalAttackPower = (playerCondition.baseAttackPower + totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[playerCondition.selecAttackPowerLv];
-            totalAttackSpeed = (playerCondition.baseAttackSpeed + totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[playerCondition.selecAttackSpeedLv] * 0.1f;
+            totalAttackSpeed = (playerCondition.baseAttackSpeed + totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[playerCondition.selecAttackSpeedLv];
             totalRange = totalWeaponRange;
             totalMoveSpeed = (playerCondition.baseMoveSpeed + totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][0];
             totalJumpPower = (playerCondition.baseJumpPower + totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][1];

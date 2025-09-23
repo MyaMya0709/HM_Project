@@ -17108,7 +17108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 1231687877}
-  maxHealth: 200
+  maxHealth: 9000
   currentHealth: 0
   HPBar: {fileID: 936978496}
   AttackPoint: {fileID: 512146397}

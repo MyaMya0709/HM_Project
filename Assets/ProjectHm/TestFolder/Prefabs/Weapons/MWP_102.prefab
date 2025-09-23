@@ -108,6 +108,10 @@ MonoBehaviour:
   totalJumpPower: 0
   totalDashPower: 0
   totalSuperJumpPower: 0
+  mutipleAttack: 0
+  isStun: 0
+  isDashAttack: 1
+  chargingParticle: {fileID: 3158539215722666923, guid: 80be4d3b67909b540bb8bdfdd8fc2c38, type: 3}
   AttackStunDur: 0.1
   DownAtkStunDur: 0.25
   DashAtkStunDur: 0.25
@@ -115,9 +119,6 @@ MonoBehaviour:
   chargeTimeLevel3: 1
   chargeLevel: 0
   chargeAttackMultiple: 0
-  isDashAttack: 1
-  mutipleAttack: 0
-  isStun: 0
   hitEffect: {fileID: 0}
 --- !u!1 &3969289391613558563
 GameObject:

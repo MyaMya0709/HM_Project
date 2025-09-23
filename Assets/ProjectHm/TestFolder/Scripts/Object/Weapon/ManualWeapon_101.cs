@@ -13,12 +13,6 @@ public class ManualWeapon_101 : IManualWeapon
     public int chargeLevel = 0;                   // 차징 단계
     public float chargeAttackMultiple = 0;        // 차징 단계별 공격력 배수
 
-    public bool isDashAttack = true;
-
-    [Header("Weapon Effect Check")]
-    public bool mutipleAttack = false;
-    public bool isStun = false;
-
     [Header("Effects")]
     public GameObject hitEffect;
 

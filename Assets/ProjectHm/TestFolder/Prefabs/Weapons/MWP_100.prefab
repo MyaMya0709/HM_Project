@@ -78,7 +78,7 @@ MonoBehaviour:
     m_Bits: 128
   anim: {fileID: 0}
   attackPoint: {fileID: 78432035083985118}
-  baseWeaponLevel: 0
+  baseWeaponLevel: 5
   selecWeaponLevel: 0
   baseAttackPower: 0
   baseAttackSpeed: 0
@@ -108,17 +108,17 @@ MonoBehaviour:
   totalJumpPower: 0
   totalDashPower: 0
   totalSuperJumpPower: 0
+  mutipleAttack: 0
+  isStun: 1
+  isDashAttack: 0
+  chargingParticle: {fileID: 3158539215722666923, guid: 80be4d3b67909b540bb8bdfdd8fc2c38, type: 3}
   AttackStunDur: 0.1
   DownAtkStunDur: 0.25
   DashAtkStunDur: 0.25
-  chargeTimeLevel2: 0.6
+  chargeTimeMultipleLv2: 0.5
   chargeTimeLevel3: 1
   chargeLevel: 0
   chargeAttackMultiple: 0
-  isDashAttack: 0
-  mutipleAttack: 0
-  isStun: 1
-  hitEffect: {fileID: 0}
 --- !u!1 &3969289391613558563
 GameObject:
   m_ObjectHideFlags: 0

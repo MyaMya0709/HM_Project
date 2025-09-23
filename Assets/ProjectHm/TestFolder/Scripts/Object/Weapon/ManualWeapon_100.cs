@@ -9,19 +9,10 @@ public class ManualWeapon_100 : IManualWeapon
     public float DownAtkStunDur = 0.25f;
     public float DashAtkStunDur = 0.25f;
 
-    public float chargeTimeLevel2 = 0.3f;         // 차징 2단계 시간
+    public float chargeTimeMultipleLv2 = 0.5f;    // 차징 2단계 도달 시간 비율
     public float chargeTimeLevel3 = 0.7f;         // 차징 3단계 시간
     public int chargeLevel = 0;                   // 차징 단계
     public float chargeAttackMultiple = 0;        // 차징 단계별 공격력 배수
-
-    public bool isDashAttack = true;
-
-    [Header("Weapon Effect Check")]
-    public bool mutipleAttack = false;
-    public bool isStun = false;
-
-    [Header("Effects")]
-    public GameObject chargingParticle;
 
     public override void Attack()
     {
@@ -64,13 +55,15 @@ public class ManualWeapon_100 : IManualWeapon
     }
     public void ChargingLevel()
     {
+        float finalChargeTimeLv3 = chargeTimeLevel3 * (1f - 0.05f * playerCondition.selecAttackSpeedLv);
+
         // 차징 단계 확인
-        if (playerController.chargingTime >= chargeTimeLevel3)
+        if (playerController.chargingTime >= finalChargeTimeLv3)
         {
             chargeLevel = 3;
             chargeAttackMultiple = 1.0f;
         }
-        else if (playerController.chargingTime >= chargeTimeLevel2)
+        else if (playerController.chargingTime >= finalChargeTimeLv3 * chargeTimeMultipleLv2)
         {
             chargeLevel = 2;
             chargeAttackMultiple = 0.6f;

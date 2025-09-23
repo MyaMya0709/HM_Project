@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour
     public bool isDashing = false;
     public bool isAbleDash = true;
     public bool isSuperJump = false;
-    public bool isAbleAttack = true;
+    
+    public bool isHolding = false;
     public bool isCharging = false;
 
     public bool isNormalAttacking = false;
@@ -111,23 +112,23 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        //차징 시간 체크
-        holdTime = Time.time - startCheckTime;
+        if (isHolding)
+        {
+            //차징 시간 체크
+            holdTime = Time.time - startCheckTime;
+        }
+
         // 착지 상태 체크해서 애니메이션 전환
         animator.SetBool("IsGrounded", IsGrounded());
         currentWeapon.anim.SetBool("IsGrounded", IsGrounded());
 
         IsLooting();
 
-        if (lastLookDirection.x < 0 && facingRight && !IsAttacking())
-        {
-            Flip();
-        }
-        else if (lastLookDirection.x > 0 && !facingRight && !IsAttacking())
-        {
-            Flip();
-        }
+        //마지막으로 입력된 방향 값과 캐릭터 방향을 비교하고 공격 중이 아니면 반전
+        if (lastLookDirection.x < 0 && facingRight && !IsAttacking()) Flip();
+        else if (lastLookDirection.x > 0 && !facingRight && !IsAttacking()) Flip();
 
+        //이동시 먼지 파티클 생성
         if (IsGrounded() && isMove)
         {
             dustTimer += Time.deltaTime;
@@ -153,6 +154,7 @@ public class PlayerController : MonoBehaviour
 
         if (isCharging) return;
 
+        //땅에서 공격 중이거나 공중이면 이동 가능
         if (isMove && (!IsAttacking() || !IsGrounded()))
         {
             rb.linearVelocity = new Vector2(moveInput.x * condition.totalMoveSpeed, rb.linearVelocity.y);
@@ -169,6 +171,9 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        //공격 중 이동 금지
+        if (IsAttacking()) return;
+
         Debug.Log($"{context.ReadValue<Vector2>()}");
         if (context.performed)
         {
@@ -285,9 +290,24 @@ public class PlayerController : MonoBehaviour
         basePos = rb.position;
         targetPos = basePos + dashDirection * dashDistance;
 
+        Debug.Log("dashA");
+        Debug.Log(Time.time);
+
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
+
+        if (currentWeapon.isDashAttack)
+        {
+            isDashAttacking = true;
+            // 선 딜레이
+            yield return new WaitForSeconds(currentWeapon.data.before_Attack_DelayRatio * currentWeapon.totalAttackSpeed);
+        }
+
+        Debug.Log("dashB");
+        Debug.Log(Time.time);
+
+        
 
         // 대쉬 거리까지 등속 운동
         while (Vector2.Distance(rb.position, targetPos) > 0.01f)
@@ -311,9 +331,19 @@ public class PlayerController : MonoBehaviour
         {
             yield return new WaitForSeconds(0.05f);
             Debug.Log("체공");
+            Debug.Log(Time.time);
         }
 
+        if (currentWeapon.isDashAttack)
+        {
+            // 후 딜레이
+            yield return new WaitForSeconds(currentWeapon.data.after_Attack_DelayRatio * currentWeapon.totalAttackSpeed);
+            isDashAttacking = false;
+        }
+
+        
         Debug.Log("등속운동 중지");
+        Debug.Log(Time.time);
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
@@ -325,6 +355,9 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
+
+        Debug.Log("dashD");
+        Debug.Log(Time.time);
     }
 
 
@@ -423,9 +456,6 @@ public class PlayerController : MonoBehaviour
     {
         if (type == false)
         {
-            // ===== 공격 실행 가능 여부 체크 =====
-            if (!isAbleAttack) return;
-
             Debug.Log("Attack Start");
             startCheckTime = Time.time;
 
@@ -456,10 +486,8 @@ public class PlayerController : MonoBehaviour
 
             if (!IsGrounded()) // 공중 체크
             {
-                if (!isAbleAttack) return;
-
                 // 공중 4회 공격 딜레이 체크
-                if (lastOnAirTime + attackRest >= Time.time)
+                if (lastOnAirTime >= Time.time - attackRest)
                     return;
 
                 // 위쪽 반동 추가
@@ -481,30 +509,22 @@ public class PlayerController : MonoBehaviour
             }
             else // 지상 공격
             {
+                // 땅에 닿으면 횟수 초기화
+                attackCount = 0;
+
                 // 차징시간에 따라 일반공격과 차징공격 분리
                 if (holdTime > chargeTime)
                 {
-                    if (isAbleAttack) // 차징 공격도 쿨타임 체크
-                    {
-                        Debug.Log("ChargingAttack");
-
-                        StartCoroutine(AttackCoroutine(true));
-                    }
+                    Debug.Log("ChargingAttack");
+                    StartCoroutine(AttackCoroutine(true));
                 }
                 else
                 {
-                    if (isAbleAttack) // 일반 공격도 쿨타임 체크
-                    {
-                        Debug.Log("Attack");
-                        // 땅에 닿으면 횟수 초기화
-                        attackCount = 0;
-
-                        //애니메이션 재생 및 무기 애니메이션 재생 중에 공격 이벤트 발생
-                        StartCoroutine(AttackCoroutine(false));
-                    }
+                    Debug.Log("Attack");
+                    StartCoroutine(AttackCoroutine(false));
                 }
             }
-            if (isAbleAttack) lastAttackTime = Time.time;
+            lastAttackTime = Time.time;
         }
     }
     public IEnumerator ChargingTimeCheck()
@@ -608,12 +628,12 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
 
-        //선 딜레이
-        yield return new WaitForSeconds(currentWeapon.data.before_DownAttack_DelayRatio);
-
         // 애니메이션 재생
         animator.SetTrigger("OnDropAttack");
         currentWeapon.anim.SetTrigger("OnDropAttack");
+
+        //선 딜레이
+        yield return new WaitForSeconds(currentWeapon.data.before_DownAttack_DelayRatio);
 
         // 땅에 닿을 때까지 등속 운동
         while (!IsGrounded())
