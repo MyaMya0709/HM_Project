@@ -140,26 +140,26 @@ public class DataManager : MonoBehaviour
         {14, new float[] { 7.4f, 51.4f }},
         {15, new float[] { 7.5f, 51.5f }}
     };
-    // key:statLevel / value:[dashDistance, superJumpDistance]
+    // key:statLevel / value:[dashCooltime, superJumpCooltime, downAttackCooltime]
     public Dictionary<int, float[]> actPowerDic
     = new Dictionary<int, float[]>()
     {
-        {0, new float[] { 4f, 7f } },
-        {1, new float[] { 4.1f, 7.1f }},
-        {2, new float[] { 4.2f, 7.2f }},
-        {3, new float[] { 4.3f, 7.3f }},
-        {4, new float[] { 4.4f, 7.4f }},
-        {5, new float[] { 4.5f, 7.5f }},
-        {6, new float[] { 4.6f, 7.6f }},
-        {7, new float[] { 4.7f, 7.7f }},
-        {8, new float[] { 4.8f, 7.8f }},
-        {9, new float[] { 4.9f, 7.9f }},
-        {10, new float[] { 5.0f, 8.0f }},
-        {11, new float[] { 5.1f, 8.1f }},
-        {12, new float[] { 5.2f, 8.2f }},
-        {13, new float[] { 5.3f, 8.3f }},
-        {14, new float[] { 5.4f, 8.4f }},
-        {15, new float[] { 5.5f, 8.5f }}
+        {0, new float[] { 5.5f, 8.5f, 5.5f }},
+        {1, new float[] { 5.4f, 8.4f, 5.4f }},
+        {2, new float[] { 5.3f, 8.3f, 5.3f }},
+        {3, new float[] { 5.2f, 8.2f, 5.2f }},
+        {4, new float[] { 5.1f, 8.1f, 5.1f }},
+        {5, new float[] { 5.0f, 8.0f, 5.0f }},
+        {6, new float[] { 4.9f, 7.9f, 4.9f }},
+        {7, new float[] { 4.8f, 7.8f, 4.8f }},
+        {8, new float[] { 4.7f, 7.7f, 4.7f }},
+        {9, new float[] { 4.6f, 7.6f, 4.6f }},
+        {10, new float[] { 4.5f, 7.5f, 4.5f }},
+        {11, new float[] { 4.4f, 7.4f, 4.4f }},
+        {12, new float[] { 4.3f, 7.3f, 4.3f }},
+        {13, new float[] { 4.2f, 7.2f, 4.2f }},
+        {14, new float[] { 4.1f, 7.1f, 4.1f }},
+        {15, new float[] { 4.0f, 7.0f, 4.0f }}
     };
     // key:statLevel / value:masteryStat
     public Dictionary<int, int> masteryStatDic
@@ -274,16 +274,16 @@ public class DataManager : MonoBehaviour
         {4, new float[] { 1.4f, 1.4f }},
         {5, new float[] { 1.5f, 1.5f }}
     };
-    // key:statLevel / value:[dashDistance, superJumpDistance]
+    // key:statLevel / value:[dashCooltime, superJumpCooltime, downAttackCooltime]
     public Dictionary<int, float[]> selecActPowerDic
     = new Dictionary<int, float[]>()
     {
-        {0, new float[] { 1f, 1f } },
-        {1, new float[] { 1.1f, 1.1f }},
-        {2, new float[] { 1.2f, 1.2f }},
-        {3, new float[] { 1.3f, 1.3f }},
-        {4, new float[] { 1.4f, 1.4f }},
-        {5, new float[] { 1.5f, 1.5f }}
+        {0, new float[] { 1f, 1f, 1f} },
+        {1, new float[] { 0.9f, 0.9f, 0.9f }},
+        {2, new float[] { 0.8f, 0.8f, 0.8f }},
+        {3, new float[] { 0.7f, 0.7f, 0.7f }},
+        {4, new float[] { 0.6f, 0.6f, 0.6f }},
+        {5, new float[] { 0.5f, 0.5f, 0.5f }}
     };
     // key:statLevel / value:masteryStat
     public Dictionary<int, int> selecMasteryStatDic

@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask obstacle;                        // 장애물 레이어
     public Vector2 basePos;
     public Vector2 targetPos;
+    public float lastDashTime = 0f;
 
     [Header("Jump")]
     public float jumpForce = 50f;
@@ -47,6 +48,8 @@ public class PlayerController : MonoBehaviour
     public float superJumpDistance = 7f;
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
+    public float lastSuperJumpTime = 0f;
+    public float lastDownAttackTime = 0f;
 
     [Header("Attack")]
     public float rebound = 4.5f;
@@ -233,10 +236,11 @@ public class PlayerController : MonoBehaviour
             lastDashTapTime = currentTime;            // 마지막 키 입력시간 저장
 
             // 더블 탭 성공 체크
-            if (tapCount == 2)
+            if (tapCount == 2 && (DataManager.Instance.actPowerDic[currentWeapon.baseWeaponLevel][0] <= Time.time - lastDashTime))
             {
                 // 탭 카운트 초기화 및 대쉬 실행
                 Debug.Log("DefaultDesh");
+                Debug.Log($"{lastDashTime},{DataManager.Instance.actPowerDic[currentWeapon.baseWeaponLevel][0]},{Time.time}");
                 tapCount = 0;
                 StartCoroutine(StartDash(lastLookDirection));
                 // 파티클 재생
@@ -250,7 +254,6 @@ public class PlayerController : MonoBehaviour
                     GameObject ps = Instantiate(dashParticle, new Vector3(transform.position.x + 0.2f, transform.position.y, transform.position.z), transform.rotation);
                     ps.transform.localScale = new Vector3(1, 1, 1);
                 }
-
             }
 
             // 대쉬 이후 일반 이동
@@ -279,6 +282,7 @@ public class PlayerController : MonoBehaviour
     public void DontMove() => DoMove(false, 0f);
     public IEnumerator StartDash(Vector2 direction)
     {
+        lastDashTime = Time.time;
         // 애니메이션 재생 시작
         animator?.SetBool("IsDash", true);
         currentWeapon.anim?.SetBool("IsDash", true);
@@ -378,7 +382,7 @@ public class PlayerController : MonoBehaviour
         {
             float currentTime = Time.time;
 
-            if (currentTime - lastJumpTapTime < doubleTapThreshold && jumpCount == 2)
+            if (currentTime - lastJumpTapTime < doubleTapThreshold && jumpCount == 2 && (DataManager.Instance.actPowerDic[currentWeapon.baseWeaponLevel][1] <= Time.time - lastSuperJumpTime))
             {
                 //더블 탭
                 Debug.Log("Double Tap Detected!");
@@ -409,6 +413,8 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator SuperJump()
     {
+        lastSuperJumpTime = Time.time;
+
         Debug.Log("SuperJumpCoroutine");
         isSuperJump = true;
 
@@ -607,11 +613,13 @@ public class PlayerController : MonoBehaviour
         float currentTime = Time.time;
 
         //더블 탭 체크
-        if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded())
+        if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded() && (DataManager.Instance.actPowerDic[currentWeapon.baseWeaponLevel][2] <= Time.time - lastDownAttackTime))
         {
             Debug.Log("Double Tap Detected");
             StartCoroutine(StartDownAttack());
             lastDownTapTime = -1f; // 리셋
+
+            lastDownAttackTime = Time.time;
         }
         else
         {
