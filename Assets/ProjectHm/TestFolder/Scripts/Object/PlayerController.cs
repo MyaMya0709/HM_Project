@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public GameObject weaponHolder;
     public IManualWeapon curWeapon;
     public Animator animator;
+    public UI_State state;              //InitStateUI (Id => 0==공격/1==대쉬/2==내려찍기/3==슈퍼점프,  coolTime)
 
     [Header("MovementCheck")]
     public bool isMove = false;
@@ -110,6 +111,7 @@ public class PlayerController : MonoBehaviour
         else animator.runtimeAnimatorController = condition.characterData.animator;
             
         rb = GetComponent<Rigidbody2D>();
+        state = GameObject.Find("UI").GetComponentInChildren<UI_State>();
     }
 
     private void Update()
@@ -173,9 +175,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        //공격 중 이동 금지
-        if (IsAttacking()) return;
-
         Debug.Log($"{context.ReadValue<Vector2>()}");
         if (context.performed)
         {
@@ -200,9 +199,6 @@ public class PlayerController : MonoBehaviour
     {
         if (SystemInfo.deviceType == DeviceType.Handheld) Debug.Log("폰");
 
-        //공격 중 이동 금지
-        if (IsAttacking()) return;
-
         if (onMove)
         {
             moveInput.x = moveDir;
@@ -221,13 +217,13 @@ public class PlayerController : MonoBehaviour
             // 대쉬하는중, 가능여부, 더블 탭, 입력 방향 체크
             if (curDir == lastkey && currentTime - lastDashTapTime < doubleTapThreshold && !isDashing && isAbleDash)
             {
-                //조건 달성 두번째 입력시, 탭 카운트 2 달성
+                //조건 달성 두번째 입력시 => 탭 카운트 2 달성
                 tapCount++;
             }
             else
             {
                 // 첫번째 키 입력 시, 탭 카운트 1과 입력키 저장
-                // 조건 미달성 두번째 키 입력, 탭 카운트 유지 및 입력키 저장
+                // 조건 미달성 두번째 키 입력 => 탭 카운트 유지 및 입력키 저장
                 tapCount = 1;
                 lastkey = curDir;
             }
@@ -268,7 +264,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         // 키 입력이 끝날 때, 이동 종료 
-        if (!onMove)
+        else
         {
             isMove = false;
             animator.SetBool("IsMove", false);
@@ -348,6 +344,8 @@ public class PlayerController : MonoBehaviour
 
         isDashing = false;
 
+        // UI생성
+        state.InitStateUI(1, curWeapon.totalDashCooltime);
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
     }
@@ -377,6 +375,8 @@ public class PlayerController : MonoBehaviour
                 Instantiate(jumpParticle, transform.position, transform.rotation);
                 StartCoroutine(SuperJump());
                 lastJumpTapTime = -1f; // 리셋
+
+                state.InitStateUI(2, curWeapon.totalSuperJumpCooltime); // UI생성
             }
             else
             {
@@ -448,6 +448,11 @@ public class PlayerController : MonoBehaviour
     }
     public void DoAttack(bool type)
     {
+        if (IsAttacking())
+        {
+            return;
+        }
+        
         if (type == false)
         {
             Debug.Log("Attack Start");
@@ -521,6 +526,7 @@ public class PlayerController : MonoBehaviour
             lastAttackTime = Time.time;
         }
     }
+    // 차징 시작 후 차징시간 체크
     public IEnumerator ChargingTimeCheck()
     {
         chargingTime = Time.time;
@@ -601,13 +607,15 @@ public class PlayerController : MonoBehaviour
         float currentTime = Time.time;
 
         //더블 탭 체크
-        if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded() && (curWeapon.totalDownAttackCooltime <= Time.time - lastDownAttackTime))
+        if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded() && (curWeapon.totalDownAttackCooltime <= Time.time - lastDownAttackTime || lastDownAttackTime == 0))
         {
             Debug.Log("Double Tap Detected");
             StartCoroutine(StartDownAttack());
             lastDownTapTime = -1f; // 리셋
 
             lastDownAttackTime = Time.time;
+
+
         }
         else
         {
@@ -646,6 +654,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(curWeapon.data.after_DownAttack_DelayRatio);
 
         isDownAttacking = false;
+
+        state.InitStateUI(0, curWeapon.totalDownAttackCooltime); // UI생성
     }
 
     private bool IsAttacking()
