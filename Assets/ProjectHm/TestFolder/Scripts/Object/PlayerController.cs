@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     public Vector2 moveInput;
     public GameObject weaponHolder;
-    public IManualWeapon currentWeapon;
+    public IManualWeapon curWeapon;
     public Animator animator;
 
     [Header("MovementCheck")]
@@ -41,15 +41,14 @@ public class PlayerController : MonoBehaviour
     public float lastDashTime = 0f;
 
     [Header("Jump")]
-    public float jumpForce = 50f;
-    public float superJumpForce = 100f;
     public LayerMask groundLayer;
     public Transform groundCheck;
-    public float superJumpDistance = 7f;
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
-    public float lastSuperJumpTime = 0f;
-    public float lastDownAttackTime = 0f;
+    public float superJumpForce = 100f;             // 슈퍼점프 속도
+    public float superJumpDistance = 7f;            // 슈퍼점프 높이
+    public float lastSuperJumpTime = 0f;            // 마지막으로 슈퍼점프한 시간
+    public float lastDownAttackTime = 0f;           // 마지막으로 내려찍기한 시간
 
     [Header("Attack")]
     public float rebound = 4.5f;
@@ -93,14 +92,14 @@ public class PlayerController : MonoBehaviour
         if (weaponHolder.transform.childCount == 0)
         {
             GameManager.Instance.WeaponInit(weaponHolder);
-            currentWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
+            curWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
             Debug.Log("시작시 무기 장착");
         }
         else
         {
             foreach (Transform child in weaponHolder.transform) Destroy(child.gameObject);
             GameManager.Instance.WeaponInit(weaponHolder);
-            currentWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
+            curWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
             Debug.Log("시작시 무기 장착");
         }
 
@@ -123,7 +122,7 @@ public class PlayerController : MonoBehaviour
 
         // 착지 상태 체크해서 애니메이션 전환
         animator.SetBool("IsGrounded", IsGrounded());
-        currentWeapon.anim.SetBool("IsGrounded", IsGrounded());
+        curWeapon.anim.SetBool("IsGrounded", IsGrounded());
 
         IsLooting();
 
@@ -233,14 +232,14 @@ public class PlayerController : MonoBehaviour
                 lastkey = curDir;
             }
 
-            lastDashTapTime = currentTime;            // 마지막 키 입력시간 저장
+            lastDashTapTime = currentTime; // 마지막 키 입력시간 저장
 
             // 더블 탭 성공 체크
-            if (tapCount == 2 && (DataManager.Instance.actPowerDic[currentWeapon.baseWeaponLevel][0] <= Time.time - lastDashTime))
+            if (tapCount == 2 && (curWeapon.totalDashCooltime <= Time.time - lastDashTime || lastDashTime == 0))
             {
                 // 탭 카운트 초기화 및 대쉬 실행
                 Debug.Log("DefaultDesh");
-                Debug.Log($"{lastDashTime},{DataManager.Instance.actPowerDic[currentWeapon.baseWeaponLevel][0]},{Time.time}");
+                Debug.Log($"{lastDashTime},{curWeapon.totalDashCooltime},{Time.time}");
                 tapCount = 0;
                 StartCoroutine(StartDash(lastLookDirection));
                 // 파티클 재생
@@ -260,7 +259,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Move");
             isMove = true;
             animator.SetBool("IsMove", true);
-            currentWeapon.anim?.SetBool("IsMove", true);
+            curWeapon.anim?.SetBool("IsMove", true);
 
             // 방향이 바뀌면 마지막에 바라본 방향으로 갱신
             if (Mathf.Abs(moveInput.x) > 0.01f)
@@ -273,7 +272,7 @@ public class PlayerController : MonoBehaviour
         {
             isMove = false;
             animator.SetBool("IsMove", false);
-            currentWeapon.anim?.SetBool("IsMove", false);
+            curWeapon.anim?.SetBool("IsMove", false);
             //rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // 수평속도 즉시 0
         }
     }
@@ -285,7 +284,7 @@ public class PlayerController : MonoBehaviour
         lastDashTime = Time.time;
         // 애니메이션 재생 시작
         animator?.SetBool("IsDash", true);
-        currentWeapon.anim?.SetBool("IsDash", true);
+        curWeapon.anim?.SetBool("IsDash", true);
 
         Debug.Log("DeshCoroutine");
         isDashing = true; // isDashing 동안 사용자의 입력을 받지 않음
@@ -294,24 +293,16 @@ public class PlayerController : MonoBehaviour
         basePos = rb.position;
         targetPos = basePos + dashDirection * dashDistance;
 
-        Debug.Log("dashA");
-        Debug.Log(Time.time);
-
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
 
-        if (currentWeapon.isDashAttack)
+        if (curWeapon.isDashAttack)
         {
             isDashAttacking = true;
             // 선 딜레이
-            yield return new WaitForSeconds(currentWeapon.data.before_Attack_DelayRatio * currentWeapon.totalAttackSpeed);
+            yield return new WaitForSeconds(curWeapon.data.before_Attack_DelayRatio * curWeapon.totalAttackSpeed);
         }
-
-        Debug.Log("dashB");
-        Debug.Log(Time.time);
-
-        
 
         // 대쉬 거리까지 등속 운동
         while (Vector2.Distance(rb.position, targetPos) > 0.01f)
@@ -338,10 +329,10 @@ public class PlayerController : MonoBehaviour
             Debug.Log(Time.time);
         }
 
-        if (currentWeapon.isDashAttack)
+        if (curWeapon.isDashAttack)
         {
             // 후 딜레이
-            yield return new WaitForSeconds(currentWeapon.data.after_Attack_DelayRatio * currentWeapon.totalAttackSpeed);
+            yield return new WaitForSeconds(curWeapon.data.after_Attack_DelayRatio * curWeapon.totalAttackSpeed);
             isDashAttacking = false;
         }
 
@@ -353,15 +344,12 @@ public class PlayerController : MonoBehaviour
 
         // 대시 후 애니메이션 복구
         animator?.SetBool("IsDash", false);
-        currentWeapon.anim?.SetBool("IsDash", false);
+        curWeapon.anim?.SetBool("IsDash", false);
 
         isDashing = false;
 
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
-
-        Debug.Log("dashD");
-        Debug.Log(Time.time);
     }
 
 
@@ -382,7 +370,7 @@ public class PlayerController : MonoBehaviour
         {
             float currentTime = Time.time;
 
-            if (currentTime - lastJumpTapTime < doubleTapThreshold && jumpCount == 2 && (DataManager.Instance.actPowerDic[currentWeapon.baseWeaponLevel][1] <= Time.time - lastSuperJumpTime))
+            if ((currentTime - lastJumpTapTime < doubleTapThreshold) && (jumpCount == 2) && (curWeapon.totalSuperJumpCooltime <= Time.time - lastSuperJumpTime || lastSuperJumpTime == 0))
             {
                 //더블 탭
                 Debug.Log("Double Tap Detected!");
@@ -407,7 +395,7 @@ public class PlayerController : MonoBehaviour
             jumpCount = 0;
             // 점프 직전에 y속도를 0으로 초기화
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * condition.totalJumpPower, ForceMode2D.Impulse);
             jumpCount++;
         }
     }
@@ -475,10 +463,10 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Start & Charging");
                 //차징 시작 & 차징 중
                 animator?.SetTrigger("OnCharging");
-                currentWeapon.anim?.SetTrigger("OnCharging");
+                curWeapon.anim?.SetTrigger("OnCharging");
 
                 animator?.SetBool("IsCharging", isCharging);
-                currentWeapon.anim?.SetBool("IsCharging", isCharging);
+                curWeapon.anim?.SetBool("IsCharging", isCharging);
             }
         }
         else if (type == true)
@@ -488,7 +476,7 @@ public class PlayerController : MonoBehaviour
             isCharging = false;
 
             // 무기에 따른 애니메이션 선택
-            OnWeaponTypeSet(currentWeapon.data.weaponID);
+            OnWeaponTypeSet(curWeapon.data.weaponID);
 
             if (!IsGrounded()) // 공중 체크
             {
@@ -547,30 +535,30 @@ public class PlayerController : MonoBehaviour
         {
             isNormalAttacking = true;
             // 선 딜레이
-            yield return new WaitForSeconds(currentWeapon.data.before_Attack_DelayRatio * currentWeapon.totalAttackSpeed);
+            yield return new WaitForSeconds(curWeapon.data.before_Attack_DelayRatio * curWeapon.totalAttackSpeed);
 
             // 공격 애니메이션 및 공격
             animator?.SetTrigger("OnAttack");
-            currentWeapon.anim?.SetTrigger("OnAttack");
+            curWeapon.anim?.SetTrigger("OnAttack");
             yield return new WaitForSeconds(attackingTime);
 
             // 후 딜레이
-            yield return new WaitForSeconds(currentWeapon.data.after_Attack_DelayRatio * currentWeapon.totalAttackSpeed);
+            yield return new WaitForSeconds(curWeapon.data.after_Attack_DelayRatio * curWeapon.totalAttackSpeed);
             isNormalAttacking = false;
         }
         else
         {
             isChargingAttacking = true;
             // 선 딜레이
-            yield return new WaitForSeconds(currentWeapon.data.before_ChargeAttack_DelayRatio * currentWeapon.totalAttackSpeed);
+            yield return new WaitForSeconds(curWeapon.data.before_ChargeAttack_DelayRatio * curWeapon.totalAttackSpeed);
 
             // 공격 애니메이션 및 공격
             animator?.SetBool("IsCharging", isCharging);
-            currentWeapon.anim?.SetBool("IsCharging", isCharging);
+            curWeapon.anim?.SetBool("IsCharging", isCharging);
             yield return new WaitForSeconds(attackingTime);
 
             // 후 딜레이
-            yield return new WaitForSeconds(currentWeapon.data.after_ChargeAttack_DelayRatio * currentWeapon.totalAttackSpeed);
+            yield return new WaitForSeconds(curWeapon.data.after_ChargeAttack_DelayRatio * curWeapon.totalAttackSpeed);
             isChargingAttacking = false;
         }
     }
@@ -613,7 +601,7 @@ public class PlayerController : MonoBehaviour
         float currentTime = Time.time;
 
         //더블 탭 체크
-        if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded() && (DataManager.Instance.actPowerDic[currentWeapon.baseWeaponLevel][2] <= Time.time - lastDownAttackTime))
+        if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded() && (curWeapon.totalDownAttackCooltime <= Time.time - lastDownAttackTime))
         {
             Debug.Log("Double Tap Detected");
             StartCoroutine(StartDownAttack());
@@ -638,10 +626,10 @@ public class PlayerController : MonoBehaviour
 
         // 애니메이션 재생
         animator.SetTrigger("OnDropAttack");
-        currentWeapon.anim.SetTrigger("OnDropAttack");
+        curWeapon.anim.SetTrigger("OnDropAttack");
 
         //선 딜레이
-        yield return new WaitForSeconds(currentWeapon.data.before_DownAttack_DelayRatio);
+        yield return new WaitForSeconds(curWeapon.data.before_DownAttack_DelayRatio);
 
         // 땅에 닿을 때까지 등속 운동
         while (!IsGrounded())
@@ -655,7 +643,7 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = originalGravity;
 
         //후 딜레이
-        yield return new WaitForSeconds(currentWeapon.data.after_DownAttack_DelayRatio);
+        yield return new WaitForSeconds(curWeapon.data.after_DownAttack_DelayRatio);
 
         isDownAttacking = false;
     }
@@ -676,7 +664,7 @@ public class PlayerController : MonoBehaviour
 
     public void EquipWeapon(IManualWeapon newWeapon)
     {
-        currentWeapon = newWeapon;
+        curWeapon = newWeapon;
     }
 
 

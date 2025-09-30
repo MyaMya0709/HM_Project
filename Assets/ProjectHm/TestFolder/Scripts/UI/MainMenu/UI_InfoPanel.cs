@@ -175,14 +175,14 @@ public class UI_InfoPanel : MonoBehaviour
                         Debug.Log("½ºÅÈ Àû¿ë : JumpPower");
                         break;
 
-                    case StatType.DashPower:
+                    case StatType.DashCooltime:
                         dashPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
-                        Debug.Log("½ºÅÈ Àû¿ë : DashPower");
+                        Debug.Log("½ºÅÈ Àû¿ë : DashCooltime");
                         break;
 
-                    case StatType.SuperJumpPower:
+                    case StatType.SuperJumpCooltime:
                         superJumpPowerTMP.text += $"+({characterData.bonusStatValue[i]})";
-                        Debug.Log("½ºÅÈ Àû¿ë : SuperJumpPower");
+                        Debug.Log("½ºÅÈ Àû¿ë : SuperJumpCooltime");
                         break;
 
                     case StatType.Mastery:

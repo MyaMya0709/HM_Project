@@ -33,8 +33,9 @@ public class UI_Enhance : MonoBehaviour
     [SerializeField] private TMP_Text ATKRange_TMP;
     [SerializeField] private TMP_Text moveSpeed_TMP;
     [SerializeField] private TMP_Text jumpPower_TMP;
-    [SerializeField] private TMP_Text dashPower_TMP;
-    [SerializeField] private TMP_Text superJumpPower_TMP;
+    [SerializeField] private TMP_Text dashCooltime_TMP;
+    [SerializeField] private TMP_Text superJumpCooltime_TMP;
+    [SerializeField] private TMP_Text downAttackCooltime_TMP;
 
 
     [Header("AttackTap")]
@@ -332,10 +333,10 @@ public class UI_Enhance : MonoBehaviour
         ATKSpeed_TMP.text = $"{weaponData.data.baseAttackSpeedList[weaponData.baseWeaponLevel]}";
         ATKRange_TMP.text = $"{weaponData.data.baseRangeList[weaponData.baseWeaponLevel]}";
         moveSpeed_TMP.text = $"{weaponData.data.baseMoveSpeedList[weaponData.baseWeaponLevel]}";
-        jumpPower_TMP.text = $"{weaponData.data.basejumpPowerList[weaponData.baseWeaponLevel]}";
-        dashPower_TMP.text = $"{weaponData.data.baseDashPowerList[weaponData.baseWeaponLevel]}";
-        superJumpPower_TMP.text = $"{weaponData.data.baseSuperJumpPowerList[weaponData.baseWeaponLevel]}";
-
+        jumpPower_TMP.text = $"{weaponData.data.baseJumpPowerList[weaponData.baseWeaponLevel]}";
+        dashCooltime_TMP.text = $"{weaponData.data.baseDashCooltimeList[weaponData.baseWeaponLevel]}s";
+        superJumpCooltime_TMP.text = $"{weaponData.data.baseSuperJumpCooltimeList[weaponData.baseWeaponLevel]}s";
+        downAttackCooltime_TMP.text = $"{weaponData.data.baseSuperJumpCooltimeList[weaponData.baseWeaponLevel]}s";
     }
     public void AttackInfoSet()
     {

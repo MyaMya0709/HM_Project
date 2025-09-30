@@ -58,7 +58,7 @@ public class SelectionSlot : MonoBehaviour
             // TODO: 무기 추가 + 레벨업 통합하기
             case SlotType.ManualWeapon:
                 Debug.Log("수동무기 렙업");
-                playerController.currentWeapon.SelecLevelUp();
+                playerController.curWeapon.SelecLevelUp();
                 break;
 
             case SlotType.AutoWeapon:

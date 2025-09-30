@@ -20,27 +20,26 @@ public class ManualWeaponData : ScriptableObject
     public float after_DashAttack_DelayRatio;
 
     [Header("BaseStatList")]
-
     public List<float> baseAttackPowerList;
     public List<float> baseAttackSpeedList;
     public List<float> baseRangeList;
     public List<float> baseMoveSpeedList;
-    public List<float> basejumpPowerList;
-    public List<float> baseDashPowerList;
-    public List<float> baseSuperJumpPowerList;
+    public List<float> baseJumpPowerList;
+    public List<float> baseDashCooltimeList;
+    public List<float> baseSuperJumpCooltimeList;
+    public List<float> baseDownAttackCooltimeList;
 
     [Header("SelecStatList")]
-
     public List<float> selecAttackPowerList;
     public List<float> selecAttackSpeedList;
     public List<float> selecRangeList;
     public List<float> selecMoveSpeedList;
-    public List<float> selecjumpPowerList;
-    public List<float> selecDashPowerList;
-    public List<float> selecSuperJumpPowerList;
+    public List<float> selecJumpPowerList;
+    public List<float> selecDashCooltimeList;
+    public List<float> selecSuperJumpCooltimeList;
+    public List<float> selecDownAttackCooltimeList;
 
     [Header("Enhance/Effect List")]
-
     // 레벨로 원하는 값 찾기
     public List<int> enhanceCostList;
     public List<WeaponEffectData> baseWeaponEffectList;

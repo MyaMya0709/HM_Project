@@ -214,17 +214,17 @@ public class UI_EnhancePopup : MonoBehaviour
         before_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseAttackSpeedList[enhanceUI.curMWData.baseLevel]}";
         before_AttackRange_TMP.text = $"{enhanceUI.weaponData.data.baseRangeList[enhanceUI.curMWData.baseLevel]}";
         before_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveSpeedList[enhanceUI.curMWData.baseLevel]}";
-        before_JumpPower_TMP.text = $"{enhanceUI.weaponData.data.basejumpPowerList[enhanceUI.curMWData.baseLevel]}";
-        before_DashPower_TMP.text = $"{enhanceUI.weaponData.data.baseDashPowerList[enhanceUI.curMWData.baseLevel]}";
-        before_SuperJump_TMP.text = $"{enhanceUI.weaponData.data.baseSuperJumpPowerList[enhanceUI.curMWData.baseLevel]}";
+        before_JumpPower_TMP.text = $"{enhanceUI.weaponData.data.baseJumpPowerList[enhanceUI.curMWData.baseLevel]}";
+        before_DashPower_TMP.text = $"{enhanceUI.weaponData.data.baseDashCooltimeList[enhanceUI.curMWData.baseLevel]}";
+        before_SuperJump_TMP.text = $"{enhanceUI.weaponData.data.baseSuperJumpCooltimeList[enhanceUI.curMWData.baseLevel]}";
 
         after_AttackPower_TMP.text = $"{enhanceUI.weaponData.data.baseAttackPowerList[enhanceUI.curMWData.baseLevel + 1]}";
         after_AttackSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseAttackSpeedList[enhanceUI.curMWData.baseLevel + 1]}";
         after_AttackRange_TMP.text = $"{enhanceUI.weaponData.data.baseRangeList[enhanceUI.curMWData.baseLevel + 1]}";
         after_MoveSpeed_TMP.text = $"{enhanceUI.weaponData.data.baseMoveSpeedList[enhanceUI.curMWData.baseLevel + 1]}";
-        after_MovePower_TMP.text = $"{enhanceUI.weaponData.data.basejumpPowerList[enhanceUI.curMWData.baseLevel + 1]}";
-        after_DashPower_TMP.text = $"{enhanceUI.weaponData.data.baseDashPowerList[enhanceUI.curMWData.baseLevel + 1]}";
-        after_SuperJump_TMP.text = $"{enhanceUI.weaponData.data.baseSuperJumpPowerList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_MovePower_TMP.text = $"{enhanceUI.weaponData.data.baseJumpPowerList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_DashPower_TMP.text = $"{enhanceUI.weaponData.data.baseDashCooltimeList[enhanceUI.curMWData.baseLevel + 1]}";
+        after_SuperJump_TMP.text = $"{enhanceUI.weaponData.data.baseSuperJumpCooltimeList[enhanceUI.curMWData.baseLevel + 1]}";
     }
     public void AttackInfoSet()
     {

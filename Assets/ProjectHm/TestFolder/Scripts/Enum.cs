@@ -30,8 +30,9 @@ public enum StatType
     AttackRange,
     MoveSpeed,
     JumpPower,
-    DashPower,
-    SuperJumpPower,
+    DashCooltime,
+    SuperJumpCooltime,
+    DownAttackCooltime,
     Mastery
 }
 

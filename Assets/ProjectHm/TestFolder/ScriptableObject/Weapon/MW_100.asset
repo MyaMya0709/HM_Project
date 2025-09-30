@@ -51,27 +51,34 @@ MonoBehaviour:
   - 3
   - 4
   - 5
-  basejumpPowerList:
-  - 5
-  - 10
-  - 15
-  - 20
-  - 25
-  - 30
-  baseDashPowerList:
-  - 0.1
-  - 0.2
-  - 0.3
-  - 0.4
-  - 0.5
-  - 0.6
-  baseSuperJumpPowerList:
-  - 5
-  - 10
-  - 20
-  - 30
-  - 40
+  baseJumpPowerList:
   - 50
+  - 51
+  - 52
+  - 53
+  - 54
+  - 55
+  baseDashCooltimeList:
+  - 1
+  - 0.9
+  - 0.8
+  - 0.7
+  - 0.6
+  - 0.5
+  baseSuperJumpCooltimeList:
+  - 1
+  - 0.9
+  - 0.8
+  - 0.7
+  - 0.6
+  - 0.5
+  baseDownAttackCooltimeList:
+  - 1
+  - 0.9
+  - 0.8
+  - 0.7
+  - 0.6
+  - 0.5
   selecAttackPowerList:
   - 1
   - 1.1
@@ -100,27 +107,34 @@ MonoBehaviour:
   - 1.3
   - 1.4
   - 1.5
-  selecjumpPowerList:
+  selecJumpPowerList:
   - 1
   - 1.1
   - 1.2
   - 1.3
   - 1.4
   - 1.5
-  selecDashPowerList:
+  selecDashCooltimeList:
   - 1
-  - 1.1
-  - 1.2
-  - 1.3
-  - 1.4
-  - 1.5
-  selecSuperJumpPowerList:
+  - 0.9
+  - 0.8
+  - 0.7
+  - 0.6
+  - 0.5
+  selecSuperJumpCooltimeList:
   - 1
-  - 1.1
-  - 1.2
-  - 1.3
-  - 1.4
-  - 1.5
+  - 0.9
+  - 0.8
+  - 0.7
+  - 0.6
+  - 0.5
+  selecDownAttackCooltimeList:
+  - 1
+  - 0.9
+  - 0.8
+  - 0.7
+  - 0.6
+  - 0.5
   enhanceCostList: 64000000c80000002c01000090010000f401000058020000
   baseWeaponEffectList:
   - attackEffect:

@@ -21,32 +21,36 @@ public abstract class IManualWeapon : MonoBehaviour
     public float baseRange;
     public float baseMoveSpeed;
     public float baseJumpPower;
-    public float baseDashPower;
-    public float baseSuperJumpPower;
+    public float baseDashCooltime;
+    public float baseSuperJumpCooltime;
+    public float baseDownAttackCooltime;
 
     public float selecAttackPower;
     public float selecAttackSpeed;
     public float selecRange;
     public float selecMoveSpeed;
     public float selecJumpPower;
-    public float selecDashPower;
-    public float selecSuperJumpPower;
-    
+    public float selecDashCooltime;
+    public float selecSuperJumpCooltime;
+    public float selecDownAttackCooltime;
+
     public float totalWeaponAttackPower;
     public float totalWeaponAttackSpeed;
     public float totalWeaponRange;
     public float totalWeaponMoveSpeed;
     public float totalWeaponJumpPower;
-    public float totalWeaponDashPower;
-    public float totalWeaponSuperJumpPower;
+    public float totalWeaponDashCooltime;
+    public float totalWeaponSuperJumpCooltime;
+    public float totalWeaponDownAttackCooltime;
 
     public float totalAttackPower;
     public float totalAttackSpeed;
     public float totalRange;
     public float totalMoveSpeed;
     public float totalJumpPower;
-    public float totalDashPower;
-    public float totalSuperJumpPower;
+    public float totalDashCooltime;
+    public float totalSuperJumpCooltime;
+    public float totalDownAttackCooltime;
 
     [Header("Weapon Effect Check")]
     public bool mutipleAttack = false;
@@ -55,6 +59,7 @@ public abstract class IManualWeapon : MonoBehaviour
 
     [Header("Particle")]
     public GameObject chargingParticle;
+
 
     private void Awake()
     {
@@ -88,9 +93,10 @@ public abstract class IManualWeapon : MonoBehaviour
         baseAttackSpeed = data.baseAttackSpeedList[baseWeaponLevel];
         baseRange = data.baseRangeList[baseWeaponLevel];
         baseMoveSpeed = data.baseMoveSpeedList[baseWeaponLevel];
-        baseJumpPower = data.basejumpPowerList[baseWeaponLevel];
-        baseDashPower = data.baseDashPowerList[baseWeaponLevel];
-        baseSuperJumpPower = data.selecSuperJumpPowerList[baseWeaponLevel];
+        baseJumpPower = data.baseJumpPowerList[baseWeaponLevel];
+        baseDashCooltime = data.baseDashCooltimeList[baseWeaponLevel];
+        baseSuperJumpCooltime = data.baseSuperJumpCooltimeList[baseWeaponLevel];
+        baseDownAttackCooltime = data.baseDownAttackCooltimeList[baseWeaponLevel];
 
         TotalStatSet();
         GetTotalStat();
@@ -104,9 +110,10 @@ public abstract class IManualWeapon : MonoBehaviour
         selecAttackSpeed = data.selecAttackSpeedList[selecWeaponLevel];
         selecRange = data.selecRangeList[selecWeaponLevel];
         selecMoveSpeed = data.selecMoveSpeedList[selecWeaponLevel];
-        selecJumpPower = data.selecjumpPowerList[selecWeaponLevel];
-        selecDashPower = data.selecDashPowerList[selecWeaponLevel];
-        selecSuperJumpPower = data.selecSuperJumpPowerList[selecWeaponLevel];
+        selecJumpPower = data.selecJumpPowerList[selecWeaponLevel];
+        selecDashCooltime = data.selecDashCooltimeList[selecWeaponLevel];
+        selecSuperJumpCooltime = data.selecSuperJumpCooltimeList[selecWeaponLevel];
+        selecDownAttackCooltime = data.selecDownAttackCooltimeList[selecWeaponLevel];
 
         TotalStatSet();
         GetTotalStat();
@@ -123,17 +130,19 @@ public abstract class IManualWeapon : MonoBehaviour
         baseAttackSpeed = data.baseAttackSpeedList[baseWeaponLevel];
         baseRange = data.baseRangeList[baseWeaponLevel];
         baseMoveSpeed = data.baseMoveSpeedList[baseWeaponLevel];
-        baseJumpPower = data.basejumpPowerList[baseWeaponLevel];
-        baseDashPower = data.baseDashPowerList[baseWeaponLevel];
-        baseSuperJumpPower = data.selecSuperJumpPowerList[baseWeaponLevel];
+        baseJumpPower = data.baseJumpPowerList[baseWeaponLevel];
+        baseDashCooltime = data.baseDashCooltimeList[baseWeaponLevel];
+        baseSuperJumpCooltime = data.selecSuperJumpCooltimeList[baseWeaponLevel];
+        baseDownAttackCooltime = data.baseDownAttackCooltimeList[baseWeaponLevel];
 
         selecAttackPower = data.selecAttackSpeedList[selecWeaponLevel];
         selecAttackSpeed = data.selecAttackSpeedList[selecWeaponLevel];
         selecRange = data.selecRangeList[selecWeaponLevel];
         selecMoveSpeed = data.selecMoveSpeedList[selecWeaponLevel];
-        selecJumpPower = data.selecjumpPowerList[selecWeaponLevel];
-        selecDashPower = data.selecDashPowerList[selecWeaponLevel];
-        selecSuperJumpPower = data.selecSuperJumpPowerList[selecWeaponLevel];
+        selecJumpPower = data.selecJumpPowerList[selecWeaponLevel];
+        selecDashCooltime = data.selecDashCooltimeList[selecWeaponLevel];
+        selecSuperJumpCooltime = data.selecSuperJumpCooltimeList[selecWeaponLevel];
+        selecDownAttackCooltime = data.selecDownAttackCooltimeList[selecWeaponLevel];
 
         TotalStatSet();
     }
@@ -146,8 +155,9 @@ public abstract class IManualWeapon : MonoBehaviour
         totalWeaponRange = baseRange * selecRange;
         totalWeaponMoveSpeed = baseMoveSpeed * selecMoveSpeed;
         totalWeaponJumpPower = baseJumpPower * selecJumpPower;
-        totalWeaponDashPower = baseDashPower * selecDashPower;
-        totalWeaponSuperJumpPower = baseSuperJumpPower * selecSuperJumpPower;
+        totalWeaponDashCooltime = baseDashCooltime * selecDashCooltime;
+        totalWeaponSuperJumpCooltime = baseSuperJumpCooltime * selecSuperJumpCooltime;
+        totalWeaponDownAttackCooltime = baseDownAttackCooltime * selecDownAttackCooltime;
     }
     // ÃÑ½ºÅÈ °è»ê ÇÔ¼ö
     public void GetTotalStat()
@@ -159,8 +169,9 @@ public abstract class IManualWeapon : MonoBehaviour
             totalRange = totalWeaponRange;
             totalMoveSpeed = (playerCondition.baseMoveSpeed + totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][0];
             totalJumpPower = (playerCondition.baseJumpPower + totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][1];
-            totalDashPower = (playerCondition.baseDashPower + totalWeaponDashPower) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][0];
-            totalSuperJumpPower = (playerCondition.baseSuperJumpPower + totalWeaponSuperJumpPower) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][1];
+            totalDashCooltime = (playerCondition.baseDashCooltime + totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][0];
+            totalSuperJumpCooltime = (playerCondition.baseSuperJumpCooltime + totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][1];
+            totalDownAttackCooltime = (playerCondition.baseDownAttackCooltime + totalDownAttackCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][2];
         }
         else
         {
@@ -169,8 +180,9 @@ public abstract class IManualWeapon : MonoBehaviour
             totalRange = totalWeaponRange;
             totalMoveSpeed = totalWeaponMoveSpeed;
             totalJumpPower = totalWeaponJumpPower;
-            totalDashPower = totalWeaponDashPower;
-            totalSuperJumpPower = totalWeaponSuperJumpPower;
+            totalDashCooltime = totalWeaponDashCooltime;
+            totalSuperJumpCooltime = totalWeaponSuperJumpCooltime;
+            totalDownAttackCooltime = totalWeaponDownAttackCooltime;
             Debug.Log("playerCondition ¾øÀ½");
         }
 
