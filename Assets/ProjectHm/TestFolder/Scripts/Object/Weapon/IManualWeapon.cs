@@ -171,7 +171,7 @@ public abstract class IManualWeapon : MonoBehaviour
             totalJumpPower = (playerCondition.baseJumpPower + totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][1];
             totalDashCooltime = (playerCondition.baseDashCooltime + totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][0];
             totalSuperJumpCooltime = (playerCondition.baseSuperJumpCooltime + totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][1];
-            totalDownAttackCooltime = (playerCondition.baseDownAttackCooltime + totalDownAttackCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][2];
+            totalDownAttackCooltime = (playerCondition.baseDownAttackCooltime + totalWeaponDownAttackCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][2];
         }
         else
         {

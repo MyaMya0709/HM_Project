@@ -39,17 +39,17 @@ public class PlayerController : MonoBehaviour
     public LayerMask obstacle;                        // 장애물 레이어
     public Vector2 basePos;
     public Vector2 targetPos;
-    public float lastDashTime = 0f;
+    public float lastDashTime = 0f;                   // 마지막으로 대쉬한 시간
 
     [Header("Jump")]
     public LayerMask groundLayer;
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
-    public float superJumpForce = 100f;             // 슈퍼점프 속도
-    public float superJumpDistance = 7f;            // 슈퍼점프 높이
-    public float lastSuperJumpTime = 0f;            // 마지막으로 슈퍼점프한 시간
-    public float lastDownAttackTime = 0f;           // 마지막으로 내려찍기한 시간
+    public float superJumpForce = 100f;               // 슈퍼점프 속도
+    public float superJumpDistance = 7f;              // 슈퍼점프 높이
+    public float lastSuperJumpTime = 0f;              // 마지막으로 슈퍼점프한 시간
+    public float lastDownAttackTime = 0f;             // 마지막으로 내려찍기한 시간
 
     [Header("Attack")]
     public float rebound = 4.5f;
@@ -157,6 +157,8 @@ public class PlayerController : MonoBehaviour
         if (isDashing) return;
 
         if (isCharging) return;
+        
+        if (isDownAttacking) return;
 
         //땅에서 공격 중이거나 공중이면 이동 가능
         if (isMove && (!IsAttacking() || !IsGrounded()))
@@ -198,6 +200,8 @@ public class PlayerController : MonoBehaviour
     public void DoMove(bool onMove, float moveDir)
     {
         if (SystemInfo.deviceType == DeviceType.Handheld) Debug.Log("폰");
+
+        if (isDownAttacking) return;
 
         if (onMove)
         {
@@ -345,7 +349,7 @@ public class PlayerController : MonoBehaviour
         isDashing = false;
 
         // UI생성
-        state.InitStateUI(1, curWeapon.totalDashCooltime);
+        state.InitStateUI(0, curWeapon.totalDashCooltime);
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
     }
@@ -609,13 +613,11 @@ public class PlayerController : MonoBehaviour
         //더블 탭 체크
         if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded() && (curWeapon.totalDownAttackCooltime <= Time.time - lastDownAttackTime || lastDownAttackTime == 0))
         {
+
+
             Debug.Log("Double Tap Detected");
             StartCoroutine(StartDownAttack());
             lastDownTapTime = -1f; // 리셋
-
-            lastDownAttackTime = Time.time;
-
-
         }
         else
         {
@@ -636,6 +638,8 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("OnDropAttack");
         curWeapon.anim.SetTrigger("OnDropAttack");
 
+        Debug.Log(Time.time);
+
         //선 딜레이
         yield return new WaitForSeconds(curWeapon.data.before_DownAttack_DelayRatio);
 
@@ -653,9 +657,15 @@ public class PlayerController : MonoBehaviour
         //후 딜레이
         yield return new WaitForSeconds(curWeapon.data.after_DownAttack_DelayRatio);
 
+        Debug.Log(Time.time);
+
+        lastDownAttackTime = Time.time;
+
         isDownAttacking = false;
 
-        state.InitStateUI(0, curWeapon.totalDownAttackCooltime); // UI생성
+        state.InitStateUI(1, curWeapon.totalDownAttackCooltime); // UI생성
+
+        Debug.Log(curWeapon.totalDownAttackCooltime);
     }
 
     private bool IsAttacking()
