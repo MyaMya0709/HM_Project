@@ -71,6 +71,7 @@ Transform:
   - {fileID: 6583995281094875737}
   - {fileID: 5222002190331703957}
   - {fileID: 7590934454650825540}
+  - {fileID: 745659805446273102}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &8393082947183156615
@@ -172,12 +173,14 @@ MonoBehaviour:
     haveGold: 0
     characterID: 0
     weaponID: 0
+    skillID: 0
   baseAttackPower: 0
   baseAttackSpeed: 0
   baseMoveSpeed: 0
   baseJumpPower: 0
-  baseDashPower: 0
-  baseSuperJumpPower: 0
+  baseDashCooltime: 0
+  baseSuperJumpCooltime: 0
+  baseDownAttackCooltime: 0
   baseMasteryStat: 0
   selecAttackPowerLv: 0
   selecAttackSpeedLv: 0
@@ -188,8 +191,9 @@ MonoBehaviour:
   totalAttackSpeed: 0
   totalMoveSpeed: 0
   totalJumpPower: 0
-  totalDashPower: 0
-  totalSuperJumpPower: 0
+  totalDashCooltime: 0
+  totalSuperJumpCooltime: 0
+  totalDownAttackCooltime: 0
   totalMasteryStat: 0
   curGold: 0
   maxExp: 0
@@ -215,14 +219,20 @@ MonoBehaviour:
   rb: {fileID: 0}
   moveInput: {x: 0, y: 0}
   weaponHolder: {fileID: 4422676186039363708}
-  currentWeapon: {fileID: 0}
+  curWeapon: {fileID: 0}
   animator: {fileID: 0}
+  skillBag: {fileID: 7774390821898325928}
+  curSkill: {fileID: 0}
+  state: {fileID: 0}
+  skillUI: {fileID: 0}
   isMove: 0
   isDashing: 0
   isAbleDash: 1
   isSuperJump: 0
-  isAbleAttack: 1
+  isHolding: 0
   isCharging: 0
+  isSkillHolding: 0
+  isSkillCharging: 0
   isNormalAttacking: 0
   isDownAttacking: 0
   isChargingAttacking: 0
@@ -238,25 +248,33 @@ MonoBehaviour:
     m_Bits: 1024
   basePos: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
-  jumpForce: 50
-  superJumpForce: 100
+  lastDashTime: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 1600765360527329676}
-  superJumpDistance: 7
   groundCheckRadius: 0.2
   jumpCount: 0
+  superJumpForce: 100
+  superJumpDistance: 7
+  lastSuperJumpTime: 0
+  lastDownAttackTime: 0
   rebound: 4.5
   attackingTime: 0
   chargeAttackingTime: 0
   attackCount: 0
   attackRest: 0.6
   lastOnAirTime: 0
-  chargingStart: 0
+  startCheckTime: 0
   holdTime: 0
-  chargingTime: 0.3
+  attackChargingTime: 0
+  chargeTime: 0.3
   lastAttackTime: 0
+  startSkillCheckTime: 0
+  skillHoldTime: 0
+  skillChargingTime: 0
+  skillChargeTime: 0.3
+  lastSkillTime: 0
   lastJumpTapTime: -1
   lastDashTapTime: -1
   lastDownTapTime: -1
@@ -434,6 +452,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5436040420309497436}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a89e30e7-3190-4323-8dfd-1a10c00e795c
+    m_ActionName: 'Player/Skill[/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -554,6 +588,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4198897976886587706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7774390821898325928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 745659805446273102}
+  m_Layer: 8
+  m_Name: SkillBag
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &745659805446273102
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7774390821898325928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1916464792332830342}
+  m_Father: {fileID: 4198897976886587706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8560842869615202319
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,3 +707,65 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &7693164565150654456
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 745659805446273102}
+    m_Modifications:
+    - target: {fileID: 5944262288411421679, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_Name
+      value: Skill_00
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+--- !u!4 &1916464792332830342 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8096129601952536958, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+  m_PrefabInstance: {fileID: 7693164565150654456}
+  m_PrefabAsset: {fileID: 0}

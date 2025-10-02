@@ -24,6 +24,8 @@ public class PlayerData
     public int characterID;
     public int weaponID;
 
+    public int skillID;
+
     public void Clear()
     {
         playerLevel = 0;
@@ -39,6 +41,8 @@ public class PlayerData
 
         characterID = 0;
         weaponID = 100;
+
+        skillID = 0;
     }
 }
 #endregion

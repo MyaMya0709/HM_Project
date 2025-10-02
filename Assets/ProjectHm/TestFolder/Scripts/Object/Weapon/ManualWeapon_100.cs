@@ -58,12 +58,12 @@ public class ManualWeapon_100 : IManualWeapon
         float finalChargeTimeLv3 = chargeTimeLevel3 * (1f - 0.05f * playerCondition.selecAttackSpeedLv);
 
         // 차징 단계 확인
-        if (playerController.chargingTime >= finalChargeTimeLv3)
+        if (playerController.attackChargingTime >= finalChargeTimeLv3)
         {
             chargeLevel = 3;
             chargeAttackMultiple = 1.0f;
         }
-        else if (playerController.chargingTime >= finalChargeTimeLv3 * chargeTimeMultipleLv2)
+        else if (playerController.attackChargingTime >= finalChargeTimeLv3 * chargeTimeMultipleLv2)
         {
             chargeLevel = 2;
             chargeAttackMultiple = 0.6f;
@@ -73,7 +73,7 @@ public class ManualWeapon_100 : IManualWeapon
             chargeLevel = 1;
             chargeAttackMultiple = 0.3f;
         }
-        Debug.Log($"Charging: {playerController.chargingTime:F2}s → Level {chargeLevel}");
+        Debug.Log($"Charging: {playerController.attackChargingTime:F2}s → Level {chargeLevel}");
         Debug.Log($"{playerController.holdTime}s");
     }
     public override void ChargingAttack()

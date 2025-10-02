@@ -52,7 +52,7 @@ public class UI_Selection : UI
     {
         List<SlotData> list = new();
 
-        foreach (SlotData slotData in DataManager.Instance.allSelecSlotDatas)
+        foreach (SlotData slotData in DataManager.Instance.selecSlotDatas)
         {
             // 장착 무기와 아이디가 같지 않을때는 패스
             if ((slotData.type == SlotType.ManualWeapon) && (slotData.weaponID != player.GetComponent<PlayerController>().curWeapon.data.weaponID))
@@ -66,8 +66,8 @@ public class UI_Selection : UI
 
     public SlotData SlotDataSet()
     {
-        int selscData = Random.Range(0, DataManager.Instance.allSelecSlotDatas.Count);
-        SlotData data = DataManager.Instance.allSelecSlotDatas[selscData];
+        int selscData = Random.Range(0, DataManager.Instance.selecSlotDatas.Count);
+        SlotData data = DataManager.Instance.selecSlotDatas[selscData];
 
         return data;
     }

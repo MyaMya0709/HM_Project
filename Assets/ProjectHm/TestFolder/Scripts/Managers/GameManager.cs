@@ -24,6 +24,8 @@ public class GameManager : Singleton<GameManager>
     public int characterID;
     public int curGold;
 
+    public int skillID;
+
     [Header("Character")]
     public CharacterData curCharacterData;
     public PurchaseCharacterList purchaseCharacterList;                  // 구매한 캐릭터 리스트
@@ -35,6 +37,11 @@ public class GameManager : Singleton<GameManager>
     public IManualWeapon weaponData;                                     // 현재 장착한 무기 정보 데이터
     public WeaponDataList purchaseWeaponList;                            // 구입한 무기 리스트
     public Dictionary<int, WeaponData> weaponDatas = new();              // 구입한 무기 Dic
+
+    [Header("Skill")]
+    public SkillData curSkillData;                                       // 현재 장착한 스킬의 ID
+    public GameObject curSkill;                                          // 현재 장착한 스킬 프리펩
+    public ISkill skillData;                                             // 현재 장착한 스킬 정보 데이터
 
     [Header("UnLockDatas")]
     public UnlockData unlockData;                                        // 해금된 요소의 Data
@@ -67,12 +74,16 @@ public class GameManager : Singleton<GameManager>
         characterID = playerData.characterID;
         weaponID = playerData.weaponID;
 
+        skillID = playerData.skillID;
+
         LoadUnLockData();
-        LoadWeaponData();
         LoadCharacterData();
+        LoadWeaponData();
 
         GetCharacterData(characterID);
         GetWeaponData(weaponID);
+        GetSkillData(skillID);
+        
     }
 
     
@@ -98,7 +109,11 @@ public class GameManager : Singleton<GameManager>
         GetWeaponData(weaponID);
         Instantiate(weaponData.gameObject, holder.transform);
     }
-
+    public void SkillInit(GameObject bag)
+    {
+        GetSkillData(skillID);
+        Instantiate(skillData.gameObject, bag.transform);
+    }
 
     public void SetGold()
     {
@@ -141,6 +156,8 @@ public class GameManager : Singleton<GameManager>
         playerData.characterID = characterID;
 
         playerData.weaponID = weaponID;
+
+        playerData.skillID = skillID;
     }
     public void SavePlayerData()
     {
@@ -302,6 +319,83 @@ public class GameManager : Singleton<GameManager>
         {
             Debug.Log("unlockWeaponList 중복");
         }
+    }
+
+
+    public ISkill SetSkillData()
+    {
+        curSkillData = DataManager.Instance.skillDataList[skillID];
+        curSkill = DataManager.Instance.skillPrefabList[skillID];
+        skillData = curSkill.GetComponent<ISkill>();
+
+        SaveData();
+        return skillData;
+    }
+    public void GetSkillData(int id)
+    {
+        Debug.Log("장착 스킬 정보 세팅");
+        skillID = id;
+        curSkillData = DataManager.Instance.skillDataList[skillID];
+        curSkill = DataManager.Instance.skillPrefabList[skillID];
+        skillData = curSkill.GetComponent<ISkill>();
+        SaveData();
+    }
+    public void BuySkill(int id)
+    {
+        // 스킬 유무 확인
+        bool isHaveSkill = false;
+
+        if (skillID < 0)
+        {
+            isHaveSkill = false;
+        }
+        else
+        {
+            isHaveSkill = true;
+            Debug.Log("스킬 있음");
+        }
+
+
+        // 스킬이 없다면 실행
+        if (!isHaveSkill)
+        {
+            //재화 사용
+            SpendGold(DataManager.Instance.skillDataList[id].price);
+
+            skillID = id;
+            GetSkillData(skillID);
+
+            //스킬 데이터 저장
+            SaveData();
+        }
+    }
+    public void UnLockSkillData(int id)
+    {
+        // 중복확인
+        if (!unlockSkillList.Contains(id))
+        {
+            // 무기 추가
+            unlockSkillList.Add(id);
+            unlockSkillList.Sort();
+
+            unlockData.skillIDs.Add(id);
+            unlockData.skillIDs.Sort();
+
+            //해금데이터 저장
+            SaveUnlockData();
+        }
+        else
+        {
+            Debug.Log("unlockWeaponList 중복");
+        }
+    }
+    public void ClearSkill()
+    {
+        skillID = -1;
+        curSkillData = null;
+        curSkill = null;
+        skillData = null;
+        SaveData();
     }
 
 

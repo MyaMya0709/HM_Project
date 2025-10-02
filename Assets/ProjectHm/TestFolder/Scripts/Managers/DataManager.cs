@@ -18,7 +18,10 @@ public class DataManager : MonoBehaviour
     public List<GameObject> autoPrefabList = new();
     public List<AutoWeaponData> autoDataList = new();
 
-    public List<SlotData> allSelecSlotDatas = new List<SlotData>();
+    public List<SlotData> selecSlotDatas = new List<SlotData>();
+
+    public List<GameObject> skillPrefabList = new();
+    public List<SkillData> skillDataList = new();
 
     #region PlayerStatTable
     // key:playerLevel / value:LevelUpCost

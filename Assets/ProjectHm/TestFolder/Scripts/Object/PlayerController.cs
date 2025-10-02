@@ -12,7 +12,10 @@ public class PlayerController : MonoBehaviour
     public GameObject weaponHolder;
     public IManualWeapon curWeapon;
     public Animator animator;
-    public UI_State state;              //InitStateUI (Id => 0==공격/1==대쉬/2==내려찍기/3==슈퍼점프,  coolTime)
+    public GameObject skillBag;
+    public ISkill curSkill;
+    public UI_State state;              //InitStateUI (Id => 0==대쉬/1==내려찍기/2==슈퍼점프,  coolTime)
+    public UI_Skill skillUI;
 
     [Header("MovementCheck")]
     public bool isMove = false;
@@ -22,6 +25,8 @@ public class PlayerController : MonoBehaviour
     
     public bool isHolding = false;
     public bool isCharging = false;
+    public bool isSkillHolding = false;
+    public bool isSkillCharging = false;
 
     public bool isNormalAttacking = false;
     public bool isDownAttacking = false;
@@ -62,9 +67,16 @@ public class PlayerController : MonoBehaviour
 
     public float startCheckTime;                  // 누른 시간
     public float holdTime;                        // 누르고 있던 시간
-    public float chargingTime;                    // 차징하고 있던 시간
+    public float attackChargingTime;              // 차징하고 있던 시간
     public float chargeTime = 0.3f;               // 차징 체크 시간
     public float lastAttackTime;                  // 마지막 공격 시간
+
+    [Header("Skill")]
+    public float startSkillCheckTime;             // 누른 시간
+    public float skillHoldTime;                   // 누르고 있던 시간
+    public float skillChargingTime;               // 차징하고 있던 시간
+    public float skillChargeTime = 0.3f;          // 차징 체크 시간
+    public float lastSkillTime;                   // 마지막 공격 시간
 
     [Header("DoubleTap")]
     public float lastJumpTapTime = -1f;           // 슈퍼 점프 첫번째 입력 시간
@@ -90,6 +102,18 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        condition = GetComponent<PlayerCondition>();
+        animator = GetComponent<Animator>();
+
+        if (condition.characterData == null) animator.runtimeAnimatorController = GameManager.Instance.curCharacterData.animator;
+        else animator.runtimeAnimatorController = condition.characterData.animator;
+
+        rb = GetComponent<Rigidbody2D>();
+        GameObject UI = GameObject.Find("UI");
+        state = UI.GetComponentInChildren<UI_State>();
+        skillUI = UI.GetComponentInChildren<UI_Skill>();
+
+        // 무기 장착 로직
         if (weaponHolder.transform.childCount == 0)
         {
             GameManager.Instance.WeaponInit(weaponHolder);
@@ -104,14 +128,34 @@ public class PlayerController : MonoBehaviour
             Debug.Log("시작시 무기 장착");
         }
 
-        condition = GetComponent<PlayerCondition>();
-        animator = GetComponent<Animator>();
+        //스킬 장착 로직
+        if (skillBag.transform.childCount == 0 && GameManager.Instance.skillID >= 0)
+        {
+            GameManager.Instance.SkillInit(skillBag);
+            curSkill = skillBag.GetComponentInChildren<ISkill>();
+            Debug.Log("시작시 스킬 장착");
+        }
+        else if ((skillBag.transform.childCount == 0 || skillBag.transform.childCount != 0) && GameManager.Instance.skillID < 0)
+        {
+            foreach (Transform child in skillBag.transform) Destroy(child.gameObject);
+            curSkill = null;
+            Debug.Log("스킬 없음");
+        }
+        else if (skillBag.transform.childCount != 0 && GameManager.Instance.skillID >= 0)
+        {
+            foreach (Transform child in skillBag.transform) Destroy(child.gameObject);
+            GameManager.Instance.SkillInit(skillBag);
+            curSkill = skillBag.GetComponentInChildren<ISkill>();
+            Debug.Log("시작시 스킬 장착");
+        }
 
-        if (condition.characterData == null) animator.runtimeAnimatorController = GameManager.Instance.curCharacterData.animator;
-        else animator.runtimeAnimatorController = condition.characterData.animator;
-            
-        rb = GetComponent<Rigidbody2D>();
-        state = GameObject.Find("UI").GetComponentInChildren<UI_State>();
+        Debug.Log($"curSkill : {curSkill == null}");
+        if (curSkill == null) skillUI.gameObject.SetActive(false);
+        else
+        {
+            skillUI.gameObject.SetActive(true);
+            skillUI.skillIcon.sprite = curSkill.skillData.sprite;
+        }
     }
 
     private void Update()
@@ -120,6 +164,12 @@ public class PlayerController : MonoBehaviour
         {
             //차징 시간 체크
             holdTime = Time.time - startCheckTime;
+        }
+
+        if (isSkillHolding)
+        {
+            //차징 시간 체크
+            skillHoldTime = Time.time - startSkillCheckTime;
         }
 
         // 착지 상태 체크해서 애니메이션 전환
@@ -462,6 +512,8 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Attack Start");
             startCheckTime = Time.time;
 
+            isHolding = true;
+
             Debug.Log($"{holdTime}");
             if (holdTime > chargeTime && IsGrounded())
             {
@@ -482,6 +534,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("OnAttack");
 
+            isHolding = false;
             isCharging = false;
 
             // 무기에 따른 애니메이션 선택
@@ -533,11 +586,11 @@ public class PlayerController : MonoBehaviour
     // 차징 시작 후 차징시간 체크
     public IEnumerator ChargingTimeCheck()
     {
-        chargingTime = Time.time;
+        attackChargingTime = Time.time;
 
         yield return new WaitUntil(() => !isCharging);
 
-        chargingTime = Time.time - chargingTime;
+        attackChargingTime = Time.time - attackChargingTime;
     }
     public IEnumerator AttackCoroutine(bool ischarging)
     {
@@ -681,6 +734,74 @@ public class PlayerController : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
+    public void OnSkill(InputAction.CallbackContext context)
+    {
+        Debug.Log($"curSkill : {curSkill == null}");
+
+        if (context.performed)
+        {
+            Debug.Log("SkillKeyDown");
+            DoSkill(false);
+        }
+
+        else if (context.canceled)
+        {
+            Debug.Log("SkillKeyUP");
+            DoSkill(true);
+        }
+    }
+
+    public void DoSkill(bool charge)
+    {
+        if(curSkill == null) return;
+
+        if (!charge)
+        {
+            Debug.Log("SkillCharge");
+            startSkillCheckTime = Time.time;
+
+            isSkillHolding = true;
+
+            Debug.Log($"{skillHoldTime}");
+            if (skillHoldTime > skillChargeTime)
+            {
+                isSkillCharging = true;
+
+                StartCoroutine(SkillChargingTimeCheck());
+            }
+        }
+        else
+        {
+            Debug.Log("OnSkill");
+
+            isSkillHolding = false;
+            isSkillCharging = false;
+
+            Debug.Log($"{skillHoldTime}");
+
+            // 차징시간에 따라 일반공격과 차징공격 분리
+            if (skillHoldTime > skillChargeTime)
+            {
+                Debug.Log("ChargingSkill");
+                curSkill.UseChargeSkill();
+                skillUI.SkillFinish();
+            }
+            else
+            {
+                Debug.Log("Skill");
+                curSkill.UseSkill();
+                skillUI.SkillFinish();
+            }
+        }
+    }
+    public IEnumerator SkillChargingTimeCheck()
+    {
+        skillChargingTime = Time.time;
+
+        yield return new WaitUntil(() => !isSkillCharging);
+
+        skillChargingTime = Time.time - skillChargingTime;
+    }
 
     public void EquipWeapon(IManualWeapon newWeapon)
     {

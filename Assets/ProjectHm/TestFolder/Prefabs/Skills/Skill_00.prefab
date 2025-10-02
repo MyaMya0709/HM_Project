@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5944262288411421679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8096129601952536958}
+  - component: {fileID: 2259046826559713447}
+  m_Layer: 8
+  m_Name: Skill_00
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8096129601952536958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5944262288411421679}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2259046826559713447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5944262288411421679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6016451e106ba48478d674b321273f63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  skillData: {fileID: 11400000, guid: 213230366a2038f4b9cf52618f7260a6, type: 2}
+  skillID: 0
+  Icon: {fileID: 0}
+  subExplosionsCount: 4
+  minSubRadius: 2
+  maxSubRadius: 3
+  subDamage: 50
+  finalRadius: 6
+  finalDamage: 200
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  effect:
+    damageMultiple: 1
+    knockback:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+    airborne:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+    stun:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+    slow:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0
+    dotDamage:
+      isSum: 0
+      onoff: 0
+      valueA: 0
+      valueB: 0
+      valueC: 0

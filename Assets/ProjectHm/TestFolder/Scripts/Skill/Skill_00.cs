@@ -1,12 +1,7 @@
-using System.Collections.Generic;
-using System.Drawing;
-using System.Net;
 using UnityEngine;
 
 public class Skill_00 : ISkill
 {
-    public PlayerCondition player;
-
     public int subExplosionsCount = 4;          // 소폭발 개수
     public float minSubRadius = 2f;             // 소폭발 최소 반지름
     public float maxSubRadius = 3f;             // 소폭발 최대 반지름
@@ -19,14 +14,10 @@ public class Skill_00 : ISkill
     // damageMultiple, knockback , airborne , stun , slow , dotDamage;
     public EffectTypeData effect;
 
-    private void Awake()
+    public override void UseChargeSkill()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerCondition>();
-    }
-
-    private void Start()
-    {
-        effect.damageMultiple = 1;
+        Debug.Log("UseChargeSkill");
+        UseSkill();
     }
 
     public override void UseSkill()
@@ -49,6 +40,9 @@ public class Skill_00 : ISkill
 
         // 대폭발 데미지
         Explosion(center, finalRadius, finalDamage);
+
+        //사용된 스킬 제거
+        DestroySkill();
     }
 
     public Vector2 FindPoint(Vector2 center, float radius)
@@ -79,9 +73,28 @@ public class Skill_00 : ISkill
             // 적 태그 체크
             if (hit.CompareTag("Enemy"))
             {
-                // Enemy 스크립트에서 TakeDamage 호출
                 //((Vector2)hit.transform.position - center).normalized => 공격 방향
                 hit.GetComponent<BaseEnemy>()?.TakeDamage(damage, effect, ((Vector2)hit.transform.position - center).normalized);
+            }
+        }
+
+        //DrawGizmos(center, radius);
+    }
+
+    void DrawGizmos(Vector2 center,float radius)
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(center, radius);
+
+        // 현재 잡히는 애들 표시
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, enemyLayerMask);
+        Gizmos.color = Color.yellow;
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Enemy"))
+            {
+                Gizmos.DrawLine(center, hit.transform.position);
+                Gizmos.DrawSphere(hit.transform.position, 0.2f);
             }
         }
     }
