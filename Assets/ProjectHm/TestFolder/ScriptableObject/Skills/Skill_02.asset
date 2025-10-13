@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Skill_02
   m_EditorClassIdentifier: 
   ID: 2
-  Name: Genesis
-  Description: "\uC81C\uB124\uC2DC\uC2A4"
+  Name: Punishment
+  Description: "\uACF5\uACA9\uB825 \uBC84\uD504"
   price: 500
   effect:
-    damageMultiple: 0
+    damageMultiple: 1
     knockback:
       isSum: 0
       onoff: 0
@@ -48,4 +48,4 @@ MonoBehaviour:
       valueA: 0
       valueB: 0
       valueC: 0
-  sprite: {fileID: 21300000, guid: 61f146591083aba468f6f0b1e8237c5b, type: 3}
+  sprite: {fileID: 21300000, guid: a329740aac3c6174c8d4dec637e0f949, type: 3}

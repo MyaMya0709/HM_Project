@@ -27979,9 +27979,11 @@ MonoBehaviour:
   skillPrefabList:
   - {fileID: 5944262288411421679, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
   - {fileID: 5944262288411421679, guid: 1e408fa71ad14dd4cb643cec7c16504c, type: 3}
+  - {fileID: 5944262288411421679, guid: e2fefec93e905b04888eec7d2f5e5f13, type: 3}
   skillDataList:
   - {fileID: 11400000, guid: 213230366a2038f4b9cf52618f7260a6, type: 2}
   - {fileID: 11400000, guid: 2c4064f47bc141440a3332611a912445, type: 2}
+  - {fileID: 11400000, guid: 74c3613ed5d33744b89987822de7b8c8, type: 2}
 --- !u!4 &1892881863
 Transform:
   m_ObjectHideFlags: 0
