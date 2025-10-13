@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,6 +50,7 @@ public class PlayerCondition : MonoBehaviour
     public List<IAutoWeapon> autoWeapons;
 
     public static event Action OnPlayerLevelUp;
+    public bool isBuff= false;
 
     protected void Awake()
     {
@@ -251,7 +253,6 @@ public class PlayerCondition : MonoBehaviour
                 break;
             }
         }
-
         if (!isOverlap)
         {
             // 프리펩 가져오기
@@ -264,6 +265,49 @@ public class PlayerCondition : MonoBehaviour
             // 플레이어 무기 리스트에 추가
             autoWeapons.Add(clone.GetComponent<IAutoWeapon>());
         }
+    }
 
+    public IEnumerator BuffCorutine(float time)
+    {
+        isBuff = true;
+
+        yield return new WaitForSeconds(time);
+
+        isBuff = false;
+
+    }
+
+    public void OnBuff(StatLvType stat)
+    {
+        switch (stat)
+        {
+            case StatLvType.AttackPower:
+                selecAttackPowerLv++;
+                totalAttackPower = (baseAttackPower + curWeapon.totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv];
+                break;
+            case StatLvType.AttackSpeed:
+                selecAttackSpeedLv++;
+                totalAttackSpeed = (baseAttackSpeed + curWeapon.totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv];
+                break;
+            case StatLvType.MovePower:
+                selecMovePowerLv++;
+                totalMoveSpeed = (baseMoveSpeed + curWeapon.totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0];
+                totalJumpPower = (baseJumpPower + curWeapon.totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1];
+                break;
+            case StatLvType.ActPower:
+                selecActPowerLv++;
+                totalDashCooltime = (baseDashCooltime + curWeapon.totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][0];
+                totalSuperJumpCooltime = (baseSuperJumpCooltime + curWeapon.totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1];
+                totalDownAttackCooltime = (baseDownAttackCooltime + curWeapon.totalWeaponDownAttackCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][2];
+                break;
+            case StatLvType.Mastery:
+                selecMasteryLv++;
+                totalMasteryStat = baseMasteryStat * DataManager.Instance.selecMasteryStatDic[selecMasteryLv];
+                break;
+            default:
+                Debug.Log("존재하지 않는 StatType");
+                break;
+        }
+        curWeapon.GetTotalStat();
     }
 }

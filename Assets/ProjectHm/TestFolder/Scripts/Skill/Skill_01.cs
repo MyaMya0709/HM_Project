@@ -5,15 +5,6 @@ public class Skill_01 : ISkill
 {
     public float stopTimer = 5f;
 
-    public SpawnManager manager;
-    public Object[] enemies;
-
-
-    private void Start()
-    {
-        manager = FindFirstObjectByType<SpawnManager>();
-    }
-
     public override void UseChargeSkill()
     {
         Debug.Log("UseChargeSkill");
@@ -36,13 +27,13 @@ public class Skill_01 : ISkill
     {
         Debug.Log("스포너 정지");
         //스포너 일시정지 함수 실행
-        manager = FindFirstObjectByType<SpawnManager>();
+        SpawnManager manager = FindFirstObjectByType<SpawnManager>();
 
         Debug.Log($"{manager == null}");
         StartCoroutine(manager.OnPause(stopTimer));
 
         //스폰된 모든 적 찾기
-        enemies = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
+        Object[] enemies = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
 
         //스폰된 적 일시정지 함수 실행
         foreach (BaseEnemy enemy in enemies)
