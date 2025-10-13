@@ -39,6 +39,7 @@ public class BaseEnemy : MonoBehaviour
     public GameObject hitEffect;
 
     public bool isDead => curHp <= 0;
+    public bool isGamePuase = false;
 
     public event System.Action OnDeath;
 
@@ -64,10 +65,6 @@ public class BaseEnemy : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        //if (IsDead || curTarget == null || isDamage) return;
-
-        //OnMove();
-
         if (!isDead && target != null && !isStun && !isAirborne && !isKnockback)
         {
             OnMove();
@@ -84,6 +81,8 @@ public class BaseEnemy : MonoBehaviour
     // 물리기반 이동이므로 FixedUpdate에서 사용해야함
     private void OnMove()
     {
+        if (target == null || isGamePuase) return;
+
         // 기지를 향해 이동
         Vector2 tarPos = target.position;
         Vector2 curPos = transform.position;
@@ -164,6 +163,24 @@ public class BaseEnemy : MonoBehaviour
         pop.GetComponent<DamagePopup>().Setup(damage);
 
         //SpawnsDamagePopups.Instance.DamageDone(damage, transform.position, false);
+    }
+
+    public IEnumerator OnPause(float time)
+    {
+
+        // 움직임 일시정지
+        isGamePuase = true;
+        rb.linearVelocity = Vector2.zero;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        animator.speed = 0f;
+
+        // 대기
+        yield return new WaitForSeconds(time);
+
+        // 다시 재생
+        isGamePuase = false;
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        animator.speed = 1f;
     }
 
     #region Effect

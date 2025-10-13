@@ -23658,7 +23658,19 @@ MonoBehaviour:
   - {fileID: 7815197726315998923, guid: 92ac6024902ed4b4891af625e4e6b3f4, type: 3}
   autoDataList:
   - {fileID: 11400000, guid: 5462b7257b874cd438de8ceea038a54a, type: 2}
-  allSelecSlotDatas: []
+  selecSlotDatas:
+  - {fileID: 11400000, guid: 65f88c7e7a2c4ad40bcff7b6f5916d10, type: 2}
+  - {fileID: 11400000, guid: ae7500526482f574a9c057c88ab6c81e, type: 2}
+  - {fileID: 11400000, guid: bf94f83cc54d5a34fb3b967a3c0db6f2, type: 2}
+  - {fileID: 11400000, guid: 4aa51eca32bec0e4c97ac1d43e8a9b25, type: 2}
+  - {fileID: 11400000, guid: bfaca91b93e9a904186f64a92755d8c8, type: 2}
+  - {fileID: 11400000, guid: 678c6db33856d3048a29ffd062ff6a4e, type: 2}
+  - {fileID: 11400000, guid: 37548ed77521834469d2ef049ed349ed, type: 2}
+  - {fileID: 11400000, guid: 5ad3d3b45e2202d4fbf5b19112da88ed, type: 2}
+  skillPrefabList:
+  - {fileID: 5944262288411421679, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
+  skillDataList:
+  - {fileID: 11400000, guid: 213230366a2038f4b9cf52618f7260a6, type: 2}
 --- !u!4 &736292449
 Transform:
   m_ObjectHideFlags: 0
@@ -25997,16 +26009,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 10
+    m_Right: 10
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_Spacing: 10
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -26555,7 +26567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &813878026
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31455,6 +31467,7 @@ MonoBehaviour:
     haveGold: 0
     characterID: 0
     weaponID: 0
+    skillID: 0
   playerLevel: 0
   statUpPoint: 0
   attackPowerLevel: 0
@@ -31465,6 +31478,7 @@ MonoBehaviour:
   weaponID: 0
   characterID: 0
   curGold: 0
+  skillID: 0
   curCharacterData: {fileID: 0}
   purchaseCharacterList:
     characterIDs: 
@@ -31476,6 +31490,9 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   purchaseWeaponList:
     datas: []
+  curSkillData: {fileID: 0}
+  curSkill: {fileID: 0}
+  skillData: {fileID: 0}
   unlockData:
     characterIDs: 
     skillIDs: 
@@ -36608,16 +36625,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 10
+    m_Right: 10
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_Spacing: 10
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -37409,7 +37426,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 81.66, y: -103.79}
+  m_AnchoredPosition: {x: 81.66, y: -103.79001}
   m_SizeDelta: {x: 136.68, y: 55.86}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1148469665
@@ -44104,7 +44121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1303128610
 RectTransform:
   m_ObjectHideFlags: 0
@@ -45257,7 +45274,7 @@ MonoBehaviour:
     m_Bottom: 10
   m_ChildAlignment: 4
   m_Spacing: 10
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
@@ -48953,7 +48970,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -43.16}
+  m_AnchoredPosition: {x: 400, y: -43.160004}
   m_SizeDelta: {x: 780, y: 66.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1454868548
@@ -55020,16 +55037,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 10
+    m_Right: 10
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_Spacing: 10
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0

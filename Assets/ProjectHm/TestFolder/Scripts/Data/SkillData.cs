@@ -9,5 +9,8 @@ public class SkillData : ScriptableObject
     public string Description;
     public int price;
 
+    // damageMultiple, knockback , airborne , stun , slow , dotDamage;
+    public EffectTypeData effect;
+
     public Sprite sprite;
 }

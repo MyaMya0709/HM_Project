@@ -12,6 +12,7 @@ public abstract class ISkill : MonoBehaviour
     }
     public abstract void UseSkill();
     public abstract void UseChargeSkill();
+    public abstract void SkillRangeCheck();
 
     public void DestroySkill()
     {

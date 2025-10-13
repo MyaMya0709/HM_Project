@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public GameObject skillBag;
     public ISkill curSkill;
-    public UI_State state;              //InitStateUI (Id => 0==´ë½¬/1==³»·ÁÂï±â/2==½´ÆÛÁ¡ÇÁ,  coolTime)
+    public UI_State state;              //InitStateUI (Id => 0==ëŒ€ì‰¬/1==ë‚´ë ¤ì°ê¸°/2==ìŠˆí¼ì í”„,  coolTime)
     public UI_Skill skillUI;
 
     [Header("MovementCheck")]
@@ -40,57 +40,57 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 0.15f;
     public float dashDistance = 4f;
     public Vector2 dashDirection;
-    public Vector2 lastLookDirection = Vector2.left;  // ±âº»Àº ¿ŞÂÊ
-    public LayerMask obstacle;                        // Àå¾Ö¹° ·¹ÀÌ¾î
+    public Vector2 lastLookDirection = Vector2.left;  // ê¸°ë³¸ì€ ì™¼ìª½
+    public LayerMask obstacle;                        // ì¥ì• ë¬¼ ë ˆì´ì–´
     public Vector2 basePos;
     public Vector2 targetPos;
-    public float lastDashTime = 0f;                   // ¸¶Áö¸·À¸·Î ´ë½¬ÇÑ ½Ã°£
+    public float lastDashTime = 0f;                   // ë§ˆì§€ë§‰ìœ¼ë¡œ ëŒ€ì‰¬í•œ ì‹œê°„
 
     [Header("Jump")]
     public LayerMask groundLayer;
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public int jumpCount = 0;
-    public float superJumpForce = 100f;               // ½´ÆÛÁ¡ÇÁ ¼Óµµ
-    public float superJumpDistance = 7f;              // ½´ÆÛÁ¡ÇÁ ³ôÀÌ
-    public float lastSuperJumpTime = 0f;              // ¸¶Áö¸·À¸·Î ½´ÆÛÁ¡ÇÁÇÑ ½Ã°£
-    public float lastDownAttackTime = 0f;             // ¸¶Áö¸·À¸·Î ³»·ÁÂï±âÇÑ ½Ã°£
+    public float superJumpForce = 100f;               // ìŠˆí¼ì í”„ ì†ë„
+    public float superJumpDistance = 7f;              // ìŠˆí¼ì í”„ ë†’ì´
+    public float lastSuperJumpTime = 0f;              // ë§ˆì§€ë§‰ìœ¼ë¡œ ìŠˆí¼ì í”„í•œ ì‹œê°„
+    public float lastDownAttackTime = 0f;             // ë§ˆì§€ë§‰ìœ¼ë¡œ ë‚´ë ¤ì°ê¸°í•œ ì‹œê°„
 
     [Header("Attack")]
     public float rebound = 4.5f;
     public float attackingTime;
     public float chargeAttackingTime;
 
-    public int attackCount = 0;                   // °øÁß °ø°İ È½¼ö
-    public float attackRest = 0.6f;               // °øÁß°ø°İ 4È¸ ÀÌÈÄ µô·¹ÀÌ
-    public float lastOnAirTime;                   // 4¹øÂ° °øÁß°ø°İ ½Ã°£
+    public int attackCount = 0;                   // ê³µì¤‘ ê³µê²© íšŸìˆ˜
+    public float attackRest = 0.6f;               // ê³µì¤‘ê³µê²© 4íšŒ ì´í›„ ë”œë ˆì´
+    public float lastOnAirTime;                   // 4ë²ˆì§¸ ê³µì¤‘ê³µê²© ì‹œê°„
 
-    public float startCheckTime;                  // ´©¸¥ ½Ã°£
-    public float holdTime;                        // ´©¸£°í ÀÖ´ø ½Ã°£
-    public float attackChargingTime;              // Â÷Â¡ÇÏ°í ÀÖ´ø ½Ã°£
-    public float chargeTime = 0.3f;               // Â÷Â¡ Ã¼Å© ½Ã°£
-    public float lastAttackTime;                  // ¸¶Áö¸· °ø°İ ½Ã°£
+    public float startCheckTime;                  // ëˆ„ë¥¸ ì‹œê°„
+    public float holdTime;                        // ëˆ„ë¥´ê³  ìˆë˜ ì‹œê°„
+    public float attackChargingTime;              // ì°¨ì§•í•˜ê³  ìˆë˜ ì‹œê°„
+    public float chargeTime = 0.3f;               // ì°¨ì§• ì²´í¬ ì‹œê°„
+    public float lastAttackTime;                  // ë§ˆì§€ë§‰ ê³µê²© ì‹œê°„
 
     [Header("Skill")]
-    public float startSkillCheckTime;             // ´©¸¥ ½Ã°£
-    public float skillHoldTime;                   // ´©¸£°í ÀÖ´ø ½Ã°£
-    public float skillChargingTime;               // Â÷Â¡ÇÏ°í ÀÖ´ø ½Ã°£
-    public float skillChargeTime = 0.3f;          // Â÷Â¡ Ã¼Å© ½Ã°£
-    public float lastSkillTime;                   // ¸¶Áö¸· °ø°İ ½Ã°£
+    public float startSkillCheckTime;             // ëˆ„ë¥¸ ì‹œê°„
+    public float skillHoldTime;                   // ëˆ„ë¥´ê³  ìˆë˜ ì‹œê°„
+    public float skillChargingTime;               // ì°¨ì§•í•˜ê³  ìˆë˜ ì‹œê°„
+    public float skillChargeTime = 0.3f;          // ì°¨ì§• ì²´í¬ ì‹œê°„
+    public float lastSkillTime;                   // ë§ˆì§€ë§‰ ê³µê²© ì‹œê°„
 
     [Header("DoubleTap")]
-    public float lastJumpTapTime = -1f;           // ½´ÆÛ Á¡ÇÁ Ã¹¹øÂ° ÀÔ·Â ½Ã°£
-    public float lastDashTapTime = -1f;           // ´ë½¬ Ã¹¹øÂ° ÀÔ·Â ½Ã°£
-    public float lastDownTapTime = -1f;           // ³»·ÁÂï±â Ã¹¹øÂ° ÀÔ·Â ½Ã°£
-    public float doubleTapThreshold = 0.2f;       // ´õºíÅÇÀ¸·Î ÀÎ½ÄÇÏ´Â ½Ã°£
-    public Vector2 lastkey = Vector2.zero;        // ¹æÇâ ÀúÀå
-    public int tapCount = 0;                      // ´õºíÅÇ Ä«¿îÆ®
+    public float lastJumpTapTime = -1f;           // ìŠˆí¼ ì í”„ ì²«ë²ˆì§¸ ì…ë ¥ ì‹œê°„
+    public float lastDashTapTime = -1f;           // ëŒ€ì‰¬ ì²«ë²ˆì§¸ ì…ë ¥ ì‹œê°„
+    public float lastDownTapTime = -1f;           // ë‚´ë ¤ì°ê¸° ì²«ë²ˆì§¸ ì…ë ¥ ì‹œê°„
+    public float doubleTapThreshold = 0.2f;       // ë”ë¸”íƒ­ìœ¼ë¡œ ì¸ì‹í•˜ëŠ” ì‹œê°„
+    public Vector2 lastkey = Vector2.zero;        // ë°©í–¥ ì €ì¥
+    public int tapCount = 0;                      // ë”ë¸”íƒ­ ì¹´ìš´íŠ¸
 
     [Header("ItemLooting")]
-    public Transform lootingArea;                 // ·çÆÃ ±âÁØÁ¡
-    public LayerMask lootingItem;                 // ·çÆÃ °¡´ÉÇÑ ¾ÆÀÌÅÛ ·¹ÀÌ¾î
-    public float lootingRadius = 10f;             // ·çÆÃ °¡´É °Å¸®
-    public float lootingSpeed = 30f;              // ·çÆÃ ¼Óµµ
+    public Transform lootingArea;                 // ë£¨íŒ… ê¸°ì¤€ì 
+    public LayerMask lootingItem;                 // ë£¨íŒ… ê°€ëŠ¥í•œ ì•„ì´í…œ ë ˆì´ì–´
+    public float lootingRadius = 10f;             // ë£¨íŒ… ê°€ëŠ¥ ê±°ë¦¬
+    public float lootingSpeed = 30f;              // ë£¨íŒ… ì†ë„
 
     [Header("Particle")]
     public GameObject moveParticle;
@@ -113,40 +113,40 @@ public class PlayerController : MonoBehaviour
         state = UI.GetComponentInChildren<UI_State>();
         skillUI = UI.GetComponentInChildren<UI_Skill>();
 
-        // ¹«±â ÀåÂø ·ÎÁ÷
+        // ë¬´ê¸° ì¥ì°© ë¡œì§
         if (weaponHolder.transform.childCount == 0)
         {
             GameManager.Instance.WeaponInit(weaponHolder);
             curWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
-            Debug.Log("½ÃÀÛ½Ã ¹«±â ÀåÂø");
+            Debug.Log("ì‹œì‘ì‹œ ë¬´ê¸° ì¥ì°©");
         }
         else
         {
             foreach (Transform child in weaponHolder.transform) Destroy(child.gameObject);
             GameManager.Instance.WeaponInit(weaponHolder);
             curWeapon = weaponHolder.GetComponentInChildren<IManualWeapon>();
-            Debug.Log("½ÃÀÛ½Ã ¹«±â ÀåÂø");
+            Debug.Log("ì‹œì‘ì‹œ ë¬´ê¸° ì¥ì°©");
         }
 
-        //½ºÅ³ ÀåÂø ·ÎÁ÷
+        //ìŠ¤í‚¬ ì¥ì°© ë¡œì§
         if (skillBag.transform.childCount == 0 && GameManager.Instance.skillID >= 0)
         {
             GameManager.Instance.SkillInit(skillBag);
             curSkill = skillBag.GetComponentInChildren<ISkill>();
-            Debug.Log("½ÃÀÛ½Ã ½ºÅ³ ÀåÂø");
+            Debug.Log("ì‹œì‘ì‹œ ìŠ¤í‚¬ ì¥ì°©");
         }
         else if ((skillBag.transform.childCount == 0 || skillBag.transform.childCount != 0) && GameManager.Instance.skillID < 0)
         {
             foreach (Transform child in skillBag.transform) Destroy(child.gameObject);
             curSkill = null;
-            Debug.Log("½ºÅ³ ¾øÀ½");
+            Debug.Log("ìŠ¤í‚¬ ì—†ìŒ");
         }
         else if (skillBag.transform.childCount != 0 && GameManager.Instance.skillID >= 0)
         {
             foreach (Transform child in skillBag.transform) Destroy(child.gameObject);
             GameManager.Instance.SkillInit(skillBag);
             curSkill = skillBag.GetComponentInChildren<ISkill>();
-            Debug.Log("½ÃÀÛ½Ã ½ºÅ³ ÀåÂø");
+            Debug.Log("ì‹œì‘ì‹œ ìŠ¤í‚¬ ì¥ì°©");
         }
 
         Debug.Log($"curSkill : {curSkill == null}");
@@ -162,55 +162,48 @@ public class PlayerController : MonoBehaviour
     {
         if (isHolding)
         {
-            //Â÷Â¡ ½Ã°£ Ã¼Å©
+            //ì°¨ì§• ì‹œê°„ ì²´í¬
             holdTime = Time.time - startCheckTime;
         }
 
         if (isSkillHolding)
         {
-            //Â÷Â¡ ½Ã°£ Ã¼Å©
+            //ì°¨ì§• ì‹œê°„ ì²´í¬
             skillHoldTime = Time.time - startSkillCheckTime;
         }
 
-        // ÂøÁö »óÅÂ Ã¼Å©ÇØ¼­ ¾Ö´Ï¸ŞÀÌ¼Ç ÀüÈ¯
+        // ì°©ì§€ ìƒíƒœ ì²´í¬í•´ì„œ ì• ë‹ˆë©”ì´ì…˜ ì „í™˜
         animator.SetBool("IsGrounded", IsGrounded());
         curWeapon.anim.SetBool("IsGrounded", IsGrounded());
 
         IsLooting();
 
-        //¸¶Áö¸·À¸·Î ÀÔ·ÂµÈ ¹æÇâ °ª°ú Ä³¸¯ÅÍ ¹æÇâÀ» ºñ±³ÇÏ°í °ø°İ ÁßÀÌ ¾Æ´Ï¸é ¹İÀü
+        //ë§ˆì§€ë§‰ìœ¼ë¡œ ì…ë ¥ëœ ë°©í–¥ ê°’ê³¼ ìºë¦­í„° ë°©í–¥ì„ ë¹„êµí•˜ê³  ê³µê²© ì¤‘ì´ ì•„ë‹ˆë©´ ë°˜ì „
         if (lastLookDirection.x < 0 && facingRight && !IsAttacking()) Flip();
         else if (lastLookDirection.x > 0 && !facingRight && !IsAttacking()) Flip();
 
-        //ÀÌµ¿½Ã ¸ÕÁö ÆÄÆ¼Å¬ »ı¼º
+        //ì´ë™ì‹œ ë¨¼ì§€ íŒŒí‹°í´ ìƒì„±
         if (IsGrounded() && isMove)
         {
             dustTimer += Time.deltaTime;
             if (dustTimer >= 0.2f)
             {
-                // ÇöÀç À§Ä¡·Î ¸ÕÁö »ı¼º
+                // í˜„ì¬ ìœ„ì¹˜ë¡œ ë¨¼ì§€ ìƒì„±
                 GameObject ps = Instantiate(moveParticle, transform.position, transform.rotation);
-                ps.GetComponent<ParticleSystem>().Emit(1); // ÆÄÆ¼Å¬ 1°³ »ı¼º
+                ps.GetComponent<ParticleSystem>().Emit(1); // íŒŒí‹°í´ 1ê°œ ìƒì„±
                 dustTimer = 0f;
             }
         }
         else
         {
-            dustTimer = 0.2f; // ÀÌµ¿ÀÌ ¸ØÃß¸é Å¸ÀÌ¸Ó ÃÊ±âÈ­
+            dustTimer = 0.2f; // ì´ë™ì´ ë©ˆì¶”ë©´ íƒ€ì´ë¨¸ ì´ˆê¸°í™”
         }
     }
 
     private void FixedUpdate()
     {
-        if (isSuperJump) return; // ½´ÆÛ Á¡ÇÁ Áß¿¡´Â ´Ù¸¥ ¹°¸® °è»ê ¾È ÇÔ
+        if (isSuperJump || isDashing || isCharging || isDownAttacking) return; // ìŠˆí¼ ì í”„ì™€ ëŒ€ì‰¬, ì°¨ì§•, ë‚´ë ¤ì°ê¸° ì¤‘ì—ëŠ” ì´ë™ ì•ˆ í•¨
 
-        if (isDashing) return;
-
-        if (isCharging) return;
-        
-        if (isDownAttacking) return;
-
-        //¶¥¿¡¼­ °ø°İ ÁßÀÌ°Å³ª °øÁßÀÌ¸é ÀÌµ¿ °¡´É
         if (isMove && (!IsAttacking() || !IsGrounded()))
         {
             rb.linearVelocity = new Vector2(moveInput.x * condition.totalMoveSpeed, rb.linearVelocity.y);
@@ -230,8 +223,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"{context.ReadValue<Vector2>()}");
         if (context.performed)
         {
-            Vector2 curDir = context.ReadValue<Vector2>(); // ÀÔ·ÂÅ° ÀúÀå
-            if (curDir == null) return;            // ÀÔ·ÂÅ° ¾øÀ»¶§ µÇµ¹¾Æ°¡±â
+            Vector2 curDir = context.ReadValue<Vector2>(); // ì…ë ¥í‚¤ ì €ì¥
+            if (curDir == null) return;            // ì…ë ¥í‚¤ ì—†ì„ë•Œ ë˜ëŒì•„ê°€ê¸°
             if (curDir.x > 0)
             {
                 DoMove(true, curDir.x);
@@ -241,7 +234,7 @@ public class PlayerController : MonoBehaviour
                 DoMove(true, curDir.x);
             }
         }
-        // Å° ÀÔ·ÂÀÌ ³¡³¯ ¶§, ÀÌµ¿ Á¾·á 
+        // í‚¤ ì…ë ¥ì´ ëë‚  ë•Œ, ì´ë™ ì¢…ë£Œ 
         if (context.canceled)
         {
             DoMove(false, 0);
@@ -249,7 +242,7 @@ public class PlayerController : MonoBehaviour
     }
     public void DoMove(bool onMove, float moveDir)
     {
-        if (SystemInfo.deviceType == DeviceType.Handheld) Debug.Log("Æù");
+        if (SystemInfo.deviceType == DeviceType.Handheld) Debug.Log("í°");
 
         if (isDownAttacking) return;
 
@@ -266,33 +259,33 @@ public class PlayerController : MonoBehaviour
                 curDir = new Vector2(-1f, 0f);
             }
 
-            float currentTime = Time.time;            // ´©¸¥ ½Ã°£ ÀúÀå
+            float currentTime = Time.time;            // ëˆ„ë¥¸ ì‹œê°„ ì €ì¥
 
-            // ´ë½¬ÇÏ´ÂÁß, °¡´É¿©ºÎ, ´õºí ÅÇ, ÀÔ·Â ¹æÇâ Ã¼Å©
+            // ëŒ€ì‰¬í•˜ëŠ”ì¤‘, ê°€ëŠ¥ì—¬ë¶€, ë”ë¸” íƒ­, ì…ë ¥ ë°©í–¥ ì²´í¬
             if (curDir == lastkey && currentTime - lastDashTapTime < doubleTapThreshold && !isDashing && isAbleDash)
             {
-                //Á¶°Ç ´Ş¼º µÎ¹øÂ° ÀÔ·Â½Ã => ÅÇ Ä«¿îÆ® 2 ´Ş¼º
+                //ì¡°ê±´ ë‹¬ì„± ë‘ë²ˆì§¸ ì…ë ¥ì‹œ => íƒ­ ì¹´ìš´íŠ¸ 2 ë‹¬ì„±
                 tapCount++;
             }
             else
             {
-                // Ã¹¹øÂ° Å° ÀÔ·Â ½Ã, ÅÇ Ä«¿îÆ® 1°ú ÀÔ·ÂÅ° ÀúÀå
-                // Á¶°Ç ¹Ì´Ş¼º µÎ¹øÂ° Å° ÀÔ·Â => ÅÇ Ä«¿îÆ® À¯Áö ¹× ÀÔ·ÂÅ° ÀúÀå
+                // ì²«ë²ˆì§¸ í‚¤ ì…ë ¥ ì‹œ, íƒ­ ì¹´ìš´íŠ¸ 1ê³¼ ì…ë ¥í‚¤ ì €ì¥
+                // ì¡°ê±´ ë¯¸ë‹¬ì„± ë‘ë²ˆì§¸ í‚¤ ì…ë ¥ => íƒ­ ì¹´ìš´íŠ¸ ìœ ì§€ ë° ì…ë ¥í‚¤ ì €ì¥
                 tapCount = 1;
                 lastkey = curDir;
             }
 
-            lastDashTapTime = currentTime; // ¸¶Áö¸· Å° ÀÔ·Â½Ã°£ ÀúÀå
+            lastDashTapTime = currentTime; // ë§ˆì§€ë§‰ í‚¤ ì…ë ¥ì‹œê°„ ì €ì¥
 
-            // ´õºí ÅÇ ¼º°ø Ã¼Å©
+            // ë”ë¸” íƒ­ ì„±ê³µ ì²´í¬
             if (tapCount == 2 && (curWeapon.totalDashCooltime <= Time.time - lastDashTime || lastDashTime == 0))
             {
-                // ÅÇ Ä«¿îÆ® ÃÊ±âÈ­ ¹× ´ë½¬ ½ÇÇà
+                // íƒ­ ì¹´ìš´íŠ¸ ì´ˆê¸°í™” ë° ëŒ€ì‰¬ ì‹¤í–‰
                 Debug.Log("DefaultDesh");
                 Debug.Log($"{lastDashTime},{curWeapon.totalDashCooltime},{Time.time}");
                 tapCount = 0;
                 StartCoroutine(StartDash(lastLookDirection));
-                // ÆÄÆ¼Å¬ Àç»ı
+                // íŒŒí‹°í´ ì¬ìƒ
                 if (facingRight)
                 {
                     GameObject ps = Instantiate(dashParticle, new Vector3(transform.position.x - 0.2f, transform.position.y, transform.position.z), transform.rotation);
@@ -305,25 +298,25 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            // ´ë½¬ ÀÌÈÄ ÀÏ¹İ ÀÌµ¿
+            // ëŒ€ì‰¬ ì´í›„ ì¼ë°˜ ì´ë™
             Debug.Log("Move");
             isMove = true;
             animator.SetBool("IsMove", true);
             curWeapon.anim?.SetBool("IsMove", true);
 
-            // ¹æÇâÀÌ ¹Ù²î¸é ¸¶Áö¸·¿¡ ¹Ù¶óº» ¹æÇâÀ¸·Î °»½Å
+            // ë°©í–¥ì´ ë°”ë€Œë©´ ë§ˆì§€ë§‰ì— ë°”ë¼ë³¸ ë°©í–¥ìœ¼ë¡œ ê°±ì‹ 
             if (Mathf.Abs(moveInput.x) > 0.01f)
             {
                 lastLookDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
             }
         }
-        // Å° ÀÔ·ÂÀÌ ³¡³¯ ¶§, ÀÌµ¿ Á¾·á 
+        // í‚¤ ì…ë ¥ì´ ëë‚  ë•Œ, ì´ë™ ì¢…ë£Œ 
         else
         {
             isMove = false;
             animator.SetBool("IsMove", false);
             curWeapon.anim?.SetBool("IsMove", false);
-            //rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // ¼öÆò¼Óµµ Áï½Ã 0
+            //rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // ìˆ˜í‰ì†ë„ ì¦‰ì‹œ 0
         }
     }
     public void RightMove() => DoMove(true, 1f);
@@ -332,14 +325,14 @@ public class PlayerController : MonoBehaviour
     public IEnumerator StartDash(Vector2 direction)
     {
         lastDashTime = Time.time;
-        // ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı ½ÃÀÛ
+        // ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ ì‹œì‘
         animator?.SetBool("IsDash", true);
         curWeapon.anim?.SetBool("IsDash", true);
 
         Debug.Log("DeshCoroutine");
-        isDashing = true; // isDashing µ¿¾È »ç¿ëÀÚÀÇ ÀÔ·ÂÀ» ¹ŞÁö ¾ÊÀ½
+        isDashing = true; // isDashing ë™ì•ˆ ì‚¬ìš©ìì˜ ì…ë ¥ì„ ë°›ì§€ ì•ŠìŒ
         isAbleDash = false;
-        dashDirection = direction;    //¹æÇâ
+        dashDirection = direction;    //ë°©í–¥
         basePos = rb.position;
         targetPos = basePos + dashDirection * dashDistance;
 
@@ -350,11 +343,11 @@ public class PlayerController : MonoBehaviour
         if (curWeapon.isDashAttack)
         {
             isDashAttacking = true;
-            // ¼± µô·¹ÀÌ
+            // ì„  ë”œë ˆì´
             yield return new WaitForSeconds(curWeapon.data.before_Attack_DelayRatio * curWeapon.totalAttackSpeed);
         }
 
-        // ´ë½¬ °Å¸®±îÁö µî¼Ó ¿îµ¿
+        // ëŒ€ì‰¬ ê±°ë¦¬ê¹Œì§€ ë“±ì† ìš´ë™
         while (Vector2.Distance(rb.position, targetPos) > 0.01f)
         {
             targetPos = new Vector2(targetPos.x, rb.position.y);
@@ -369,36 +362,36 @@ public class PlayerController : MonoBehaviour
             }
 
             rb.MovePosition(next);
-            yield return new WaitForFixedUpdate();  // ¹°¸® ¾÷µ¥ÀÌÆ® ÁÖ±â¿¡ ¸ÂÃß±â
+            yield return new WaitForFixedUpdate();  // ë¬¼ë¦¬ ì—…ë°ì´íŠ¸ ì£¼ê¸°ì— ë§ì¶”ê¸°
         }
 
         if (!IsGrounded())
         {
             yield return new WaitForSeconds(0.05f);
-            Debug.Log("Ã¼°ø");
+            Debug.Log("ì²´ê³µ");
             Debug.Log(Time.time);
         }
 
         if (curWeapon.isDashAttack)
         {
-            // ÈÄ µô·¹ÀÌ
+            // í›„ ë”œë ˆì´
             yield return new WaitForSeconds(curWeapon.data.after_Attack_DelayRatio * curWeapon.totalAttackSpeed);
             isDashAttacking = false;
         }
 
         
-        Debug.Log("µî¼Ó¿îµ¿ ÁßÁö");
+        Debug.Log("ë“±ì†ìš´ë™ ì¤‘ì§€");
         Debug.Log(Time.time);
         rb.gravityScale = originalGravity;
         rb.linearVelocity = Vector2.zero;
 
-        // ´ë½Ã ÈÄ ¾Ö´Ï¸ŞÀÌ¼Ç º¹±¸
+        // ëŒ€ì‹œ í›„ ì• ë‹ˆë©”ì´ì…˜ ë³µêµ¬
         animator?.SetBool("IsDash", false);
         curWeapon.anim?.SetBool("IsDash", false);
 
         isDashing = false;
 
-        // UI»ı¼º
+        // UIìƒì„±
         state.InitStateUI(0, curWeapon.totalDashCooltime);
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
@@ -414,23 +407,23 @@ public class PlayerController : MonoBehaviour
     }
     public void DoJump()
     {
-        // °ø°İ Áß Á¡ÇÁ ±İÁö
+        // ê³µê²© ì¤‘ ì í”„ ê¸ˆì§€
         if (IsAttacking()) return;
 
-        //°øÁß
+        //ê³µì¤‘
         if (!IsGrounded())
         {
             float currentTime = Time.time;
 
             if ((currentTime - lastJumpTapTime < doubleTapThreshold) && (jumpCount == 2) && (curWeapon.totalSuperJumpCooltime <= Time.time - lastSuperJumpTime || lastSuperJumpTime == 0))
             {
-                //´õºí ÅÇ
+                //ë”ë¸” íƒ­
                 Debug.Log("Double Tap Detected!");
                 Instantiate(jumpParticle, transform.position, transform.rotation);
                 StartCoroutine(SuperJump());
-                lastJumpTapTime = -1f; // ¸®¼Â
+                lastJumpTapTime = -1f; // ë¦¬ì…‹
 
-                state.InitStateUI(2, curWeapon.totalSuperJumpCooltime); // UI»ı¼º
+                state.InitStateUI(2, curWeapon.totalSuperJumpCooltime); // UIìƒì„±
             }
             else
             {
@@ -439,15 +432,15 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // ÀÏ¹İ Á¡ÇÁ ·ÎÁ÷
+        // ì¼ë°˜ ì í”„ ë¡œì§
         if (IsGrounded())
         {
             Debug.Log("Jump");
-            // ÆÄÆ¼Å¬ Àç»ı
+            // íŒŒí‹°í´ ì¬ìƒ
             Instantiate(jumpParticle, transform.position, transform.rotation);
-            // Á¡ÇÁ È½¼ö ÃÊ±âÈ­
+            // ì í”„ íšŸìˆ˜ ì´ˆê¸°í™”
             jumpCount = 0;
-            // Á¡ÇÁ Á÷Àü¿¡ y¼Óµµ¸¦ 0À¸·Î ÃÊ±âÈ­
+            // ì í”„ ì§ì „ì— yì†ë„ë¥¼ 0ìœ¼ë¡œ ì´ˆê¸°í™”
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(Vector2.up * condition.totalJumpPower, ForceMode2D.Impulse);
             jumpCount++;
@@ -470,17 +463,17 @@ public class PlayerController : MonoBehaviour
         while (Vector2.Distance(rb.position, tarPos) > 0.01f)
         {
             //rb.linearVelocity = dashDirection * dashPower;
-            //yield return null; // ¸Å ÇÁ·¹ÀÓ À¯Áö
+            //yield return null; // ë§¤ í”„ë ˆì„ ìœ ì§€
 
             Vector2 next = Vector2.MoveTowards(rb.position, tarPos, superJumpForce * Time.fixedDeltaTime);
             rb.MovePosition(next);
-            yield return new WaitForFixedUpdate();  // ¹°¸® ¾÷µ¥ÀÌÆ® ÁÖ±â¿¡ ¸ÂÃß±â
+            yield return new WaitForFixedUpdate();  // ë¬¼ë¦¬ ì—…ë°ì´íŠ¸ ì£¼ê¸°ì— ë§ì¶”ê¸°
         }
 
         if (!IsGrounded())
             yield return new WaitForSeconds(0.05f);
 
-        // µµÂø ½Ã »óÅÂ ÃÊ±âÈ­
+        // ë„ì°© ì‹œ ìƒíƒœ ì´ˆê¸°í™”
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = originalGravity;
 
@@ -522,7 +515,7 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(ChargingTimeCheck());
 
                 Debug.Log("Start & Charging");
-                //Â÷Â¡ ½ÃÀÛ & Â÷Â¡ Áß
+                //ì°¨ì§• ì‹œì‘ & ì°¨ì§• ì¤‘
                 animator?.SetTrigger("OnCharging");
                 curWeapon.anim?.SetTrigger("OnCharging");
 
@@ -537,38 +530,38 @@ public class PlayerController : MonoBehaviour
             isHolding = false;
             isCharging = false;
 
-            // ¹«±â¿¡ µû¸¥ ¾Ö´Ï¸ŞÀÌ¼Ç ¼±ÅÃ
+            // ë¬´ê¸°ì— ë”°ë¥¸ ì• ë‹ˆë©”ì´ì…˜ ì„ íƒ
             OnWeaponTypeSet(curWeapon.data.weaponID);
 
-            if (!IsGrounded()) // °øÁß Ã¼Å©
+            if (!IsGrounded()) // ê³µì¤‘ ì²´í¬
             {
-                // °øÁß 4È¸ °ø°İ µô·¹ÀÌ Ã¼Å©
+                // ê³µì¤‘ 4íšŒ ê³µê²© ë”œë ˆì´ ì²´í¬
                 if (lastOnAirTime >= Time.time - attackRest)
                     return;
 
-                // À§ÂÊ ¹İµ¿ Ãß°¡
+                // ìœ„ìª½ ë°˜ë™ ì¶”ê°€
                 rb.linearVelocity = Vector2.up * rebound;
 
-                //¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı ¹× ¹«±â ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı Áß¿¡ °ø°İ ÀÌº¥Æ® ¹ß»ı
+                //ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ ë° ë¬´ê¸° ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ ì¤‘ì— ê³µê²© ì´ë²¤íŠ¸ ë°œìƒ
                 StartCoroutine(AttackCoroutine(false));
 
-                // °ø°İ È½¼ö
+                // ê³µê²© íšŸìˆ˜
                 attackCount++;
                 Debug.Log($"Attack {attackCount}");
 
-                // °øÁß°ø°İ 4È¸ - ¸¶Áö¸· °ø°İ½Ã°£ Ã¼Å© ¹× ÃÊ±âÈ­
+                // ê³µì¤‘ê³µê²© 4íšŒ - ë§ˆì§€ë§‰ ê³µê²©ì‹œê°„ ì²´í¬ ë° ì´ˆê¸°í™”
                 if (attackCount == 4)
                 {
                     lastOnAirTime = Time.time;
                     attackCount = 0;
                 }
             }
-            else // Áö»ó °ø°İ
+            else // ì§€ìƒ ê³µê²©
             {
-                // ¶¥¿¡ ´êÀ¸¸é È½¼ö ÃÊ±âÈ­
+                // ë•…ì— ë‹¿ìœ¼ë©´ íšŸìˆ˜ ì´ˆê¸°í™”
                 attackCount = 0;
 
-                // Â÷Â¡½Ã°£¿¡ µû¶ó ÀÏ¹İ°ø°İ°ú Â÷Â¡°ø°İ ºĞ¸®
+                // ì°¨ì§•ì‹œê°„ì— ë”°ë¼ ì¼ë°˜ê³µê²©ê³¼ ì°¨ì§•ê³µê²© ë¶„ë¦¬
                 if (holdTime > chargeTime)
                 {
                     Debug.Log("ChargingAttack");
@@ -583,7 +576,7 @@ public class PlayerController : MonoBehaviour
             lastAttackTime = Time.time;
         }
     }
-    // Â÷Â¡ ½ÃÀÛ ÈÄ Â÷Â¡½Ã°£ Ã¼Å©
+    // ì°¨ì§• ì‹œì‘ í›„ ì°¨ì§•ì‹œê°„ ì²´í¬
     public IEnumerator ChargingTimeCheck()
     {
         attackChargingTime = Time.time;
@@ -597,30 +590,30 @@ public class PlayerController : MonoBehaviour
         if (!ischarging)
         {
             isNormalAttacking = true;
-            // ¼± µô·¹ÀÌ
+            // ì„  ë”œë ˆì´
             yield return new WaitForSeconds(curWeapon.data.before_Attack_DelayRatio * curWeapon.totalAttackSpeed);
 
-            // °ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç ¹× °ø°İ
+            // ê³µê²© ì• ë‹ˆë©”ì´ì…˜ ë° ê³µê²©
             animator?.SetTrigger("OnAttack");
             curWeapon.anim?.SetTrigger("OnAttack");
             yield return new WaitForSeconds(attackingTime);
 
-            // ÈÄ µô·¹ÀÌ
+            // í›„ ë”œë ˆì´
             yield return new WaitForSeconds(curWeapon.data.after_Attack_DelayRatio * curWeapon.totalAttackSpeed);
             isNormalAttacking = false;
         }
         else
         {
             isChargingAttacking = true;
-            // ¼± µô·¹ÀÌ
+            // ì„  ë”œë ˆì´
             yield return new WaitForSeconds(curWeapon.data.before_ChargeAttack_DelayRatio * curWeapon.totalAttackSpeed);
 
-            // °ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç ¹× °ø°İ
+            // ê³µê²© ì• ë‹ˆë©”ì´ì…˜ ë° ê³µê²©
             animator?.SetBool("IsCharging", isCharging);
             curWeapon.anim?.SetBool("IsCharging", isCharging);
             yield return new WaitForSeconds(attackingTime);
 
-            // ÈÄ µô·¹ÀÌ
+            // í›„ ë”œë ˆì´
             yield return new WaitForSeconds(curWeapon.data.after_ChargeAttack_DelayRatio * curWeapon.totalAttackSpeed);
             isChargingAttacking = false;
         }
@@ -646,7 +639,7 @@ public class PlayerController : MonoBehaviour
                 break;
             
             default:
-                Debug.Log("¹üÀ§¿¡ ¾ø´Â ¹«±â");
+                Debug.Log("ë²”ìœ„ì— ì—†ëŠ” ë¬´ê¸°");
                 break;
         }
     }
@@ -663,14 +656,14 @@ public class PlayerController : MonoBehaviour
     {
         float currentTime = Time.time;
 
-        //´õºí ÅÇ Ã¼Å©
+        //ë”ë¸” íƒ­ ì²´í¬
         if (currentTime - lastDownTapTime < doubleTapThreshold && !IsGrounded() && (curWeapon.totalDownAttackCooltime <= Time.time - lastDownAttackTime || lastDownAttackTime == 0))
         {
 
 
             Debug.Log("Double Tap Detected");
             StartCoroutine(StartDownAttack());
-            lastDownTapTime = -1f; // ¸®¼Â
+            lastDownTapTime = -1f; // ë¦¬ì…‹
         }
         else
         {
@@ -687,27 +680,27 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0f;
         rb.linearVelocity = Vector2.zero;
 
-        // ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+        // ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
         animator.SetTrigger("OnDropAttack");
         curWeapon.anim.SetTrigger("OnDropAttack");
 
         Debug.Log(Time.time);
 
-        //¼± µô·¹ÀÌ
+        //ì„  ë”œë ˆì´
         yield return new WaitForSeconds(curWeapon.data.before_DownAttack_DelayRatio);
 
-        // ¶¥¿¡ ´êÀ» ¶§±îÁö µî¼Ó ¿îµ¿
+        // ë•…ì— ë‹¿ì„ ë•Œê¹Œì§€ ë“±ì† ìš´ë™
         while (!IsGrounded())
         {
             rb.linearVelocity = Vector2.down * dashPower;
-            yield return null; // ¸Å ÇÁ·¹ÀÓ À¯Áö
+            yield return null; // ë§¤ í”„ë ˆì„ ìœ ì§€
         }
         rb.linearVelocity = Vector2.zero;
 
-        // µµÂø ½Ã »óÅÂ ÃÊ±âÈ­
+        // ë„ì°© ì‹œ ìƒíƒœ ì´ˆê¸°í™”
         rb.gravityScale = originalGravity;
 
-        //ÈÄ µô·¹ÀÌ
+        //í›„ ë”œë ˆì´
         yield return new WaitForSeconds(curWeapon.data.after_DownAttack_DelayRatio);
 
         Debug.Log(Time.time);
@@ -716,7 +709,7 @@ public class PlayerController : MonoBehaviour
 
         isDownAttacking = false;
 
-        state.InitStateUI(1, curWeapon.totalDownAttackCooltime); // UI»ı¼º
+        state.InitStateUI(1, curWeapon.totalDownAttackCooltime); // UIìƒì„±
 
         Debug.Log(curWeapon.totalDownAttackCooltime);
     }
@@ -779,7 +772,7 @@ public class PlayerController : MonoBehaviour
 
             Debug.Log($"{skillHoldTime}");
 
-            // Â÷Â¡½Ã°£¿¡ µû¶ó ÀÏ¹İ°ø°İ°ú Â÷Â¡°ø°İ ºĞ¸®
+            // ì°¨ì§•ì‹œê°„ì— ë”°ë¼ ì¼ë°˜ê³µê²©ê³¼ ì°¨ì§•ê³µê²© ë¶„ë¦¬
             if (skillHoldTime > skillChargeTime)
             {
                 Debug.Log("ChargingSkill");
@@ -811,7 +804,7 @@ public class PlayerController : MonoBehaviour
 
     public void IsLooting()
     {
-        //¾ÆÀÌÅÛ °¨Áö
+        //ì•„ì´í…œ ê°ì§€
         Collider2D[] items = Physics2D.OverlapCircleAll(lootingArea.position, lootingRadius, lootingItem);
 
         StartCoroutine(OnLooting(items));
@@ -824,10 +817,10 @@ public class PlayerController : MonoBehaviour
         {
             if (item == null) continue;
 
-            // °¨ÁöµÈ ¾ÆÀÌÅÛ ²ø¾î´ç±â±â
+            // ê°ì§€ëœ ì•„ì´í…œ ëŒì–´ë‹¹ê¸°ê¸°
             item.transform.position = Vector3.MoveTowards(item.transform.position, transform.position, lootingSpeed * Time.deltaTime);
 
-            // ¾ÆÀÌÅÛ°ú ÇÃ·¹ÀÌ¾î°¡ °¡±î¿ì¸é ¾ÆÀÌÅÛ ½Àµæ ¹× ÆÄ±«
+            // ì•„ì´í…œê³¼ í”Œë ˆì´ì–´ê°€ ê°€ê¹Œìš°ë©´ ì•„ì´í…œ ìŠµë“ ë° íŒŒê´´
             float distance = Vector2.Distance(item.transform.position, transform.position);
             if (distance < 0.3f)
             {

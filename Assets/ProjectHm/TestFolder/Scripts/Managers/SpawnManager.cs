@@ -23,6 +23,7 @@ public class SpawnManager : MonoBehaviour
     public int aliveEnemies = 0;
     public bool isSpawning = false;
     public bool isGameFinish = false;
+    public bool isGamePause = false;
 
     public Coroutine spawnCoroutine;
 
@@ -90,7 +91,13 @@ public class SpawnManager : MonoBehaviour
         // 웨이브 스폰
         for (int i = 0; i < spawnDataList.Count; i++)
         {
+            // 게임 퍼즈시 일시정지
+            yield return new WaitUntil(() => !isGamePause);
+
+            // 적 스폰
             SpawnEnemy(spawnDataList[i].enemyData);
+
+            // 스폰 딜레이만큼 일시정지
             yield return new WaitForSeconds(spawnDataList[i].spawnDelay);
 
             // 기지 파괴시 StopCoroutine() 실행
@@ -151,5 +158,17 @@ public class SpawnManager : MonoBehaviour
         StopCoroutine(spawnCoroutine);
         spawnCoroutine = null;
 
+    }
+
+    public IEnumerator OnPause(float time)
+    {
+
+        //스폰 일시정지
+        isGamePause = true;
+
+        yield return new WaitForSeconds(time);
+
+        //스폰 시작
+        isGamePause = false;
     }
 }

@@ -85,29 +85,33 @@ MonoBehaviour:
   baseRange: 0
   baseMoveSpeed: 0
   baseJumpPower: 0
-  baseDashPower: 0
-  baseSuperJumpPower: 0
+  baseDashCooltime: 0
+  baseSuperJumpCooltime: 0
+  baseDownAttackCooltime: 0
   selecAttackPower: 0
   selecAttackSpeed: 0
   selecRange: 0
   selecMoveSpeed: 0
   selecJumpPower: 0
-  selecDashPower: 0
-  selecSuperJumpPower: 0
+  selecDashCooltime: 0
+  selecSuperJumpCooltime: 0
+  selecDownAttackCooltime: 0
   totalWeaponAttackPower: 0
   totalWeaponAttackSpeed: 0
   totalWeaponRange: 0
   totalWeaponMoveSpeed: 0
   totalWeaponJumpPower: 0
-  totalWeaponDashPower: 0
-  totalWeaponSuperJumpPower: 0
+  totalWeaponDashCooltime: 0
+  totalWeaponSuperJumpCooltime: 0
+  totalWeaponDownAttackCooltime: 0
   totalAttackPower: 0
   totalAttackSpeed: 0
   totalRange: 0
   totalMoveSpeed: 0
   totalJumpPower: 0
-  totalDashPower: 0
-  totalSuperJumpPower: 0
+  totalDashCooltime: 0
+  totalSuperJumpCooltime: 0
+  totalDownAttackCooltime: 0
   mutipleAttack: 0
   isStun: 1
   isDashAttack: 0

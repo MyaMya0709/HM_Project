@@ -11,9 +11,6 @@ public class Skill_00 : ISkill
 
     public LayerMask enemyLayerMask;
 
-    // damageMultiple, knockback , airborne , stun , slow , dotDamage;
-    public EffectTypeData effect;
-
     public override void UseChargeSkill()
     {
         Debug.Log("UseChargeSkill");
@@ -65,6 +62,7 @@ public class Skill_00 : ISkill
 
     public void Explosion(Vector2 center, float radius, float damage)
     {
+        Debug.Log("Explosion");
         // 원형내 오브젝트 체크
         Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, enemyLayerMask);
 
@@ -74,28 +72,41 @@ public class Skill_00 : ISkill
             if (hit.CompareTag("Enemy"))
             {
                 //((Vector2)hit.transform.position - center).normalized => 공격 방향
-                hit.GetComponent<BaseEnemy>()?.TakeDamage(damage, effect, ((Vector2)hit.transform.position - center).normalized);
+                hit.GetComponent<BaseEnemy>()?.TakeDamage(damage, skillData.effect, ((Vector2)hit.transform.position - center).normalized);
             }
         }
-
-        //DrawGizmos(center, radius);
+        DrawCircle(center, radius);
     }
 
-    void DrawGizmos(Vector2 center,float radius)
+    public override void SkillRangeCheck()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(center, radius);
+        Debug.Log("범위 체크");
+    }
 
-        // 현재 잡히는 애들 표시
-        Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, enemyLayerMask);
-        Gizmos.color = Color.yellow;
-        foreach (var hit in hits)
+    /// <summary>
+    /// 2D용 원형 디버그 표시 (Scene/Game 뷰 모두 표시됨)
+    /// </summary>
+    /// <param name="center">원의 중심 (Vector2)</param>
+    /// <param name="radius">반지름</param>
+    /// <param name="color">선 색상</param>
+    /// <param name="duration">유지 시간 (초)</param>
+    /// <param name="segments">원형 세그먼트 수 (높을수록 부드러움)</param>
+    public static void DrawCircle(Vector2 center, float radius, float duration = 0.5f, int segments = 36)
+    {
+        Debug.Log("디버깅용 범위 표시");
+        float angleStep = 360f / segments;
+        Vector3 prevPoint = center + new Vector2(radius, 0);
+
+        for (int i = 1; i <= segments; i++)
         {
-            if (hit.CompareTag("Enemy"))
-            {
-                Gizmos.DrawLine(center, hit.transform.position);
-                Gizmos.DrawSphere(hit.transform.position, 0.2f);
-            }
+            // n도 => n라디안
+            float angle = angleStep * i * Mathf.Deg2Rad;
+
+            //중심이 center이고, 반지름이 radius인 원의 둘레 중 angle 각도에 해당하는 점의 좌표
+            Vector3 nextPoint = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+
+            Debug.DrawLine(prevPoint, nextPoint, Color.red, duration);
+            prevPoint = nextPoint;
         }
     }
 }
