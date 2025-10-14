@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public enum ItemType
 {
     Exp,
@@ -44,4 +42,11 @@ public enum StatLvType
     MovePower,
     ActPower,
     Mastery
+}
+
+public enum SkillType
+{
+    Buff,
+    Support,
+    Damage
 }

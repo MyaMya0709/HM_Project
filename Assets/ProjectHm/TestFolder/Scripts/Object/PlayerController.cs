@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public GameObject skillBag;
     public ISkill curSkill;
     public UI_State state;              //InitStateUI (Id => 0==대쉬/1==내려찍기/2==슈퍼점프,  coolTime)
-    public UI_Skill skillUI;
+    public UI_Cooltime cooltimeUI;
 
     [Header("MovementCheck")]
     public bool isMove = false;
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         GameObject UI = GameObject.Find("UI");
         state = UI.GetComponentInChildren<UI_State>();
-        skillUI = UI.GetComponentInChildren<UI_Skill>();
+        cooltimeUI = UI.GetComponentInChildren<UI_Cooltime>();
 
         // 무기 장착 로직
         if (weaponHolder.transform.childCount == 0)
@@ -149,13 +149,22 @@ public class PlayerController : MonoBehaviour
             Debug.Log("시작시 스킬 장착");
         }
 
+        // 스킬 타이머
         Debug.Log($"curSkill : {curSkill == null}");
-        if (curSkill == null) skillUI.gameObject.SetActive(false);
+        if (curSkill == null) cooltimeUI.gameObject.SetActive(false);
         else
         {
-            skillUI.gameObject.SetActive(true);
-            skillUI.skillIcon.sprite = curSkill.skillData.sprite;
+            cooltimeUI.gameObject.SetActive(true);
+            cooltimeUI.cooltimeIcon.sprite = curSkill.skillData.sprite;
         }
+
+        //Debug.Log($"curSkill : {condition.playerData.skillID >= 0}");
+        //if (condition.playerData.skillID < 0) skillUI.gameObject.SetActive(false);
+        //else
+        //{
+        //    skillUI.gameObject.SetActive(true);
+        //    skillUI.skillIcon.sprite = DataManager.Instance.skillDataList[condition.playerData.skillID].sprite;
+        //}
     }
 
     private void Update()
@@ -746,7 +755,18 @@ public class PlayerController : MonoBehaviour
 
     public void DoSkill(bool charge)
     {
-        if(curSkill == null) return;
+        //try
+        //{
+        //    curSkill = DataManager.Instance.skillPrefabList[condition.playerData.skillID].GetComponent<ISkill>();
+        //}
+        
+        //catch
+        //{
+        //    Debug.Log("경로에 skill이 없음");
+        //    if (curSkill == null) return;
+        //}
+
+        if (curSkill == null) return;
 
         if (!charge)
         {
@@ -777,13 +797,13 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("ChargingSkill");
                 curSkill.UseChargeSkill();
-                skillUI.SkillFinish();
+                cooltimeUI.CooltimeFinish();
             }
             else
             {
                 Debug.Log("Skill");
                 curSkill.UseSkill();
-                skillUI.SkillFinish();
+                cooltimeUI.CooltimeFinish();
             }
         }
     }

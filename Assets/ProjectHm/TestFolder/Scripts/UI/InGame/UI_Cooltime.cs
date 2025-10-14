@@ -2,9 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Skill : MonoBehaviour
+public class UI_Cooltime : MonoBehaviour
 {
-    public Image skillIcon;
+    public Image cooltimeIcon;
     public GameObject noneIcon;
     public Image timer;
 
@@ -23,7 +23,7 @@ public class UI_Skill : MonoBehaviour
         timer.fillAmount = 0f; // ³¡³ª¸é 0
     }
 
-    public void SkillFinish()
+    public void CooltimeFinish()
     {
         noneIcon.gameObject.SetActive(true);
     }

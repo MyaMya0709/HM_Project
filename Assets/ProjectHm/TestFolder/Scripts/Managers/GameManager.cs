@@ -108,6 +108,7 @@ public class GameManager : Singleton<GameManager>
         GetWeaponData(weaponID);
         Instantiate(weaponData.gameObject, holder.transform);
     }
+
     public void SkillInit(GameObject bag)
     {
         GetSkillData(skillID);

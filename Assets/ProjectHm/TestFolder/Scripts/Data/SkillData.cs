@@ -8,9 +8,13 @@ public class SkillData : ScriptableObject
     public string Name;
     public string Description;
     public int price;
+    public Sprite sprite;
 
-    // damageMultiple, knockback , airborne , stun , slow , dotDamage;
+    public SkillType type;
+
+    // 데미지 효과
     public EffectTypeData effect;
 
-    public Sprite sprite;
+    public int buffID;
+
 }

@@ -16,8 +16,10 @@ MonoBehaviour:
   Name: Punishment
   Description: "\uACF5\uACA9\uB825 \uBC84\uD504"
   price: 500
+  sprite: {fileID: 21300000, guid: a329740aac3c6174c8d4dec637e0f949, type: 3}
+  type: 0
   effect:
-    damageMultiple: 1
+    damageMultiple: 0
     knockback:
       isSum: 0
       onoff: 0
@@ -48,4 +50,10 @@ MonoBehaviour:
       valueA: 0
       valueB: 0
       valueC: 0
-  sprite: {fileID: 21300000, guid: a329740aac3c6174c8d4dec637e0f949, type: 3}
+  statTypeList: 0000000001000000
+  buffValueList:
+  - 1.1
+  - 1.1
+  durationList:
+  - 10
+  - 20

@@ -1,10 +1,5 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 #region PlayerData
 [Serializable]

@@ -45,9 +45,6 @@ public class LootableItem : MonoBehaviour
             case ItemType.Buff:
                 //player.ApplyBuff(buffData);
                 break;
-            case ItemType.Skill:
-                //player.currentHealth += amount;
-                break;
         }
     }
 }

@@ -141,9 +141,6 @@ public class BaseEnemy : MonoBehaviour
             Dead();
         }
 
-        // 애니메이션 재생
-        animator.SetTrigger("isAirborne");
-
         // 공격의 효과 적용
         ApplyEffect(effectData);
 
@@ -179,8 +176,8 @@ public class BaseEnemy : MonoBehaviour
 
         // 다시 재생
         isGamePuase = false;
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        animator.speed = 1f;
+        if(rb != null) rb.bodyType = RigidbodyType2D.Dynamic;
+        if(animator != null) animator.speed = 1f;
     }
 
     #region Effect
@@ -362,6 +359,7 @@ public class BaseEnemy : MonoBehaviour
         GetComponent<Rigidbody2D>().simulated = false;
 
         //사망 애니메이션 재생 후 제거
+        animator.speed = 1f;
         animator.SetTrigger("isDead");
 
         OnDeath?.Invoke();

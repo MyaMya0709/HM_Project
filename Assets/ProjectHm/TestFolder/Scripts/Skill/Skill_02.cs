@@ -16,9 +16,6 @@ public class Skill_02 : ISkill
 
     public override void UseSkill()
     {
-        player.
-
-
-        throw new System.NotImplementedException();
+        Debug.Log("버프 스킬 사용");
     }
 }

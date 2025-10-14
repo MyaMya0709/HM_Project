@@ -164,14 +164,14 @@ public abstract class IManualWeapon : MonoBehaviour
     {
         if (playerCondition != null)
         {
-            totalAttackPower = (playerCondition.baseAttackPower + totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[playerCondition.selecAttackPowerLv];
-            totalAttackSpeed = (playerCondition.baseAttackSpeed + totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[playerCondition.selecAttackSpeedLv];
+            totalAttackPower = (playerCondition.baseAttackPower + totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[playerCondition.selecAttackPowerLv] * TotalBuff(StatType.AttackPower);
+            totalAttackSpeed = (playerCondition.baseAttackSpeed + totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[playerCondition.selecAttackSpeedLv] * TotalBuff(StatType.AttackSpeed);
             totalRange = totalWeaponRange;
-            totalMoveSpeed = (playerCondition.baseMoveSpeed + totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][0];
-            totalJumpPower = (playerCondition.baseJumpPower + totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][1];
-            totalDashCooltime = (playerCondition.baseDashCooltime + totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][0];
-            totalSuperJumpCooltime = (playerCondition.baseSuperJumpCooltime + totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][1];
-            totalDownAttackCooltime = (playerCondition.baseDownAttackCooltime + totalWeaponDownAttackCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][2];
+            totalMoveSpeed = (playerCondition.baseMoveSpeed + totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][0] * TotalBuff(StatType.MoveSpeed);
+            totalJumpPower = (playerCondition.baseJumpPower + totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[playerCondition.selecMovePowerLv][1] * TotalBuff(StatType.JumpPower);
+            totalDashCooltime = (playerCondition.baseDashCooltime + totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][0] * TotalBuff(StatType.DashCooltime);
+            totalSuperJumpCooltime = (playerCondition.baseSuperJumpCooltime + totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][1] * TotalBuff(StatType.SuperJumpCooltime);
+            totalDownAttackCooltime = (playerCondition.baseDownAttackCooltime + totalWeaponDownAttackCooltime) * DataManager.Instance.selecActPowerDic[playerCondition.selecActPowerLv][2] * TotalBuff(StatType.DownAttackCooltime);
         }
         else
         {
@@ -201,6 +201,24 @@ public abstract class IManualWeapon : MonoBehaviour
         
     }
 
+    public float TotalBuff(StatType type)
+    {
+        float totalbuff = 0f;
+
+        // 받은 버프 리스트에서 스탯 타입으로 버프 찾기
+        //foreach (ISkill buff in playerCondition.buffList)
+        //{
+        //    for (int i = 0; i < buff.skillData.statTypeList.Count; i++)
+        //    {
+        //        if (buff.skillData.statTypeList[i] == type)
+        //        {
+        //            totalbuff += buff.skillData.buffValueList[i] % 1;
+        //        }
+        //    }
+        //}
+
+        return totalbuff + 1;
+    }
 
     // 게임 초기화용 함수
     public void Clear()
