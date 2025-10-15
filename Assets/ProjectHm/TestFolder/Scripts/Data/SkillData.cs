@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// [수정 필요] 
 [CreateAssetMenu(menuName = "Data/Skill")]
 public class SkillData : ScriptableObject
 {
@@ -13,6 +14,7 @@ public class SkillData : ScriptableObject
     // 데미지 효과
     public EffectTypeData effect;
 
+    // 버프 ID 리스트
     public List<int> buffID;
 
 }

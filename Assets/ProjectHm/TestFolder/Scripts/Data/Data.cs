@@ -43,6 +43,7 @@ public class PlayerData
 #endregion
 
 #region WeaponData
+// 저장해야하는 무기 데이터
 [Serializable]
 public class WeaponData
 {
@@ -51,8 +52,9 @@ public class WeaponData
     public int clearStage;
 }
 
+// 구매한 무기 데이터
 [Serializable]
-public class WeaponDataList
+public class PurchaseWeaponList
 {
     public List<WeaponData> datas;
 
@@ -64,6 +66,7 @@ public class WeaponDataList
 }
 #endregion
 
+// 구매한 케릭터 데이터
 #region PurchaseCharacterData
 [Serializable]
 public class PurchaseCharacterList
@@ -77,6 +80,7 @@ public class PurchaseCharacterList
 }
 #endregion
 
+// 잠금 해제 데이터
 #region UnlockData
 [Serializable]
 public class UnlockData

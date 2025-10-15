@@ -43,10 +43,3 @@ public enum StatLvType
     ActPower,
     Mastery
 }
-
-public enum SkillType
-{
-    Buff,
-    Support,
-    Damage
-}

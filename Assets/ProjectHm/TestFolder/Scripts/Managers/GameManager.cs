@@ -35,7 +35,7 @@ public class GameManager : Singleton<GameManager>
     public WeaponData curMWData;                                         // 현재 장착한 무기의 ID,Level
     public GameObject curWeapon;                                         // 현재 장착한 무기 프리펩
     public IManualWeapon weaponData;                                     // 현재 장착한 무기 정보 데이터
-    public WeaponDataList purchaseWeaponList;                            // 구입한 무기 리스트
+    public PurchaseWeaponList purchaseWeaponList;                            // 구입한 무기 리스트
     public Dictionary<int, WeaponData> weaponDatas = new();              // 구입한 무기 Dic
 
     [Header("Skill")]
@@ -225,7 +225,7 @@ public class GameManager : Singleton<GameManager>
             json = File.ReadAllText(path);
 
             //리스트에 역직렬화
-            purchaseWeaponList = JsonUtility.FromJson<WeaponDataList>(json);
+            purchaseWeaponList = JsonUtility.FromJson<PurchaseWeaponList>(json);
             if (purchaseWeaponList.datas.Count != 0) Debug.Log($"purchaseWeaponList Load");
 
             //Dictionary으로 전환
@@ -406,6 +406,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void GetCharacterData(int characterID)
     {
+        // DataManager에서 케릭터 데이터 가져오기
         if(DataManager.Instance != null)
         {
             foreach (CharacterData CData in DataManager.Instance.characterDataList)
@@ -521,8 +522,13 @@ public class GameManager : Singleton<GameManager>
 
     public void SaveUnlockData()
     {
+        // 직렬화
         string json = JsonUtility.ToJson(unlockData);
+        
+        // Json 파일 저장
         File.WriteAllText(Path.Combine(Application.persistentDataPath, "unlockData.json"), json);
+        
+        // 경로 노출
         Debug.Log(Application.persistentDataPath);
     }
     public void LoadUnLockData()

@@ -13,6 +13,7 @@ public class CharacterData : ScriptableObject
     public List<StatType> bonusStatType;
     public List<float> bonusStatValue;
 
+    // 케릭터 이미지 및 애니메이션
     public Sprite charSprite;
     public AnimatorOverrideController animator;
 }

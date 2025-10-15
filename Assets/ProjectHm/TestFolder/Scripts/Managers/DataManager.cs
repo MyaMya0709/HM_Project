@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.Rendering.DebugUI;
 
+// 모든 리스트는 아이디와 리스트 순번을 맞추어서 넣을 것
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;

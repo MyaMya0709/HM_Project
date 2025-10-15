@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+//씬 전환시 데이터 로드가 끝나면 활성화
 public class SceneLoader : Singleton<SceneLoader>
 {
     protected override void Awake()

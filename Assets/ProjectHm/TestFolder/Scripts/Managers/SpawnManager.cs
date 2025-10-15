@@ -117,6 +117,7 @@ public class SpawnManager : MonoBehaviour
     // 적 실체화 및 적의 숫자 계산
     private void SpawnEnemy(EnemyData enemyData)
     {
+        // 이동 타입에 따라 스폰 위치 무작위 결정
         Transform spawnPoint;
         if (enemyData.MoveType == EnemyMoveType.Ground)
         {
@@ -127,6 +128,7 @@ public class SpawnManager : MonoBehaviour
             spawnPoint = spawnSkyPoints[UnityEngine.Random.Range(0, spawnSkyPoints.Count)];
         }
 
+        // 스폰 및 데이터 세팅, 목표 설정
         GameObject enemy = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
         enemy.GetComponent<BaseEnemy>().enemyData = enemyData;
         enemy.GetComponent<BaseEnemy>().target = attackPoint;

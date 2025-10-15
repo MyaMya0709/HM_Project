@@ -268,7 +268,6 @@ public class BaseEnemy : MonoBehaviour
 
         // 운동량 0
         rb.linearVelocity = Vector2.zero;
-        Debug.Log("aa");
 
         // 공중에 띄움
         Vector2 dir = new Vector2(0, 1f);
@@ -276,7 +275,6 @@ public class BaseEnemy : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(() => (IsGrounded()));
-        Debug.Log("bb");
 
         isAirborne = false;
     }
@@ -348,7 +346,7 @@ public class BaseEnemy : MonoBehaviour
     protected void Dead([CallerMemberName] string callername = null)
     {
         // 호출 함수 이름이 "TakeDamage" 일 때, 아이템 드랍
-        Debug.Log($"Dead Called From {callername}");
+        //Debug.Log($"Dead Called From {callername}");
         if (callername == "TakeDamage")
         {
             InstantiateItem(transform.position);

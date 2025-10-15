@@ -4,7 +4,7 @@ public class LootableItem : MonoBehaviour
 {
     public ItemType ItemType;
     public float amount;
-    //public BuffData buffData;
+    public int buffID;
 
     public SpriteRenderer sr;
     public Rigidbody2D rb;
@@ -21,6 +21,7 @@ public class LootableItem : MonoBehaviour
         sr.sprite = data.itemSprite;
         ItemType = data.itemType;
         amount = data.itemAmount;
+        buffID = data.buffID;
 
         // 튕겨서 드랍되는 모션
         float dropForce = 20f;
@@ -43,7 +44,9 @@ public class LootableItem : MonoBehaviour
                 //player.currentHealth += amount;
                 break;
             case ItemType.Buff:
-                //player.ApplyBuff(buffData);
+                // [수정 필요] DataManager의 버프 프리펩을 인스턴스하여 버프 실행
+                IBuff buffObj = Instantiate(DataManager.Instance.buffPrefabList[buffID]).GetComponent<IBuff>();
+                buffObj.ApplyBuff();
                 break;
         }
     }

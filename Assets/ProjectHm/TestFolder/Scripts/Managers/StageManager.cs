@@ -21,6 +21,7 @@ public class StageManager : MonoBehaviour
 
     private void Awake()
     {
+        // 스테이지 ID 가져오기
         curStageID = GameManager.Instance.selecStageID;
         Debug.Log($"현재 스테이지 : {curStageID}");
     }

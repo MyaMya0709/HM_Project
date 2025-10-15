@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         state = UI.GetComponentInChildren<UI_State>();
         cooltimeUI = UI.GetComponentInChildren<UI_Skill>();
 
-        // 무기 장착 로직
+        //[수정 필요] 무기 장착 로직
         if (weaponHolder.transform.childCount == 0)
         {
             GameManager.Instance.WeaponInit(weaponHolder);
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("시작시 무기 장착");
         }
 
-        //스킬 장착 로직
+        //[수정 필요] 스킬 장착 로직
         if (skillBag.transform.childCount == 0 && GameManager.Instance.skillID >= 0)
         {
             GameManager.Instance.SkillInit(skillBag);

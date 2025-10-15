@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+// [수정 필요] PlayerController와 데이터 로드 순서 확실히 할것
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCondition : MonoBehaviour
 {
@@ -268,6 +269,7 @@ public class PlayerCondition : MonoBehaviour
         }
     }
 
+    // [수정 필요] 버프 실행 로직
     public IEnumerator OnBuff(IBuff buff)
     {
         switch (buff)
