@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public GameObject skillBag;
     public ISkill curSkill;
     public UI_State state;              //InitStateUI (Id => 0==대쉬/1==내려찍기/2==슈퍼점프,  coolTime)
-    public UI_Cooltime cooltimeUI;
+    public UI_Skill cooltimeUI;
 
     [Header("MovementCheck")]
     public bool isMove = false;
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         GameObject UI = GameObject.Find("UI");
         state = UI.GetComponentInChildren<UI_State>();
-        cooltimeUI = UI.GetComponentInChildren<UI_Cooltime>();
+        cooltimeUI = UI.GetComponentInChildren<UI_Skill>();
 
         // 무기 장착 로직
         if (weaponHolder.transform.childCount == 0)

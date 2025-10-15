@@ -52,12 +52,12 @@ MonoBehaviour:
   - 4
   - 5
   baseJumpPowerList:
-  - 50
-  - 51
-  - 52
-  - 53
-  - 54
-  - 55
+  - 25
+  - 25.5
+  - 26
+  - 26.5
+  - 27
+  - 27.5
   baseDashCooltimeList:
   - 1
   - 0.9

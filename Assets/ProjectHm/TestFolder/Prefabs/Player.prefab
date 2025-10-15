@@ -203,6 +203,7 @@ MonoBehaviour:
   playerLevel: 1
   expBar: {fileID: 0}
   autoWeapons: []
+  buffList: []
 --- !u!114 &5436040420309497436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +225,7 @@ MonoBehaviour:
   skillBag: {fileID: 7774390821898325928}
   curSkill: {fileID: 0}
   state: {fileID: 0}
-  skillUI: {fileID: 0}
+  cooltimeUI: {fileID: 0}
   isMove: 0
   isDashing: 0
   isAbleDash: 1

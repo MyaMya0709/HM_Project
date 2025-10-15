@@ -10,11 +10,9 @@ public class SkillData : ScriptableObject
     public int price;
     public Sprite sprite;
 
-    public SkillType type;
-
     // 데미지 효과
     public EffectTypeData effect;
 
-    public int buffID;
+    public List<int> buffID;
 
 }

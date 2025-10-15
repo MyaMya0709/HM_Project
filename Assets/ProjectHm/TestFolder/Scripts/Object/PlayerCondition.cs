@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,7 +51,7 @@ public class PlayerCondition : MonoBehaviour
     public List<IAutoWeapon> autoWeapons;
 
     public static event Action OnPlayerLevelUp;
-    public List<ISkill> buffList;
+    public List<IBuff> buffList;
 
     protected void Awake()
     {
@@ -63,15 +64,15 @@ public class PlayerCondition : MonoBehaviour
         maxExp = DataManager.Instance.maxExpDic[playerLevel];
         curExp = 0;
         UpdateExp();
-
-        if (controller.curWeapon == null) curWeapon = GameManager.Instance.weaponData;
-        else curWeapon = controller.curWeapon;
-
-        autoWeapons = new List<IAutoWeapon>();
     }
 
     private void Start()
     {
+        if (controller.curWeapon == null) curWeapon = GameManager.Instance.weaponData;
+        else curWeapon = controller.curWeapon;
+
+        autoWeapons = new List<IAutoWeapon>();
+
         StartStatSetting();
     }
 
@@ -194,14 +195,14 @@ public class PlayerCondition : MonoBehaviour
     public void GetTotalStat()
     {
         Debug.Log("플레이어 종합 스탯 세팅");
-        totalAttackPower = (baseAttackPower + curWeapon.totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv] * TotalBuff(StatType.AttackPower);
-        totalAttackSpeed = (baseAttackSpeed + curWeapon.totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv] * TotalBuff(StatType.AttackSpeed);
-        totalMoveSpeed = (baseMoveSpeed + curWeapon.totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0] * TotalBuff(StatType.MoveSpeed);
-        totalJumpPower = (baseJumpPower + curWeapon.totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1] * TotalBuff(StatType.JumpPower);
-        totalDashCooltime = (baseDashCooltime + curWeapon.totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][0] * TotalBuff(StatType.DashCooltime);
-        totalSuperJumpCooltime = (baseSuperJumpCooltime + curWeapon.totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1] * TotalBuff(StatType.SuperJumpCooltime);
-        totalDownAttackCooltime = (baseDownAttackCooltime + curWeapon.totalWeaponDownAttackCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][2] * TotalBuff(StatType.DownAttackCooltime);
-        totalMasteryStat = (int)(baseMasteryStat * DataManager.Instance.selecMasteryStatDic[selecMasteryLv] * TotalBuff(StatType.Mastery));
+        totalAttackPower = (baseAttackPower + curWeapon.totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv] * TotalStatBuff(StatType.AttackPower);
+        totalAttackSpeed = (baseAttackSpeed + curWeapon.totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv] * TotalStatBuff(StatType.AttackSpeed);
+        totalMoveSpeed = (baseMoveSpeed + curWeapon.totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0] * TotalStatBuff(StatType.MoveSpeed);
+        totalJumpPower = (baseJumpPower + curWeapon.totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1] * TotalStatBuff(StatType.JumpPower);
+        totalDashCooltime = (baseDashCooltime + curWeapon.totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][0] * TotalStatBuff(StatType.DashCooltime);
+        totalSuperJumpCooltime = (baseSuperJumpCooltime + curWeapon.totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1] * TotalStatBuff(StatType.SuperJumpCooltime);
+        totalDownAttackCooltime = (baseDownAttackCooltime + curWeapon.totalWeaponDownAttackCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][2] * TotalStatBuff(StatType.DownAttackCooltime);
+        totalMasteryStat = (int)(baseMasteryStat * DataManager.Instance.selecMasteryStatDic[selecMasteryLv] * TotalStatBuff(StatType.Mastery));
     }
 
     public void SelecStatLevelUP(StatLvType stat)
@@ -210,26 +211,26 @@ public class PlayerCondition : MonoBehaviour
         {
             case StatLvType.AttackPower:
                 selecAttackPowerLv++;
-                totalAttackPower = (baseAttackPower + curWeapon.totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv] * TotalBuff(StatType.AttackPower);
+                totalAttackPower = (baseAttackPower + curWeapon.totalWeaponAttackPower) * DataManager.Instance.selecAttackPowerDic[selecAttackPowerLv] * TotalStatBuff(StatType.AttackPower);
                 break;
             case StatLvType.AttackSpeed:
                 selecAttackSpeedLv++;
-                totalAttackSpeed = (baseAttackSpeed + curWeapon.totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv] * TotalBuff(StatType.AttackSpeed);
+                totalAttackSpeed = (baseAttackSpeed + curWeapon.totalWeaponAttackSpeed) * DataManager.Instance.selecAttckSpeedDic[selecAttackSpeedLv] * TotalStatBuff(StatType.AttackSpeed);
                 break;
             case StatLvType.MovePower:
                 selecMovePowerLv++;
-                totalMoveSpeed = (baseMoveSpeed + curWeapon.totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0] * TotalBuff(StatType.MoveSpeed);
-                totalJumpPower = (baseJumpPower + curWeapon.totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1] * TotalBuff(StatType.JumpPower);
+                totalMoveSpeed = (baseMoveSpeed + curWeapon.totalWeaponMoveSpeed) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][0] * TotalStatBuff(StatType.MoveSpeed);
+                totalJumpPower = (baseJumpPower + curWeapon.totalWeaponJumpPower) * DataManager.Instance.selecMovePowerDic[selecMovePowerLv][1] * TotalStatBuff(StatType.JumpPower);
                 break;
             case StatLvType.ActPower:
                 selecActPowerLv++;
-                totalDashCooltime = (baseDashCooltime + curWeapon.totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][0] * TotalBuff(StatType.DashCooltime);
-                totalSuperJumpCooltime = (baseSuperJumpCooltime + curWeapon.totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1] * TotalBuff(StatType.SuperJumpCooltime);
-                totalDownAttackCooltime = (baseDownAttackCooltime + curWeapon.totalWeaponDownAttackCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][2] * TotalBuff(StatType.DownAttackCooltime);
+                totalDashCooltime = (baseDashCooltime + curWeapon.totalWeaponDashCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][0] * TotalStatBuff(StatType.DashCooltime);
+                totalSuperJumpCooltime = (baseSuperJumpCooltime + curWeapon.totalWeaponSuperJumpCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][1] * TotalStatBuff(StatType.SuperJumpCooltime);
+                totalDownAttackCooltime = (baseDownAttackCooltime + curWeapon.totalWeaponDownAttackCooltime) * DataManager.Instance.selecActPowerDic[selecActPowerLv][2] * TotalStatBuff(StatType.DownAttackCooltime);
                 break;
             case StatLvType.Mastery:
                 selecMasteryLv++;
-                totalMasteryStat = (int)(baseMasteryStat * DataManager.Instance.selecMasteryStatDic[selecMasteryLv] * TotalBuff(StatType.Mastery));
+                totalMasteryStat = (int)(baseMasteryStat * DataManager.Instance.selecMasteryStatDic[selecMasteryLv] * TotalStatBuff(StatType.Mastery));
                 break;
             default:
                 Debug.Log("존재하지 않는 StatType");
@@ -267,48 +268,71 @@ public class PlayerCondition : MonoBehaviour
         }
     }
 
-    public IEnumerator BuffCorutine(float time, ISkill buff)
+    public IEnumerator OnBuff(IBuff buff)
     {
-        
-        GetTotalStat();
-        curWeapon.GetTotalStat();
+        switch (buff)
+        {
+            case Buff_Stat:
 
-        yield return new WaitForSeconds(time);
+                Debug.Log("버프 시작");
+                Buff_Stat statBuff = buff.GetComponent<Buff_Stat>();
 
-        
-        GetTotalStat();
-        curWeapon.GetTotalStat();
+                // 버프 리스트 순회 하면서 동일한 유형의 버프 찾기
+                foreach (IBuff b in buffList)
+                {
+                    // 동일 유형의 버프 체크, 중복시 이전 버프 제거
+                    if(b.TryGetComponent<Buff_Stat>(out Buff_Stat sb) && sb.statType == statBuff.statType) buffList.Remove(sb);
+
+                }
+
+                buffList.Add(buff);
+
+                GetTotalStat();
+                curWeapon.GetTotalStat();
+
+                yield return new WaitForSeconds(buff.duration);
+
+                if (buffList.Contains(buff))
+                {
+                    buffList.Remove(buff);
+                    GetTotalStat();
+                    curWeapon.GetTotalStat();
+                }
+                break;
+        }
+
+        Destroy(buff.gameObject);
     }
 
-    public void OnBuff(ISkill buff)
-    {
-        buffList.Add(buff);
-
-        //StartCoroutine(BuffCorutine(buff.skillData.durationList, ISkill buff));
-
-        buffList.Remove(buff);
-    }
-
-
-    public float TotalBuff(StatType type)
+    public float TotalStatBuff(StatType type)
     {
         float totalbuff = 0f;
 
-        //if(buffList != null)
-        //{
-        //    // 받은 버프 리스트에서 스탯 타입으로 버프 찾기
-        //    foreach (ISkill buff in buffList)
-        //    {
-        //        for (int i = 0; i < buff.skillData.statTypeList.Count; i++)
-        //        {
-        //            if (buff.skillData.statTypeList[i] == type)
-        //            {
-        //                totalbuff += buff.skillData.buffValueList[i] % 1;
-        //            }
-        //        }
-        //    }
-        //}
+        if (buffList != null)
+        {
+            // 받은 버프 리스트에서 스탯 타입으로 버프 찾기
+            foreach (IBuff buff in buffList)
+            {
+                // Buff_Stat이고 버프를 넣을 스탯과 같은 버프인지 체크
+                if (buff.TryGetComponent<Buff_Stat>(out Buff_Stat statBuff) && statBuff.statType == type)
+                {
+                    // 버프 디버프 체크
+                    switch (statBuff.buffValue > 1)
+                    {
+                        // 버프
+                        case true:
+                            totalbuff += statBuff.buffValue - 1;
+                            break;
 
+                        // 디버프
+                        case false:
+                            if(statBuff.buffValue == 0) Debug.Log("buffValue : 0");
+                            totalbuff -= statBuff.buffValue;
+                            break;
+                    }
+                }
+            }
+        }
         return totalbuff += 1;
     }
 }

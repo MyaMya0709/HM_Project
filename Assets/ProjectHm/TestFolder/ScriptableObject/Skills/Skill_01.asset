@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: TimeStop
   Description: "\uC2DC\uAC04\uC744 \uBA48\uCD98\uB2E4"
   price: 500
-  sprite: {fileID: 21300000, guid: 61f146591083aba468f6f0b1e8237c5b, type: 3}
+  sprite: {fileID: 21300000, guid: f6b51d8159272314086e066049e82798, type: 3}
   type: 1
   effect:
     damageMultiple: 0
@@ -50,6 +50,4 @@ MonoBehaviour:
       valueA: 0
       valueB: 0
       valueC: 0
-  statTypeList: 
-  buffValueList: []
-  durationList: []
+  buffID: 

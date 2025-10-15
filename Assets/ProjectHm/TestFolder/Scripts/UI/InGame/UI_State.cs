@@ -12,6 +12,7 @@ public class UI_State : MonoBehaviour
     [SerializeField] private Sprite dashIcon;
     [SerializeField] private Sprite downAttackIcon;
     [SerializeField] private Sprite superJumpIcon;
+    public Sprite buffIcon;
     [SerializeField] private int[] order = { 0,1,2,3,4,5,6,7,8,9,10 };
 
     public void InitStateUI(int id, float cooltime)
@@ -22,9 +23,8 @@ public class UI_State : MonoBehaviour
 
         Transform child0 = state.transform.GetChild(0);
         Transform child1 = state.transform.GetChild(1);
-        Debug.Log("첫 번째 자식: " + child0.name);
 
-        // 쿨타임 종류에 따라 아이콘 세팅
+        // {오류} 쿨타임 종류에 따라 아이콘 세팅
         switch (id)
         {
             case 0:
@@ -37,6 +37,11 @@ public class UI_State : MonoBehaviour
 
             case 2:
                 child0.GetComponent<Image>().sprite = superJumpIcon;
+                break;
+
+            default:
+                child0.gameObject.SetActive(false);
+                BuffIconSet(child1.GetComponent<Image>(), buffIcon);
                 break;
         }
 
@@ -78,5 +83,11 @@ public class UI_State : MonoBehaviour
                 continue;
             }
         }
+    }
+
+    public void BuffIconSet(Image image, Sprite Icon)
+    {
+        image.color = Color.white;
+        image.sprite = Icon;
     }
 }

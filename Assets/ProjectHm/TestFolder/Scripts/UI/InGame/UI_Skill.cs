@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Cooltime : MonoBehaviour
+public class UI_Skill : MonoBehaviour
 {
     public Image cooltimeIcon;
     public GameObject noneIcon;

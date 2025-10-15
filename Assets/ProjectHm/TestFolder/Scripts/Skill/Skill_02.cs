@@ -17,5 +17,9 @@ public class Skill_02 : ISkill
     public override void UseSkill()
     {
         Debug.Log("버프 스킬 사용");
+
+        GameObject buff = Instantiate(DataManager.Instance.buffPrefabList[skillData.buffID[0]]);
+
+        buff.GetComponent<IBuff>().ApplyBuff();
     }
 }

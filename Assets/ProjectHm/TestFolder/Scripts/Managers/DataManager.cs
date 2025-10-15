@@ -23,6 +23,8 @@ public class DataManager : MonoBehaviour
     public List<GameObject> skillPrefabList = new();
     public List<SkillData> skillDataList = new();
 
+    public List<GameObject> buffPrefabList = new();
+
     #region PlayerStatTable
     // key:playerLevel / value:LevelUpCost
     public Dictionary<int, int> levelUpCostDic
@@ -126,22 +128,22 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, float[]> movePowerDic
     = new Dictionary<int, float[]>()
     {
-        {0, new float[] { 6f, 50f } },
-        {1, new float[] { 6.1f, 50.1f }},
-        {2, new float[] { 6.2f, 50.2f }},
-        {3, new float[] { 6.3f, 50.3f }},
-        {4, new float[] { 6.4f, 50.4f }},
-        {5, new float[] { 6.5f, 50.5f }},
-        {6, new float[] { 6.6f, 50.6f }},
-        {7, new float[] { 6.7f, 50.7f }},
-        {8, new float[] { 6.8f, 50.8f }},
-        {9, new float[] { 6.9f, 50.9f }},
-        {10, new float[] { 7.0f, 51.0f }},
-        {11, new float[] { 7.1f, 51.1f }},
-        {12, new float[] { 7.2f, 51.2f }},
-        {13, new float[] { 7.3f, 51.3f }},
-        {14, new float[] { 7.4f, 51.4f }},
-        {15, new float[] { 7.5f, 51.5f }}
+        {0, new float[] { 6f, 25f } },
+        {1, new float[] { 6.1f, 25.1f }},
+        {2, new float[] { 6.2f, 25.2f }},
+        {3, new float[] { 6.3f, 25.3f }},
+        {4, new float[] { 6.4f, 25.4f }},
+        {5, new float[] { 6.5f, 25.5f }},
+        {6, new float[] { 6.6f, 25.6f }},
+        {7, new float[] { 6.7f, 25.7f }},
+        {8, new float[] { 6.8f, 25.8f }},
+        {9, new float[] { 6.9f, 25.9f }},
+        {10, new float[] { 7.0f, 26.0f }},
+        {11, new float[] { 7.1f, 26.1f }},
+        {12, new float[] { 7.2f, 26.2f }},
+        {13, new float[] { 7.3f, 26.3f }},
+        {14, new float[] { 7.4f, 26.4f }},
+        {15, new float[] { 7.5f, 26.5f }}
     };
     // key:statLevel / value:[dashCooltime, superJumpCooltime, downAttackCooltime]
     public Dictionary<int, float[]> actPowerDic
