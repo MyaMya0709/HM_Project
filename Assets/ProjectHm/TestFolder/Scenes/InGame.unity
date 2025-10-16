@@ -18675,7 +18675,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 8596640243658272642, guid: 601569a214b57484998b52fe19afc0b6, type: 3}
-  m_Type: 3
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
@@ -28040,6 +28040,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 37548ed77521834469d2ef049ed349ed, type: 2}
   - {fileID: 11400000, guid: bfaca91b93e9a904186f64a92755d8c8, type: 2}
   - {fileID: 11400000, guid: 678c6db33856d3048a29ffd062ff6a4e, type: 2}
+  - {fileID: 11400000, guid: 7476337cc24e38e4f9a559d6bc136e0e, type: 2}
+  - {fileID: 11400000, guid: 5ed5a39a0a7f4904996ff1d3e3306d26, type: 2}
+  - {fileID: 11400000, guid: f8abc9462aa46804db109fed9edc0274, type: 2}
   skillPrefabList:
   - {fileID: 5944262288411421679, guid: d5a92ed0fc080d847b8817b2951ccdde, type: 3}
   - {fileID: 5944262288411421679, guid: 1e408fa71ad14dd4cb643cec7c16504c, type: 3}

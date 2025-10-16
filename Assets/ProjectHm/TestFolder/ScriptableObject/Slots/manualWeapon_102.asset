@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 773e7687593188d4ca443f73b57e1659, type: 3}
-  m_Name: autoWeapon_100
+  m_Name: manualWeapon_102
   m_EditorClassIdentifier: 
-  type: 2
-  tatle: AutoWeapon_200
+  type: 1
+  tatle: ManualWeapon_102
   icon: {fileID: 0}
-  description: AutoWeapon_100
-  statType: 0
-  weaponID: 200
+  description: ManualWeapon_102
+  statLvType: 0
+  weaponID: 102

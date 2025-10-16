@@ -66,8 +66,8 @@ public class UI_Selection : UI
 
     public SlotData SlotDataSet()
     {
-        int selscData = Random.Range(0, DataManager.Instance.selecSlotDatas.Count);
-        SlotData data = DataManager.Instance.selecSlotDatas[selscData];
+        int selscData = Random.Range(0, slotDatas.Count);
+        SlotData data = slotDatas[selscData];
 
         return data;
     }

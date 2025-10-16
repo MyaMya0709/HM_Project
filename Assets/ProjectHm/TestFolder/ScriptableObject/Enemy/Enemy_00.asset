@@ -27,3 +27,4 @@ MonoBehaviour:
   dropItemList:
   - {fileID: 11400000, guid: 49bbf9e5aa825cf4ab40f5f3e75f58fe, type: 2}
   - {fileID: 11400000, guid: d06b7a5c2c5c52f479ebee2f0f3ca8de, type: 2}
+  - {fileID: 11400000, guid: 7e4eed5c00696ac4bbcf310bd774e254, type: 2}

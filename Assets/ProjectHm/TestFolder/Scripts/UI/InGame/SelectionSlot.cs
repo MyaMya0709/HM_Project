@@ -39,7 +39,7 @@ public class SelectionSlot : MonoBehaviour
 
         slotData = data;
         slotType = data.type;
-        slotName.text = data.name;
+        slotName.text = data.tatle;
         //slotIcon.sprite = data.icon;     // 아이콘 추가시 활성화
         slotDescription.text = data.description;
 

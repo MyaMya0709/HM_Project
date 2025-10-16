@@ -10,6 +10,7 @@ public class UI_Main : MonoBehaviour
     public Image expBar;
 
     // 활성화/비활성화 시 함수 추가/제거
+    // [수정 필요] 상단 남은 적 연동하기
     private void OnEnable() => PlayerCondition.OnPlayerLevelUp += EnableSelecUI;
     private void OnDisable() => PlayerCondition.OnPlayerLevelUp -= EnableSelecUI;
 
